@@ -143,26 +143,18 @@ final class Url implements EncodingInterface
         $query = $this->query->getUriComponent();
         $fragment = $this->fragment->getUriComponent();
 
-        if ('' != $pass) {
-            $pass = ':'.$pass;
-        }
-
         $user .= $pass;
         if ('' != $user) {
-            $user .='@';
+            $user .= '@';
         }
 
-        if ('' != $fragment) {
-            $fragment = '#'.$fragment;
-        }
-
-        if ('' != $host || '' != $scheme) {
-            $scheme .= '//';
+        if ('' != $host && '' == $scheme) {
+            $scheme = '//';
         }
 
         $domain = $scheme.$user.$host.$port;
-        if ('' != $path || '' != $domain) {
-            $path = '/'.$path;
+        if ('' == $path && '' != $domain) {
+            $path = '/';
         }
 
         return $domain.$path.$query.$fragment;
@@ -185,6 +177,25 @@ final class Url implements EncodingInterface
             'query' => $this->query->get(),
             'fragment' => $this->fragment->get(),
         );
+    }
+
+    /**
+     * Compare two Url object and tells whether they can be considered equal
+     *
+     * @param \League\Url\Url $url
+     *
+     * @return boolean
+     */
+    public function sameValueAs(Url $url, $strict = false)
+    {
+        if (! $strict) {
+            $this_url = $this->setEncodingType(Url::PHP_QUERY_RFC1738)->__toString();
+            $that_url = $url->setEncodingType(Url::PHP_QUERY_RFC1738)->__toString();
+
+            return  $this_url == $that_url;
+        }
+
+        return $this->__toString() == $url->__toString();
     }
 
     /**

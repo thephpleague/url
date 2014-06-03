@@ -41,6 +41,19 @@ class Path extends AbstractSegment implements SegmentInterface
     /**
      * {@inheritdoc}
      */
+    public function getUriComponent()
+    {
+        $value = $this->__toString();
+        if ('' != $value) {
+            $value = '/'.$value;
+        }
+
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function append($data, $whence = null, $whence_index = null)
     {
         $this->data = $this->appendSegment(
@@ -70,7 +83,8 @@ class Path extends AbstractSegment implements SegmentInterface
     protected function validate($data)
     {
         $data = $this->validateSegment($data, $this->delimiter);
+        $data = $this->sanitizeValue($data);
 
-        return $this->sanitizeValue($data);
+        return array_map('urldecode', $data);
     }
 }
