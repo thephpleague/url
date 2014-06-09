@@ -29,7 +29,7 @@ class Query extends AbstractArray implements QueryInterface, EncodingInterface
      *
      * @var integer
      */
-    protected $encoding_type = self::PHP_QUERY_RFC1738;
+    protected $encoding_type = PHP_QUERY_RFC1738;
 
     /**
      * Possible encoding type list
@@ -37,19 +37,19 @@ class Query extends AbstractArray implements QueryInterface, EncodingInterface
      * @var array
      */
     protected $encoding_list = array(
-        self::PHP_QUERY_RFC3986 => 1,
-        self::PHP_QUERY_RFC1738 => 1
+        PHP_QUERY_RFC3986 => 1,
+        PHP_QUERY_RFC1738 => 1
     );
 
     /**
      * The Constructor
      *
-     * @param mixed   $data     can be string, array or Traversable
+     * @param mixed $data can be string, array or Traversable
      *                          object convertible into Query String
      * @param integer $enc_type specify the RFC to follow when converting
      *                          the data to string
      */
-    public function __construct($data = null, $enc_type = self::PHP_QUERY_RFC1738)
+    public function __construct($data = null, $enc_type = PHP_QUERY_RFC1738)
     {
         $this->setEncodingType($enc_type);
         $this->set($data);
@@ -148,18 +148,32 @@ class Query extends AbstractArray implements QueryInterface, EncodingInterface
     /**
      * Url encode the query string
      *
-     * @param array   $str      the array to encode as a query string
+     * @param array   $arr      the array to encode as a query string
      * @param integer $enc_type the encoding RFC followed
      *
      * @return string
      */
-    protected function encode(array $str, $enc_type)
+    protected function encode(array $arr, $enc_type)
     {
-        if (defined('PHP_QUERY_RFC3986')) {
-            return http_build_query($str, '', '&', $enc_type);
+        if (5 == PHP_MAJOR_VERSION && 4 > PHP_MINOR_VERSION) {
+            return $this->encodePHP53($arr, $enc_type);
         }
-        $query = http_build_query($str, '', '&');
-        if (self::PHP_QUERY_RFC3986 != $enc_type) {
+
+        return http_build_query($arr, '', '&', $enc_type);
+    }
+
+    /**
+     * Url encode the query string for PHP5.3
+     *
+     * @param array   $arr      the array to encode as a query string
+     * @param integer $enc_type the encoding RFC followed
+     *
+     * @return string
+     */
+    protected function encodePHP53(array $arr, $enc_type)
+    {
+        $query = http_build_query($arr, '', '&');
+        if (PHP_QUERY_RFC1738 == $enc_type) {
             return $query;
         }
 
