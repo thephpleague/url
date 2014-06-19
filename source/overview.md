@@ -1,120 +1,147 @@
 ---
 layout: layout
-title: Loading
+title: URLs as Value Objects
 ---
 
 # Overview
 
 The library is composed of two main classes:
 
-* `League\Csv\Reader` to extract and filter data from a CSV
-* `League\Csv\Writer` to insert new data into a CSV
+* `League\Url\Url` a value object that represents an URL
+* `League\Url\UrlImmutable` a immutable value object that represents an URL
 
-Both classes share methods to instantiate, format and output the CSV.
+## Instantiation
 
-## Class Instantiation
-
-There's several ways to instantiate these classes:
+Both classes share the same named constructors to ease object instantiation. In the example below I'll use the `League\Url\Url` object as an example but the same is true for `League\Url\UrlImmutable`.
 
 ~~~.language-php
-use League\Csv\Reader;
-use League\Csv\Writer;
+<?php
 
-$reader = new Reader('/path/to/your/csv/file.csv');
-$reader = new Reader(new SpliFileInfo('/path/to/your/csv/file.csv'), 'rt');
-$reader = Reader::createFromString('john,doe,john.doe@example.com');
+use League\Url\Url;
 
-//or 
+//Method 1 : from a given URLs
+$url = Url::createFromUrl('ftp://host.example.com');
 
-$writer = new Writer('/path/to/your/csv/file.csv', 'ab+');
-$writer = new Writer(new SpliFileObject('/path/to/your/csv/file.csv'));
-$writer = Writer::createFromString('john,doe,john.doe@example.com');
+//Method 2: from the current PHP page
+//don't forget to provide the $_SERVER array
+$url = Url::createFromServer($_SERVER, PHP_QUERY_RFC3986); 
 ~~~
 
-Both classes constructors take one optional parameter `$open_mode` representing
-the file open mode used by the PHP fopen function.
+`$url` is a `League\Url\Url` object
 
-The `$open_mode` parameter is taken into account if you instantiate your object with:
+The `createFromServer` and `createFromUrl` methods accept a second optional argument `$enc_type` which specifies which encoding RFC should the URL query string component follow. The following internal PHP constants are the possible values:
 
-* a `SplFileInfo`
-* a string path
+* `PHP_QUERY_RFC1738`: encode the URL query component following the [RFC 1738](http://www.faqs.org/rfcs/rfc1738)
+* `PHP_QUERY_RFC3986`: encode the URL query component following the [RFC 3986](http://www.faqs.org/rfcs/rfc3968)
 
-The `$open_mode` parameter is ignore if you instantiate your object with:
+By default `$enc_type` equals `PHP_QUERY_RFC1738`.
 
-* a `SplFileObject`
-* a `SplTempFileObject`
+<p class="message-info"><strong>Of note:</strong> For <code>PHP 5.3</code> the constants are defined since they do not exists in this PHP version !</p>
 
-When not explicitly set:
+## Outputting the Urls
 
-* The `$open_mode` default value is `r+` for both classes.
+Both classes implement the `League\Url\UrlInterface` interface (think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `DateTimeInterface`) 
 
-The static method `createFromString` is to be use if your data is a string. This
-method takes no optional `$open_mode` parameter.
+The `League\Url\UrlInterface` interface provide the following methods:
 
-## CSV properties settings
-
-Once your object is created you can optionally set:
-
-* the CSV delimiter;
-* the CSV enclosure;
-* the CSV escape characters;
-* the object `SplFileObject` flags;
-* the CSV encoding source
+* `__toString` returns the full string representation of the URL;
+* `getRelativeUrl` returns the string representation of the URL without the "domain" parts (ie: `scheme`, `user`, `path`, `host`, `port`);
+* `getBaseUrl` returns the string representation of the URL without the "request uri" part (ie: `path`, `query`, `fragment`);
+* `sameValueAs` returns `true` if two `League\Url\UrlInterface` object represents the same URL. The comparison is encoding independent.
 
 ~~~.language-php
-$reader = new Reader('/path/to/your/csv/file.csv');
+use League\Url\Url;
+use League\Url\UrlImmutable;
 
-$reader->setDelimiter(',');
-$reader->setEnclosure('"');
-$reader->setEscape('\\');
-$reader->setFlags(SplFileObject::READ_AHEAD|SplFileObject::SKIP_EMPTY);
-$reader->setEncodingFrom('iso-8859-15');
+$url = Url::createFromUrl('http://www.example.com/path/index.php?query=toto+le+heros');
+echo $url->getRelativeUrl(); // /path/index.php?query=toto+le+heros
+echo $url->getBaseUrl(); // http://www.example.com
+echo $url; // 'http://www.example.com/path/index.php?query=toto+le+heros'
+
+$original_url = Url::createFromUrl('example.com');
+$new_url = UrlImmutable::createFromUrl("//example.com");
+$alternate_url = Url::createFromUrl('//example.com?foo=toto+le+heros');
+$another_url = Url::createFromUrl('//example.com?foo=toto+le+heros', PHP_QUERY_RFC3986);
+
+$original_url->sameValueAs($new_url); //will return true
+$alternate_url->sameValueAs($new_url); //will return false
+$alternate_url->sameValueAs($another_url); //will return true
 ~~~
 
-The recommended way to transcode you CSV in a UTF-8 compatible charset is to use the <a href="/filtering/">library stream filtering mechanism</a>. When this is not possible you may fallback by using the `setEncondignFrom` and `getEncondignFrom` methods.
+## Manipulating Urls
 
-<p class="message-warning"><strong>Warning:</strong> <code>set/getEncoding</code> methods have been deprecated and are schedule to be remove on the next major release. For backward compatibility, <code>setEncoding</code> is an alias of <code>setEncondignFrom</code> and <code>getEncoding</code> is an alias of <code>getEncondignFrom</code></p>
+An Url is composed of up to 8 components. Each URLs components can be access and modify through its own setter and getter method from a Url object.
 
-### detectDelimiter($nbRows = 1, array $delimiters = []) *since version 5.1*
+* Chaining is possible since all the setter methods return a `League\Url\UrlInterface` object;
+* Getter methods return a [League\Url\Component\ComponentInterface](/components/basic/) object;
 
-If you are no sure about the delimiter you can ask the library to detect it for you using the `detectDelimiter` method. **This method will only give you a hint**. 
+Here's a complete list of setter and getter for both classes:
 
-The method takes two arguments:
+* `setScheme($data)` set the URL scheme component;
+* `getScheme()` returns a [League\Url\Components\Scheme](/components/basic/) object
+* `setUser($data)` set the URL user component;
+* `getUser()` returns a [League\Url\Components\User](/components/basic/)object
+* `setPass($data)` set the URL pass component;
+* `getPass()` returns a [League\Url\Components\Pass](/components/basic/)object
+* `setHost($data)` set the URL host component;
+* `getHost()` returns a [League\Url\Components\Host](/components/complex/) object
+* `setPort($data)` set the URL port component;
+* `getPort()` returns a [League\Url\Components\Port](/components/basic/)object
+* `setPath($data)` set the URL path component;
+* `getPath()` returns a [League\Url\Components\Path](/components/complex/) object
+* `setQuery($data, $enc_type = null)` set the URL query component;
+* `getQuery()` returns a [League\Url\Components\Query](/components/complex/) object
+* `setFragment($data)` set the URL fragment component;
+* `getFragment()` returns a [League\Url\Components\Fragment](/components/basic/)`object
 
-* the number of rows to scan (default to `1`);
-* the possible delimiters to check (you don't need to specify the following delimiters as they are already checked by the method: `",", ";", "\t"`);
+The `$data` argument can be:
+
+* `null`;
+* a valid component string for the specified URL component;
+* an object implementing the `__toString` method;
+* another specific component object;
+* for `setHost`, `setPath`, `setQuery`: an `array` or a `Traversable` object;
+
+Let's modify a `League\Url\Url` object 
 
 ~~~.language-php
-$reader = new Reader('/path/to/your/csv/file.csv');
+$url = Url::createFromUrl('https://www.example.com');
+$url
+	->setUser('john')
+	->setPass('doe')
+	->setPort(443)
+	->setScheme('https');
+echo $url; // https://john:doe@www.example.com:443/
 
-$reader->setEnclosure('"');
-$reader->setEscape('\\');
-$reader->setFlags(SplFileObject::READ_AHEAD|SplFileObject::SKIP_EMPTY);
-
-$delimiter = $reader->detectDelimiter(10, [' ', '|']);
+$port = $url->getPort();
+$port->set(80);
+echo $port; // output 80;
+echo $url; // https://john:doe@www.example.com:80/
 ~~~
 
-The more rows and delimiters you add, the more time and memory consuming the operation will be.
+<div class="message-warning">
+To stay immutable, the <code>League\Url\UrlImmutable</code> object:
+<ul>
+<li>never modified itself but return a new object instead. 
+<li>returns a new property object instead of its own property object to avoid modification by reference.
+</ul>
+</div>
 
-* If a single delimiter is found the method will return it;
-* If multiple delimiters are found (ie: your CSV is not consistent) a `RuntimeException` is thrown;
-* If no delimiter is found or your CSV is composed of a single column, `null` will be return;
-
-## Switching from one class to the other
-
-<p class="message-warning">The <code>getReader</code> and <code>getWriter</code> methods have been deprecated and will be remove in the next major version release. For backward compatibility, the methods are now aliases of the <code>newReader</code> and <code>newWriter</code> methods.</p>
-
-At any given time you can switch or create a new `League\Csv\Writer` or a new `League\Csv\Reader` from the current object. to do so you can use the following methods.
-
-* the `League\Csv\Writer::newReader` method from the `League\Csv\Writer` class
-* the `League\Csv\Reader::newWriter` method from the `League\Csv\Reader` class 
-
-Both methods accept the optional $open_mode parameter. When not explicitly set, the `$open_mode` default value is `r+` for both methods.
+The same operation using a `League\Url\UrlImmutable` object
 
 ~~~.language-php
-$reader = $writer->newReader('r+');
-$newWriter = $reader->newWriter('a'); 
-$anotherWriter = $newWriter->newWriter('r+'); 
-~~~
+$url = UrlImmutable::createFromUrl('http://www.example.com');
+$new_url = $url
+	->setUser('john')
+	->setPass('doe')
+	->setPort(443)
+	->setScheme('https');
+echo $url; //remains http://www.example.com/
+echo $new_url; //output https://john:doe@www.example.com:443/
 
-<p class="message-warning"><strong>Warning:</strong> be careful the <code>$newWriter</code> and <code>$anotherWriter</code> object are not equal to the <code>$writer</code> object!</p>
+$port = $new_url->getPort(); //$port is a clone object of the URL port component.
+echo $port // output 443;
+$port->set(80);
+echo $port; // output 80;
+echo $new_url->getPort(); //remains 443
+~~~

@@ -7,11 +7,11 @@ title: Installation
 
 ## System Requirements
 
-You need **PHP >= 5.4.0** and the `mbstring` extension to use `League\Csv` but the latest stable version of PHP is recommended.
+You need **PHP >= 5.3.0** but the latest stable version of PHP is recommended.
 
 ## Composer
 
-CSV is available on [Packagist](https://packagist.org/packages/league/url) and can be installed using [Composer](https://getcomposer.org/):
+URL is available on [Packagist](https://packagist.org/packages/league/url) and can be installed using [Composer](https://getcomposer.org/):
 
 ~~~.language-javascript
 {
@@ -32,7 +32,7 @@ require 'vendor/autoload.php';
 
 ## Going Solo
 
-You can also use CSV without using Composer by registing an autoloader function:
+You can also use URL without using Composer by registing an autoloader function:
 
 ~~~.language-php
 spl_autoload_register(function ($class) {

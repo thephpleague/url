@@ -9,5 +9,6 @@ menu:
         Installation: '/installation/'
     The API:
         Overview: '/overview/'
-        Simple Components: '/components-basic/'
-        Complex Components: '/components-complex/'
+    The Components:
+        Basic: '/components/basic/'
+        Complex: '/components/complex/'
