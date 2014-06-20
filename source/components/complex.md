@@ -25,8 +25,6 @@ This class manage the URL query component by implementing the `League\Url\Compon
 This interface extends the `League\Url\Components\ComponentArrayInterface` by adding the following methods:
 
 * `modify($data)`: update the component data;
-* `setEncoding($enc_type)`: set the encoding constant;
-* `getEncoding()`: get the current encoding constant used by the class;
 
 <p class="message-info"><strong>Tips:</strong> You can also use the class constructor optional argument <code>$enc_type</code> to specifies the encoding type. By default <code>$enc_type</code> equals <code>PHP_QUERY_RFC1738</code>.</p>
 
@@ -35,7 +33,7 @@ Example using the `League\Url\Components\Query` object:
 ~~~.language-php
 use League\Url\Components\Query;
 
-$query = new Query('foo=bar', PHP_QUERY_RFC1738);
+$query = new Query('foo=bar');
 $query['baz'] = 'troll';
 $query['toto'] = 'le heros';
 foreach ($query as $offset => $value) {
@@ -44,7 +42,7 @@ foreach ($query as $offset => $value) {
 //will echo 
 // foo => bar
 // baz => troll
-// toto => le heros
+// toto => le%20heros
 
 $query->modify(array('foo' => 'baz', 'toto' => null));
 //by setting toto to null
@@ -54,10 +52,6 @@ $found = $query->keys('troll');
 //$found equals array(0 => 'baz')
 
 echo count($query); //will return 2;
-echo $query; //will display foo=baz&baz=troll;
-$query->setEncoding(PHP_QUERY_RFC3986);
-$query->modify(array('toto' => 'le gentil'));
-echo $query; //will display foo=baz&baz=troll&toto=le%20gentil;
 ~~~
 
 ## The Path and Host classes

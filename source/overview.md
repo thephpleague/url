@@ -24,19 +24,10 @@ $url = Url::createFromUrl('ftp://host.example.com');
 
 //Method 2: from the current PHP page
 //don't forget to provide the $_SERVER array
-$url = Url::createFromServer($_SERVER, PHP_QUERY_RFC3986); 
+$url = Url::createFromServer($_SERVER); 
 ~~~
 
 `$url` is a `League\Url\Url` object
-
-The `createFromServer` and `createFromUrl` methods accept a second optional argument `$enc_type` which specifies which encoding RFC should the URL query string component follow. The following internal PHP constants are the possible values:
-
-* `PHP_QUERY_RFC1738`: encode the URL query component following the [RFC 1738](http://www.faqs.org/rfcs/rfc1738)
-* `PHP_QUERY_RFC3986`: encode the URL query component following the [RFC 3986](http://www.faqs.org/rfcs/rfc3968)
-
-By default `$enc_type` equals `PHP_QUERY_RFC1738`.
-
-<p class="message-info"><strong>Of note:</strong> For <code>PHP 5.3</code> the constants are defined since they do not exists in this PHP version !</p>
 
 ## Outputting the Urls
 
@@ -48,6 +39,8 @@ The `League\Url\UrlInterface` interface provide the following methods:
 * `getRelativeUrl` returns the string representation of the URL without the "domain" parts (ie: `scheme`, `user`, `path`, `host`, `port`);
 * `getBaseUrl` returns the string representation of the URL without the "request uri" part (ie: `path`, `query`, `fragment`);
 * `sameValueAs` returns `true` if two `League\Url\UrlInterface` object represents the same URL. The comparison is encoding independent.
+
+<p class="message-info">The query string from the URL is automatically encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
 ~~~.language-php
 use League\Url\Url;
@@ -61,11 +54,9 @@ echo $url; // 'http://www.example.com/path/index.php?query=toto+le+heros'
 $original_url = Url::createFromUrl('example.com');
 $new_url = UrlImmutable::createFromUrl("//example.com");
 $alternate_url = Url::createFromUrl('//example.com?foo=toto+le+heros');
-$another_url = Url::createFromUrl('//example.com?foo=toto+le+heros', PHP_QUERY_RFC3986);
 
 $original_url->sameValueAs($new_url); //will return true
 $alternate_url->sameValueAs($new_url); //will return false
-$alternate_url->sameValueAs($another_url); //will return true
 ~~~
 
 ## Manipulating Urls
@@ -89,7 +80,7 @@ Here's a complete list of setter and getter for both classes:
 * `getPort()` returns a [League\Url\Components\Port](/components/basic/)object
 * `setPath($data)` set the URL path component;
 * `getPath()` returns a [League\Url\Components\Path](/components/complex/) object
-* `setQuery($data, $enc_type = null)` set the URL query component;
+* `setQuery($data)` set the URL query component;
 * `getQuery()` returns a [League\Url\Components\Query](/components/complex/) object
 * `setFragment($data)` set the URL fragment component;
 * `getFragment()` returns a [League\Url\Components\Fragment](/components/basic/)`object

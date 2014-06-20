@@ -21,7 +21,6 @@ $url = Url::createFromUrl(
 $query = $url->getQuery();
 $query->modify(array('query' => "lulu l'allumeuse")); 
 $query['sarah'] = "o connors"; //adding a new parameter
-$query->setEncoding(PHP_QUERY_RFC3986);  //changing the Query String encoding type
 
 $url->setScheme('ftp'); //change the URLs scheme
 $url->setFragment(null); //remove the fragment
@@ -44,7 +43,7 @@ echo "The original url : " . $immutable. PHP_EOL; // output the current page URL
 $query = $immutable->getQuery();
 foreach (range(1, 5) as $index) {
     $query['page'] = $index;
-    $pages_list[$index] = $immutable->setQuery($query, PHP_QUERY_RFC3986);
+    $pages_list[$index] = $immutable->setQuery($query);
 }
 
 //page list contains 5 new UrlImmutable object and $immutable has not change

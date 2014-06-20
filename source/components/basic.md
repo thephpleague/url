@@ -18,8 +18,6 @@ The `$data` argument can be:
 * a valid component string for the specified URL component;
 * an object implementing the `__toString` method;
 
-An additional methods `exchange($component)` is also implemented on each object to ease exchanging component object properties for another one.
-
 ~~~.language-php
 use League\Url\Components\Scheme;
 
@@ -30,7 +28,6 @@ echo $scheme->__toString(); //will echo 'https'
 echo $scheme->getUriComponent(); //will echo 'https://'
 
 $scheme_new = new Scheme;
-$scheme_new->exchange($scheme);
 echo $scheme_new->get(); // will echo 'https';
 ~~~
 
