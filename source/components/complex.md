@@ -26,7 +26,7 @@ This interface extends the `League\Url\Components\ComponentArrayInterface` by ad
 
 * `modify($data)`: update the component data;
 
-<p class="message-info"><strong>Tips:</strong> You can also use the class constructor optional argument <code>$enc_type</code> to specifies the encoding type. By default <code>$enc_type</code> equals <code>PHP_QUERY_RFC1738</code>.</p>
+<p class="message-info">The query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
 Example using the `League\Url\Components\Query` object:
 
