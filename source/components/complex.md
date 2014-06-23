@@ -105,15 +105,10 @@ var_export($path->toArray());
 //    3 => 'troll'
 // )
 
-$indexes = $path->keys('troll');
-var_export($indexes);
-//will display
-// array(
-//    0 => 2,
-//    1 => 3,
-// )
-
-$path->prepend('bar', 'troll', $indexes[1]);
+$nb_occurences = count($path->keys('troll'));
+//if $nb_occurences is higher than 1 ... you must specify
+//the $whence index if you do not append on the first occurence
+$path->prepend('bar', 'troll', 1);
 echo $path->get(); //will display bar/leheros/troll/bar/troll
 $path->remove('troll/bar');
 echo $path->getUriComponent(); //will display /bar/leheros/troll
