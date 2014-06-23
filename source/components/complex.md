@@ -17,7 +17,7 @@ The `League\Url\Components\ComponentArrayInterface` extends the [League\Url\Comp
 * `toArray()`: will return an array representation of the component;
 * `keys()`: will return all the keys or a subset of the keys of an array if a value is given.
 
-**Of note:** The `$data` argument for the `set` method can also be an `array` or a `Traversable` object.
+<p class="message-info"><strong>Of note:</strong> The <code>$data</code> argument for the <code>set</code> method can also be an <code>array</code> or a <code>Traversable</code> object.</p>
 
 ## The Query class
 
@@ -26,7 +26,7 @@ This interface extends the `League\Url\Components\ComponentArrayInterface` by ad
 
 * `modify($data)`: update the component data;
 
-<p class="message-info">The query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
+<p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
 Example using the `League\Url\Components\Query` object:
 
@@ -47,6 +47,9 @@ foreach ($query as $offset => $value) {
 $query->modify(array('foo' => 'baz', 'toto' => null));
 //by setting toto to null
 //you remove the toto argument from the query_string
+//you can get the same result by issuing
+unset($query['toto']);
+
 
 $found = $query->keys('troll');
 //$found equals array(0 => 'baz')
@@ -93,7 +96,7 @@ $found = $path->keys('troll');
 
 echo count($path); //will return 4;
 echo $path; //will display bar/leheros/troll/troll
-var_export($path->toArray())
+var_export($path->toArray());
 //will display
 // array(
 //    0 => 'bar',
@@ -102,7 +105,15 @@ var_export($path->toArray())
 //    3 => 'troll'
 // )
 
-$path->prepend('bar', 'troll', 1);
+$indexes = $path->keys('troll');
+var_export($indexes);
+//will display
+// array(
+//    0 => 2,
+//    1 => 3,
+// )
+
+$path->prepend('bar', 'troll', $indexes[1]);
 echo $path->get(); //will display bar/leheros/troll/bar/troll
 $path->remove('troll/bar');
 echo $path->getUriComponent(); //will display /bar/leheros/troll

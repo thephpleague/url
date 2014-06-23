@@ -38,21 +38,24 @@ A simple example to show you how to create a pagination will retaining the origi
 <?php
 use League\Url\UrlImmutable;
 
-$immutable = UrlImmutable::createFromServer($_SERVER); //create an URL from the current page
-echo "The original url : " . $immutable. PHP_EOL; // output the current page URL
-$query = $immutable->getQuery();
+//create an URL from the current page
+$url_immutable = UrlImmutable::createFromServer($_SERVER);
+//array to hold the generated URLs
+$navigation_urls = array();
+ //get the current path
+$query = $url_immutable->getQuery();
 foreach (range(1, 5) as $index) {
     $query['page'] = $index;
-    $pages_list[$index] = $immutable->setQuery($query);
+    //we generate the new Url based on the original $url_immutable object
+    $navigation_urls[$index] = $url_immutable->setQuery($query);
 }
 
-//page list contains 5 new UrlImmutable object and $immutable has not change
-foreach ($pages_list as $index => $uri) {
+//$navigation_urls now contains 5 new UrlImmutable objects 
+// but $url_immutable has not change
+foreach ($navigation_urls as $index => $uri) {
     echo "Page $index = $uri", PHP_EOL;
 }
-if (! $immutable->sameValueAs($pages_list[3])) {
-	echo "those two object differ!", PHP_EOL; // this will be output
-}
+$url_immutable->sameValueAs($navigation_urls[3]); // return false
 ~~~
 
 Learn more about how this all works in the [Overview](/overview).

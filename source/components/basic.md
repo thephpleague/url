@@ -23,20 +23,19 @@ use League\Url\Components\Scheme;
 
 $scheme = new Scheme;
 $scheme->get(); //will return null since no scheme was set
+echo $scheme; // will echo '' an empty string
+echo $scheme->getUriComponent(); //will echo '//'
 $scheme->set('https');
 echo $scheme->__toString(); //will echo 'https'
 echo $scheme->getUriComponent(); //will echo 'https://'
-
-$scheme_new = new Scheme;
-echo $scheme_new->get(); // will echo 'https';
 ~~~
 
-<p class="message-info"><strong>Tips:</strong> The <code>exchange</code> method also copy the internal property of the object while the <code>set</code> method only sets the object data.</p>
+The URL components objects that **only** implement this interface are:
 
-The URL components that **only** implement this interface are:
+* `League\Url\Components\Scheme` which deals with URL scheme component;
+* `League\Url\Components\User` which deals with URL user component;
+* `League\Url\Components\Pass` which deals with URL pass component;
+* `League\Url\Components\Port` which deals with URL port component;
+* `League\Url\Components\Fragment` which deals with URL fragment component;
 
-* `scheme` with the `League\Url\Components\Scheme`;
-* `user` with the `League\Url\Components\User`;
-* `pass` with the `League\Url\Components\Pass`;
-* `port` with the `League\Url\Components\Port`;
-* `fragment` with the `League\Url\Components\Fragment`;
+The objects only differ in the way they validate and/or output the components.
