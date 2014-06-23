@@ -17,8 +17,7 @@ layout: layout
 ## About
 
 `League\Url` is a simple library to ease URL parsing and editing in
-PHP. The goal of the library is to be as powerful while remaining lightweight,
-by utilizing PHP native classes whenever possible.
+PHP. The goal of the library is to be powerful while remaining simple to use.
 
 [URL on Packagist](https://packagist.org/packages/league/url)
 

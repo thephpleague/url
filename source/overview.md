@@ -53,12 +53,12 @@ echo $url->getRelativeUrl(); // /path/index.php?query=toto%20le%20heros
 echo $url->getBaseUrl(); // http://www.example.com
 echo $url; // 'http://www.example.com/path/index.php?query=toto%20le%20heros'
 
-$original_url = Url::createFromUrl('example.com');
-$new_url = UrlImmutable::createFromUrl("//example.com");
-$alternate_url = Url::createFromUrl('//example.com?foo=toto+le+heros');
+$original_url = Url::createFromUrl("example.com"); //a schemeless url
+$new_url = UrlImmutable::createFromUrl("//example.com"); //another schemeless url
+$alternate_url = Url::createFromUrl("http://example.com");
 
 $original_url->sameValueAs($new_url); //will return true
-$alternate_url->sameValueAs($new_url); //will return false
+$original_url->sameValueAs($alternate_url); //will return false
 ~~~
 
 ## Manipulating Urls
