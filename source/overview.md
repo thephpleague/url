@@ -14,6 +14,8 @@ Both classes implement the `League\Url\UrlInterface` interface.
 
 Think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `DateTimeInterface` interface.
 
+<p class="message-warning">While the library validate the host syntax it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
+
 ## Instantiation
 
 Both classes share the same named constructors to ease object instantiation. In the example below I'll use the `League\Url\Url` object as an example but the same is true for `League\Url\UrlImmutable`.

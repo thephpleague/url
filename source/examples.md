@@ -19,15 +19,16 @@ $url = Url::createFromUrl(
 
 //let update the Query String
 $query = $url->getQuery();
-$query->modify(array('query' => "lulu l'allumeuse")); 
+$query->modify(array('query' => "lulu l'allumeuse", "foo" => "bar")); 
 $query['sarah'] = "o connors"; //adding a new parameter
 
 $url->setScheme('ftp'); //change the URLs scheme
 $url->setFragment(null); //remove the fragment
+$url->setPort(21);
 $url->getPath()->remove('path/index.php'); //remove part of the path
 $url->getPath()->prepend('mongo db'); //prepend the path
 echo $url, PHP_EOL; 
-// output ftp://user:pass@www.example.com:81/mongo%20db?query=lulu%20l%27allumeuse&sarah=o%20connors
+// output ftp://user:pass@www.example.com:21/mongo%20db?query=lulu%20l%27allumeuse&foo=bar&sarah=o%20connors
 ~~~
 
 ## Using an Immutable URL to create a pagination
@@ -47,15 +48,15 @@ $query = $url->getQuery();
 foreach (range(1, 5) as $index) {
     $query['page'] = $index;
     //we generate the new Url based on the original $url_immutable object
-    $paginations[$index] = $url->setQuery($query);
+    $paginations[] = $url->setQuery($query);
 }
 
 //$paginations now contains 5 new League\Url\UrlImmutable objects 
 //but $url has not change
-foreach ($paginations as $index => $uri) {
-    echo "Page $index = $uri", PHP_EOL;
+foreach ($paginations as $uri) {
+    $res = $uri instanceof 'League\Url\UrlImmutable'; // $res is true
+	$url->sameValueAs($uri); // return false
 }
-$url->sameValueAs($paginations[3]); // return false
 ~~~
 
 Learn more about how this all works in the [Overview](/overview).

@@ -69,8 +69,10 @@ The arguments:
 
 * The `$data` argument can be `null`, a valid component string, a object implementing the `__toString` method, an array or a `Traversable` object;
 * The `$whence` argument specify the string segment where to include the data;
-* The `$whence_index` argument specify the `$whence` index if it is present more than once;
+* The `$whence_index` argument specify the `$whence` index if it is present more than once. The value starts at `0`;
 * When using the `remove` method, if the pattern is present multiple times only the first match found is removed 
+
+<p class="message-warning"><code>League\Url\Components\Host</code> only validates the host syntax but not its existence using a <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
 
 <p class="message-info"><strong>Tips:</strong> You can easily get the <code>$whence_index</code> by using the object <code>keys($whence)</code> method result.</p>
 
@@ -106,10 +108,12 @@ var_export($path->toArray());
 // )
 
 $nb_occurences = count($path->keys('troll'));
-//if $nb_occurences is higher than 1 ... you must specify
-//the $whence index if you do not append on the first occurence
+//if $nb_occurences is higher than 1, 
+//you must specify the $whence index 
+//if you do not insert you data around the first occurence
+//the $whence_index start at 0
 $path->prepend('bar', 'troll', 1);
-echo $path->get(); //will display bar/leheros/troll/bar/troll
+echo $path->get(); //will display "bar/leheros/troll/bar/troll"
 $path->remove('troll/bar');
-echo $path->getUriComponent(); //will display /bar/leheros/troll
+echo $path->getUriComponent(); //will display "/bar/leheros/troll"
 ~~~
