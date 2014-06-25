@@ -5,9 +5,9 @@ title: Examples
 
 # Examples
 
-## Parse and modify an URL
+## Parse and modify a URL
 
-A simple example to show you how to manipulate an URL and its component.
+A simple example to show you how to manipulate a URL and its component.
 
 ~~~.language-php
 <?php
@@ -39,7 +39,7 @@ A simple example to show you how to create a pagination will retaining the origi
 <?php
 use League\Url\UrlImmutable;
 
-//create an URL from the current page
+//create a URL from the current page
 $url = UrlImmutable::createFromServer($_SERVER);
 // array to hold the generated URLs
 $paginations = array();
