@@ -7,8 +7,8 @@ title: URLs as Value Objects
 
 The library which handle FTPs and HTTPs protocol URLs is composed of two main classes:
 
-* `League\Url\Url` a value object that represents an URL
-* `League\Url\UrlImmutable` a immutable value object that represents an URL
+* `League\Url\Url` a value object that represents a URL
+* `League\Url\UrlImmutable` a immutable value object that represents a URL
 
 Both classes implement the `League\Url\UrlInterface` interface.
 
