@@ -59,7 +59,7 @@ echo count($query); //will return 2;
 
 ## The Path and Host classes
 
-These classes manage the URL path and host components. They only differs in the way they validate and format before outputting their data. Both classes implements the `League\Url\Components\SegmentInterface` which extends the `League\Url\Components\ComponentArrayInterface` by adding the following methods:
+These classes manage the URL path and host components. They only differ in the way they validate and format before outputting their data. Both classes implement the `League\Url\Components\SegmentInterface` which extends the `League\Url\Components\ComponentArrayInterface` by adding the following methods:
 
 * `append($data, $whence = null, $whence_index = null)`: append data into the component;
 * `prepend($data, $whence = null, $whence_index = null)`: prepend data into the component;
@@ -67,7 +67,7 @@ These classes manage the URL path and host components. They only differs in the 
 
 The arguments:
 
-* The `$data` argument can be `null`, a valid component string, a object implementing the `__toString` method, an array or a `Traversable` object;
+* The `$data` argument can be `null`, a valid component string, an object implementing the `__toString` method, an array or a `Traversable` object;
 * The `$whence` argument specify the string segment where to include the data;
 * The `$whence_index` argument specify the `$whence` index if it is present more than once. The value starts at `0`;
 * When using the `remove` method, if the pattern is present multiple times only the first match found is removed 
@@ -110,7 +110,7 @@ var_export($path->toArray());
 $nb_occurences = count($path->keys('troll'));
 //if $nb_occurences is higher than 1, 
 //you must specify the $whence index 
-//if you do not insert you data around the first occurence
+//if you do not insert your data around the first occurence
 //the $whence_index start at 0
 $path->prepend('bar', 'troll', 1);
 echo $path->get(); //will display "bar/leheros/troll/bar/troll"
