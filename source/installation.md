@@ -7,7 +7,8 @@ title: Installation
 
 ## System Requirements
 
-You need **PHP >= 5.3.0** but the latest stable version of PHP is recommended.
+* **PHP >= 5.3.0** but the latest stable version of PHP is recommended;
+* `mbstring` extension installed **since version 3.1**;
 
 ## Composer
 

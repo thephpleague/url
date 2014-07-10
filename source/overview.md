@@ -79,13 +79,13 @@ Here's a complete list of setter and getter for both classes:
 * `setPass($data)` set the URL pass component;
 * `getPass()` returns a [League\Url\Components\Pass][basic] object
 * `setHost($data)` set the URL host component;
-* `getHost()` returns a [League\Url\Components\Host][complex] object
+* `getHost()` returns a [League\Url\Components\Host](/components/host/) object
 * `setPort($data)` set the URL port component;
 * `getPort()` returns a [League\Url\Components\Port][basic] object
 * `setPath($data)` set the URL path component;
-* `getPath()` returns a [League\Url\Components\Path][complex] object
+* `getPath()` returns a [League\Url\Components\Path](/components/path/) object
 * `setQuery($data)` set the URL query component;
-* `getQuery()` returns a [League\Url\Components\Query][complex] object
+* `getQuery()` returns a [League\Url\Components\Query](/components/query/) object
 * `setFragment($data)` set the URL fragment component;
 * `getFragment()` returns a [League\Url\Components\Fragment][basic]`object
 
@@ -140,5 +140,4 @@ $port->set(80);
 echo $port; // output 80;
 echo $new_url->getPort(); //remains 443
 ~~~
-[basic]: /components/basic/
-[complex]: /components/complex/
+[basic]: /components/overview/#simple-components

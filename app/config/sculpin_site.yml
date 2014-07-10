@@ -10,5 +10,7 @@ menu:
     The API:
         Overview: '/overview/'
     The Components:
-        Basic: '/components/basic/'
-        Complex: '/components/complex/'
+        Overview: '/components/overview/'
+        Query: '/components/query/'
+        Path: '/components/path/'
+        Host: '/components/host/'
