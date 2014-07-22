@@ -5,13 +5,11 @@ title: URL complex components
 
 # The Host class
 
-This [multiple values component class](/components/overview/#complex-components) manage the URL host component by implementing the `League\Url\Components\SegmentInterface` just like the [League\Url\Components\Path](/components/path/) class. 
-
-<p class="message-warning"><code>League\Url\Components\Host</code> only validates the host syntax but not its existence using a <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
+This [segment values component class](/components/overview/#segment-components) manage the URL host component by implementing the `League\Url\Components\HostInterface`.
 
 ## IDN support (since version 3.1)
 
-The `League\Url\Components\Host` also implements the `League\Url\Components\HostInterface` which provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank">IDN</a>.
+The interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a>.
 
 * `toUnicode()` : is an alias of `__toString()` and return the hostname internationalized name
 * `toAscii()` : return the Punycode encoded hostname; 

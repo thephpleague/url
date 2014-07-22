@@ -5,22 +5,11 @@ title: The Path class
 
 # The Path class
 
-This [multiple values component class](/components/overview/#complex-components) manage the URL path component by implementing the `League\Url\Components\SegmentInterface`. 
+This [segment values component class](/components/overview/#segment-components) manage the URL path component by implementing the `League\Url\Components\PathInterface`. 
 
-The `League\Url\Components\SegmentInterface` interface adds the following method:
+The `League\Url\Components\PathInterface` interface adds the following method:
 
-* `append($data, $whence = null, $whence_index = null)`: append data into the component;
-* `prepend($data, $whence = null, $whence_index = null)`: prepend data into the component;
-* `remove($data)`: remove data from the component;
-
-The arguments:
-
-* The `$data` argument can be `null`, a valid component string, a object implementing the `__toString` method, an array or a `Traversable` object;
-* The `$whence` argument specify the string segment where to include the data;
-* The `$whence_index` argument specify the `$whence` index if it is present more than once. The value starts at `0`;
-* When using the `remove` method, if the pattern is present multiple times only the first match found is removed 
-
-<p class="message-info"><strong>Tips:</strong> You can easily get the <code>$whence_index</code> by using the object <code>keys($whence)</code> method result.</p>
+* `getRelativePath(PathInterface $path)`: returns a string representation of the relative path from the current object relative to the `$path` given *added in version 3.2*;
 
 Example using the `League\Url\Components\Path` object:
 

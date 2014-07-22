@@ -15,6 +15,7 @@ Each component class implements the `League\Url\Components\ComponentInterface` w
 * `get()`: returns `null` if the class data is empty or its string representation
 * `__toString()`: return a typecast string representation of the component.
 * `getUriComponent()`: return an altered string representation to ease URL representation.
+* `sameValueAs(ComponentInterface $component)`: return true if both components string representation values are equals. *added in version 3.2+*
 
 The `$data` argument can be:
 
@@ -72,3 +73,21 @@ The URL components classes implementing these interfaces are:
 * `League\Url\Components\Query` [which which deals with URL query component](/components/query/);
 * `League\Url\Components\Path` [which which deals with URL path component](/components/path/);
 * `League\Url\Components\Host` [which which deals with URL host component](/components/host/);
+
+<h3 id="segment-components">Segment Values Components</h3>
+
+Segment values components like [League\Url\Components\Path](/components/path/) and 
+[League\Url\Components\Host](/components/host/) also implement the `League\Url\Components\SegmentInterface` interface which adds the following methods:
+
+* `append($data, $whence = null, $whence_index = null)`: append data into the component;
+* `prepend($data, $whence = null, $whence_index = null)`: prepend data into the component;
+* `remove($data)`: remove data from the component;
+
+The arguments:
+
+* The `$data` argument can be `null`, a valid component string, a object implementing the `__toString` method, an array or a `Traversable` object;
+* The `$whence` argument specify the string segment where to include the data;
+* The `$whence_index` argument specify the `$whence` index if it is present more than once. The value starts at `0`;
+* When using the `remove` method, if the pattern is present multiple times only the first match found is removed 
+
+<p class="message-info"><strong>Tips:</strong> You can easily get the <code>$whence_index</code> by using the object <code>keys($whence)</code> method result.</p>

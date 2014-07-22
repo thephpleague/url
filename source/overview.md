@@ -40,8 +40,8 @@ $url = Url::createFromServer($_SERVER);
 The `League\Url\UrlInterface` interface provide the following methods:
 
 * `__toString` returns the full string representation of the URL;
-* `getRelativeUrl` returns the string representation of the URL without the "domain" parts (ie: `scheme`, `user`, `path`, `host`, `port`);
-* `getBaseUrl` returns the string representation of the URL without the "request uri" part (ie: `path`, `query`, `fragment`);
+* `getRelativeUrl(UrlInterface $url = null)` returns the string representation of the URL relative to another `League\Url\UrlInterface` object *(the `League\Url\UrlInterface` argument was added as of version 3.2)*;
+* `getBaseUrl` returns the string representation of the URL `scheme` component and authority part;
 * `sameValueAs` returns `true` if two `League\Url\UrlInterface` object represents the same URL.
 
 <p class="message-info">On URL output, the query string is automatically encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
@@ -51,9 +51,11 @@ use League\Url\Url;
 use League\Url\UrlImmutable;
 
 $url = Url::createFromUrl('http://www.example.com/path/index.php?query=toto+le+heros');
-echo $url->getRelativeUrl(); // /path/index.php?query=toto%20le%20heros
-echo $url->getBaseUrl(); // http://www.example.com
+$relative_url = Url::createFromUrl('http://www.example.com/path/another/index.html');
 echo $url; // 'http://www.example.com/path/index.php?query=toto%20le%20heros'
+echo $url->getBaseUrl(); // http://www.example.com
+echo $url->getRelativeUrl(); // /path/index.php?query=toto%20le%20heros
+echo $url->getRelativeUrl($relative_url); // ../../index.php?query=toto%20le%20heros
 
 $original_url = Url::createFromUrl("example.com"); //a schemeless url
 $new_url = UrlImmutable::createFromUrl("//example.com"); //another schemeless url
