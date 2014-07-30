@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" type="image/x-icon" href="/themes/thephpleague/thephpleague.github.com/img/favicon.ico" />
+                <link rel="apple-touch-icon-precomposed" href="/themes/thephpleague/thephpleague.github.com/img/apple-touch-icon-precomposed.png">
+                <title>The Query Object - URL</title>
+                <meta name="description" content="Working with URL can often be much more difficult than you expect. This makes it easy to modify and update any URL.">
+                <link rel="stylesheet" href="/themes/thephpleague/thephpleague.github.com/css/all.css">
+    </head>
+<body>
+
+<section class="all_packages">
+    <a href="http://thephpleague.com/">
+        <img src="/themes/thephpleague/thephpleague.github.com/img/loep_logo.png" width="195" height="200" alt="The League of Extraordinary Packages">
+    </a>
+    <h2>Our Packages:</h2>
+    <ul>
+    </ul>
+</section>
+
+<header>
+    <a class="logo" href="/">
+                <span class="name">URL</span>
+        <span class="tagline">URL manipulation made easy in PHP.</span>
+    </a>
+    <a href="http://thephpleague.com/" class="league">
+        Presented by The League of Extraordinary Packages
+    </a>
+</header>
+
+<input type="checkbox" id="menu">
+<label for="menu" onclick>
+    <div class="closed">&#9776; Menu</div>
+    <div class="open">&#9776; Hide Menu</div>
+</label>
+
+<main>
+    <menu>
+                    <h2>Getting Started</h2>
+            <ul>
+                                    <li >
+                        <a href="/">Introduction</a>
+                    </li>
+                                    <li >
+                        <a href="/examples/">Examples</a>
+                    </li>
+                                    <li >
+                        <a href="/installation/">Installation</a>
+                    </li>
+                            </ul>
+                    <h2>The API</h2>
+            <ul>
+                                    <li >
+                        <a href="/overview/">Overview</a>
+                    </li>
+                            </ul>
+                    <h2>The Components</h2>
+            <ul>
+                                    <li >
+                        <a href="/components/overview/">Overview</a>
+                    </li>
+                                    <li class="selected">
+                        <a href="/components/query/">Query</a>
+                    </li>
+                                    <li >
+                        <a href="/components/path/">Path</a>
+                    </li>
+                                    <li >
+                        <a href="/components/host/">Host</a>
+                    </li>
+                            </ul>
+            </menu>
+    <article>
+        <h1>The Query class</h1>
+
+<p>This <a href="/components/overview/#complex-components">multiple values component class</a> manage the URL query component by implementing the <code>League\Url\Components\QueryInterface</code>.</p>
+
+<p>This interface adds the following method:</p>
+
+<ul>
+<li><code>modify($data)</code>: update the component data;</li>
+</ul>
+
+<p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
+
+<p>Example using the <code>League\Url\Components\Query</code> object:</p>
+
+<pre><code class="language-php">use League\Url\Components\Query;
+
+$query = new Query('foo=bar');
+$query['baz'] = 'troll';
+$query['toto'] = 'le heros';
+foreach ($query as $offset =&gt; $value) {
+    echo "$offset =&gt; $value".PHP_EOL;
+}
+//will echo 
+// foo =&gt; bar
+// baz =&gt; troll
+// toto =&gt; le%20heros
+
+$query-&gt;modify(array('foo' =&gt; 'baz', 'toto' =&gt; null));
+//by setting toto to null
+//you remove the toto argument from the query_string
+//you can get the same result by issuing
+unset($query['toto']);
+
+
+$found = $query-&gt;keys('troll');
+//$found equals array(0 =&gt; 'baz')
+
+echo count($query); //will return 2;
+</code></pre>
+    </article>
+</main>
+
+<footer>
+    <span>&copy; Copyright The League of Extraordinary Packages.</span>
+    <span>Site design by <a href="http://reinink.ca">Jonathan Reinink</a>.</span>
+    <span>Powered by <a href="https://sculpin.io">Sculpin</a>.</span>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/themes/thephpleague/thephpleague.github.com/js/scripts.js"></script>
+<script src="/themes/thephpleague/thephpleague.github.com/js/prism.js"></script>
+
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-46050814-6');ga('send','pageview');
+    </script>
+
+</body>
+</html>

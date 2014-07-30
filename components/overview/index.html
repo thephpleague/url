@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" type="image/x-icon" href="/themes/thephpleague/thephpleague.github.com/img/favicon.ico" />
+                <link rel="apple-touch-icon-precomposed" href="/themes/thephpleague/thephpleague.github.com/img/apple-touch-icon-precomposed.png">
+                <title>URL Components - URL</title>
+                <meta name="description" content="Working with URL can often be much more difficult than you expect. This makes it easy to modify and update any URL.">
+                <link rel="stylesheet" href="/themes/thephpleague/thephpleague.github.com/css/all.css">
+    </head>
+<body>
+
+<section class="all_packages">
+    <a href="http://thephpleague.com/">
+        <img src="/themes/thephpleague/thephpleague.github.com/img/loep_logo.png" width="195" height="200" alt="The League of Extraordinary Packages">
+    </a>
+    <h2>Our Packages:</h2>
+    <ul>
+    </ul>
+</section>
+
+<header>
+    <a class="logo" href="/">
+                <span class="name">URL</span>
+        <span class="tagline">URL manipulation made easy in PHP.</span>
+    </a>
+    <a href="http://thephpleague.com/" class="league">
+        Presented by The League of Extraordinary Packages
+    </a>
+</header>
+
+<input type="checkbox" id="menu">
+<label for="menu" onclick>
+    <div class="closed">&#9776; Menu</div>
+    <div class="open">&#9776; Hide Menu</div>
+</label>
+
+<main>
+    <menu>
+                    <h2>Getting Started</h2>
+            <ul>
+                                    <li >
+                        <a href="/">Introduction</a>
+                    </li>
+                                    <li >
+                        <a href="/examples/">Examples</a>
+                    </li>
+                                    <li >
+                        <a href="/installation/">Installation</a>
+                    </li>
+                            </ul>
+                    <h2>The API</h2>
+            <ul>
+                                    <li >
+                        <a href="/overview/">Overview</a>
+                    </li>
+                            </ul>
+                    <h2>The Components</h2>
+            <ul>
+                                    <li class="selected">
+                        <a href="/components/overview/">Overview</a>
+                    </li>
+                                    <li >
+                        <a href="/components/query/">Query</a>
+                    </li>
+                                    <li >
+                        <a href="/components/path/">Path</a>
+                    </li>
+                                    <li >
+                        <a href="/components/host/">Host</a>
+                    </li>
+                            </ul>
+            </menu>
+    <article>
+        <h1>URL components</h1>
+
+<p>An URL string is composed of up to 8 components. The <code>League\Url</code> library provides interfaces and classes to interact with each URL component. The classes can all be use independently of a <code>League\Url\UrlInterface</code> implementing class.</p>
+
+<h2>Component Interface</h2>
+
+<p>Each component class implements the <code>League\Url\Components\ComponentInterface</code> with the following public methods:</p>
+
+<ul>
+<li><code>set($data)</code>: set the component data</li>
+<li><code>get()</code>: returns <code>null</code> if the class data is empty or its string representation</li>
+<li><code>__toString()</code>: return a typecast string representation of the component.</li>
+<li><code>getUriComponent()</code>: return an altered string representation to ease URL representation.</li>
+<li><code>sameValueAs(ComponentInterface $component)</code>: return true if both components string representation values are equals. <em>added in version 3.2+</em></li>
+</ul>
+
+<p>The <code>$data</code> argument can be:</p>
+
+<ul>
+<li><code>null</code>;</li>
+<li>a valid component string for the specified URL component;</li>
+<li>an object implementing the <code>__toString</code> method;</li>
+</ul>
+
+<h2 id="simple-components">Single Value Components</h2>
+
+<p>The URL components classes which represent single values only:</p>
+
+<ul>
+<li>implement the <code>League\Url\Components\ComponentInterface</code> interface. </li>
+<li>differ in the way they validate and/or output the components.</li>
+</ul>
+
+<p>These classes are:</p>
+
+<ul>
+<li><code>League\Url\Components\Scheme</code> which deals with the scheme component;</li>
+<li><code>League\Url\Components\User</code> which deals with the user component;</li>
+<li><code>League\Url\Components\Pass</code> which deals with the pass component;</li>
+<li><code>League\Url\Components\Port</code> which deals with the port component;</li>
+<li><code>League\Url\Components\Fragment</code> which deals with the fragment component;</li>
+</ul>
+
+<p>Example using the <code>League\Url\Components\Scheme</code> class:</p>
+
+<pre><code class="language-php">use League\Url\Components\Scheme;
+
+$scheme = new Scheme;
+$scheme-&gt;get(); //will return null since no scheme was set
+echo $scheme; // will echo '' an empty string
+echo $scheme-&gt;getUriComponent(); //will echo '//'
+$scheme-&gt;set('https');
+echo $scheme-&gt;__toString(); //will echo 'https'
+echo $scheme-&gt;getUriComponent(); //will echo 'https://'
+</code></pre>
+
+<h2 id="complex-components">Multiple Values Components</h2>
+
+<p>In addition to the <code>League\Url\Components\ComponentInterface</code>, classes that deal with multiple values components implement the following interfaces:</p>
+
+<ul>
+<li><code>Countable</code></li>
+<li><code>IteratorAggregate</code></li>
+<li><code>ArrayAccess</code></li>
+<li><code>League\Url\Components\ComponentArrayInterface</code></li>
+</ul>
+
+<p>The <code>League\Url\Components\ComponentArrayInterface</code> adds the following methods:</p>
+
+<ul>
+<li><code>toArray()</code>: will return an array representation of the component;</li>
+<li><code>keys()</code>: will return all the keys or a subset of the keys of an array if a value is given.</li>
+</ul>
+
+<p class="message-info"><strong>Of note:</strong> The <code>$data</code> argument for the <code>set</code> method can also be an <code>array</code> or a <code>Traversable</code> object.</p>
+
+<p>The URL components classes implementing these interfaces are:</p>
+
+<ul>
+<li><code>League\Url\Components\Query</code> <a href="/components/query/">which which deals with the query component</a>;</li>
+<li><code>League\Url\Components\Path</code> <a href="/components/path/">which which deals with the path component</a>;</li>
+<li><code>League\Url\Components\Host</code> <a href="/components/host/">which which deals with the host component</a>;</li>
+</ul>
+
+<h3 id="segment-components">Segment Values Components</h3>
+
+<p>Segment values components like <a href="/components/path/">League\Url\Components\Path</a> and 
+<a href="/components/host/">League\Url\Components\Host</a> also implement the <code>League\Url\Components\SegmentInterface</code> interface which adds the following methods:</p>
+
+<ul>
+<li><code>append($data, $whence = null, $whence_index = null)</code>: append data into the component;</li>
+<li><code>prepend($data, $whence = null, $whence_index = null)</code>: prepend data into the component;</li>
+<li><code>remove($data)</code>: remove data from the component;</li>
+</ul>
+
+<p>The arguments:</p>
+
+<ul>
+<li>The <code>$data</code> argument can be <code>null</code>, a valid component string, a object implementing the <code>__toString</code> method, an array or a <code>Traversable</code> object;</li>
+<li>The <code>$whence</code> argument specify the string segment where to include the data;</li>
+<li>The <code>$whence_index</code> argument specify the <code>$whence</code> index if it is present more than once. The value starts at <code>0</code>;</li>
+<li>When using the <code>remove</code> method, if the pattern is present multiple times only the first match found is removed </li>
+</ul>
+
+<p class="message-info"><strong>Tips:</strong> You can easily get the <code>$whence_index</code> by using the object <code>keys($whence)</code> method result.</p>
+    </article>
+</main>
+
+<footer>
+    <span>&copy; Copyright The League of Extraordinary Packages.</span>
+    <span>Site design by <a href="http://reinink.ca">Jonathan Reinink</a>.</span>
+    <span>Powered by <a href="https://sculpin.io">Sculpin</a>.</span>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/themes/thephpleague/thephpleague.github.com/js/scripts.js"></script>
+<script src="/themes/thephpleague/thephpleague.github.com/js/prism.js"></script>
+
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-46050814-6');ga('send','pageview');
+    </script>
+
+</body>
+</html>

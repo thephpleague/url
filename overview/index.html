@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" type="image/x-icon" href="/themes/thephpleague/thephpleague.github.com/img/favicon.ico" />
+                <link rel="apple-touch-icon-precomposed" href="/themes/thephpleague/thephpleague.github.com/img/apple-touch-icon-precomposed.png">
+                <title>URLs as Value Objects - URL</title>
+                <meta name="description" content="Working with URL can often be much more difficult than you expect. This makes it easy to modify and update any URL.">
+                <link rel="stylesheet" href="/themes/thephpleague/thephpleague.github.com/css/all.css">
+    </head>
+<body>
+
+<section class="all_packages">
+    <a href="http://thephpleague.com/">
+        <img src="/themes/thephpleague/thephpleague.github.com/img/loep_logo.png" width="195" height="200" alt="The League of Extraordinary Packages">
+    </a>
+    <h2>Our Packages:</h2>
+    <ul>
+    </ul>
+</section>
+
+<header>
+    <a class="logo" href="/">
+                <span class="name">URL</span>
+        <span class="tagline">URL manipulation made easy in PHP.</span>
+    </a>
+    <a href="http://thephpleague.com/" class="league">
+        Presented by The League of Extraordinary Packages
+    </a>
+</header>
+
+<input type="checkbox" id="menu">
+<label for="menu" onclick>
+    <div class="closed">&#9776; Menu</div>
+    <div class="open">&#9776; Hide Menu</div>
+</label>
+
+<main>
+    <menu>
+                    <h2>Getting Started</h2>
+            <ul>
+                                    <li >
+                        <a href="/">Introduction</a>
+                    </li>
+                                    <li >
+                        <a href="/examples/">Examples</a>
+                    </li>
+                                    <li >
+                        <a href="/installation/">Installation</a>
+                    </li>
+                            </ul>
+                    <h2>The API</h2>
+            <ul>
+                                    <li class="selected">
+                        <a href="/overview/">Overview</a>
+                    </li>
+                            </ul>
+                    <h2>The Components</h2>
+            <ul>
+                                    <li >
+                        <a href="/components/overview/">Overview</a>
+                    </li>
+                                    <li >
+                        <a href="/components/query/">Query</a>
+                    </li>
+                                    <li >
+                        <a href="/components/path/">Path</a>
+                    </li>
+                                    <li >
+                        <a href="/components/host/">Host</a>
+                    </li>
+                            </ul>
+            </menu>
+    <article>
+        <h1>Overview</h1>
+
+<p>The library handles FTP, HTTP and Websocket protocol URLs through the use of two main classes:</p>
+
+<ul>
+<li><code>League\Url\Url</code> a value object that represents a URL</li>
+<li><code>League\Url\UrlImmutable</code> a immutable value object that represents a URL</li>
+</ul>
+
+<p>Both classes implement the <code>League\Url\UrlInterface</code> interface.</p>
+
+<p>Think of PHP <code>DateTime</code> and <code>DateTimeImmutable</code> classes which implement the <code>DateTimeInterface</code> interface.</p>
+
+<p class="message-warning">While the library validate the host syntax it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
+
+<h2>Instantiation</h2>
+
+<p>Both classes share the same named constructors to ease object instantiation. In the example below I'll use the <code>League\Url\Url</code> object as an example but the same is true for <code>League\Url\UrlImmutable</code>.</p>
+
+<pre><code class="language-php">&lt;?php
+
+use League\Url\Url;
+
+//Method 1 : from a given URLs
+$url = Url::createFromUrl('ftp://host.example.com');
+
+//Method 2: from the current PHP page
+//don't forget to provide the $_SERVER array
+$url = Url::createFromServer($_SERVER); 
+</code></pre>
+
+<p><code>$url</code> is a <code>League\Url\Url</code> object</p>
+
+<h2>Outputting the Urls</h2>
+
+<p>The <code>League\Url\UrlInterface</code> interface provide the following methods:</p>
+
+<ul>
+<li><code>__toString</code> returns the full string representation of the URL;</li>
+<li><code>getUserInfo</code> returns the string representation of the URL user info;</li>
+<li><code>getAuthority</code> returns the string representation of the URL authority part (ie: <code>user</code>, <code>pass</code>, <code>host</code>, <code>port</code>);</li>
+<li><code>getBaseUrl</code> returns the string representation of the URL <code>scheme</code> component and authority part;</li>
+<li><code>getRelativeUrl(UrlInterface $ref_url = null)</code> returns the string representation of the URL relative to another <code>League\Url\UrlInterface</code> object;</li>
+<li><code>sameValueAs</code> returns <code>true</code> if two <code>League\Url\UrlInterface</code> object represents the same URL.</li>
+</ul>
+
+<p><strong>The following was added in version 3.2:</strong></p>
+
+<ul>
+<li><code>getUserInfo</code>;</li>
+<li><code>getAuthority</code>;</li>
+<li>the <code>$ref_url</code> argument was added to <code>getRelativeUrl</code> method;</li>
+</ul>
+
+<p class="message-info">On URL output, the query string is automatically encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
+
+<pre><code class="language-php">use League\Url\Url;
+use League\Url\UrlImmutable;
+
+$url = Url::createFromUrl('http://www.example.com/path/index.php?query=toto+le+heros');
+$relative_url = Url::createFromUrl('http://www.example.com/path/another/index.html');
+echo $url; // 'http://www.example.com/path/index.php?query=toto%20le%20heros'
+echo $url-&gt;getBaseUrl(); // http://www.example.com
+echo $url-&gt;getRelativeUrl(); // /path/index.php?query=toto%20le%20heros
+echo $url-&gt;getRelativeUrl($relative_url); // ../../index.php?query=toto%20le%20heros
+
+$original_url = Url::createFromUrl("example.com"); //a schemeless url
+$new_url = UrlImmutable::createFromUrl("//example.com"); //another schemeless url
+$alternate_url = Url::createFromUrl("http://example.com");
+
+$original_url-&gt;sameValueAs($new_url); //will return true
+$original_url-&gt;sameValueAs($alternate_url); //will return false
+</code></pre>
+
+<h2>Manipulating Urls</h2>
+
+<p>An URL string is composed of up to 8 components. For each object, each URL component can be access and modify through its own setter and getter method.</p>
+
+<ul>
+<li>Chaining is possible since all the setter methods return a <code>League\Url\UrlInterface</code> object;</li>
+<li>Getter methods return a <a href="/components/overview/#simple-components">League\Url\Component\ComponentInterface</a> object;</li>
+</ul>
+
+<p>Here's a complete list of all the setter and getter provided by the <code>League\Url\UrlInterface</code> interface:</p>
+
+<ul>
+<li><code>setScheme($data)</code> set the URL scheme component;</li>
+<li><code>getScheme()</code> returns a <a href="/components/overview/#simple-components">League\Url\Components\ComponentInterface</a> object</li>
+<li><code>setUser($data)</code> set the URL user component;</li>
+<li><code>getUser()</code> returns a <a href="/components/overview/#simple-components">League\Url\Components\ComponentInterface</a> object</li>
+<li><code>setPass($data)</code> set the URL pass component;</li>
+<li><code>getPass()</code> returns a <a href="/components/overview/#simple-components">League\Url\Components\ComponentInterface</a> object</li>
+<li><code>setHost($data)</code> set the URL host component;</li>
+<li><code>getHost()</code> returns a <a href="/components/host/">League\Url\Components\HostInterface</a> object</li>
+<li><code>setPort($data)</code> set the URL port component;</li>
+<li><code>getPort()</code> returns a <a href="/components/overview/#simple-components">League\Url\Components\ComponentInterface</a> object</li>
+<li><code>setPath($data)</code> set the URL path component;</li>
+<li><code>getPath()</code> returns a <a href="/components/path/">League\Url\Components\PathInterface</a> object</li>
+<li><code>setQuery($data)</code> set the URL query component;</li>
+<li><code>getQuery()</code> returns a <a href="/components/query/">League\Url\Components\QueryInterface</a> object</li>
+<li><code>setFragment($data)</code> set the URL fragment component;</li>
+<li><code>getFragment()</code> returns a <a href="/components/overview/#simple-components">League\Url\Components\ComponentInterface</a>`object</li>
+</ul>
+
+<p>The <code>$data</code> argument can be:</p>
+
+<ul>
+<li><code>null</code>;</li>
+<li>a valid component string for the specified URL component;</li>
+<li>an object implementing the <code>__toString</code> method;</li>
+<li>another specific component object;</li>
+<li>for <code>setHost</code>, <code>setPath</code>, <code>setQuery</code>: an <code>array</code> or a <code>Traversable</code> object;</li>
+</ul>
+
+<p>Let's modify a <code>League\Url\Url</code> object</p>
+
+<pre><code class="language-php">$url = Url::createFromUrl('https://www.example.com');
+$url
+    -&gt;setUser('john')
+    -&gt;setPass('doe')
+    -&gt;setPort(443)
+    -&gt;setScheme('https');
+echo $url; // https://john:doe@www.example.com:443/
+
+$port = $url-&gt;getPort();
+$port-&gt;set(80);
+echo $port; // output 80;
+echo $url; // https://john:doe@www.example.com:80/
+</code></pre>
+
+<div class="message-warning">
+To stay immutable, the <code>League\Url\UrlImmutable</code> object:
+<ul>
+<li>never modified itself but return a new object instead. 
+<li>returns a new property object instead of its own property object to avoid modification by reference.
+</ul>
+</div>
+
+<p>The same operation using a <code>League\Url\UrlImmutable</code> object</p>
+
+<pre><code class="language-php">$url = UrlImmutable::createFromUrl('http://www.example.com');
+$new_url = $url
+    -&gt;setUser('john')
+    -&gt;setPass('doe')
+    -&gt;setPort(443)
+    -&gt;setScheme('https');
+echo $url; //remains http://www.example.com/
+echo $new_url; //output https://john:doe@www.example.com:443/
+
+$port = $new_url-&gt;getPort(); //$port is a clone object of the URL port component.
+echo $port // output 443;
+$port-&gt;set(80);
+echo $port; // output 80;
+echo $new_url-&gt;getPort(); //remains 443
+</code></pre>
+    </article>
+</main>
+
+<footer>
+    <span>&copy; Copyright The League of Extraordinary Packages.</span>
+    <span>Site design by <a href="http://reinink.ca">Jonathan Reinink</a>.</span>
+    <span>Powered by <a href="https://sculpin.io">Sculpin</a>.</span>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/themes/thephpleague/thephpleague.github.com/js/scripts.js"></script>
+<script src="/themes/thephpleague/thephpleague.github.com/js/prism.js"></script>
+
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-46050814-6');ga('send','pageview');
+    </script>
+
+</body>
+</html>
