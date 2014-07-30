@@ -5,7 +5,7 @@ title: URL Components
 
 # URL components
 
-An URL string is composed of up to 8 components. The `League\Url` library provides a class for each URL component. These classes can all be use independently of the `League\Url\Url` or `League\Url\UrlImmutable` classes. 
+An URL string is composed of up to 8 components. The `League\Url` library provides interfaces and classes to interact with each URL component. The classes can all be use independently of a `League\Url\UrlInterface` implementing class. 
 
 ## Component Interface
 
@@ -32,11 +32,11 @@ The URL components classes which represent single values only:
 
 These classes are:
 
-* `League\Url\Components\Scheme` which deals with URL scheme component;
-* `League\Url\Components\User` which deals with URL user component;
-* `League\Url\Components\Pass` which deals with URL pass component;
-* `League\Url\Components\Port` which deals with URL port component;
-* `League\Url\Components\Fragment` which deals with URL fragment component;
+* `League\Url\Components\Scheme` which deals with the scheme component;
+* `League\Url\Components\User` which deals with the user component;
+* `League\Url\Components\Pass` which deals with the pass component;
+* `League\Url\Components\Port` which deals with the port component;
+* `League\Url\Components\Fragment` which deals with the fragment component;
 
 Example using the `League\Url\Components\Scheme` class:
 
@@ -70,9 +70,9 @@ The `League\Url\Components\ComponentArrayInterface` adds the following methods:
 
 The URL components classes implementing these interfaces are:
 
-* `League\Url\Components\Query` [which which deals with URL query component](/components/query/);
-* `League\Url\Components\Path` [which which deals with URL path component](/components/path/);
-* `League\Url\Components\Host` [which which deals with URL host component](/components/host/);
+* `League\Url\Components\Query` [which which deals with the query component](/components/query/);
+* `League\Url\Components\Path` [which which deals with the path component](/components/path/);
+* `League\Url\Components\Host` [which which deals with the host component](/components/host/);
 
 <h3 id="segment-components">Segment Values Components</h3>
 
