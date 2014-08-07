@@ -87,6 +87,13 @@ abstract class AbstractUrl implements UrlInterface
     protected $fragment;
 
     /**
+     * The Constructor
+     */
+    protected function __construct()
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function __toString()
@@ -152,6 +159,18 @@ abstract class AbstractUrl implements UrlInterface
         if ('' != $auth && '' == $scheme) {
             $scheme = '//';
         }
+        $port = $this->port->getUriComponent();
+        $default = array(
+            'http://' => ':80',
+            'https://' => ':443',
+            'ws://' => ':80',
+            'wss://' => ':443',
+            'ftp://' => ':21',
+            'ftps://' => ':990'
+        );
+        if (isset($default[$scheme]) && $port == $default[$scheme]) {
+            $auth = substr($auth, 0, 0 - strlen($port));
+        }
 
         return $scheme.$auth;
     }
@@ -201,16 +220,17 @@ abstract class AbstractUrl implements UrlInterface
         $components = self::formatAuthComponent($components);
         $components = self::formatPathComponent($components, $original_url);
 
-        return new static(
-            new Scheme($components['scheme']),
-            new User($components['user']),
-            new Pass($components['pass']),
-            new Host($components['host']),
-            new Port($components['port']),
-            new Path($components['path']),
-            new Query($components['query']),
-            new Fragment($components['fragment'])
-        );
+        $url = new static;
+        $url->scheme = new Scheme($components['scheme']);
+        $url->user = new User($components['user']);
+        $url->pass = new Pass($components['pass']);
+        $url->host = new Host($components['host']);
+        $url->port = new Port($components['port']);
+        $url->path = new Path($components['path']);
+        $url->query = new Query($components['query']);
+        $url->fragment = new Fragment($components['fragment']);
+
+        return $url;
     }
 
     /**

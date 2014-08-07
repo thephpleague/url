@@ -80,9 +80,17 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         $this->assertSame('https://127.0.0.1:23/', (string) $url);
     }
 
+    public function testUrlWithDefaultPort()
+    {
+        $this->assertSame(
+            'http://example.com/foo/bar?foo=bar#content',
+            (string) Url::createFromUrl('http://example.com:80/foo/bar?foo=bar#content')
+        );
+    }
+
     public function testConstructor()
     {
-        $expected = 'http://example.com:80/foo/bar?foo=bar#content';
+        $expected = 'http://example.com/foo/bar?foo=bar#content';
         $this->assertSame($expected, (string) Url::createFromUrl($expected));
         $this->assertSame('//example.com/', (string) Url::createFromUrl('example.com'));
         $this->assertSame('//example.com/', (string) Url::createFromUrl('//example.com'));
@@ -142,7 +150,7 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         $url = Url::createFromUrl(
             'https://login:pass@secure.example.com:443/test/query.php?kingkong=toto#doc3'
         );
-        $this->assertSame('https://login:pass@secure.example.com:443', $url->getBaseUrl());
+        $this->assertSame('https://login:pass@secure.example.com', $url->getBaseUrl());
         $this->assertSame('login:pass@secure.example.com:443', $url->getAuthority());
         $this->assertSame('login:pass@', $url->getUserInfo());
     }
