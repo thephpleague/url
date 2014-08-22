@@ -98,7 +98,11 @@ abstract class AbstractUrl implements UrlInterface
      */
     public function __toString()
     {
-        $url = $this->getBaseUrl().$this->getRelativeUrl();
+        $url = $this->getBaseUrl()
+            .$this->path->getUriComponent()
+            .$this->query->getUriComponent()
+            .$this->fragment->getUriComponent();
+
         if ('/' == $url) {
             return '';
         }
@@ -109,17 +113,13 @@ abstract class AbstractUrl implements UrlInterface
     /**
      * {@inheritdoc}
      */
-    public function getRelativeUrl(UrlInterface $ref_url = null)
+    public function getUrl(UrlInterface $ref_url = null)
     {
-        if (is_null($ref_url)) {
-            return $this->path->getUriComponent()
-                .$this->query->getUriComponent()
-                .$this->fragment->getUriComponent();
-        } elseif ($this->getBaseUrl() != $ref_url->getBaseUrl()) {
+        if (is_null($ref_url) || $this->getBaseUrl() != $ref_url->getBaseUrl()) {
             return $this->__toString();
         }
 
-        return $this->path->getRelativePath($ref_url->getPath())
+        return $this->path->getPath($ref_url->getPath())
             .$this->query->getUriComponent()
             .$this->fragment->getUriComponent();
     }
@@ -159,18 +159,6 @@ abstract class AbstractUrl implements UrlInterface
         if ('' != $auth && '' == $scheme) {
             $scheme = '//';
         }
-        $port = $this->port->getUriComponent();
-        $default = array(
-            'http://' => ':80',
-            'https://' => ':443',
-            'ws://' => ':80',
-            'wss://' => ':443',
-            'ftp://' => ':21',
-            'ftps://' => ':990'
-        );
-        if (isset($default[$scheme]) && $port == $default[$scheme]) {
-            $auth = substr($auth, 0, 0 - strlen($port));
-        }
 
         return $scheme.$auth;
     }
@@ -199,7 +187,7 @@ abstract class AbstractUrl implements UrlInterface
         $original_url = $url;
 
         //if no valid scheme is found we add one
-        if (!empty($url) && !preg_match(',^('.UrlConstants::SCHEME_REGEXP.':)?//,i', $url)) {
+        if (!empty($url) && !preg_match(',^((http|ftp|ws)(s?):)?//,i', $url)) {
             $url = '//'.$url;
         }
         $components = @parse_url($url);

@@ -21,7 +21,7 @@ use InvalidArgumentException;
  *  @package League.url
  *  @since  3.0.0
  */
-abstract class AbstractSegment extends AbstractArray implements ArrayAccess
+abstract class AbstractSegment extends AbstractComponentArray implements ArrayAccess
 {
     /**
      * segment delimiter
@@ -75,14 +75,6 @@ abstract class AbstractSegment extends AbstractArray implements ArrayAccess
         if (! is_null($data)) {
             $this->set($data);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function sameValueAs(ComponentInterface $component)
-    {
-        return $this->__toString() == $component->__toString();
     }
 
     /**

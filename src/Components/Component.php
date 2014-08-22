@@ -18,7 +18,7 @@ namespace League\Url\Components;
  *  @package League.url
  *  @since  3.0.0
  */
-interface ComponentInterface
+interface Component
 {
     /**
      * Set the component data
@@ -54,9 +54,9 @@ interface ComponentInterface
      * Compare two Url component object and tells whether they
      * represent the same string value
      *
-     * @param {@link ComponentInterface} $component
+     * @param {@link Component} $component
      *
      * @return boolean
      */
-    public function sameValueAs(ComponentInterface $component);
+    public function sameValueAs(Component $component);
 }

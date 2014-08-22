@@ -25,7 +25,7 @@ use Traversable;
  *  @package League.url
  *  @since  3.0.0
  */
-abstract class AbstractArray implements IteratorAggregate, Countable
+abstract class AbstractComponentArray implements IteratorAggregate, Countable
 {
     /**
      * container holder
@@ -136,5 +136,13 @@ abstract class AbstractArray implements IteratorAggregate, Countable
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Component $component)
+    {
+        return $this->__toString() == $component->__toString();
     }
 }

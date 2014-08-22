@@ -20,7 +20,7 @@ use InvalidArgumentException;
  *  @package League.url
  *  @since  3.0.0
  */
-abstract class AbstractComponent implements ComponentInterface
+abstract class AbstractComponent implements Component
 {
     /**
      * The component data
@@ -110,7 +110,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function sameValueAs(ComponentInterface $component)
+    public function sameValueAs(Component $component)
     {
         return $this->__toString() == $component->__toString();
     }

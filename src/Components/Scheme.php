@@ -12,7 +12,6 @@
 */
 namespace League\Url\Components;
 
-use League\Url\UrlConstants;
 use RuntimeException;
 
 /**
@@ -34,7 +33,7 @@ class Scheme extends AbstractComponent
         }
 
         $data = filter_var($data, FILTER_VALIDATE_REGEXP, array(
-            'options' => array('regexp' => '/^'.UrlConstants::SCHEME_REGEXP.'$/i')
+            'options' => array('regexp' => '/^(http|ftp|ws)(s?)$/i')
         ));
 
         if (! $data) {

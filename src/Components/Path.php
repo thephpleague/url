@@ -18,7 +18,7 @@ namespace League\Url\Components;
  *  @package League.url
  *  @since  1.0.0
  */
-class Path extends AbstractSegment implements PathInterface
+class Path extends AbstractSegment implements ComponentArray
 {
     /**
      * {@inheritdoc}
@@ -52,9 +52,11 @@ class Path extends AbstractSegment implements PathInterface
     /**
      * {@inheritdoc}
      */
-    public function getRelativePath(PathInterface $reference)
+    public function getPath(Path $reference = null)
     {
-        if ($this->sameValueAs($reference)) {
+        if (is_null($reference)) {
+            return $this->__toString();
+        } elseif ($this->sameValueAs($reference)) {
             return '';
         }
 

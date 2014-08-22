@@ -60,7 +60,7 @@ interface UrlInterface
      *
      * @return string
      */
-    public function getRelativeUrl(UrlInterface $ref_url = null);
+    public function getUrl(UrlInterface $ref_url = null);
 
     /**
      * Compare two Url object and tells whether they can be considered equal
@@ -83,7 +83,7 @@ interface UrlInterface
     /**
      * get the URL scheme component
      *
-     * @return League\Url\Components\ComponentInterface
+     * @return League\Url\Components\Component
      */
     public function getScheme();
 
@@ -99,7 +99,7 @@ interface UrlInterface
     /**
      * get the URL pass component
      *
-     * @return League\Url\Components\ComponentInterface
+     * @return League\Url\Components\Component
      */
     public function getUser();
 
@@ -115,7 +115,7 @@ interface UrlInterface
     /**
      * get the URL pass component
      *
-     * @return League\Url\Components\ComponentInterface
+     * @return League\Url\Components\Component
      */
     public function getPass();
 
@@ -131,7 +131,7 @@ interface UrlInterface
     /**
      * get the URL pass component
      *
-     * @return League\Url\Components\ComponentInterface
+     * @return League\Url\Components\Component
      */
     public function getHost();
 
@@ -147,7 +147,7 @@ interface UrlInterface
     /**
      * get the URL pass component
      *
-     * @return League\Url\Components\ComponentInterface
+     * @return League\Url\Components\Component
      */
     public function getPort();
 
@@ -195,7 +195,7 @@ interface UrlInterface
     /**
      * get the URL pass component
      *
-     * @return League\Url\Components\ComponentInterface
+     * @return League\Url\Components\Component
      */
     public function getFragment();
 }

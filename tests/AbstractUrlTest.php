@@ -83,7 +83,7 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
     public function testUrlWithDefaultPort()
     {
         $this->assertSame(
-            'http://example.com/foo/bar?foo=bar#content',
+            'http://example.com:80/foo/bar?foo=bar#content',
             (string) Url::createFromUrl('http://example.com:80/foo/bar?foo=bar#content')
         );
     }
@@ -150,16 +150,16 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         $url = Url::createFromUrl(
             'https://login:pass@secure.example.com:443/test/query.php?kingkong=toto#doc3'
         );
-        $this->assertSame('https://login:pass@secure.example.com', $url->getBaseUrl());
+        $this->assertSame('https://login:pass@secure.example.com:443', $url->getBaseUrl());
         $this->assertSame('login:pass@secure.example.com:443', $url->getAuthority());
         $this->assertSame('login:pass@', $url->getUserInfo());
     }
 
     public function testRelativeUrlRepresentation()
     {
-        $url = Url::createFromUrl(
-            'https://login:pass@secure.example.com:443/test/query.php?kingkong=toto#doc3'
-        );
+
+        $fullURL = 'https://login:pass@secure.example.com:443/test/query.php?kingkong=toto#doc3';
+        $url = Url::createFromUrl($fullURL);
 
         $url_internal_link = Url::createFromUrl(
             'https://login:pass@secure.example.com:443/toto.php'
@@ -177,12 +177,11 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
             'https://login:pass@secure.example.com:443/test/query.php?godzilla=monster'
         );
 
-        $this->assertSame('/test/query.php?kingkong=toto#doc3', $url->getRelativeUrl());
-        $this->assertSame('../test/query.php?kingkong=toto#doc3', $url->getRelativeUrl($url_internal_link));
-        $this->assertSame('../../toto.php', $url_internal_link->getRelativeUrl($url));
-        $this->assertSame($url->__toString(), $url->getRelativeUrl($url_external_link));
-        $this->assertSame('../../test/query.php?kingkong=toto#doc3', $url->getRelativeUrl($url_similar));
-        $this->assertSame('?kingkong=toto#doc3', $url->getRelativeUrl($url_same_path));
+        $this->assertSame('../test/query.php?kingkong=toto#doc3', $url->getUrl($url_internal_link));
+        $this->assertSame('../../toto.php', $url_internal_link->getUrl($url));
+        $this->assertSame($url->__toString(), $url->getUrl($url_external_link));
+        $this->assertSame('../../test/query.php?kingkong=toto#doc3', $url->getUrl($url_similar));
+        $this->assertSame('?kingkong=toto#doc3', $url->getUrl($url_same_path));
     }
 
     public function testSameValueAs()

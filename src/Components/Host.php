@@ -21,7 +21,7 @@ use True\Punycode;
  *  @package League.url
  *  @since  1.0.0
  */
-class Host extends AbstractSegment implements HostInterface
+class Host extends AbstractSegment implements ComponentArray
 {
     /**
      * {@inheritdoc}

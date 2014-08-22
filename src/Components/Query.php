@@ -22,7 +22,7 @@ use Traversable;
  *  @package League.url
  *  @since  1.0.0
  */
-class Query extends AbstractArray implements QueryInterface, ArrayAccess
+class Query extends AbstractComponentArray implements ComponentArray, ArrayAccess
 {
     /**
      * The Constructor
@@ -71,14 +71,6 @@ class Query extends AbstractArray implements QueryInterface, ArrayAccess
     public function __toString()
     {
         return (string) $this->get();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function sameValueAs(ComponentInterface $component)
-    {
-        return $this->__toString() == $component->__toString();
     }
 
     /**
