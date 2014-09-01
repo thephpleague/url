@@ -12,8 +12,9 @@
 */
 namespace League\Url\Components;
 
-use ArrayAccess;
 use InvalidArgumentException;
+use RuntimeException;
+use Traversable;
 
 /**
  *  A class to manipulate URL Segment like components
@@ -21,7 +22,7 @@ use InvalidArgumentException;
  *  @package League.url
  *  @since  3.0.0
  */
-abstract class AbstractSegment extends AbstractComponentArray implements ArrayAccess
+abstract class AbstractSegment extends AbstractContainer
 {
     /**
      * segment delimiter
@@ -179,25 +180,41 @@ abstract class AbstractSegment extends AbstractComponentArray implements ArrayAc
     /**
      * Validate data before insertion into a URL segment based component
      *
-     * @param mixed  $data      the data to insert
-     * @param string $delimiter a single character delimiter
+     * @param mixed $data the data to insert
      *
      * @return array
      *
      * @throws \RuntimeException if the data is not valid
      */
-    protected function validateSegment($data, $delimiter)
+    protected function validateSegment($data)
     {
-        return $this->convertToArray($data, function ($str) use ($delimiter) {
-            if ('' == $str) {
-                return array();
-            }
-            if ($delimiter == $str[0]) {
-                $str = substr($str, 1);
-            }
+        if (is_null($data)) {
+            return array();
+        } elseif ($data instanceof Traversable) {
+            return iterator_to_array($data);
+        } elseif (self::isStringable($data)) {
+            $data = (string) $data;
+            $data = trim($data);
+            $data = $this->extractDataFromString($data);
+        }
 
-            return explode($delimiter, $str);
-        });
+        if (! is_array($data)) {
+            throw new RuntimeException('Your submitted data could not be converted into a proper array');
+        }
+
+        return $data;
+    }
+
+    protected function extractDataFromString($str)
+    {
+        if ('' == $str) {
+            return array();
+        }
+        if ($this->delimiter == $str[0]) {
+            $str = substr($str, 1);
+        }
+
+        return explode($this->delimiter, $str);
     }
 
     /**

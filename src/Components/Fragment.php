@@ -18,16 +18,61 @@ namespace League\Url\Components;
  *  @package League.url
  *  @since  1.0.0
  */
-class Fragment extends AbstractComponent
+class Fragment implements Component
 {
+    /**
+     * The component data
+     *
+     * @var string|null
+     */
+    protected $data;
+
+    /**
+     * The Constructor
+     *
+     * @param mixed $data the component data
+     */
+    public function __construct($data = null)
+    {
+        $this->set($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set($data)
+    {
+        if (is_null($data)) {
+            $this->data = null;
+
+            return;
+        }
+        $data = filter_var((string) $data, FILTER_UNSAFE_RAW, array('flags' => FILTER_FLAG_STRIP_LOW));
+        $this->data = trim($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get()
+    {
+        return $this->data;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function __toString()
     {
-        $value = parent::__toString();
+        return rawurlencode(str_replace(null, '', $this->data));
+    }
 
-        return rawurlencode($value);
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Fragment $component)
+    {
+        return $this->__toString() === $component->__toString();
     }
 
     /**

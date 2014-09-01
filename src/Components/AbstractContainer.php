@@ -12,12 +12,10 @@
 */
 namespace League\Url\Components;
 
+use ArrayAccess;
 use ArrayIterator;
-use Closure;
 use Countable;
 use IteratorAggregate;
-use RuntimeException;
-use Traversable;
 
 /**
  *  A class to manipulate URL Array like components
@@ -25,7 +23,7 @@ use Traversable;
  *  @package League.url
  *  @since  3.0.0
  */
-abstract class AbstractComponentArray implements IteratorAggregate, Countable
+abstract class AbstractContainer implements IteratorAggregate, Countable, ArrayAccess
 {
     /**
      * container holder
@@ -103,46 +101,10 @@ abstract class AbstractComponentArray implements IteratorAggregate, Countable
         return null;
     }
 
+    abstract public function offsetSet($offset, $value);
+
     public static function isStringable($data)
     {
         return is_string($data) || (is_object($data)) && (method_exists($data, '__toString'));
-    }
-
-    /**
-     * convert a given data into an array
-     *
-     * @param mixed    $data     the data to insert
-     * @param \Closure $callback a callable function to be called to parse
-     *                           a given string into the corrseponding component
-     *
-     * @return array
-     *
-     * @throws \RuntimeException if the data is not valid
-     */
-    protected function convertToArray($data, Closure $callback)
-    {
-        if (is_null($data)) {
-            return array();
-        } elseif ($data instanceof Traversable) {
-            return iterator_to_array($data);
-        } elseif (self::isStringable($data)) {
-            $data = (string) $data;
-            $data = trim($data);
-            $data = $callback($data);
-        }
-
-        if (! is_array($data)) {
-            throw new RuntimeException('Your submitted data could not be converted into a proper array');
-        }
-
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function sameValueAs(Component $component)
-    {
-        return $this->__toString() == $component->__toString();
     }
 }

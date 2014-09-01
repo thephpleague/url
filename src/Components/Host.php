@@ -21,7 +21,7 @@ use True\Punycode;
  *  @package League.url
  *  @since  1.0.0
  */
-class Host extends AbstractSegment implements ComponentArray
+class Host extends AbstractSegment implements Component
 {
     /**
      * {@inheritdoc}
@@ -119,7 +119,7 @@ class Host extends AbstractSegment implements ComponentArray
      */
     protected function validate($data)
     {
-        $data = $this->validateSegment($data, $this->delimiter);
+        $data = $this->validateSegment($data);
         if (! $data) {
             return $data;
         }
@@ -164,5 +164,13 @@ class Host extends AbstractSegment implements ComponentArray
         $this->restoreInternalEncoding();
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Host $component)
+    {
+        return $this->__toString() === $component->__toString();
     }
 }

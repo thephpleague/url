@@ -19,4 +19,13 @@ class PortTest extends PHPUnit_Framework_TestCase
         $this->assertSame(443, $port->get());
         new Port('toto');
     }
+
+    public function testSameValueAs()
+    {
+        $local = new Port(443);
+        $component = new Port(81);
+        $this->assertFalse($local->sameValueAs($component));
+        $local->set($component);
+        $this->assertTrue($local->sameValueAs($component));
+    }
 }

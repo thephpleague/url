@@ -12,7 +12,6 @@
 */
 namespace League\Url\Components;
 
-use ArrayAccess;
 use RuntimeException;
 use Traversable;
 
@@ -22,7 +21,7 @@ use Traversable;
  *  @package League.url
  *  @since  1.0.0
  */
-class Query extends AbstractComponentArray implements ComponentArray, ArrayAccess
+class Query extends AbstractContainer implements Component
 {
     /**
      * The Constructor
@@ -94,22 +93,45 @@ class Query extends AbstractComponentArray implements ComponentArray, ArrayAcces
         $this->set(array_merge($this->data, $this->validate($data)));
     }
 
+    protected function extractDataFromString($str)
+    {
+        if ('' == $str) {
+            return array();
+        }
+
+        if ('?' == $str[0]) {
+            $str = substr($str, 1);
+        }
+
+        $str = preg_replace_callback('/(?:^|(?<=&))[^=[]+/', function ($match) {
+            return bin2hex(urldecode($match[0]));
+        }, $str);
+        parse_str($str, $arr);
+        $arr = array_combine(array_map('hex2bin', array_keys($arr)), $arr);
+
+        return $arr;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function validate($data)
     {
-        return $this->convertToArray($data, function ($str) {
-            if ('' == $str) {
-                return array();
-            }
-            if ('?' == $str[0]) {
-                $str = substr($str, 1);
-            }
-            parse_str($str, $arr);
+        if (is_null($data)) {
+            return array();
+        } elseif ($data instanceof Traversable) {
+            return iterator_to_array($data);
+        } elseif (self::isStringable($data)) {
+            $data = (string) $data;
+            $data = trim($data);
+            $data = $this->extractDataFromString($data);
+        }
 
-            return $arr;
-        });
+        if (! is_array($data)) {
+            throw new RuntimeException('Your submitted data could not be converted into a proper array');
+        }
+
+        return $data;
     }
 
     /**
@@ -121,5 +143,13 @@ class Query extends AbstractComponentArray implements ComponentArray, ArrayAcces
             throw new RuntimeException('offset can not be null');
         }
         $this->modify(array($offset => $value));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Query $component)
+    {
+        return $this->__toString() === $component->__toString();
     }
 }

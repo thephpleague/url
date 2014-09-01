@@ -20,17 +20,38 @@ use RuntimeException;
  *  @package League.url
  *  @since  1.0.0
  */
-class Port extends AbstractComponent
+class Port implements Component
 {
+    /**
+     * The component data
+     *
+     * @var string|null
+     */
+    protected $data;
+
+    /**
+     * The Constructor
+     *
+     * @param mixed $data the component data
+     */
+    public function __construct($data = null)
+    {
+        $this->set($data);
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function validate($data)
+    public function set($data)
     {
-        $data = parent::validate($data);
         if (is_null($data)) {
-            return $data;
+            $this->data = null;
+
+            return;
         }
+
+        $data = (string) $data;
+        $data = trim($data);
 
         $data = filter_var($data, FILTER_VALIDATE_INT, array(
             'options' => array('min_range' => 1)
@@ -40,7 +61,31 @@ class Port extends AbstractComponent
             throw new RuntimeException('A port must be a valid positif integer');
         }
 
-        return (int) $data;
+        $this->data = (int) $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get()
+    {
+        return $this->data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return str_replace(null, '', $this->data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Component $component)
+    {
+        return $this->__toString() === $component->__toString();
     }
 
     /**

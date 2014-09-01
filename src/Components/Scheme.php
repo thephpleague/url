@@ -20,28 +20,14 @@ use RuntimeException;
  *  @package League.url
  *  @since  1.0.0
  */
-class Scheme extends AbstractComponent
+class Scheme implements Component
 {
     /**
-     * {@inheritdoc}
+     * The component data
+     *
+     * @var string|null
      */
-    protected function validate($data)
-    {
-        $data = parent::validate($data);
-        if (is_null($data)) {
-            return $data;
-        }
-
-        $data = filter_var($data, FILTER_VALIDATE_REGEXP, array(
-            'options' => array('regexp' => '/^(http|ftp|ws)(s?)$/i')
-        ));
-
-        if (! $data) {
-            throw new RuntimeException('This class only deals with http URL');
-        }
-
-        return strtolower($data);
-    }
+    protected $data;
 
     /**
      * {@inheritdoc}
@@ -54,5 +40,80 @@ class Scheme extends AbstractComponent
         }
 
         return $value;
+    }
+
+    /**
+     * The Constructor
+     *
+     * @param mixed $data the component data
+     */
+    public function __construct($data = null)
+    {
+        $this->set($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set($data)
+    {
+        $data = $this->sanitizeComponent($data);
+        if (is_null($data)) {
+            $this->data = null;
+
+            return;
+        }
+
+        $data = filter_var($data, FILTER_VALIDATE_REGEXP, array(
+            'options' => array('regexp' => '/^[a-z][a-z0-9+-.]+$/i')
+        ));
+
+        if (! $data) {
+            throw new RuntimeException('This class only deals with http URL');
+        }
+
+        $this->data = strtolower($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get()
+    {
+        return $this->data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return str_replace(null, '', $this->data);
+    }
+
+    /**
+     * Sanitize a string component
+     *
+     * @param mixed $str
+     *
+     * @return string|null
+     */
+    protected function sanitizeComponent($str)
+    {
+        if (is_null($str)) {
+            return $str;
+        }
+        $str = filter_var((string) $str, FILTER_UNSAFE_RAW, array('flags' => FILTER_FLAG_STRIP_LOW));
+        $str = trim($str);
+
+        return $str;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Component $component)
+    {
+        return $this->__toString() === $component->__toString();
     }
 }

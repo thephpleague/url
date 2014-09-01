@@ -187,7 +187,7 @@ abstract class AbstractUrl implements UrlInterface
         $original_url = $url;
 
         //if no valid scheme is found we add one
-        if (!empty($url) && !preg_match(',^((http|ftp|ws)(s?):)?//,i', $url)) {
+        if (!empty($url) && !preg_match(',^([a-z][a-z0-9+-.]+:)?//,i', $url)) {
             $url = '//'.$url;
         }
         $components = @parse_url($url);
@@ -393,4 +393,132 @@ abstract class AbstractUrl implements UrlInterface
 
         return $components;
     }
+
+    /**
+     * Set the URL scheme component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    abstract public function setScheme($data);
+
+    /**
+     * get the URL scheme component
+     *
+     * @return League\Url\Components\Component
+     */
+    abstract public function getScheme();
+
+    /**
+     * Set the URL user component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    abstract public function setUser($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    abstract public function getUser();
+
+    /**
+     * Set the URL pass component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    abstract public function setPass($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    abstract public function getPass();
+
+    /**
+     * Set the URL host component
+     *
+     * @param string|array|\Traversable $data
+     *
+     * @return self
+     */
+    abstract public function setHost($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    abstract public function getHost();
+
+    /**
+     * Set the URL port component
+     *
+     * @param string|integer $data
+     *
+     * @return self
+     */
+    abstract public function setPort($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    abstract public function getPort();
+
+    /**
+     * Set the URL path component
+     *
+     * @param string|array|\Traversable $data
+     *
+     * @return self
+     */
+    abstract public function setPath($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\PathInterface
+     */
+    abstract public function getPath();
+
+    /**
+     * Set the URL query component
+     *
+     * @param string|array|\Traversable $data
+     *
+     * @return self
+     */
+    abstract public function setQuery($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\QueryInterface
+     */
+    abstract public function getQuery();
+
+    /**
+     * Set the URL fragment component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    abstract public function setFragment($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    abstract public function getFragment();
 }

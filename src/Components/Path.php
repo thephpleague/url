@@ -18,7 +18,7 @@ namespace League\Url\Components;
  *  @package League.url
  *  @since  1.0.0
  */
-class Path extends AbstractSegment implements ComponentArray
+class Path extends AbstractSegment implements Component
 {
     /**
      * {@inheritdoc}
@@ -90,7 +90,7 @@ class Path extends AbstractSegment implements ComponentArray
      */
     protected function validate($data)
     {
-        $data = $this->validateSegment($data, $this->delimiter);
+        $data = $this->validateSegment($data);
         $data = $this->sanitizeValue($data);
 
         return array_map('urldecode', $data);
@@ -102,5 +102,13 @@ class Path extends AbstractSegment implements ComponentArray
     protected function formatRemoveSegment($data)
     {
         return array_map('urldecode', parent::formatRemoveSegment($data));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(Path $component)
+    {
+        return $this->__toString() === $component->__toString();
     }
 }

@@ -177,4 +177,13 @@ class HostTest extends PHPUnit_Framework_TestCase
     {
         new Host(array_fill(0, 23, 'banana-slip'));
     }
+
+    public function testSameValueAs()
+    {
+        $local = new Host('bar.foo');
+        $component = new Host('foo.bar');
+        $this->assertFalse($local->sameValueAs($component));
+        $local->set($component);
+        $this->assertTrue($local->sameValueAs($component));
+    }
 }
