@@ -5,7 +5,6 @@ namespace League\Url\Test\Components;
 use ArrayIterator;
 use League\Url\Components\Query;
 use PHPUnit_Framework_TestCase;
-use StdClass;
 
 /**
  * @group components
@@ -74,14 +73,6 @@ class QueryTest extends PHPUnit_Framework_TestCase
     {
         $this->query->set(array('ali' => 'baba'));
         $this->assertSame('ali=baba', (string) $this->query);
-    }
-
-    /**
-     * @expectedException RuntimeException
-     */
-    public function testFailmodify()
-    {
-        $this->query->modify(new StdClass);
     }
 
     /**

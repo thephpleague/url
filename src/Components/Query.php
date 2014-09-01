@@ -107,6 +107,7 @@ class Query extends AbstractContainer implements Component
             return bin2hex(urldecode($match[0]));
         }, $str);
         parse_str($str, $arr);
+
         //hexbin does not work in PHP 5.3
         $arr = array_combine(array_map(function ($value) {
             return pack('H*', $value);
@@ -124,17 +125,14 @@ class Query extends AbstractContainer implements Component
             return array();
         } elseif ($data instanceof Traversable) {
             return iterator_to_array($data);
-        } elseif (self::isStringable($data)) {
-            $data = (string) $data;
-            $data = trim($data);
-            $data = $this->extractDataFromString($data);
+        } elseif (is_array($data)) {
+            return $data;
         }
 
-        if (! is_array($data)) {
-            throw new RuntimeException('Your submitted data could not be converted into a proper array');
-        }
+        $data = (string) $data;
+        $data = trim($data);
 
-        return $data;
+        return $this->extractDataFromString($data);
     }
 
     /**
