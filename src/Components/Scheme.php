@@ -48,7 +48,7 @@ class Scheme extends AbstractComponent implements Component
     /**
      * {@inheritdoc}
      */
-    public function sameValueAs(Component $component)
+    public function sameValueAs(Scheme $component)
     {
         return $this->__toString() === $component->__toString();
     }

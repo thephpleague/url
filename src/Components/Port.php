@@ -50,7 +50,7 @@ class Port extends AbstractComponent implements Component
     /**
      * {@inheritdoc}
      */
-    public function sameValueAs(Component $component)
+    public function sameValueAs(Port $component)
     {
         return $this->__toString() === $component->__toString();
     }
