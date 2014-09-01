@@ -174,7 +174,7 @@ abstract class AbstractSegment extends AbstractContainer
      */
     protected function formatRemoveSegment($data)
     {
-        return $this->sanitizeValue($this->validateSegment($data, $this->delimiter));
+        return $this->sanitizeValue($this->validateSegment($data));
     }
 
     /**
