@@ -20,25 +20,8 @@ use RuntimeException;
  *  @package League.url
  *  @since  1.0.0
  */
-class Port implements Component
+class Port extends AbstractComponent implements Component
 {
-    /**
-     * The component data
-     *
-     * @var string|null
-     */
-    protected $data;
-
-    /**
-     * The Constructor
-     *
-     * @param mixed $data the component data
-     */
-    public function __construct($data = null)
-    {
-        $this->set($data);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -67,22 +50,6 @@ class Port implements Component
     /**
      * {@inheritdoc}
      */
-    public function get()
-    {
-        return $this->data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
-    {
-        return str_replace(null, '', $this->data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function sameValueAs(Component $component)
     {
         return $this->__toString() === $component->__toString();
@@ -94,7 +61,7 @@ class Port implements Component
     public function getUriComponent()
     {
         $value = $this->__toString();
-        if ('' != $value) {
+        if (! empty($value)) {
             $value = ':'.$value;
         }
 
