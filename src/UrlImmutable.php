@@ -27,7 +27,7 @@ use League\Url\Components\User;
  *  @package League.url
  *  @since  3.0.0
  */
-class UrlImmutable extends AbstractUrl
+class UrlImmutable extends AbstractUrl implements UrlInterface
 {
     /**
      * To Enable cloning

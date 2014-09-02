@@ -18,7 +18,7 @@ namespace League\Url;
  *  @package League.url
  *  @since  1.0.0
  */
-class Url extends AbstractUrl
+class Url extends AbstractUrl implements UrlInterface
 {
     /**
      * {@inheritdoc}

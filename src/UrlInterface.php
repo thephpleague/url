@@ -70,4 +70,132 @@ interface UrlInterface
      * @return boolean
      */
     public function sameValueAs(UrlInterface $url);
+
+    /**
+     * Set the URL scheme component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    public function setScheme($data);
+
+    /**
+     * get the URL scheme component
+     *
+     * @return League\Url\Components\Component
+     */
+    public function getScheme();
+
+    /**
+     * Set the URL user component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    public function setUser($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    public function getUser();
+
+    /**
+     * Set the URL pass component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    public function setPass($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    public function getPass();
+
+    /**
+     * Set the URL host component
+     *
+     * @param string|array|\Traversable $data
+     *
+     * @return self
+     */
+    public function setHost($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    public function getHost();
+
+    /**
+     * Set the URL port component
+     *
+     * @param string|integer $data
+     *
+     * @return self
+     */
+    public function setPort($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    public function getPort();
+
+    /**
+     * Set the URL path component
+     *
+     * @param string|array|\Traversable $data
+     *
+     * @return self
+     */
+    public function setPath($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\PathInterface
+     */
+    public function getPath();
+
+    /**
+     * Set the URL query component
+     *
+     * @param string|array|\Traversable $data
+     *
+     * @return self
+     */
+    public function setQuery($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\QueryInterface
+     */
+    public function getQuery();
+
+    /**
+     * Set the URL fragment component
+     *
+     * @param string $data
+     *
+     * @return self
+     */
+    public function setFragment($data);
+
+    /**
+     * get the URL pass component
+     *
+     * @return League\Url\Components\Component
+     */
+    public function getFragment();
 }
