@@ -60,9 +60,9 @@ class Path extends AbstractSegment implements Component
             return '';
         }
 
-        $ref_path = array_values($reference->toArray());
+        $ref_path  = array_values($reference->toArray());
         $this_path = array_values($this->data);
-        $filename = array_pop($this_path);
+        $filename  = array_pop($this_path);
 
         //retrieve the final consecutive identic segment in the current path
         $index = 0;

@@ -12,9 +12,9 @@
 */
 namespace League\Url\Components;
 
+use League\Url\Punycode;
 use LogicException;
 use RuntimeException;
-use True\Punycode;
 
 /**
  *  A class to manipulate URL Host component
@@ -43,29 +43,6 @@ class Host extends AbstractSegment implements Component
      * @var mixed
      */
     protected $encoding;
-
-    /**
-     * Alter the Environment Internal Encoding if it is not utf-8
-     *
-     * @return void
-     */
-    protected function saveInternalEncoding()
-    {
-        $this->encoding = mb_internal_encoding();
-        if (stripos($this->encoding, 'utf-8') === false) {
-            mb_internal_encoding('utf-8');
-        }
-    }
-
-    /**
-     * Restore the Environment Internal Encoding
-     *
-     * @return void
-     */
-    protected function restoreInternalEncoding()
-    {
-        mb_internal_encoding($this->encoding);
-    }
 
     /**
      * {@inheritdoc}
@@ -165,11 +142,12 @@ class Host extends AbstractSegment implements Component
      */
     public function toAscii()
     {
-        $this->saveInternalEncoding();
-        $res = $this->punycode->encode($this->__toString());
-        $this->restoreInternalEncoding();
+        $res = array();
+        foreach (array_values($this->data) as $value) {
+            $res[] = $this->punycode->encode($value);
+        }
 
-        return $res;
+        return implode($this->delimiter, $res);
     }
 
     /**
@@ -197,23 +175,20 @@ class Host extends AbstractSegment implements Component
         }
 
         //the 63 length must be checked before unicode application
-        $this->saveInternalEncoding();
         $res = array_filter($data, function ($label) {
             return mb_strlen($label) > 63;
         });
         if (count($res)) {
-            $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid hostname, check its length');
         }
 
-        $data = explode(
-            $this->delimiter,
-            $this->punycode->encode(implode($this->delimiter, $data))
-        );
+        $that = $this;
+        array_walk($data, function (&$value) use ($that) {
+            $value = $that->punycode->encode($value);
+        });
 
         $res = preg_grep('/^[0-9a-z]([0-9a-z-]{0,61}[0-9a-z])?$/i', $data, PREG_GREP_INVERT);
         if (count($res)) {
-            $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid host label, check its content');
         }
 
@@ -226,14 +201,11 @@ class Host extends AbstractSegment implements Component
             throw new RuntimeException('Host may have a maximum of 255 characters');
         }
 
-        $data = explode(
-            $this->delimiter,
-            $this->punycode->decode(implode(
-                $this->delimiter,
-                $this->sanitizeValue($data)
-            ))
-        );
-        $this->restoreInternalEncoding();
+        $data = $that->sanitizeValue($data);
+
+        array_walk($data, function (&$value) use ($that) {
+            $value = $that->punycode->decode($value);
+        });
 
         return $data;
     }
