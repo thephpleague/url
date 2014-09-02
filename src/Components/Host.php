@@ -12,6 +12,7 @@
 */
 namespace League\Url\Components;
 
+use LogicException;
 use RuntimeException;
 use True\Punycode;
 
@@ -28,6 +29,9 @@ class Host extends AbstractSegment implements Component
      */
     protected $delimiter = '.';
 
+    protected $host_as_ipv6 = false;
+
+    protected $host_as_ipv4 = false;
     /**
      * Punycode Alogrithm Object
      * @var \True\Punycode
@@ -70,6 +74,74 @@ class Host extends AbstractSegment implements Component
     {
         $this->punycode = new Punycode;
         parent::__construct($data);
+    }
+
+    public function isIpv4()
+    {
+        return $this->host_as_ipv4;
+    }
+
+    public function isIpv6()
+    {
+        return $this->host_as_ipv6;
+    }
+
+    public function isIp()
+    {
+        return $this->host_as_ipv6 || $this->host_as_ipv4;
+    }
+
+    protected function setHostAsIp($str)
+    {
+        $this->host_as_ipv4 = false;
+        $this->host_as_ipv6 = false;
+        if (! self::isStringable($str)) {
+            return false;
+        }
+
+        $str = (string) $str;
+        $str = trim($str);
+        if ('[' == $str[0] && ']' == $str[strlen($str)-1]) {
+            $str = substr($str, 1, -1);
+        }
+
+        if (filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $this->host_as_ipv4 = true;
+            $this->host_as_ipv6 = false;
+            $this->data = array($str);
+
+            return true;
+        } elseif (filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            $this->host_as_ipv4 = false;
+            $this->host_as_ipv6 = true;
+            $this->data = array($str);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function assertHostAsIp()
+    {
+        if ($this->isIp()) {
+            throw new LogicException('You can not modify a IP based host');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set($data)
+    {
+
+        if ($this->setHostAsIp($data)) {
+            return;
+        }
+
+        $this->data = array_filter($this->validate($data), function ($value) {
+            return ! is_null($value);
+        });
     }
 
     /**
@@ -169,8 +241,66 @@ class Host extends AbstractSegment implements Component
     /**
      * {@inheritdoc}
      */
+    public function append($data, $whence = null, $whence_index = null)
+    {
+        $this->assertHostAsIp();
+
+        return parent::append($data, $whence, $whence_index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend($data, $whence = null, $whence_index = null)
+    {
+        $this->assertHostAsIp();
+
+        return parent::prepend($data, $whence, $whence_index);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->assertHostAsIp();
+
+        return parent::offsetSet($offset, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($data)
+    {
+        $this->assertHostAsIp();
+
+        return parent::remove($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function sameValueAs(Host $component)
     {
         return $this->__toString() === $component->__toString();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUriComponent()
+    {
+        $str = $this->__toString();
+        if ($this->host_as_ipv6) {
+            return '['.$str.']';
+        }
+
+        return $str;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return (string) $this->get();
     }
 }

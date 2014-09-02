@@ -36,7 +36,58 @@ class HostTest extends PHPUnit_Framework_TestCase
         $host['toto'] = 'comment ça va';
     }
 
-    public function testHostPrepend()
+    public function testIpv4()
+    {
+        $host = new Host('127.0.0.1');
+        $this->assertTrue($host->isIp());
+        $this->assertTrue($host->isIpv4());
+        $this->assertFalse($host->isIpv6());
+        $this->assertSame(array(0 => '127.0.0.1'), $host->toArray());
+        $this->assertSame('127.0.0.1', (string) $host);
+        $this->assertSame('127.0.0.1', $host->getUriComponent());
+    }
+
+    public function testIpv6()
+    {
+        $expected = 'FE80:0000:0000:0000:0202:B3FF:FE1E:8329';
+        $host = new Host($expected);
+        $this->assertTrue($host->isIp());
+        $this->assertFalse($host->isIpv4());
+        $this->assertTrue($host->isIpv6());
+        $this->assertSame(array(0 => $expected), $host->toArray());
+        $this->assertSame($expected, (string) $host);
+        $this->assertSame('['.$expected.']', $host->getUriComponent());
+        $this->assertTrue($host->sameValueAs(new Host('['.$expected.']')));
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testAppendWithIpFailed()
+    {
+        $host = new Host('127.0.0.1');
+        $host->append('foo');
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testPrependWithIpFailed()
+    {
+        $host = new Host('127.0.0.1');
+        $host->prepend('foo');
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testRemoveWithIpFailed()
+    {
+        $host = new Host('127.0.0.1');
+        $host->remove('foo');
+    }
+
+    public function testPrepend()
     {
         $host = new Host('secure.example.com');
 
@@ -44,21 +95,21 @@ class HostTest extends PHPUnit_Framework_TestCase
         $this->assertSame('master.secure.example.com', $host->get());
     }
 
-    public function testHostRemove()
+    public function testRemove()
     {
         $host = new Host('secure.example.com');
         $host->remove('secure');
         $this->assertSame('example.com', $host->get());
     }
 
-    public function testHostAppend()
+    public function testAppend()
     {
         $host = new Host('secure.example.com');
         $host->append('shop', 'secure');
         $this->assertSame('secure.shop.example.com', $host->get());
     }
 
-    public function testHostAppendWhence()
+    public function testAppendWhence()
     {
         $host = new Host('master.example.com');
         $host->append('master', 'master');
@@ -66,28 +117,28 @@ class HostTest extends PHPUnit_Framework_TestCase
         $this->assertSame('master.master.other.example.com', $host->get());
     }
 
-    public function testHostSetterWithString()
+    public function testSetterWithString()
     {
         $host = new Host('master.example.com');
         $host->set('.shop.fremium.com');
         $this->assertSame('shop.fremium.com', $host->get());
     }
 
-    public function testHostSetterWithArray()
+    public function testSetterWithArray()
     {
         $host = new Host('master.example.com');
         $host->set(array('shop', 'premium', 'org'));
         $this->assertSame('shop.premium.org', $host->get());
     }
 
-    public function testHostSetterWithArrayIterator()
+    public function testSetterWithArrayIterator()
     {
         $host = new Host('master.example.com');
         $host->set(new ArrayIterator(array('shop', 'premium', 'com')));
         $this->assertSame('shop.premium.com', $host->get());
     }
 
-    public function testHostPrependWhence()
+    public function testPrependWhence()
     {
         $host = new Host('master.example.com');
         $host->prepend('shop');
@@ -95,7 +146,7 @@ class HostTest extends PHPUnit_Framework_TestCase
         $this->assertSame('other.shop.master.example.com', $host->get());
     }
 
-    public function testHostSetterWithNull()
+    public function testSetterWithNull()
     {
         $host = new Host('master.example.com');
         $host->set(null);

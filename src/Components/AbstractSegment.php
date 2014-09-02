@@ -52,22 +52,6 @@ abstract class AbstractSegment extends AbstractContainer
 
     /**
      * {@inheritdoc}
-     */
-    public function __toString()
-    {
-        return (string) $this->get();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUriComponent()
-    {
-        return $this->__toString();
-    }
-
-    /**
-     * {@inheritdoc}
      * @param string|array|\Traversable $data the data
      */
     public function remove($data)

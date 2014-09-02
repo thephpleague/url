@@ -111,4 +111,12 @@ class Path extends AbstractSegment implements Component
     {
         return $this->__toString() === $component->__toString();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return (string) $this->get();
+    }
 }
