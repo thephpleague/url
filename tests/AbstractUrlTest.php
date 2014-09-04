@@ -2,6 +2,7 @@
 
 namespace League\Url\Test;
 
+use League\Url\Components\Host;
 use League\Url\Url;
 use League\Url\UrlImmutable;
 use PHPUnit_Framework_TestCase;
@@ -135,6 +136,15 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
     public function testCreateFromUrlBadName2()
     {
         Url::createFromUrl('sdfsdfqsdfsdf');
+    }
+
+    public function testSpecialHostnameLocalhost()
+    {
+        $localhost = Url::createFromUrl('localhost');
+        $this->assertInstanceOf('League\Url\UrlInterface', $localhost);
+
+        $localhost = Url::createFromUrl(Host::LOCALHOST);
+        $this->assertInstanceOf('League\Url\UrlInterface', $localhost);
     }
 
     public function testStringRepresentation()
