@@ -79,7 +79,7 @@ class Query extends AbstractContainer implements Component
     {
         $value = $this->__toString();
         if ('' != $value) {
-            $value = '?'.$value;
+            return '?'.$value;
         }
 
         return $value;

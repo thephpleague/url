@@ -73,7 +73,7 @@ class Host extends AbstractSegment implements Component
         $this->host_as_ipv4 = false;
         $this->host_as_ipv6 = false;
         if (! self::isStringable($str)) {
-            return false;
+            return;
         }
 
         $str = (string) $str;
@@ -86,17 +86,11 @@ class Host extends AbstractSegment implements Component
             $this->host_as_ipv4 = true;
             $this->host_as_ipv6 = false;
             $this->data = array($str);
-
-            return true;
         } elseif (filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             $this->host_as_ipv4 = false;
             $this->host_as_ipv6 = true;
             $this->data = array($str);
-
-            return true;
         }
-
-        return false;
     }
 
     protected function assertHostAsIp()
@@ -111,8 +105,8 @@ class Host extends AbstractSegment implements Component
      */
     public function set($data)
     {
-
-        if ($this->setHostAsIp($data)) {
+        $this->setHostAsIp($data);
+        if ($this->isIp()) {
             return;
         }
 

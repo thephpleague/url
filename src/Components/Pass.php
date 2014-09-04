@@ -35,7 +35,7 @@ class Pass extends AbstractComponent implements Component
     {
         $value = $this->__toString();
         if (! empty($value)) {
-            $value = ':'.$value;
+            return ':'.$value;
         }
 
         return $value;

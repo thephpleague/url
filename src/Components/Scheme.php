@@ -60,7 +60,7 @@ class Scheme extends AbstractComponent implements Component
     {
         $value = $this->__toString();
         if ('' != $value) {
-            $value .= '://';
+            return $value . '://';
         }
 
         return $value;
