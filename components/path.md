@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: The Path class
+permalink: components/path/
 ---
 
 # The Path class
@@ -13,7 +14,7 @@ The `League\Url\Components\PathInterface` interface adds the following method:
 
 Example using the `League\Url\Components\Path` object:
 
-~~~.language-php
+~~~php
 use League\Url\Components\Path;
 
 $path = new Path;

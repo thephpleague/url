@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: URLs as Value Objects
+permalink: overview/
 ---
 
 # Overview
@@ -20,7 +21,7 @@ Think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `Dat
 
 Both classes share the same named constructors to ease object instantiation. In the example below I'll use the `League\Url\Url` object as an example but the same is true for `League\Url\UrlImmutable`.
 
-~~~.language-php
+~~~php
 <?php
 
 use League\Url\Url;
@@ -54,7 +55,7 @@ The `League\Url\UrlInterface` interface provide the following methods:
 
 <p class="message-info">On URL output, the query string is automatically encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
-~~~.language-php
+~~~php
 use League\Url\Url;
 use League\Url\UrlImmutable;
 
@@ -109,7 +110,7 @@ The `$data` argument can be:
 
 Let's modify a `League\Url\Url` object 
 
-~~~.language-php
+~~~php
 $url = Url::createFromUrl('https://www.example.com');
 $url
 	->setUser('john')
@@ -127,14 +128,14 @@ echo $url; // https://john:doe@www.example.com:80/
 <div class="message-warning">
 To stay immutable, the <code>League\Url\UrlImmutable</code> object:
 <ul>
-<li>never modified itself but return a new object instead. 
-<li>returns a new property object instead of its own property object to avoid modification by reference.
+<li>never modified itself but return a new object instead.</li>
+<li>returns a new property object instead of its own property object to avoid modification by reference.</li>
 </ul>
 </div>
 
-The same operation using a `League\Url\UrlImmutable` object
+The same operation using a <code>League\Url\UrlImmutable</code> object:
 
-~~~.language-php
+~~~php
 $url = UrlImmutable::createFromUrl('http://www.example.com');
 $new_url = $url
 	->setUser('john')
@@ -150,4 +151,5 @@ $port->set(80);
 echo $port; // output 80;
 echo $new_url->getPort(); //remains 443
 ~~~
+
 [basic]: /components/overview/#simple-components

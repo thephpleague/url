@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: URL Components
+permalink: components/overview/
 ---
 
 # URL components
@@ -40,7 +41,7 @@ These classes are:
 
 Example using the `League\Url\Components\Scheme` class:
 
-~~~.language-php
+~~~php
 use League\Url\Components\Scheme;
 
 $scheme = new Scheme;

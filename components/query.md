@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: The Query Object
+permalink: components/query/
 ---
 
 # The Query class
@@ -15,7 +16,7 @@ This interface adds the following method:
 
 Example using the `League\Url\Components\Query` object:
 
-~~~.language-php
+~~~php
 use League\Url\Components\Query;
 
 $query = new Query('foo=bar');

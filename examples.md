@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: Examples
+permalink: examples/
 ---
 
 # Examples
@@ -9,7 +10,7 @@ title: Examples
 
 A simple example to show you how to manipulate a URL and its component.
 
-~~~.language-php
+~~~php
 <?php
 use League\Url\Url;
 
@@ -35,7 +36,7 @@ echo $url, PHP_EOL;
 
 A simple example to show you how to create a pagination will retaining the original uri
 
-~~~.language-php
+~~~php
 <?php
 use League\Url\UrlImmutable;
 

@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: Installation
+permalink: installation/
 ---
 
 # Installation
@@ -14,7 +15,7 @@ title: Installation
 
 URL is available on [Packagist](https://packagist.org/packages/league/url) and can be installed using [Composer](https://getcomposer.org/):
 
-~~~.language-javascript
+~~~javascript
 {
     "require": {
         "league/url": "3.*"
@@ -24,7 +25,7 @@ URL is available on [Packagist](https://packagist.org/packages/league/url) and c
 
 Most modern frameworks will include Composer out of the box, but ensure the following file is included:
 
-~~~.language-php
+~~~php
 <?php
 
 // Include the Composer autoloader
@@ -35,7 +36,7 @@ require 'vendor/autoload.php';
 
 You can also use URL without using Composer by registing an autoloader function:
 
-~~~.language-php
+~~~php
 spl_autoload_register(function ($class) {
     $prefix = 'League\\Url\\';
     $base_dir = __DIR__ . '/src/';

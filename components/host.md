@@ -1,6 +1,7 @@
 ---
-layout: layout
+layout: default
 title: URL complex components
+permalink: components/host/
 ---
 
 # The Host class
@@ -14,7 +15,7 @@ The interface provides methods to deal with <a href="http://en.wikipedia.org/wik
 * `toUnicode()` : is an alias of `__toString()` and return the hostname internationalized name
 * `toAscii()` : return the Punycode encoded hostname; 
 
-~~~.language-php
+~~~php
 use League\Url\Components\Host;
 
 $host = new Host;
