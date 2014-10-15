@@ -15,13 +15,12 @@ permalink: installation/
 
 URL is available on [Packagist](https://packagist.org/packages/league/url) and can be installed using [Composer](https://getcomposer.org/):
 
-~~~javascript
-{
-    "require": {
-        "league/url": "3.*"
-    }
-}
 ~~~
+composer require league/url
+~~~
+
+This will edit (or create) your `composer.json` file and automatically choose the most recent version, for example: `~3.0`
+
 
 Most modern frameworks will include Composer out of the box, but ensure the following file is included:
 
