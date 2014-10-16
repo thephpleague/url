@@ -15,11 +15,11 @@ Both classes implement the `League\Url\UrlInterface` interface.
 
 Think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `DateTimeInterface` interface.
 
-<p class="message-warning">While the library validate the host syntax it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
+<p class="message-warning">While the library validates the host syntax, it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
 
 ## Instantiation
 
-Both classes share the same named constructors to ease object instantiation. In the example below I'll use the `League\Url\Url` object as an example but the same is true for `League\Url\UrlImmutable`.
+Both classes share the same named constructors to ease object instantiation. In the example below I'll use the `League\Url\Url` object as an example, which is also applicable for `League\Url\UrlImmutable`.
 
 ~~~php
 <?php
@@ -34,7 +34,7 @@ $url = Url::createFromUrl('ftp://host.example.com');
 $url = Url::createFromServer($_SERVER); 
 ~~~
 
-`$url` is a `League\Url\Url` object
+`$url` is a `League\Url\Url` object.
 
 ## Outputting the Urls
 
@@ -53,7 +53,7 @@ The `League\Url\UrlInterface` interface provide the following methods:
 * `getAuthority`;
 * the `$ref_url` argument was added to `getRelativeUrl` method;
 
-<p class="message-info">On URL output, the query string is automatically encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
+<p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
 
 ~~~php
 use League\Url\Url;
@@ -74,9 +74,9 @@ $original_url->sameValueAs($new_url); //will return true
 $original_url->sameValueAs($alternate_url); //will return false
 ~~~
 
-## Manipulating Urls
+## Manipulating URLs
 
-An URL string is composed of up to 8 components. For each object, each URL component can be access and modify through its own setter and getter method.
+A URL string is composed of up to 8 components. For each object, each URL component can be accessed and modified through its own setter and getter method.
 
 * Chaining is possible since all the setter methods return a `League\Url\UrlInterface` object;
 * Getter methods return a [League\Url\Component\ComponentInterface][basic] object;
@@ -108,7 +108,7 @@ The `$data` argument can be:
 * another specific component object;
 * for `setHost`, `setPath`, `setQuery`: an `array` or a `Traversable` object;
 
-Let's modify a `League\Url\Url` object 
+Let's modify a `League\Url\Url` object:
 
 ~~~php
 $url = Url::createFromUrl('https://www.example.com');
@@ -128,7 +128,7 @@ echo $url; // https://john:doe@www.example.com:80/
 <div class="message-warning">
 To stay immutable, the <code>League\Url\UrlImmutable</code> object:
 <ul>
-<li>never modified itself but return a new object instead.</li>
+<li>never modified itself but returns a new object instead.</li>
 <li>returns a new property object instead of its own property object to avoid modification by reference.</li>
 </ul>
 </div>

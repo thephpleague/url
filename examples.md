@@ -8,7 +8,7 @@ permalink: examples/
 
 ## Parse and modify a URL
 
-A simple example to show you how to manipulate a URL and its component.
+A simple example to show you how to manipulate a URL and its component:
 
 ~~~php
 <?php
@@ -32,9 +32,9 @@ echo $url, PHP_EOL;
 // output ftp://user:pass@www.example.com:21/mongo%20db?query=lulu%20l%27allumeuse&foo=bar&sarah=o%20connors
 ~~~
 
-## Using an Immutable URL to create a pagination
+## Using an Immutable URL to implement Pagination
 
-A simple example to show you how to create a pagination will retaining the original uri
+A simple example to show you how to implement pagination while retaining the original URI:
 
 ~~~php
 <?php
