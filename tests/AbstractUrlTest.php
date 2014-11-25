@@ -39,6 +39,19 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         $url = Url::createFromServer($server);
         $this->assertInstanceof('\League\Url\Url', $url);
         $this->assertSame('https://127.0.0.1:23/', $url->__toString());
+
+        $server = array(
+            'PHP_SELF' => '/index.php',
+            'REQUEST_URI' => '/',
+            'SERVER_ADDR' => '127.0.0.1',
+            'SERVER_PROTOCOL' => 'HTTP',
+            'SERVER_PORT' => 23,
+            'HTTP_HOST' => 'localhost:23'
+        );
+
+        $url = Url::createFromServer($server);
+        $this->assertInstanceof('\League\Url\Url', $url);
+        $this->assertSame('http://localhost:23/', $url->__toString());
     }
 
     /**
