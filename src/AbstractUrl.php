@@ -284,8 +284,11 @@ abstract class AbstractUrl implements UrlInterface
     {
         if (isset($server['HTTP_HOST'])) {
             $header = $server['HTTP_HOST'];
-            $colonPos = strpos($header, ':');
-            return ($colonPos === false) ? $header : substr($header, 0, $colonPos);
+            if (! preg_match('/(:\d+)$/', $header, $matches)) {
+                return $header;
+            }
+
+            return substr($header, 0, -strlen($matches[1]));
         } elseif (isset($server['SERVER_ADDR'])) {
             return $server['SERVER_ADDR'];
         }
