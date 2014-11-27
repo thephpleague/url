@@ -2,6 +2,23 @@
 
 All Notable changes to `League\Url` will be documented in this file
 
+## 3.2.1 - 2014-11-27
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- `League\Url\AbstractUrl\createFromServer` bug fix handling of `$_SERVER['HTTP_HOST']`
+
+### Remove
+- Nothing
+
+### Security
+- Nothing
+
 ## 3.2.0 - 2014-11-12
 
 ### Added
