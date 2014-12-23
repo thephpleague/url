@@ -1,4 +1,4 @@
 ---
 layout: redirect
-permalink: /3.0/
+redirect_url: /3.0/
 ---
