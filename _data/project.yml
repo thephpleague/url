@@ -3,5 +3,5 @@ tagline: "URL manipulation made easy in PHP."
 description: "URL manipulation made easy in PHP"
 google_analytics_tracking_id: UA-46050814-6
 versions:
-    - '4.0'
+    - 'dev-master'
     - '3.0'

@@ -1,14 +1,14 @@
-'4.0':
+'dev-master':
     Getting Started:
-        Introduction: '/4.0/'
-        Examples: '/4.0/examples/'
-        Installation: '/4.0/installation/'
+        Introduction: '/dev-master/'
+        Examples: '/dev-master/examples/'
+        Installation: '/dev-master/installation/'
     The API:
-        Url: '/4.0/url/'
-        Component: '/4.0/component/'
-        Query: '/4.0/query/'
-        Host: '/4.0/host/'
-        Path: '/4.0/path/'
+        Url: '/dev-master/url/'
+        Component: '/dev-master/component/'
+        Query: '/dev-master/query/'
+        Host: '/dev-master/host/'
+        Path: '/dev-master/path/'
 '3.0':
     Getting Started:
         Introduction: '/3.0/'

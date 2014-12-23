@@ -32,7 +32,7 @@ $url = Url::createFromUrl('ftp://host.example.com');
 
 //Method 2: from the current PHP page
 //don't forget to provide the $_SERVER array
-$url = Url::createFromServer($_SERVER); 
+$url = Url::createFromServer($_SERVER);
 ~~~
 
 `$url` is a `League\Url\Url` object.
@@ -86,13 +86,13 @@ Here's a complete list of all the setter and getter provided by the `UrlInterfac
 * `setPass($data)` set the URL pass component;
 * `getPass()` returns a [ComponentInterface][basic] object
 * `setHost($data)` set the URL host component;
-* `getHost()` returns a [HostInterface](/4.0/host/) object
+* `getHost()` returns a [HostInterface](/dev-master/host/) object
 * `setPort($data)` set the URL port component;
 * `getPort()` returns a [ComponentInterface][basic] object
 * `setPath($data)` set the URL path component;
-* `getPath()` returns a [PathInterface](/4.0/path/) object
+* `getPath()` returns a [PathInterface](/dev-master/path/) object
 * `setQuery($data)` set the URL query component;
-* `getQuery()` returns a [QueryInterface](/4.0/query/) object
+* `getQuery()` returns a [QueryInterface](/dev-master/query/) object
 * `setFragment($data)` set the URL fragment component;
 * `getFragment()` returns a [ComponentInterface][basic]`object
 
@@ -148,4 +148,4 @@ echo $port; // output 80;
 echo $new_url->getPort(); //remains 443
 ~~~
 
-[basic]: /4.0/component/#simple-components
+[basic]: /dev-master/component/#simple-components

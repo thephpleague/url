@@ -14,7 +14,7 @@ This [multiple values component class](/components/overview/#complex-components)
 - `IteratorAggregate`
 - `League\Url\Interfaces\QueryInterface`.
 
-This `QueryInterface` which extends [`ComponentInterface`](/4.0/component/) adds the following methods:
+This `QueryInterface` which extends [`ComponentInterface`](/dev-master/component/) adds the following methods:
 
 * `modify($data)`: update the component data;
 * `getParameter($key, $defaut = null)`: return the value of a specific key or a chosen default value.

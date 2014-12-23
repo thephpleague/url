@@ -15,7 +15,7 @@ This class manage the URL path component by implementing the following interface
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
 
-This `PathInterface` which extends [`ComponentInterface`](/4.0/component/) adds the following methods:
+This `PathInterface` which extends [`ComponentInterface`](/dev-master/component/) adds the following methods:
 
 * `toArray()`: return an array representation of the `League\Path` object.
 * `keys`: return an array of the keys used in the path.

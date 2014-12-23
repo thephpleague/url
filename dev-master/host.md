@@ -17,7 +17,7 @@ This [segment values component class](/components/overview/#segment-components) 
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
 
-This `HostInterface` interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname using the following method. This interface extends [`ComponentInterface`](/4.0/component/) by adding the following methods:
+This `HostInterface` interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname using the following method. This interface extends [`ComponentInterface`](/dev-master/component/) by adding the following methods:
 
 * `toArray()`: return an array representation of the `League\Path` object.
 * `keys`: return an array of the keys used in the path.

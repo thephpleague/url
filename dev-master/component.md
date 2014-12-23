@@ -58,8 +58,8 @@ echo $scheme->getUriComponent(); //will echo 'https://'
 
 Aside the simple components, a `League/Url` contains 3 more complex components namely:
 
-* `League\Url\Query` [which which deals with the query component](/4.0/query/);
-* `League\Url\Path` [which which deals with the path component](/4.0/path/);
-* `League\Url\Host` [which which deals with the host component](/4.0/host/);
+* `League\Url\Query` [which which deals with the query component](/dev-master/query/);
+* `League\Url\Path` [which which deals with the path component](/dev-master/path/);
+* `League\Url\Host` [which which deals with the host component](/dev-master/host/);
 
 Each of these classes takes into account the specifity of its related component.
