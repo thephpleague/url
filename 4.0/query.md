@@ -3,6 +3,8 @@ layout: default
 title: The Query Object
 ---
 
+<p class="message-notice">This version is still an alpha. The features and documentation may still vary until released</p>
+
 # The Query class
 
 This [multiple values component class](/components/overview/#complex-components) manage the URL query component by implementing the following interfaces:

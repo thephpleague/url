@@ -3,6 +3,8 @@ layout: default
 title: The Path class
 ---
 
+<p class="message-notice">This version is still an alpha. The features and documentation may still vary until released</p>
+
 # The Path class
 
 This class manage the URL path component by implementing the following interfaces.
