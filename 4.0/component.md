@@ -1,7 +1,6 @@
 ---
 layout: default
 title: URL Components
-permalink: components/overview/
 ---
 
 # URL components

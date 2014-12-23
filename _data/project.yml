@@ -1,4 +1,7 @@
-title: URL
+title: "URL"
 tagline: "URL manipulation made easy in PHP."
-description: "Working with URL can often be much more difficult than you expect. This makes it easy to modify and update any URL."
+description: "URL manipulation made easy in PHP"
 google_analytics_tracking_id: UA-46050814-6
+versions:
+    - '4.0'
+    - '3.0'

@@ -1,7 +1,6 @@
 ---
 layout: default
 title: URLs as Value Objects
-permalink: overview/
 ---
 
 # Overview

@@ -1,7 +1,6 @@
 ---
 layout: default
 title: The Path class
-permalink: components/path/
 ---
 
 # The Path class

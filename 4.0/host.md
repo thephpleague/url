@@ -1,7 +1,6 @@
 ---
 layout: default
 title: URL complex components
-permalink: components/host/
 ---
 
 # The Host class

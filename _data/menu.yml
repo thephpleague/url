@@ -1,11 +1,23 @@
-Getting Started:
-    Introduction: '/'
-    Examples: '/examples/'
-    Installation: '/installation/'
-The API:
-    Overview: '/overview/'
-The Components:
-    Overview: '/components/overview/'
-    Query: '/components/query/'
-    Path: '/components/path/'
-    Host: '/components/host/'
+'4.0':
+    Getting Started:
+        Introduction: '/4.0/'
+        Examples: '/4.0/examples/'
+        Installation: '/4.0/installation/'
+    The API:
+        Url: '/4.0/url/'
+        Component: '/4.0/component/'
+        Query: '/4.0/query/'
+        Host: '/4.0/host/'
+        Path: '/4.0/path/'
+'3.0':
+    Getting Started:
+        Introduction: '/3.0/'
+        Examples: '/3.0/examples/'
+        Installation: '/3.0/installation/'
+    The API:
+        Overview: '/3.0/overview/'
+    The Components:
+        Overview: '/3.0/components/overview/'
+        Query: '/3.0/components/query/'
+        Path: '/3.0/components/path/'
+        Host: '/3.0/components/host/'

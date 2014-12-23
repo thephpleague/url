@@ -1,7 +1,6 @@
 ---
 layout: default
 title: The Query Object
-permalink: components/query/
 ---
 
 # The Query class
