@@ -7,18 +7,16 @@ title: Installation
 
 ## System Requirements
 
-* **PHP >= 5.3.0** but the latest stable version of PHP is recommended;
-* `mbstring` extension installed **since version 3.1**;
+* **PHP >= 5.4.7** but the latest stable version of PHP is recommended;
+* `mbstring` extension;
 
 ## Composer
 
 URL is available on [Packagist](https://packagist.org/packages/league/url) and can be installed using [Composer](https://getcomposer.org/):
 
 ~~~
-composer require league/url
+$ composer require league/url
 ~~~
-
-This will edit (or create) your `composer.json` file and automatically choose the most recent version, for example: `~3.0`
 
 
 Most modern frameworks will include Composer out of the box, but ensure the following file is included:
@@ -32,23 +30,4 @@ require 'vendor/autoload.php';
 
 ## Going Solo
 
-You can also use URL without using Composer by registing an autoloader function:
-
-~~~php
-spl_autoload_register(function ($class) {
-    $prefix = 'League\\Url\\';
-    $base_dir = __DIR__ . '/src/';
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        // no, move to the next registered autoloader
-        return;
-    }
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-    if (file_exists($file)) {
-        require $file;
-    }
-});
-~~~
-
-Or, use any other [PSR-4](http://www.php-fig.org/psr/psr-4/) compatible autoloader.
+You can also use `League\Url` without using Composer by downloading the library and using a [PSR-4](http://www.php-fig.org/psr/psr-4/) compatible autoloader.

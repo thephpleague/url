@@ -5,11 +5,20 @@ title: The Query Object
 
 # The Query class
 
-This [multiple values component class](/components/overview/#complex-components) manage the URL query component by implementing the `League\Url\Components\QueryInterface`. 
+This [multiple values component class](/components/overview/#complex-components) manage the URL query component by implementing the following interfaces:
 
-This interface adds the following method:
+- `ArrayAccess`
+- `Countable`
+- `IteratorAggregate`
+- `League\Url\Interfaces\QueryInterface`.
+
+This `QueryInterface` which extends [`ComponentInterface`](/4.0/component/) adds the following methods:
 
 * `modify($data)`: update the component data;
+* `getParameter($key, $defaut = null)`: return the value of a specific key or a chosen default value.
+* `setParameter($key, $value)`: set a specific key.
+* `toArray()`: return an array representation of the `League\Query` object.
+* `keys`: return an array of the keys used in the query.
 
 <p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 

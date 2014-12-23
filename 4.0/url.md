@@ -3,14 +3,14 @@ layout: default
 title: URLs as Value Objects
 ---
 
-# Overview
+# Url
 
 The library handles FTP, HTTP and Websocket protocol URLs through the use of two main classes:
 
 * `League\Url\Url` a value object that represents a URL
 * `League\Url\UrlImmutable` a immutable value object that represents a URL
 
-Both classes implement the `League\Url\UrlInterface` interface.
+Both classes implement the `League\Url\Interfaces\UrlInterface` interface.
 
 Think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `DateTimeInterface` interface.
 
@@ -37,20 +37,15 @@ $url = Url::createFromServer($_SERVER);
 
 ## Outputting the Urls
 
-The `League\Url\UrlInterface` interface provide the following methods:
+The `UrlInterface` interface provide the following methods:
 
 * `__toString` returns the full string representation of the URL;
 * `getUserInfo` returns the string representation of the URL user info;
 * `getAuthority` returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
 * `getBaseUrl` returns the string representation of the URL `scheme` component and authority part;
-* `getRelativeUrl(UrlInterface $ref_url = null)` returns the string representation of the URL relative to another `League\Url\UrlInterface` object;
-* `sameValueAs` returns `true` if two `League\Url\UrlInterface` object represents the same URL.
-
-**The following was added in version 3.2:**
-
-* `getUserInfo`;
-* `getAuthority`;
-* the `$ref_url` argument was added to `getRelativeUrl` method;
+* `getUrl(UrlInterface $ref_url = null)` returns the string representation of the URL relative to another `UrlInterface` object;
+* `sameValueAs` returns `true` if two `UrlInterface` object represents the same URL.
+* `toArray` returns an array representation of the URL similar php `parse_url` function.
 
 <p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
 
@@ -62,8 +57,8 @@ $url = Url::createFromUrl('http://www.example.com/path/index.php?query=toto+le+h
 $relative_url = Url::createFromUrl('http://www.example.com/path/another/index.html');
 echo $url; // 'http://www.example.com/path/index.php?query=toto%20le%20heros'
 echo $url->getBaseUrl(); // http://www.example.com
-echo $url->getRelativeUrl(); // /path/index.php?query=toto%20le%20heros
-echo $url->getRelativeUrl($relative_url); // ../../index.php?query=toto%20le%20heros
+echo $url->getUrl($url); // /path/index.php?query=toto%20le%20heros
+echo $url->getUrl($relative_url); // ../../index.php?query=toto%20le%20heros
 
 $original_url = Url::createFromUrl("example.com"); //a schemeless url
 $new_url = UrlImmutable::createFromUrl("//example.com"); //another schemeless url
@@ -77,27 +72,27 @@ $original_url->sameValueAs($alternate_url); //will return false
 
 A URL string is composed of up to 8 components. For each object, each URL component can be accessed and modified through its own setter and getter method.
 
-* Chaining is possible since all the setter methods return a `League\Url\UrlInterface` object;
-* Getter methods return a [League\Url\Component\ComponentInterface][basic] object;
+* Chaining is possible since all the setter methods return a `UrlInterface` object;
+* Getter methods return a [League\Url\Interfaces\ComponentInterface][basic] object;
 
-Here's a complete list of all the setter and getter provided by the `League\Url\UrlInterface` interface:
+Here's a complete list of all the setter and getter provided by the `UrlInterface` interface:
 
 * `setScheme($data)` set the URL scheme component;
-* `getScheme()` returns a [League\Url\Components\ComponentInterface][basic] object
+* `getScheme()` returns a [ComponentInterface][basic] object
 * `setUser($data)` set the URL user component;
-* `getUser()` returns a [League\Url\Components\ComponentInterface][basic] object
+* `getUser()` returns a [ComponentInterface][basic] object
 * `setPass($data)` set the URL pass component;
-* `getPass()` returns a [League\Url\Components\ComponentInterface][basic] object
+* `getPass()` returns a [ComponentInterface][basic] object
 * `setHost($data)` set the URL host component;
-* `getHost()` returns a [League\Url\Components\HostInterface](/components/host/) object
+* `getHost()` returns a [HostInterface](/4.0/host/) object
 * `setPort($data)` set the URL port component;
-* `getPort()` returns a [League\Url\Components\ComponentInterface][basic] object
+* `getPort()` returns a [ComponentInterface][basic] object
 * `setPath($data)` set the URL path component;
-* `getPath()` returns a [League\Url\Components\PathInterface](/components/path/) object
+* `getPath()` returns a [PathInterface](/4.0/path/) object
 * `setQuery($data)` set the URL query component;
-* `getQuery()` returns a [League\Url\Components\QueryInterface](/components/query/) object
+* `getQuery()` returns a [QueryInterface](/4.0/query/) object
 * `setFragment($data)` set the URL fragment component;
-* `getFragment()` returns a [League\Url\Components\ComponentInterface][basic]`object
+* `getFragment()` returns a [ComponentInterface][basic]`object
 
 The `$data` argument can be:
 
@@ -151,4 +146,4 @@ echo $port; // output 80;
 echo $new_url->getPort(); //remains 443
 ~~~
 
-[basic]: /components/overview/#simple-components
+[basic]: /4.0/component/#simple-components

@@ -5,26 +5,41 @@ title: The Path class
 
 # The Path class
 
-This [segment values component class](/components/overview/#segment-components) manage the URL path component by implementing the `League\Url\Components\PathInterface`. 
+This class manage the URL path component by implementing the following interfaces.
 
-The `League\Url\Components\PathInterface` interface adds the following method:
+- `Countable`
+- `IteratorAggregate`
+- `League\Url\Interfaces\PathInterface`
 
-* `getRelativePath(PathInterface $path)`: returns a string representation of the relative path from the current object relative to the `$path` given *added in version 3.2*;
+<p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
 
-Example using the `League\Url\Components\Path` object:
+This `PathInterface` which extends [`ComponentInterface`](/4.0/component/) adds the following methods:
+
+* `toArray()`: return an array representation of the `League\Path` object.
+* `keys`: return an array of the keys used in the path.
+* `append($data, $whence = null, $whence_index = null)`: append data to the component
+* `prepend($data, $whence = null, $whence_index = null)`: prepend data to the component
+* `remove($data)`: remove part of the component
+* `getSegment($key, $default = null)`: return a segment parameter according to its offset in it does not exists you can provide a default value
+* `relativeTo(PathInterface $path = null)`: returns a string representation of the relative path from the current object relative to the `$path` given;
+
+
+Example using the `League\Url\Path` object:
 
 ~~~php
-use League\Url\Components\Path;
+use League\Url\Path;
 
 $path = new Path;
-$path[] = 'bar';
-$path[] = 'troll';
+$path->append('bar');
+$path->append('troll');
 foreach ($path as $offset => $value) {
 	echo "$offset => $value".PHP_EOL;
 }
-//will echo 
+//will echo
 // 0 => bar
 // 1 => troll
+
+$path->getSegment(1); //will return 'troll'
 
 $path->append('leheros/troll', 'bar');
 
@@ -43,8 +58,8 @@ var_export($path->toArray());
 // )
 
 $nb_occurences = count($path->keys('troll'));
-//if $nb_occurences is higher than 1, 
-//you must specify the $whence index 
+//if $nb_occurences is higher than 1,
+//you must specify the $whence index
 //if you do not insert you data around the first occurence
 //the $whence_index start at 0
 $path->prepend('bar', 'troll', 1);

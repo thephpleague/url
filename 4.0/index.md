@@ -26,7 +26,7 @@ PHP. The goal of the library is to be powerful while remaining simple to use.
 * Simple API
 * URLs can be treated as Value Objects or as Immutable Value Objects
 * Composer ready and PSR-2 and PSR-4 compliant
-* PHP 5.3 as a minimal requirement 
+* PHP 5.4.7 as a minimal requirement
 
 ## Questions?
 
