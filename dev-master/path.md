@@ -13,7 +13,7 @@ This [URL multiple values component](/components/overview/#complex-components) i
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
 
-### The Path class
+## The Path class
 
 ### Path::__construct($data = null)
 
@@ -33,7 +33,7 @@ $alt = new Path($path);
 $alt->sameValueAs($path); //returns true
 ~~~
 
-### The PathInterface
+## The PathInterface
 
 This interface extends the [ComponentInterface](/dev-master/component/) interface with the following methods.
 

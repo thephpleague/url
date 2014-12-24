@@ -13,7 +13,7 @@ This [URL multiple values component](/components/overview/#complex-components) i
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
 
-### The Host class
+## The Host class
 
 ### Host::__construct($data = null)
 
@@ -33,7 +33,7 @@ $alt = new Host($host);
 $alt->sameValueAs($host); //returns true
 ~~~
 
-### The HostInterface
+## The HostInterface
 
 This interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname by extending the [ComponentInterface](/dev-master/component/) interface with the following methods.
 

@@ -14,6 +14,26 @@ This [URL multiple values component](/components/overview/#complex-components) i
 
 <p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
+## The Query class
+
+### Query::__construct($data = null)
+
+The class constructor takes a single argument `$data` which can be:
+
+- a string representation of a query string.
+- an `array`
+- a `Traversable` object
+- another `QueryInterface` object
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('?foo=bar&baz=nitro');
+$alt = new Query($query);
+$alt->sameValueAs($query); //returns true
+~~~
+
 ## QueryInterface
 
 This interface extends the [`ComponentInterface`](/dev-master/component/) by adding the following methods:
@@ -94,24 +114,4 @@ $query = new Query('foo=bar&baz=nitro');
 $query->setParameter('change', 'nitro');
 $arr = $query->keys(); returns //  ['foo', 'baz', 'chance'];
 $arr = $query->keys('nitro'); returns // ['baz', 'chance'];
-~~~
-
-## The Query class
-
-### Query::__construct($data = null)
-
-The class constructor takes a single argument `$data` which can be:
-
-- a string representation of a query string.
-- an `array`
-- a `Traversable` object
-- another `QueryInterface` object
-
-~~~php
-
-use League\Url\Query;
-
-$query = new Query('?foo=bar&baz=nitro');
-$alt = new Query($query);
-$alt->sameValueAs($query); //returns true
 ~~~
