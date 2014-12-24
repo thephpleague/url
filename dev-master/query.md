@@ -36,7 +36,7 @@ $alt->sameValueAs($query); //returns true
 
 ## QueryInterface
 
-This interface extends the [ComponentInterface](/dev-master/component/#componentinterface) by adding the following methods:
+This interface extends the [ComponentInterface](/dev-master/component/#the-componentinterface) by adding the following methods:
 
 ### QueryInterface::modify($data)
 

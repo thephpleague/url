@@ -35,7 +35,7 @@ $alt->sameValueAs($host); //returns true
 
 ## The HostInterface
 
-This interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname by extending the [ComponentInterface](/dev-master/component/#componentinterface) interface with the following methods.
+This interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname by extending the [ComponentInterface](/dev-master/component/#the-componentinterface) interface with the following methods.
 
 ### HostInterface::toArray()
 

@@ -35,7 +35,7 @@ $alt->sameValueAs($path); //returns true
 
 ## The PathInterface
 
-This interface extends the [ComponentInterface](/dev-master/component/#componentinterface) interface with the following methods.
+This interface extends the [ComponentInterface](/dev-master/component/#the-componentinterface) interface with the following methods.
 
 ### PathInterface::toArray()
 
