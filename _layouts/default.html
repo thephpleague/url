@@ -67,6 +67,9 @@
         {% endfor %}
     </menu>
     <article>
+        {% if 'dev-master' == version %}
+    <p class="message-notice">This is the <code>dev-master</code> documentation version. The content may still vary until released</p>
+        {% endif %}
         {{ content }}
     </article>
 </main>

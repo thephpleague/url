@@ -6,9 +6,9 @@
     The API:
         Url: '/dev-master/url/'
         Component: '/dev-master/component/'
-        Query: '/dev-master/query/'
         Host: '/dev-master/host/'
         Path: '/dev-master/path/'
+        Query: '/dev-master/query/'
 '3.0':
     Getting Started:
         Introduction: '/3.0/'

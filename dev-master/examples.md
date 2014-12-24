@@ -3,8 +3,6 @@ layout: default
 title: Examples
 ---
 
-<p class="message-notice">This version is still an alpha. The features and documentation may still vary until released</p>
-
 # Examples
 
 ## Parse and modify a URL

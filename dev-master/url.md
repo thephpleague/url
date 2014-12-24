@@ -3,16 +3,12 @@ layout: default
 title: URLs as Value Objects
 ---
 
-<p class="message-notice">This version is still an alpha. The features and documentation may still vary until released</p>
+# The UrlInterface interface
 
-# Url
-
-The library handles FTP, HTTP and Websocket protocol URLs through the use of two main classes:
+The library handles FTP, HTTP and Websocket protocol URLs through the use of one interface, the `League\Url\Interfaces\UrlInterface` interface. This interface is implement by two classes:
 
 * `League\Url\Url` a value object that represents a URL
 * `League\Url\UrlImmutable` a immutable value object that represents a URL
-
-Both classes implement the `League\Url\Interfaces\UrlInterface` interface.
 
 Think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `DateTimeInterface` interface.
 
@@ -41,67 +37,142 @@ $url = Url::createFromServer($_SERVER);
 
 The `UrlInterface` interface provide the following methods:
 
-* `__toString` returns the full string representation of the URL;
-* `getUserInfo` returns the string representation of the URL user info;
-* `getAuthority` returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
-* `getBaseUrl` returns the string representation of the URL `scheme` component and authority part;
-* `getUrl(UrlInterface $ref_url = null)` returns the string representation of the URL relative to another `UrlInterface` object;
-* `sameValueAs` returns `true` if two `UrlInterface` object represents the same URL.
-* `toArray` returns an array representation of the URL similar php `parse_url` function.
+### UrlInterface::__toString
 
-<p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
+Returns the string representation of a `UrlInterface` object as a valid URL.
 
 ~~~php
+
+use League\Url\Url;
+
+$url = Url::createFromServer($_SERVER);
+echo $url; // returns 'http://www.example.com'
+~~~
+
+### UrlInterface::getUserInfo()
+
+Returns the string representation of the URL user info;
+
+~~~php
+
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
+echo $url->getUserInfo(); // returns 'user:password@';
+~~~
+
+### UrlInterface::getAuthority();
+
+Returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
+
+~~~php
+
 use League\Url\Url;
 use League\Url\UrlImmutable;
 
-$url = Url::createFromUrl('http://www.example.com/path/index.php?query=toto+le+heros');
-$relative_url = Url::createFromUrl('http://www.example.com/path/another/index.html');
-echo $url; // 'http://www.example.com/path/index.php?query=toto%20le%20heros'
-echo $url->getBaseUrl(); // http://www.example.com
-echo $url->getUrl($url); // /path/index.php?query=toto%20le%20heros
-echo $url->getUrl($relative_url); // ../../index.php?query=toto%20le%20heros
-
-$original_url = Url::createFromUrl("example.com"); //a schemeless url
-$new_url = UrlImmutable::createFromUrl("//example.com"); //another schemeless url
-$alternate_url = Url::createFromUrl("http://example.com");
-
-$original_url->sameValueAs($new_url); //will return true
-$original_url->sameValueAs($alternate_url); //will return false
+$url = UrlImmutable::createFromUrl('http://user:password@example.com:8042/over/there');
+echo $url->getAuthority(); // returns 'user:password@example.com:8042';
 ~~~
+
+### UrlInterface::getBaseUrl();
+
+Returns the string representation of the URL `scheme` component and authority part;
+
+~~~php
+
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
+echo $url->getBaseUrl(); // returns 'http://user:password@example.com:8042';
+~~~
+
+### UrlInterface::getUrl(UrlInterface $ref_url = null)
+
+Returns the string representation of the URL relative to another `UrlInterface` object;
+
+~~~php
+
+use League\Url\Url;
+use League\Url\UrlImmutable;
+
+$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
+$ref = UrlImmutable::createFromUrl('http://user:password@example.com:8042/over/');
+echo $url->getUrl($ref); // returns '../there';
+~~~
+
+### UrlInterface::sameValueAs(UrlInterface $url)
+
+Tells whether two `UrlInterface` objects share the same string representation.
+
+~~~php
+
+use League\Url\Url;
+use League\Url\UrlImmutable;
+
+$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
+$ref = UrlImmutable::createFromServer($_SERVER);
+$alt = Url::createFromServer($_SERVER);
+echo $url->sameValuesAs($ref); // returns true if $ref->__toString() == $url->__toString()
+echo $ref->sameValueAs($alt); //will return true
+~~~
+
+### UrlInterface::toArray()
+
+Returns an array representation of the URL similar php `parse_url` function.
+
+~~~php
+
+use League\Url\UrlImmutable;
+
+$url = UrlImmutable::createFromUrl('http://user:password@example.com:8042/over/there');
+$arr = $url->toArray();
+//returns the following array
+// [
+//   'scheme' => 'http',
+//   'user' => 'user',
+//   'pass' => 'password',
+//   'host' => 'example.com',
+//   'port' => 8042,
+//   'path' => 'over/there',
+//   'query' => null,
+//   'fragment' => null,
+// ]
+~~~
+
+<p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
 
 ## Manipulating URLs
 
 A URL string is composed of up to 8 components. For each object, each URL component can be accessed and modified through its own setter and getter method.
 
 * Chaining is possible since all the setter methods return a `UrlInterface` object;
-* Getter methods return a [League\Url\Interfaces\ComponentInterface][basic] object;
+* Getter methods return an object which implements at least the [League\Url\Interfaces\ComponentInterface][basic] interface;
 
 Here's a complete list of all the setter and getter provided by the `UrlInterface` interface:
 
 * `setScheme($data)` set the URL scheme component;
-* `getScheme()` returns a [ComponentInterface][basic] object
+* `getScheme()` returns a [Scheme][basic] object
 * `setUser($data)` set the URL user component;
-* `getUser()` returns a [ComponentInterface][basic] object
+* `getUser()` returns a [User][basic] object
 * `setPass($data)` set the URL pass component;
-* `getPass()` returns a [ComponentInterface][basic] object
+* `getPass()` returns a [Pass][basic] object
 * `setHost($data)` set the URL host component;
-* `getHost()` returns a [HostInterface](/dev-master/host/) object
+* `getHost()` returns a [Host](/dev-master/host/) object
 * `setPort($data)` set the URL port component;
-* `getPort()` returns a [ComponentInterface][basic] object
+* `getPort()` returns a [Port][basic] object
 * `setPath($data)` set the URL path component;
-* `getPath()` returns a [PathInterface](/dev-master/path/) object
+* `getPath()` returns a [Path](/dev-master/path/) object
 * `setQuery($data)` set the URL query component;
-* `getQuery()` returns a [QueryInterface](/dev-master/query/) object
+* `getQuery()` returns a [Query](/dev-master/query/) object
 * `setFragment($data)` set the URL fragment component;
-* `getFragment()` returns a [ComponentInterface][basic]`object
+* `getFragment()` returns a [Fragment][basic]`object
 
 The `$data` argument can be:
 
 * `null`;
 * a valid component string for the specified URL component;
 * an object implementing the `__toString` method;
-* another specific component object;
+* an object implementing the [ComponentInterface][basic] interface;
 * for `setHost`, `setPath`, `setQuery`: an `array` or a `Traversable` object;
 
 Let's modify a `League\Url\Url` object:

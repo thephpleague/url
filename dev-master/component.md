@@ -3,27 +3,88 @@ layout: default
 title: URL Components
 ---
 
-<p class="message-notice">This version is still an alpha. The features and documentation may still vary until released</p>
-
 # URL components
 
-An URL string is composed of up to 8 components. The `League\Url` library provides interfaces and classes to interact with each URL component. The classes can all be use independently of a `League\Url\Interfaces\UrlInterface` implementing class.
+An URL string is composed of up to 8 components which are in order of appearance:
 
-## Component Interface
+- Scheme;
+- User;
+- Pass;
+- Host;
+- Port;
+- Path;
+- Query;
+- Fragment;
+
+The `League\Url` library provides an access to each URL components via a set of interfaces and classes. These classes can all be use independently but they all implement at least the `League\Url\Interfaces\ComponentInterface`.
+
+## The ComponentInterface
 
 Each component class implements the `League\Url\Interfaces\ComponentInterface` with the following public methods:
 
-* `set($data)`: set the component data
-* `get()`: returns `null` if the class data is empty or its string representation
-* `__toString()`: return a typecast string representation of the component.
-* `getUriComponent()`: return an altered string representation to ease URL representation.
-* `sameValueAs(ComponentInterface $component)`: return true if both components string representation values are equals.
+### ComponentInterface::set($data)
+
+Sets the component data.
 
 The `$data` argument can be:
 
 * `null`;
-* a valid component string for the specified URL component;
+* a string;
+* an `array` or a `Traversable` object, for complex components;
 * an object implementing the `__toString` method;
+* an object implementing the `ComponentInterface` interface;
+
+### ComponentInterface::get()
+
+Returns the current data attached to the component as a string or null if no data is attached to the component
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path();
+$path->get(); // returns 'null'
+$path->set('/path/to/heaven');
+$path->get(); // returns 'path/to/heaven';
+$path->set(['path', 'to', 'my', 'crib']);
+$path->get(); // returns 'path/to/my/crib';
+~~~
+
+### ComponentInterface::__toString()
+
+Returns the string representation of the component. While the `ComponentInterface::get()` method returns null when no data is attached to the component class, `ComponentInterface::__toString()` return an empty string.
+
+### ComponentInterface::getUriComponent()
+
+Returns an altered string representation to ease URL representation.
+
+~~~php
+
+use League\Url\Scheme;
+
+$scheme = new Scheme();
+$scheme->get(); // returns 'null'
+echo $scheme;  // returns ''
+echo $scheme->getUriComponent(); returns '//'
+$scheme->set('https');
+$scheme->get(); // returns 'https';
+echo $scheme;  // returns 'https';
+echo $scheme->getUriComponent(); returns 'https://'
+~~~
+
+### ComponentInterface::sameValueAs(ComponentInterface $component)
+
+Tells whether two `ComponentInterface` objects share the same string representation.
+
+~~~php
+
+use League\Url\Port;
+use League\Url\Pass;
+
+$port = new Port(8042);
+$pass = new Pass(8042);
+$port->sameValueAs($pass); // returns true because $pass->__toString() equals $port->__toString();
+~~~
 
 <h2 id="simple-components">Single Value Components</h2>
 
@@ -40,26 +101,12 @@ These classes are:
 * `League\Url\Port` which deals with the port component;
 * `League\Url\Fragment` which deals with the fragment component;
 
-Example using the `League\Url\Scheme` class:
-
-~~~php
-use League\Url\Scheme;
-
-$scheme = new Scheme;
-$scheme->get(); //will return null since no scheme was set
-echo $scheme; // will echo '' an empty string
-echo $scheme->getUriComponent(); //will echo '//'
-$scheme->set('https');
-echo $scheme->__toString(); //will echo 'https'
-echo $scheme->getUriComponent(); //will echo 'https://'
-~~~
-
 <h2 id="complex-components">Multiple Values Components</h2>
 
-Aside the simple components, a `League/Url` contains 3 more complex components namely:
+Aside the single value components,  Urls contains 3 more complex components namely:
 
-* `League\Url\Query` [which which deals with the query component](/dev-master/query/);
-* `League\Url\Path` [which which deals with the path component](/dev-master/path/);
-* `League\Url\Host` [which which deals with the host component](/dev-master/host/);
+* `League\Url\Query` which deals with [the query component](/dev-master/query/);
+* `League\Url\Path` which deals with [the path component](/dev-master/path/);
+* `League\Url\Host` which deals with [the host component](/dev-master/host/);
 
 Each of these classes takes into account the specifity of its related component.

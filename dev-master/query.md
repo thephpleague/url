@@ -1,54 +1,117 @@
 ---
 layout: default
-title: The Query Object
+title: The Query Component
 ---
 
-<p class="message-notice">This version is still an alpha. The features and documentation may still vary until released</p>
+# The Query component
 
-# The Query class
-
-This [multiple values component class](/components/overview/#complex-components) manage the URL query component by implementing the following interfaces:
+This [URL multiple values component](/components/overview/#complex-components) is manage by implementing the following interfaces:
 
 - `ArrayAccess`
 - `Countable`
 - `IteratorAggregate`
 - `League\Url\Interfaces\QueryInterface`.
 
-This `QueryInterface` which extends [`ComponentInterface`](/dev-master/component/) adds the following methods:
-
-* `modify($data)`: update the component data;
-* `getParameter($key, $defaut = null)`: return the value of a specific key or a chosen default value.
-* `setParameter($key, $value)`: set a specific key.
-* `toArray()`: return an array representation of the `League\Query` object.
-* `keys`: return an array of the keys used in the query.
-
 <p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
-Example using the `League\Url\Components\Query` object:
+## QueryInterface
+
+This interface extends the [`ComponentInterface`](/dev-master/component/) by adding the following methods:
+
+### modify($data)
+
+The method allow modifying the query. just like with the `QueryInterface::set` method, the single `$data` can be:
+
+- an `array`,
+- a `Traversable` object
+- a string representation of a query string.
 
 ~~~php
-use League\Url\Components\Query;
 
-$query = new Query('foo=bar');
-$query['baz'] = 'troll';
-$query['toto'] = 'le heros';
-foreach ($query as $offset => $value) {
-	echo "$offset => $value".PHP_EOL;
-}
-//will echo 
-// foo => bar
-// baz => troll
-// toto => le%20heros
+use League\Url\Query;
 
-$query->modify(array('foo' => 'baz', 'toto' => null));
-//by setting toto to null
-//you remove the toto argument from the query_string
-//you can get the same result by issuing
-unset($query['toto']);
+$query = new Query();
+$query->modify(['foo' => 'bar', 'baz' => 'toto']);
+$query->get(); //returns foo=bar&baz=toto
+$query->modify('foo=jane');
+$query->get(); //returns foo=jane&baz=toto
+~~~
 
+### getParameter($key, $default = null)
 
-$found = $query->keys('troll');
-//$found equals array(0 => 'baz')
+Returns the value if a specific key. If the key does not exists it will return the value specified by the `$default` argument
 
-echo count($query); //will return 2;
+~~~php
+
+use League\Url\Query;
+
+$query = new Query();
+$query->modify(['foo' => 'bar', 'baz' => 'toto']);
+$query->getParameter('baz'); //returns 'toto'
+$query->getParameter('change'); //returns null
+$query->getParameter('change', 'now'); //returns 'now'
+~~~
+
+### setParameter($key, $value)
+
+Set a specific key from the object. `$key` must be a string. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query();
+count($query); // returns 0
+$query->setParameter('foo', 'bar');
+$query->getParameter('foo'); //returns 'bar'
+count($query); // returns 1
+$query->setParameter('foo', null); //returns null
+count($query); // returns 0
+$query->getParameter('foo'); //returns null
+~~~
+
+### toArray()
+
+Returns an array representation of the query string
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('foo=bar&baz=nitro');
+$arr = $query->toArray(); returns //  ['foo' => 'bar', 'baz' => 'nitro', ];
+~~~
+
+### keys()
+
+Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('foo=bar&baz=nitro');
+$query->setParameter('change', 'nitro');
+$arr = $query->keys(); returns //  ['foo', 'baz', 'chance'];
+$arr = $query->keys('nitro'); returns // ['baz', 'chance'];
+~~~
+
+## The Query class
+
+### Query::__construct($data = null)
+
+The class constructor takes a single argument `$data` which can be:
+
+- a string representation of a query string.
+- an `array`
+- a `Traversable` object
+- another `QueryInterface` object
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('?foo=bar&baz=nitro');
+$alt = new Query($query);
+$alt->sameValueAs($query); //returns true
 ~~~
