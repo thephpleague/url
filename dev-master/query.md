@@ -5,7 +5,7 @@ title: The Query Component
 
 # The Query component
 
-This [URL multiple values component](/components/overview/#complex-components) is manage by implementing the following interfaces:
+This [URL multiple values component](/dev-master/component/#complex-components) is manage by implementing the following interfaces:
 
 - `ArrayAccess`
 - `Countable`
@@ -36,7 +36,7 @@ $alt->sameValueAs($query); //returns true
 
 ## QueryInterface
 
-This interface extends the [`ComponentInterface`](/dev-master/component/) by adding the following methods:
+This interface extends the [ComponentInterface](/dev-master/component/#componentinterface) by adding the following methods:
 
 ### QueryInterface::modify($data)
 

@@ -5,7 +5,7 @@ title: The Path component
 
 # The Path component
 
-This [URL multiple values component](/components/overview/#complex-components) is manage by implementing the following interfaces:
+This [URL multiple values component](/dev-master/component/#complex-components) is manage by implementing the following interfaces:
 
 - `Countable`
 - `IteratorAggregate`
@@ -35,7 +35,7 @@ $alt->sameValueAs($path); //returns true
 
 ## The PathInterface
 
-This interface extends the [ComponentInterface](/dev-master/component/) interface with the following methods.
+This interface extends the [ComponentInterface](/dev-master/component/#componentinterface) interface with the following methods.
 
 ### PathInterface::toArray()
 
