@@ -37,7 +37,7 @@ $alt->sameValueAs($path); //returns true
 
 This interface extends the [ComponentInterface](/dev-master/component/) interface with the following methods.
 
-### toArray()
+### PathInterface::toArray()
 
 Returns an array representation of the path string
 
@@ -49,7 +49,7 @@ $path = new Path('/path/to/the/sky');
 $arr = $path->toArray(); returns //  ['path', 'to', 'the', 'sky'];
 ~~~
 
-### keys()
+### PathInterface::keys()
 
 Returns the keys of the Path object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
 
@@ -62,7 +62,7 @@ $arr = $path->keys(); returns //  [0, 1, 2, 3];
 $arr = $path->keys('path'); returns // ['0, 3];
 ~~~
 
-### getSegment($offset, $default = null)
+### PathInterface::getSegment($offset, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -76,7 +76,7 @@ $path->getSegment(23); //returns null
 $path->getSegment(23, 'now'); //returns 'now'
 ~~~
 
-### setSegment($offset, $value)
+### PathInterface::setSegment($offset, $value)
 
 Set a specific key from the object. `$offset` must be an integer between 0 and the total number of label. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
 
@@ -94,7 +94,7 @@ count($path); // returns 0
 $path->getSegment(0); //returns null
 ~~~
 
-### append($data, $whence = null, $whence_index = null)
+### PathInterface::append($data, $whence = null, $whence_index = null)
 
 Append data to the component.
 
@@ -115,7 +115,7 @@ $path->append('to/the/sky', 'path');
 $path->__toString(); //returns path/to/the/sky
 ~~~
 
-### prepend($data, $whence = null, $whence_index = null)
+### PathInterface::prepend($data, $whence = null, $whence_index = null)
 
 Prepend data to the component.
 
@@ -136,7 +136,7 @@ $path->prepend('path/to/the', 'sky');
 $path->__toString(); //returns path/to/the/sky
 ~~~
 
-### remove($data)
+### PathInterface::remove($data)
 
 Remove part of the `Path` component data. The method returns `true` if the `$data` has been successfully removed. The `$data` argument which represents the data to be prepended can be:
     - a string representation of a path component;
@@ -154,7 +154,7 @@ $path->remove('the');
 $path->__toString(); //returns path/to/sky
 ~~~
 
-### relativeTo(PathInterface $path)
+### PathInterface::relativeTo(PathInterface $path)
 
 Return a `PathInterface` object which represents the current `PathInterface` relative path to specified `PathInterface` object
 

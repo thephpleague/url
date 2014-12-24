@@ -37,7 +37,7 @@ $alt->sameValueAs($host); //returns true
 
 This interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname by extending the [ComponentInterface](/dev-master/component/) interface with the following methods.
 
-### toArray()
+### HostInterface::toArray()
 
 Returns an array representation of the host string
 
@@ -49,7 +49,7 @@ $host = new Host('master.example.com');
 $arr = $host->toArray(); returns //  ['master', 'example', 'com'];
 ~~~
 
-### keys()
+### HostInterface::keys()
 
 Returns the keys of the Host object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
 
@@ -62,7 +62,7 @@ $arr = $host->keys(); returns //  [0, 1, 2, 3];
 $arr = $host->keys('uk'); returns // ['0, 3];
 ~~~
 
-### getSegment($offset, $default = null)
+### HostInterface::getSegment($offset, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -76,7 +76,7 @@ $host->getSegment(23); //returns null
 $host->getSegment(23, 'now'); //returns 'now'
 ~~~
 
-### setSegment($offset, $value)
+### HostInterface::setSegment($offset, $value)
 
 Set a specific key from the object. `$offset` must be an integer between 0 and the total number of label. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
 
@@ -94,7 +94,7 @@ count($host); // returns 0
 $host->getSegment(0); //returns null
 ~~~
 
-### append($data, $whence = null, $whence_index = null)
+### HostInterface::append($data, $whence = null, $whence_index = null)
 
 Append data to the component.
 
@@ -115,7 +115,7 @@ $host->append('example.com', 'toto');
 $host->__toString(); //returns toto.example.com
 ~~~
 
-### prepend($data, $whence = null, $whence_index = null)
+### HostInterface::prepend($data, $whence = null, $whence_index = null)
 
 Prepend data to the component.
 
@@ -136,7 +136,7 @@ $host->prepend('toto', 'example.com');
 $host->__toString(); //returns toto.example.com
 ~~~
 
-### remove($data)
+### HostInterface::remove($data)
 
 Remove part of the `Host` component data. The method returns `true` if the `$data` has been successfully removed. The `$data` argument which represents the data to be prepended can be:
     - a string representation of a host component;
@@ -156,11 +156,11 @@ $host->__toString(); //returns example.com
 
 ## IDN support
 
-### toUnicode()
+### HostInterface::toUnicode()
 
 The method is an alias of `__toString()` and return the hostname internationalized name.
 
-### toAscii()
+### HostInterface::toAscii()
 
 This method returns the punycode encoded hostname.
 
@@ -190,15 +190,15 @@ A hostname as IP can be specified using:
 
 Once the hostname is defined as an IP you can no longer use the `setSegment`, `append`, `prepend` methods to modify its value. The only way to modify the hostname is by setting a new value using the `set` method.
 
-### isIp()
+### HostInterface::isIp()
 
 Tells whether the current hostname is a IP address
 
-### isIpv4()
+### HostInterface::isIpv4()
 
 Tells whether the current hostname is a IPv4 address
 
-### isIpv6()
+### HostInterface::isIpv6()
 
 Tells whether the current hostname is a IPv6 address
 

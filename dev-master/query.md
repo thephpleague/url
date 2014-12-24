@@ -38,7 +38,7 @@ $alt->sameValueAs($query); //returns true
 
 This interface extends the [`ComponentInterface`](/dev-master/component/) by adding the following methods:
 
-### modify($data)
+### QueryInterface::modify($data)
 
 The method allow modifying the query. just like with the `QueryInterface::set` method, the single `$data` can be:
 
@@ -57,7 +57,7 @@ $query->modify('foo=jane');
 $query->get(); //returns foo=jane&baz=toto
 ~~~
 
-### getParameter($key, $default = null)
+### QueryInterface::getParameter($key, $default = null)
 
 Returns the value if a specific key. If the key does not exists it will return the value specified by the `$default` argument
 
@@ -72,7 +72,7 @@ $query->getParameter('change'); //returns null
 $query->getParameter('change', 'now'); //returns 'now'
 ~~~
 
-### setParameter($key, $value)
+### QueryInterface::setParameter($key, $value)
 
 Set a specific key from the object. `$key` must be a string. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
 
@@ -90,7 +90,7 @@ count($query); // returns 0
 $query->getParameter('foo'); //returns null
 ~~~
 
-### toArray()
+### QueryInterface::toArray()
 
 Returns an array representation of the query string
 
@@ -102,7 +102,7 @@ $query = new Query('foo=bar&baz=nitro');
 $arr = $query->toArray(); returns //  ['foo' => 'bar', 'baz' => 'nitro', ];
 ~~~
 
-### keys()
+### QueryInterface::keys()
 
 Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
 
