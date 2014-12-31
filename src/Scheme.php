@@ -41,6 +41,8 @@ class Scheme extends AbstractComponent implements ComponentInterface
         }
 
         $this->data = strtolower($data);
+				
+				return $this;
     }
 
     /**

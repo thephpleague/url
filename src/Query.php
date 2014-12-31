@@ -53,6 +53,8 @@ class Query extends AbstractContainer implements
 
             return null !== $value && '' !== $value;
         });
+				
+				return $this;
     }
 
     /**
@@ -94,6 +96,8 @@ class Query extends AbstractContainer implements
     public function modify($data)
     {
         $this->set(array_merge($this->data, $this->validate($data)));
+				
+				return $this;
     }
 
     /**
@@ -143,6 +147,7 @@ class Query extends AbstractContainer implements
      *
      * @param string $key   the query parameter key
      * @param mixed  $value the query parameter value
+		 * @return static $this for chaining
      */
     public function setParameter($key, $value)
     {
@@ -150,6 +155,8 @@ class Query extends AbstractContainer implements
             throw new RuntimeException('offset can not be null');
         }
         $this->modify([$key => $value]);
+				
+				return $this;
     }
 
     /**

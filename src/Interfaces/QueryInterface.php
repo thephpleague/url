@@ -38,6 +38,8 @@ interface QueryInterface extends ComponentInterface
      * Query Parameter setter using an array
      *
      * @param array $data
+		 * 
+		 * @return static $this for chaining
      */
     public function modify($data);
 
@@ -56,6 +58,8 @@ interface QueryInterface extends ComponentInterface
      *
      * @param string $key   the query parameter key
      * @param mixed  $value the query parameter value
+		 * 
+		 * @return static $this for chaining
      */
     public function setParameter($key, $value);
 }

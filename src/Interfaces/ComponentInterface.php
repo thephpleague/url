@@ -25,7 +25,7 @@ interface ComponentInterface
      *
      * @param mixed $data data to be added
      *
-     * @return void
+     * @return static $this for chaining
      */
     public function set($data);
 
