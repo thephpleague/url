@@ -51,6 +51,8 @@ abstract class AbstractComponent
         }
         $data = filter_var((string) $data, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]);
         $this->data = trim($data);
+				
+				return $this;
     }
 
     /**

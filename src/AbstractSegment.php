@@ -47,6 +47,8 @@ abstract class AbstractSegment extends AbstractContainer
         $this->data = array_filter($this->validate($data), function ($value) {
             return ! is_null($value);
         });
+				
+				return $this;
     }
 
     /**
@@ -144,6 +146,8 @@ abstract class AbstractSegment extends AbstractContainer
      * @param string|array|\Traversable $data
      * @param string                    $whence
      * @param integer                   $whence_index
+		 * 
+		 * @return static $this for chaining
      */
     public function append($data, $whence = null, $whence_index = null)
     {
@@ -153,6 +157,8 @@ abstract class AbstractSegment extends AbstractContainer
             $whence,
             $whence_index
         );
+				
+				return $this;
     }
 
     /**
@@ -160,6 +166,8 @@ abstract class AbstractSegment extends AbstractContainer
      * @param string|array|\Traversable $data
      * @param string                    $whence
      * @param integer                   $whence_index
+		 * 
+		 * @return static $this for chaining
      */
     public function prepend($data, $whence = null, $whence_index = null)
     {
@@ -169,6 +177,8 @@ abstract class AbstractSegment extends AbstractContainer
             $whence,
             $whence_index
         );
+				
+				return $this;
     }
 
     /**

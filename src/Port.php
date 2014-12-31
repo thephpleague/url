@@ -42,6 +42,8 @@ class Port extends AbstractComponent implements ComponentInterface
         }
 
         $this->data = (int) $data;
+				
+				return $this;
     }
 
     /**

@@ -96,6 +96,8 @@ class Host extends AbstractSegment implements
         $this->data = array_filter($this->validate($data), function ($value) {
             return ! is_null($value);
         });
+				
+				return $this;
     }
 
     /**
