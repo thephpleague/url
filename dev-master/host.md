@@ -62,7 +62,7 @@ $arr = $host->keys(); returns //  [0, 1, 2, 3];
 $arr = $host->keys('uk'); returns // ['0, 3];
 ~~~
 
-### HostInterface::getSegment($offset, $default = null)
+### HostInterface::getLabel($offset, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -71,12 +71,12 @@ Returns the value of a specific offset. If the offset does not exists it will re
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->getSegment(0); //returns 'uk'
-$host->getSegment(23); //returns null
-$host->getSegment(23, 'now'); //returns 'now'
+$host->getLabel(0); //returns 'uk'
+$host->getLabel(23); //returns null
+$host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
-### HostInterface::setSegment($offset, $value)
+### HostInterface::setLabel($offset, $value)
 
 Set a specific key from the object. `$offset` must be an integer between 0 and the total number of label. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
 
@@ -86,12 +86,12 @@ use League\Url\Host;
 
 $host = new Host();
 count($host); // returns 0
-$host->setSegment(0, 'bar');
-$host->getSegment(0); //returns 'bar'
+$host->setLabel(0, 'bar');
+$host->getLabel(0); //returns 'bar'
 count($host); // returns 1
-$host->setSegment(0, null); //returns null
+$host->setLabel(0, null); //returns null
 count($host); // returns 0
-$host->getSegment(0); //returns null
+$host->getLabel(0); //returns null
 ~~~
 
 ### HostInterface::append($data, $whence = null, $whence_index = null)
@@ -165,7 +165,7 @@ The method is an alias of `__toString()` and return the hostname internationaliz
 This method returns the punycode encoded hostname.
 
 ~~~php
-use League\Url\Components\Host;
+use League\Url\Host;
 
 $host = new Host();
 $host->set('스타벅스코리아.com'); //you set the IDN
@@ -188,7 +188,7 @@ A hostname as IP can be specified using:
 - the constructor;
 - the `set` method inherited from the [ComponentInterface](/dev-master/component/) interface
 
-Once the hostname is defined as an IP you can no longer use the `setSegment`, `append`, `prepend` methods to modify its value. The only way to modify the hostname is by setting a new value using the `set` method.
+Once the hostname is defined as an IP you can no longer use the `setLabel`, `append`, `prepend` methods to modify its value. The only way to modify the hostname is by setting a new value using the `set` method.
 
 ### HostInterface::isIp()
 

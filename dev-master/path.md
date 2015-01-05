@@ -59,7 +59,7 @@ use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
 $arr = $path->keys(); returns //  [0, 1, 2, 3];
-$arr = $path->keys('path'); returns // ['0, 3];
+$arr = $path->keys('path'); returns // [0, 3];
 ~~~
 
 ### PathInterface::getSegment($offset, $default = null)
@@ -154,17 +154,17 @@ $path->remove('the');
 $path->__toString(); //returns path/to/sky
 ~~~
 
-### PathInterface::relativeTo(PathInterface $path)
+### PathInterface::normalize()
 
-Return a `PathInterface` object which represents the current `PathInterface` relative path to specified `PathInterface` object
+Normalize a `PathInterface` object by removing dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6). The method which takes no arguments returns a new `PathInterface` object which represents the current object normalized.
 
 ~~~php
 
 use League\Url\Path;
 
-$path = new Path('/path/to/the/sky');
-$alt  = new Path('/path/to/jupiter');
-$res  = $path->relativeTo($alt);
-echo $res; // returns '../the/sky'
+$path = new Path('path/to/./the/../the/sky%7bfoo%7d');
+$alt  = $path->normalize();
+echo $path; // displays 'path/to/./the/../the/sky%7bfoo%7d'
+echo $alt; // displays 'path/to/the/sky%7Bfoo%7D'
+$alt->sameValueAs($path); return false;
 ~~~
-

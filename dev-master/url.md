@@ -86,20 +86,6 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getBaseUrl(); // returns 'http://user:password@example.com:8042';
 ~~~
 
-### UrlInterface::getUrl(UrlInterface $ref_url = null)
-
-Returns the string representation of the URL relative to another `UrlInterface` object;
-
-~~~php
-
-use League\Url\Url;
-use League\Url\UrlImmutable;
-
-$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
-$ref = UrlImmutable::createFromUrl('http://user:password@example.com:8042/over/');
-echo $url->getUrl($ref); // returns '../there';
-~~~
-
 ### UrlInterface::sameValueAs(UrlInterface $url)
 
 Tells whether two `UrlInterface` objects share the same string representation.

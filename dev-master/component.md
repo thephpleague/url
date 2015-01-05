@@ -18,7 +18,9 @@ An URL string is composed of up to 8 components which are in order of appearance
 
 The `League\Url` library provides an access to each URL components via a set of interfaces and classes. These classes can all be use independently but they all implement at least the `League\Url\Interfaces\ComponentInterface`.
 
-##The ComponentInterface
+Whenever applicable URL normalization techniques which preserved the component semantics are applied for better interoperability on each component.
+
+## The ComponentInterface
 
 Each component class implements the `League\Url\Interfaces\ComponentInterface` with the following public methods:
 
