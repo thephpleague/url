@@ -161,6 +161,13 @@ abstract class AbstractSegment extends AbstractContainer
                 $str = substr($str, 1);
             }
 
+            if($this->delimiter === '.') {
+                if (substr($str, -1, 1) == '.')
+                {
+                    $str = substr($str, 0, -1);
+                }
+            }
+
             return explode($this->delimiter, $str);
         });
     }
