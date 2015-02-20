@@ -135,6 +135,18 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertSame('https://127.0.0.1:23/', (string) $url);
     }
 
+    public function testCreateFromServerUsingFQDN()
+    {
+        $server = [
+            'PHP_SELF' => '/toto?foo=bar',
+            'SERVER_ADDR' => 'test.com.',
+            'HTTPS' => 'on',
+            'SERVER_PROTOCOL' => 'HTTP',
+            'SERVER_PORT' => 23,
+        ];
+        $url = Url::createFromServer($server);
+    }
+
     public function testConstructor()
     {
         $expected = 'http://example.com:80/foo/bar?foo=bar#content';
