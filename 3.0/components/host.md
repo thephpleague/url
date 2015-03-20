@@ -5,14 +5,22 @@ title: URL complex components
 
 # The Host class
 
-This [segment values component class](/components/overview/#segment-components) manage the URL host component by implementing the `League\Url\Components\HostInterface`.
-
-## IDN support (since version 3.1)
+This class is a [segment values component class](/components/overview/#segment-components) and manage the URL host component. It implementings the `League\Url\Components\HostInterface` too.
 
 The interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a>.
 
-* `toUnicode()` : is an alias of `__toString()` and return the hostname internationalized name
-* `toAscii()` : return the Punycode encoded hostname; 
+
+### HostInterface::toUnicode()
+
+<p class="message-notice">added in <code>version 3.1</code></p>
+
+This method is an alias of `__toString()` and return the hostname internationalized name
+
+### HostInterface::toAscii()
+
+<p class="message-notice">added in <code>version 3.1</code></p>
+
+Returns the Punycode encoded hostname;
 
 ~~~php
 use League\Url\Components\Host;

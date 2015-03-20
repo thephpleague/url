@@ -5,11 +5,15 @@ title: The Path class
 
 # The Path class
 
-This [segment values component class](/components/overview/#segment-components) manage the URL path component by implementing the `League\Url\Components\PathInterface`. 
+This class is a [segment values component class](/3.0/components/overview/#segment-components) and manage the URL path component. It also implements the `League\Url\Components\PathInterface`. 
 
 The `League\Url\Components\PathInterface` interface adds the following method:
 
-* `getRelativePath(PathInterface $path)`: returns a string representation of the relative path from the current object relative to the `$path` given *added in version 3.2*;
+### PathInterface::getRelativePath(PathInterface $path)
+
+<p class="message-notice">added in <code>version 3.2</code></p>
+
+Returns a string representation of the relative path from the current object relative to the `$path` given.
 
 Example using the `League\Url\Components\Path` object:
 
@@ -43,8 +47,8 @@ var_export($path->toArray());
 // )
 
 $nb_occurences = count($path->keys('troll'));
-//if $nb_occurences is higher than 1, 
-//you must specify the $whence index 
+//if $nb_occurences is higher than 1,
+//you must specify the $whence index
 //if you do not insert you data around the first occurence
 //the $whence_index start at 0
 $path->prepend('bar', 'troll', 1);
