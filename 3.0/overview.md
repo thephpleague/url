@@ -54,6 +54,11 @@ The `League\Url\UrlInterface` interface provide the following methods:
 
 <p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
 
+
+**The following was added in version 3.3:**
+
+* `toArray`: returns the URL component as an array like PHP native `parse_url` but all components are always returned even when missing from the full URL.
+
 ~~~php
 use League\Url\Url;
 use League\Url\UrlImmutable;
