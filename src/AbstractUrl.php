@@ -165,6 +165,26 @@ abstract class AbstractUrl implements UrlInterface
     }
 
     /**
+     * Retuns a array representation like parse_url
+     * But includes all components
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'scheme' => $this->scheme->get(),
+            'user' => $this->user->get(),
+            'pass' => $this->pass->get(),
+            'host' => $this->host->get(),
+            'port' => $this->port->get(),
+            'path' => $this->path->get(),
+            'query' => $this->query->get(),
+            'fragment' => $this->fragment->get(),
+        );
+    }
+
+    /**
      * Return a instance of Url from a string
      *
      * @param string $url a string or an object that implement the __toString method

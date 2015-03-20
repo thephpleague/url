@@ -2,6 +2,14 @@
 
 All Notable changes to `League\Url` will be documented in this file
 
+## 3.3.0 - 2015-03-20
+
+### Added
+- adding the `toArray` method to `League\Url\AbstractUrl` to output the URL like PHP native `parse_url` [issue #56](https://github.com/thephpleague/url/issues/56)
+
+### Fixed
+- `League\Url\Components\Query` bug fix remove parameter only if the value equals `null` [issue #58](https://github.com/thephpleague/url/issues/58)
+
 ## 3.2.1 - 2014-11-27
 
 ### Added

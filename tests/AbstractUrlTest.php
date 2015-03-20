@@ -122,6 +122,21 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         $this->assertSame('', (string) Url::createFromUrl(""));
     }
 
+    public function testToArray()
+    {
+        $url = Url::createFromUrl('http://example.com:80/foo/bar?foo=bar#content');
+        $this->assertSame(array(
+            'scheme' => 'http',
+            'user' => null,
+            'pass' => null,
+            'host' => 'example.com',
+            'port' => 80,
+            'path' => 'foo/bar',
+            'query' => 'foo=bar',
+            'fragment' => 'content',
+        ), $url->toArray());
+    }
+
     /**
      * @expectedException RuntimeException
      */

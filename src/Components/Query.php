@@ -44,7 +44,7 @@ class Query extends AbstractArray implements QueryInterface, ArrayAccess
                 $value = trim($value);
             }
 
-            return null !== $value && '' !== $value;
+            return null !== $value;
         });
     }
 

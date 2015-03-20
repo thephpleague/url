@@ -66,6 +66,12 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertSame('', (string) $this->query);
     }
 
+    public function testModifyWithEmptyArgument()
+    {
+        $this->query->modify(array('kingkong' => ''));
+        $this->assertSame('kingkong=', (string) $this->query);
+    }
+
     public function testSetterWithNull()
     {
         $this->query->set(null);
@@ -137,5 +143,12 @@ class QueryTest extends PHPUnit_Framework_TestCase
     {
         $query = new Query(array('foo.bar' => 'baz'));
         $this->assertSame('foo.bar=baz', (string) $query);
+    }
+
+    public function testSameValueMerge()
+    {
+        $query = new Query("?foo=1&foo=2&bar");
+        $this->assertSame('2', $query['foo']);
+        $this->assertSame('', $query['bar']);
     }
 }
