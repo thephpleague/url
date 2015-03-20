@@ -30,34 +30,49 @@ $url = Url::createFromUrl('ftp://host.example.com');
 
 //Method 2: from the current PHP page
 //don't forget to provide the $_SERVER array
-$url = Url::createFromServer($_SERVER); 
+$url = Url::createFromServer($_SERVER);
 ~~~
 
 `$url` is a `League\Url\Url` object.
 
-## Outputting the Urls
+## Accessing URL properties
 
-The `League\Url\UrlInterface` interface provide the following methods:
-
-* `__toString` returns the full string representation of the URL;
-* `getUserInfo` returns the string representation of the URL user info;
-* `getAuthority` returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
-* `getBaseUrl` returns the string representation of the URL `scheme` component and authority part;
-* `getRelativeUrl(UrlInterface $ref_url = null)` returns the string representation of the URL relative to another `League\Url\UrlInterface` object;
-* `sameValueAs` returns `true` if two `League\Url\UrlInterface` object represents the same URL.
-
-**The following was added in version 3.2:**
-
-* `getUserInfo`;
-* `getAuthority`;
-* the `$ref_url` argument was added to `getRelativeUrl` method;
+Once you have instantiated a `Url` or a `UrlImmutable` object you can access its properties using the following getter methods:
 
 <p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
 
+### UrlInterface::__toString()
 
-**The following was added in version 3.3:**
+Returns the full string representation of the URL;
 
-* `toArray`: returns the URL component as an array like PHP native `parse_url` but all components are always returned even when missing from the full URL.
+### UrlInterface::getUserInfo()
+
+Returns the string representation of the URL user info;
+
+### UrlInterface::getAuthority()
+
+Returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
+
+### UrlInterface::getBaseUrl()
+
+Returns the string representation of the URL `scheme` component and authority part;
+
+### UrlInterface::getRelativeUrl(UrlInterface $ref_url = null)
+
+<p class="message-notice">the <code>$ref_url</code> argument was added in version <code>3.2</code></p>
+
+Returns the string representation of the URL relative to another `League\Url\UrlInterface` object;
+
+
+### UrlInterface::sameValueAs(UrlInterface $ref_url)
+
+Returns `true` if two `League\Url\UrlInterface` object represents the same URL.
+
+### UrlInterface::toArray()
+
+<p class="message-notice">added in version <code>3.3</code></p>
+
+Returns the URL component as an array like PHP native `parse_url` but all components are always returned even when missing from the full URL.
 
 ~~~php
 use League\Url\Url;
@@ -76,41 +91,79 @@ $alternate_url = Url::createFromUrl("http://example.com");
 
 $original_url->sameValueAs($new_url); //will return true
 $original_url->sameValueAs($alternate_url); //will return false
+
+$url->toArray();
+//returns a array with all the component
+// array(
+//     'scheme' => 'http',
+//     'user' => null,
+//     'pass' => null,
+//     'host' => 'www.example.com',
+//     'port' => null,
+//     'path' => 'path/index.php',
+//     'query' => 'query=toto+le+heros',
+//     'fragment' => null,
+// );
 ~~~
 
 ## Manipulating URLs
 
-A URL string is composed of up to 8 components. For each object, each URL component can be accessed and modified through its own setter and getter method.
+A URL string is composed of 8 components. In `League\Url` each component is represented by a specific object you can accessed on `League\Url\UrlInterface` through their respective setter and getter methods.
 
 * Chaining is possible since all the setter methods return a `League\Url\UrlInterface` object;
-* Getter methods return a [League\Url\Component\ComponentInterface][basic] object;
+* Getter methods return a specific component object;
 
-Here's a complete list of all the setter and getter provided by the `League\Url\UrlInterface` interface:
+### Scheme getter and setter
 
-* `setScheme($data)` set the URL scheme component;
-* `getScheme()` returns a [League\Url\Components\ComponentInterface][basic] object
-* `setUser($data)` set the URL user component;
-* `getUser()` returns a [League\Url\Components\ComponentInterface][basic] object
-* `setPass($data)` set the URL pass component;
-* `getPass()` returns a [League\Url\Components\ComponentInterface][basic] object
-* `setHost($data)` set the URL host component;
-* `getHost()` returns a [League\Url\Components\HostInterface](/components/host/) object
-* `setPort($data)` set the URL port component;
-* `getPort()` returns a [League\Url\Components\ComponentInterface][basic] object
-* `setPath($data)` set the URL path component;
-* `getPath()` returns a [League\Url\Components\PathInterface](/components/path/) object
-* `setQuery($data)` set the URL query component;
-* `getQuery()` returns a [League\Url\Components\QueryInterface](/components/query/) object
-* `setFragment($data)` set the URL fragment component;
-* `getFragment()` returns a [League\Url\Components\ComponentInterface][basic]`object
+* `UrlInterface::setScheme($data)` set the scheme component;
+* `UrlInterface::getScheme()` returns a [League\Url\Components\Scheme][basic] object
 
-The `$data` argument can be:
+### User getter and setter
+
+* `UrlInterface::setUser($data)` set the user component;
+* `UrlInterface::getUser()` returns a [League\Url\Components\User][basic] object
+
+### Pass getter and setter
+
+* `UrlInterface::setPass($data)` set the pass component;
+* `UrlInterface::getPass()` returns a [League\Url\Components\Pass][basic] object
+
+### Host getter and setter
+
+* `UrlInterface::setHost($data)` set the host component;
+* `UrlInterface::getHost()` returns a [League\Url\Components\Host](/components/host/) object
+
+### Port getter and setter
+
+* `UrlInterface::setPort($data)` set the port component;
+* `UrlInterface::getPort()` returns a [League\Url\Components\Port][basic] object
+
+### Path getter and setter
+
+* `UrlInterface::setPath($data)` set the path component;
+* `UrlInterface::getPath()` returns a [League\Url\Components\Path](/components/path/) object
+
+### Query getter and setter
+
+* `UrlInterface::setQuery($data)` set the query component;
+* `UrlInterface::getQuery()` returns a [League\Url\Components\Query](/components/query/) object
+
+### Fragment getter and setter
+
+* `UrlInterface::setFragment($data)` set the fragment component;
+* `UrlInterface::getFragment()` returns a [League\Url\Components\Fragment][basic]`object
+
+
+For all setter methods `$data` argument can be:
 
 * `null`;
 * a valid component string for the specified URL component;
 * an object implementing the `__toString` method;
 * another specific component object;
-* for `setHost`, `setPath`, `setQuery`: an `array` or a `Traversable` object;
+
+For the host, path and query components, `$data` can also be an `array` or a `Traversable` object;
+
+## Manipulation examples
 
 Let's modify a `League\Url\Url` object:
 
