@@ -151,4 +151,12 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertSame('2', $query['foo']);
         $this->assertSame('', $query['bar']);
     }
+
+    public function testMultipleEmpty()
+    {
+        $query = new Query("?foo&bar=&baz");
+        $this->assertSame('', $query['foo']);
+        $this->assertSame('', $query['bar']);
+        $this->assertSame('', $query['baz']);
+    }
 }
