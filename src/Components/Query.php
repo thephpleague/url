@@ -114,20 +114,34 @@ class Query extends AbstractArray implements QueryInterface, ArrayAccess
                 $str = substr($str, 1);
             }
 
-            //let's preserve the key params
-            $str = preg_replace_callback('/(?:^|(?<=&))[^=[]+/', function ($match) {
-                return bin2hex(urldecode($match[0]));
-            }, $str);
-            parse_str($str, $arr);
-
-            //hexbin does not work in PHP 5.3
-            $arr = array_combine(array_map(function ($value) {
-                return pack('H*', $value);
-
-            }, array_keys($arr)), $arr);
+            // alternative to parse_str to fix #31 and #58
+            $parts = explode('&', $str);
+            $arr = array();
+            foreach ($parts as $part) {
+                $part = explode('=', $part, 2);
+                $arr[$part[0]] = isset($part[1]) ? $part[1] : '';
+            }
+            $arr = $this->parseArrayParams($arr);
 
             return $arr;
         });
+    }
+
+    protected function parseArrayParams($inputArray) {
+        $result = array();
+        foreach ($inputArray as $key => $val) {
+            $keyParts = preg_split('/[\[\]]+/', $key, -1, PREG_SPLIT_NO_EMPTY);
+            $ref = &$result;
+            while ($keyParts) {
+                $part = array_shift($keyParts);
+                if (!isset($ref[$part])) {
+                    $ref[$part] = array();
+                }
+                $ref = &$ref[$part];
+            }
+            $ref = $val;
+        }
+        return $result;
     }
 
     /**
