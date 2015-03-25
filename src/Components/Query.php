@@ -115,7 +115,7 @@ class Query extends AbstractArray implements QueryInterface, ArrayAccess
             }
 
             //let's preserve the key params
-            $str = preg_replace_callback('/(?:^|(?<=&))[^=[]+/', function ($match) {
+            $str = preg_replace_callback('/(?:^|(?<=&))[^=|&[]+/', function ($match) {
                 return bin2hex(urldecode($match[0]));
             }, $str);
             parse_str($str, $arr);
