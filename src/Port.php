@@ -34,8 +34,7 @@ class Port extends AbstractComponent implements ComponentInterface
         }
 
         $data = (string) $data;
-        $data = trim($data);
-        $data = filter_var($data, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        $data = filter_var(trim($data), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
         if (! $data) {
             throw new RuntimeException('A port must be a valid positive integer');
@@ -50,7 +49,8 @@ class Port extends AbstractComponent implements ComponentInterface
     public function getUriComponent()
     {
         $value = $this->__toString();
-        if ('' != $value) {
+
+        if ('' !== $value) {
             $value = ':'.$value;
         }
 

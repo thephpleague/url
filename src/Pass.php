@@ -28,7 +28,8 @@ class Pass extends AbstractComponent implements ComponentInterface
     public function getUriComponent()
     {
         $value = $this->__toString();
-        if ('' != $value) {
+
+        if ('' !== $value) {
             $value = ':'.$value;
         }
 

@@ -60,6 +60,7 @@ class Host extends AbstractSegment implements
     protected function saveInternalEncoding()
     {
         $this->encoding = mb_internal_encoding();
+
         if (stripos($this->encoding, 'utf-8') === false) {
             mb_internal_encoding('utf-8');
         }
@@ -75,6 +76,7 @@ class Host extends AbstractSegment implements
     protected function sanitizeValue($str)
     {
         $str = parent::sanitizeValue($str);
+
         if (is_array($str)) {
             return array_map('mb_strtolower', $str);
         }
@@ -107,6 +109,7 @@ class Host extends AbstractSegment implements
     public function set($data)
     {
         $this->setHostAsIp($data);
+
         if ($this->isIp()) {
             return;
         }
@@ -122,9 +125,11 @@ class Host extends AbstractSegment implements
     public function get()
     {
         $res = [];
+
         foreach (array_values($this->data) as $value) {
             $res[] = $this->punycode->decode($value);
         }
+
         if (! $res) {
             return null;
         }
@@ -165,7 +170,7 @@ class Host extends AbstractSegment implements
             return mb_strlen($label) > 63;
         });
 
-        return 0 == count($res);
+        return 0 === count($res);
     }
 
     /**
@@ -184,12 +189,12 @@ class Host extends AbstractSegment implements
 
         $res = preg_grep('/^[0-9a-z]([0-9a-z-]{0,61}[0-9a-z])?$/i', $data, PREG_GREP_INVERT);
 
-        return 0 == count($res);
+        return 0 === count($res);
     }
 
     protected function isValidHostLabels(array $data = [])
     {
-        $labels       = array_merge($this->data, $data);
+        $labels = array_merge($this->data, $data);
         $count_labels = count($labels);
 
         return $count_labels > 0 && $count_labels < 127 && 255 > strlen(implode($this->delimiter, $labels));
@@ -207,18 +212,24 @@ class Host extends AbstractSegment implements
     protected function validate($data)
     {
         $data = $this->validateSegment($data);
+
         if (! $data) {
             return $data;
         }
 
         $this->saveInternalEncoding();
+
         if (! $this->isValidHostLength($data)) {
             $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid hostname, check its length');
-        } elseif (! $this->isValidHostPattern($data)) {
+        }
+
+        if (! $this->isValidHostPattern($data)) {
             $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid host label, check its content');
-        } elseif (! $this->isValidHostLabels($data)) {
+        }
+
+        if (! $this->isValidHostLabels($data)) {
             $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid host label counts, check its count');
         }
@@ -228,6 +239,7 @@ class Host extends AbstractSegment implements
             $this->delimiter,
             $this->punycode->decode(implode($this->delimiter, $data))
         );
+
         $this->restoreInternalEncoding();
 
         return $data;
@@ -266,17 +278,21 @@ class Host extends AbstractSegment implements
     {
         $this->host_as_ipv4 = false;
         $this->host_as_ipv6 = false;
+
         if (! self::isStringable($str)) {
             return;
         }
 
         $str = (string) $str;
+
         $str = trim($str);
         if ('[' == $str[0] && ']' == $str[strlen($str)-1]) {
             $str = substr($str, 1, -1);
+
             if (! filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
                 return false;
             }
+
             $this->host_as_ipv4 = false;
             $this->host_as_ipv6 = true;
             $this->data = [$str];
@@ -287,7 +303,9 @@ class Host extends AbstractSegment implements
             $this->host_as_ipv4 = true;
             $this->host_as_ipv6 = false;
             $this->data = [$str];
-        } elseif (filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        }
+
+        if (filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             $this->host_as_ipv4 = false;
             $this->host_as_ipv6 = true;
             $this->data = [$str];
@@ -332,6 +350,7 @@ class Host extends AbstractSegment implements
     public function getUriComponent()
     {
         $str = $this->__toString();
+
         if ($this->host_as_ipv6) {
             return '['.$str.']';
         }
@@ -353,6 +372,7 @@ class Host extends AbstractSegment implements
     public function getLabel($offset, $default = null)
     {
         $offset = filter_var($offset, FILTER_VALIDATE_INT, ['options' => ["min_range" => 0]]);
+
         if (false === $offset || ! isset($this->data[$offset])) {
             return $default;
         }
@@ -369,13 +389,13 @@ class Host extends AbstractSegment implements
             "min_range" => 0,
             "max_range" => $this->count(),
         ]]);
+
         if (false === $offset) {
             throw new OutOfBoundsException('The specified key is not in the object boundaries');
         }
 
         $data = $this->data;
-        $value = filter_var((string) $value, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]);
-        $value = trim($value);
+        $value = trim(filter_var((string) $value, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]));
 
         if (empty($value)) {
             unset($data[$offset]);
@@ -383,7 +403,8 @@ class Host extends AbstractSegment implements
         }
 
         $data[$offset] = $value;
-        if (1 == count($data)) {
+
+        if (1 === count($data)) {
             return $this->set($value);
         }
 

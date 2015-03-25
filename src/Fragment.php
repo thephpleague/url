@@ -36,6 +36,7 @@ class Fragment extends AbstractComponent implements ComponentInterface
     public function __toString()
     {
         $value = str_replace(null, '', $this->get());
+
         $encodedSymbols = array_map(function ($symbol) {
             return urlencode($symbol);
         }, $this->rawSymbols);
@@ -53,7 +54,8 @@ class Fragment extends AbstractComponent implements ComponentInterface
     public function getUriComponent()
     {
         $value = $this->__toString();
-        if ('' != $value) {
+
+        if ('' !== $value) {
             $value = '#'.$value;
         }
 

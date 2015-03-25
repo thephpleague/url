@@ -49,8 +49,14 @@ abstract class AbstractComponent
 
             return;
         }
-        $data = filter_var((string) $data, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]);
-        $this->data = trim($data);
+
+        $this->data = trim(
+            filter_var(
+                (string) $data,
+                FILTER_UNSAFE_RAW,
+                ['flags' => FILTER_FLAG_STRIP_LOW]
+            )
+        );
     }
 
     /**
@@ -78,6 +84,6 @@ abstract class AbstractComponent
      */
     public function sameValueAs(ComponentInterface $component)
     {
-        return $this->__toString() == $component->__toString();
+        return $this->__toString() === $component->__toString();
     }
 }

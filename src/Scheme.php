@@ -33,9 +33,9 @@ class Scheme extends AbstractComponent implements ComponentInterface
             return;
         }
 
-        $data = filter_var((string) $data, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]);
-        $data = trim($data);
+        $data = trim(filter_var((string) $data, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]));
         $data = filter_var($data, FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^[a-z][a-z0-9+-.]+$/i']]);
+
         if (! $data) {
             throw new RuntimeException('This class only deals with http URL');
         }
@@ -49,7 +49,8 @@ class Scheme extends AbstractComponent implements ComponentInterface
     public function getUriComponent()
     {
         $value = $this->__toString();
-        if ('' != $value) {
+
+        if ('' !== $value) {
             $value .= '://';
         }
 

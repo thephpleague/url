@@ -134,11 +134,8 @@ final class Url implements UrlInterface
             .$this->path->getUriComponent()
             .$this->query->getUriComponent()
             .$this->fragment->getUriComponent();
-        if ('/' == $url) {
-            return '';
-        }
 
-        return $url;
+        return $url === '/' ? '' : $url;
     }
 
     /**
@@ -166,6 +163,7 @@ final class Url implements UrlInterface
     public function getUserInfo()
     {
         $user = $this->user->getUriComponent().$this->pass->getUriComponent();
+
         if ('' != $user) {
             $user .= '@';
         }
@@ -178,11 +176,7 @@ final class Url implements UrlInterface
      */
     public function getAuthority()
     {
-        $user = $this->getUserInfo();
-        $host = $this->host->getUriComponent();
-        $port = $this->port->getUriComponent();
-
-        return $user.$host.$port;
+        return $this->getUserInfo().$this->host->getUriComponent().$this->port->getUriComponent();
     }
 
     /**
@@ -192,7 +186,8 @@ final class Url implements UrlInterface
     {
         $scheme = $this->scheme->getUriComponent();
         $auth = $this->getAuthority();
-        if ('' != $auth && '' == $scheme) {
+
+        if ('' !== $auth && '' === $scheme) {
             $scheme = '//';
         }
 
