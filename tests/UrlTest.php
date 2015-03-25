@@ -62,6 +62,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
             'SERVER_PORT' => 23,
             'HTTP_HOST' => 'example.com',
         ];
+
         $url = Url::createFromServer($server);
         $this->assertInstanceof('\League\Url\Url', $url);
         $this->assertSame('https://example.com:23/', $url->__toString());
@@ -91,6 +92,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
             'SERVER_PORT' => 23,
             'HTTP_HOST' => 'localhost:23',
         ];
+
         $url = Url::createFromServer($server);
         $this->assertInstanceof('\League\Url\Url', $url);
         $this->assertSame('https://localhost:23/', $url->__toString());
@@ -121,6 +123,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
             'SERVER_PROTOCOL' => 'HTTP',
             'SERVER_PORT' => 23,
         ];
+
         $url = Url::createFromServer($server);
         $this->assertSame('https://127.0.0.1:23/toto?foo=bar', (string) $url);
 
@@ -130,6 +133,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
             'SERVER_PROTOCOL' => 'HTTP',
             'SERVER_PORT' => 23,
         ];
+
         $url = Url::createFromServer($server);
 
         $this->assertSame('https://127.0.0.1:23/', (string) $url);
@@ -145,10 +149,12 @@ class UrlTest extends PHPUnit_Framework_TestCase
             '//login@example.com/',
             (string) Url::createFromUrl('login@example.com/')
         );
+
         $this->assertSame(
             '//login:pass@example.com/',
             (string) Url::createFromUrl('login:pass@example.com/')
         );
+
         $this->assertSame(
             'http://login:pass@example.com/',
             (string) Url::createFromUrl('http://login:pass@example.com/')
@@ -195,6 +201,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $url = Url::createFromUrl(
             'https://login:pass@secure.example.com:443/test/query.php?kingkong=toto#doc3'
         );
+
         $this->assertSame('https://login:pass@secure.example.com:443', $url->getBaseUrl());
         $this->assertSame('login:pass@secure.example.com:443', $url->getAuthority());
         $this->assertSame('login:pass@', $url->getUserInfo());
@@ -205,6 +212,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $url = Url::createFromUrl(
             'HtTpS://MaStEr.eXaMpLe.CoM:80/%7ejohndoe/%a1/index.php?foo.bar=value#fragment'
         );
+
         $this->assertSame(
             'https://master.example.com:80/~johndoe/%A1/index.php?foo.bar=value#fragment',
             (string) $url
@@ -214,6 +222,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
     public function testToArray()
     {
         $url = Url::createFromUrl('https://toto.com:443/toto.php');
+
         $this->assertSame([
             'scheme' => 'https',
             'user' => null,

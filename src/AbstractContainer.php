@@ -51,6 +51,7 @@ abstract class AbstractContainer
     public function keys()
     {
         $args = func_get_args();
+
         if (! $args) {
             return array_keys($this->data);
         }
@@ -109,9 +110,13 @@ abstract class AbstractContainer
     {
         if (is_null($data)) {
             return [];
-        } elseif ($data instanceof Traversable) {
+        }
+
+        if ($data instanceof Traversable) {
             return iterator_to_array($data);
-        } elseif (self::isStringable($data)) {
+        }
+
+        if (self::isStringable($data)) {
             $data = (string) $data;
             $data = trim($data);
             $data = $callback($data);

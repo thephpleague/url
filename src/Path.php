@@ -50,9 +50,11 @@ class Path extends AbstractSegment implements
     public function get()
     {
         $res = [];
+
         foreach (array_values($this->data) as $value) {
             $res[] = rawurlencode($value);
         }
+
         if (! $res) {
             return null;
         }
@@ -86,6 +88,7 @@ class Path extends AbstractSegment implements
     public function normalize()
     {
         $path = $this->getUriComponent();
+
         if (false === strpos($path, '.')) {
             return new static($path);
         }
@@ -93,25 +96,35 @@ class Path extends AbstractSegment implements
         $input  = $path;
         $output = [];
 
-        while ('' != $input) {
+        while ('' !== $input) {
             if ('/.' == $input) {
                 $output[] = '/';
                 break;
-            } elseif ('/./' == substr($input, 0, 3)) {
+            }
+
+            if ('/./' == substr($input, 0, 3)) {
                 $input = substr($input, 2);
                 continue;
-            } elseif ('/..' == $input) {
+            }
+
+            if ('/..' == $input) {
                 array_pop($output);
                 $output[] = '/';
                 break;
-            } elseif ('/../' == substr($input, 0, 4)) {
-                array_pop($output);
-                $input = substr($input, 3);
-            } elseif (in_array($input, ['.', '..'])) {
+            }
+
+            if (in_array($input, ['.', '..'])) {
                 break;
-            } elseif (false === ($pos = stripos($input, '/', 1))) {
+            }
+
+            if (false === ($pos = stripos($input, '/', 1))) {
                 $output[] = $input;
                 break;
+            }
+
+            if ('/../' == substr($input, 0, 4)) {
+                array_pop($output);
+                $input = substr($input, 3);
             } else {
                 $output[] = substr($input, 0, $pos);
                 $input = substr($input, $pos);
@@ -142,6 +155,7 @@ class Path extends AbstractSegment implements
     protected function sanitizeValue($str)
     {
         $str = parent::sanitizeValue($str);
+
         if (is_array($str)) {
             return array_map([$this, 'sanitizeSegment'], $str);
         }
@@ -172,6 +186,7 @@ class Path extends AbstractSegment implements
     public function getSegment($offset, $default = null)
     {
         $offset = filter_var($offset, FILTER_VALIDATE_INT, ['options' => ["min_range" => 0]]);
+
         if (false === $offset || ! isset($this->data[$offset])) {
             return $default;
         }
@@ -188,6 +203,7 @@ class Path extends AbstractSegment implements
             "min_range" => 0,
             "max_range" => $this->count(),
         ]]);
+
         if (false === $offset) {
             throw new OutOfBoundsException('The specified key is not in the object boundaries');
         }

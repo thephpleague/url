@@ -55,11 +55,13 @@ abstract class AbstractSegment extends AbstractContainer
     public function remove($data)
     {
         $data = $this->fetchRemainingSegment($this->data, $data);
+
         if (! is_null($data)) {
             $this->set($data);
 
             return true;
         }
+
         return false;
     }
 
@@ -76,15 +78,19 @@ abstract class AbstractSegment extends AbstractContainer
             foreach ($str as &$value) {
                 $value = $this->sanitizeValue($value);
             }
+
             unset($value);
 
             return $str;
         }
 
-        $str = filter_var((string) $str, FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_STRIP_LOW]);
-        $str = trim($str);
-
-        return $str;
+        return trim(
+            filter_var(
+                (string) $str,
+                FILTER_UNSAFE_RAW,
+                ['flags' => FILTER_FLAG_STRIP_LOW]
+            )
+        );
     }
 
     /**
@@ -154,10 +160,11 @@ abstract class AbstractSegment extends AbstractContainer
     protected function validateSegment($data)
     {
         return $this->convertToArray($data, function ($str) {
-            if ('' == $str) {
+            if ('' === $str) {
                 return [];
             }
-            if ($this->delimiter == $str[0]) {
+
+            if ($this->delimiter === $str[0]) {
                 $str = substr($str, 1);
             }
 
@@ -178,12 +185,15 @@ abstract class AbstractSegment extends AbstractContainer
     protected function appendSegment(array $left, array $value, $whence = null, $whence_index = null)
     {
         $right = [];
-        if (null !== $whence && count($found = array_keys($left, $whence))) {
+
+        if (! is_null($whence) && count($found = array_keys($left, $whence))) {
             array_reverse($found);
             $index = $found[0];
+
             if (array_key_exists($whence_index, $found)) {
                 $index = $found[$whence_index];
             }
+
             $right = array_slice($left, $index+1);
             $left = array_slice($left, 0, $index+1);
         }
@@ -204,11 +214,14 @@ abstract class AbstractSegment extends AbstractContainer
     protected function prependSegment(array $right, array $value, $whence = null, $whence_index = null)
     {
         $left = [];
+
         if (null !== $whence && count($found = array_keys($right, $whence))) {
             $index = $found[0];
+
             if (array_key_exists($whence_index, $found)) {
                 $index = $found[$whence_index];
             }
+
             $left = array_slice($right, 0, $index);
             $right = array_slice($right, $index);
         }
@@ -229,7 +242,8 @@ abstract class AbstractSegment extends AbstractContainer
     protected function fetchRemainingSegment(array $data, $value)
     {
         $segment = implode($this->delimiter, $data);
-        if ('' == $value) {
+
+        if ('' === $value) {
             if ($index = array_search('', $data, true)) {
                 $left = array_slice($data, 0, $index);
                 $right = array_slice($data, $index+1);

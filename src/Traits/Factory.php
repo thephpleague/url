@@ -42,7 +42,9 @@ trait Factory
         if (is_null($url)) {
             throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
         }
+
         $components = @parse_url($url);
+
         if (false === $components) {
             throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
         }
@@ -54,11 +56,14 @@ trait Factory
     {
         if ('' == $url || strpos($url, '//') === 0) {
             return $url;
-        } elseif (! preg_match(',^((http|ftp|ws)s?:),i', $url, $matches)) {
+        }
+
+        if (! preg_match(',^((http|ftp|ws)s?:),i', $url, $matches)) {
             return '//'.$url;
         }
 
         $scheme_length = strlen($matches[0]);
+
         if (strpos(substr($url, $scheme_length), '//') === 0) {
             return $url;
         }
@@ -77,12 +82,10 @@ trait Factory
      */
     public static function createFromServer(array $server)
     {
-        $scheme = self::fetchServerScheme($server);
-        $host = self::fetchServerHost($server);
-        $port = self::fetchServerPort($server);
-        $request = self::fetchServerRequestUri($server);
-
-        return self::createFromUrl($scheme.$host.$port.$request);
+        return self::createFromUrl(
+            self::fetchServerScheme($server).self::fetchServerHost($server).self::fetchServerPort($server).
+            self::fetchServerRequestUri($server)
+        );
     }
 
     /**
@@ -95,12 +98,15 @@ trait Factory
     private static function fetchServerScheme(array $server)
     {
         $scheme = '';
+
         if (isset($server['SERVER_PROTOCOL'])) {
             $scheme = explode('/', $server['SERVER_PROTOCOL']);
             $scheme = strtolower($scheme[0]);
+
             if (isset($server['HTTPS']) && 'off' != $server['HTTPS']) {
                 $scheme .= 's';
             }
+
             $scheme .= ':';
         }
 
@@ -120,11 +126,15 @@ trait Factory
     {
         if (isset($server['HTTP_HOST'])) {
             $header = $server['HTTP_HOST'];
+
             if (! preg_match('/(:\d+)$/', $header, $matches)) {
                 return $header;
             }
+
             return substr($header, 0, -strlen($matches[1]));
-        } elseif (isset($server['SERVER_ADDR'])) {
+        }
+
+        if (isset($server['SERVER_ADDR'])) {
             return $server['SERVER_ADDR'];
         }
 
@@ -141,7 +151,8 @@ trait Factory
     private static function fetchServerPort(array $server)
     {
         $port = '';
-        if (isset($server['SERVER_PORT']) && '80' != $server['SERVER_PORT']) {
+
+        if (isset($server['SERVER_PORT']) && '80' !== $server['SERVER_PORT']) {
             $port = ':'. (int) $server['SERVER_PORT'];
         }
 
@@ -159,7 +170,9 @@ trait Factory
     {
         if (isset($server['REQUEST_URI'])) {
             return $server['REQUEST_URI'];
-        } elseif (isset($server['PHP_SELF'])) {
+        }
+
+        if (isset($server['PHP_SELF'])) {
             return $server['PHP_SELF'];
         }
 

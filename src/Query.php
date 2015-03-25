@@ -81,6 +81,7 @@ class Query extends AbstractContainer implements
     public function getUriComponent()
     {
         $value = $this->__toString();
+
         if ('' != $value) {
             $value = '?'.$value;
         }
@@ -105,6 +106,7 @@ class Query extends AbstractContainer implements
             if ('' == $str) {
                 return [];
             }
+
             if ('?' == $str[0]) {
                 $str = substr($str, 1);
             }
@@ -113,6 +115,7 @@ class Query extends AbstractContainer implements
             $str = preg_replace_callback('/(?:^|(?<=&))[^=[]+/', function ($match) {
                 return bin2hex(urldecode($match[0]));
             }, $str);
+
             parse_str($str, $arr);
 
             return array_combine(array_map('hex2bin', array_keys($arr)), $arr);
@@ -131,6 +134,7 @@ class Query extends AbstractContainer implements
     public function getParameter($key, $default = null)
     {
         $res = $this->offsetGet($key);
+
         if (is_null($res)) {
             return $default;
         }
@@ -149,6 +153,7 @@ class Query extends AbstractContainer implements
         if (is_null($key)) {
             throw new RuntimeException('offset can not be null');
         }
+
         $this->modify([$key => $value]);
     }
 

@@ -11,7 +11,6 @@ use PHPUnit_Framework_TestCase;
  */
 class HostTest extends PHPUnit_Framework_TestCase
 {
-
     public function testIpv4()
     {
         $host = new Host('127.0.0.1');
