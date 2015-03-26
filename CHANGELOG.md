@@ -2,6 +2,11 @@
 
 All Notable changes to `League\Url` will be documented in this file
 
+## 3.3.1 - 2015-03-26
+
+### Fixed
+- `League\Url\Components\Query` bug fix [issue #58](https://github.com/thephpleague/url/issues/58), improved bug fix [issue #31](https://github.com/thephpleague/url/issues/31)
+
 ## 3.3.0 - 2015-03-20
 
 ### Added
