@@ -17,21 +17,28 @@ $url = Url::createFromUrl(
     'http://user:pass@www.example.com:81/path/index.php?query=toto+le+heros#top'
 );
 
-//let update the Query String
+//let's update the Query String
 $query = $url->getQuery();
-$query->modify(array('query' => "lulu l'allumeuse", "foo" => "bar")); 
-$query['sarah'] = "o connors"; //adding a new parameter
+$new_query = $query->mergeWith(['query' => "lulu l'allumeuse", "foo" => "bar"]);
 
-$url->setScheme('ftp'); //change the URLs scheme
-$url->setFragment(null); //remove the fragment
-$url->setPort(21);
-$url->getPath()->remove('path/index.php'); //remove part of the path
-$url->getPath()->prepend('mongo db'); //prepend the path
-echo $url, PHP_EOL; 
-// output ftp://user:pass@www.example.com:21/mongo%20db?query=lulu%20l%27allumeuse&foo=bar&sarah=o%20connors
+//let's update the path
+$path = $url->getPath();
+$new_path = $path
+		->without('path/index.php')
+		->prepend('mongo db');
+
+$new_url = $url
+	->withScheme('ftp')
+	->withFragment(null)
+	->withPort(21)
+	->withPath($new_path)
+	->withQuery($new_query);
+
+echo $url; // 'http://user:pass@www.example.com:81/path/index.php?query=toto%20le%20heros#top'
+echo $new_url; // 'ftp://user:pass@www.example.com/mongo%20db?query=lulu%20l%27allumeuse&foo=bar'
 ~~~
 
-## Using an Immutable URL to implement Pagination
+## Implementing Pagination
 
 A simple example to show you how to implement pagination while retaining the original URI:
 
@@ -40,21 +47,20 @@ A simple example to show you how to implement pagination while retaining the ori
 use League\Url\UrlImmutable;
 
 //create a URL from the current page
-$url = UrlImmutable::createFromServer($_SERVER);
+$url = Url::createFromServer($_SERVER);
 // array to hold the generated URLs
 $paginations = array();
 //get the current path
 $query = $url->getQuery();
 foreach (range(1, 5) as $index) {
-    $query['page'] = $index;
     //we generate the new Url based on the original $url_immutable object
-    $paginations[] = $url->setQuery($query);
+    $paginations[] = $url->withQuery($query->mergeWith(['p' => $index]));
 }
 
 //$paginations now contains 5 new League\Url\UrlImmutable objects 
 //but $url has not change
 foreach ($paginations as $uri) {
-    $res = $uri instanceof 'League\Url\UrlImmutable'; // $res is true
+    $res = $uri instanceof 'League\Url\Url'; // $res is true
 	$url->sameValueAs($uri); // return false
 }
 ~~~
