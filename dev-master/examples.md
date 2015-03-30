@@ -49,7 +49,7 @@ use League\Url\UrlImmutable;
 //create a URL from the current page
 $url = Url::createFromServer($_SERVER);
 // array to hold the generated URLs
-$paginations = array();
+$paginations = [];
 //get the current path
 $query = $url->getQuery();
 foreach (range(1, 5) as $index) {
@@ -57,7 +57,7 @@ foreach (range(1, 5) as $index) {
     $paginations[] = $url->withQuery($query->mergeWith(['p' => $index]));
 }
 
-//$paginations now contains 5 new League\Url\UrlImmutable objects 
+//$paginations now contains 5 new League\Url\Url objects
 //but $url has not change
 foreach ($paginations as $uri) {
     $res = $uri instanceof 'League\Url\Url'; // $res is true

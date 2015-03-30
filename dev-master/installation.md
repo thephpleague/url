@@ -18,7 +18,6 @@ URL is available on [Packagist](https://packagist.org/packages/league/url) and c
 $ composer require league/url
 ~~~
 
-
 Most modern frameworks will include Composer out of the box, but ensure the following file is included:
 
 ~~~php

@@ -3,20 +3,28 @@ layout: default
 title: URLs as Value Objects
 ---
 
-# The UrlInterface interface
+# The Url object
 
-The library handles FTP, HTTP and Websocket protocol URLs through the use of one interface, the `League\Url\Interfaces\UrlInterface` interface. This interface is implement by two classes:
+The library handles URLs through the use of one class, the `League\Url\Url` which implements two interfaces:
 
-* `League\Url\Url` a value object that represents a URL
-* `League\Url\UrlImmutable` a immutable value object that represents a URL
-
-Think of PHP `DateTime` and `DateTimeImmutable` classes which implement the `DateTimeInterface` interface.
+* `Psr\Http\Message\UriInterface`
+* `League\Url\Interfaces`
 
 <p class="message-warning">While the library validates the host syntax, it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
 
 ## Instantiation
 
-Both classes share the same named constructors to ease object instantiation. In the example below I'll use the `League\Url\Url` object as an example, which is also applicable for `League\Url\UrlImmutable`.
+### Named constructors
+
+The easiest way to instantiate an URL object is via its named constructors.
+
+### Url::createFromUrl($url = null);
+
+Using the `createFromUrl` you can instantiate a new URL object using a string. Internally, the string will be parse using PHP's `parse_url` function. So any URL parsed by this function will generate a new League\Url\Url object.
+
+### Url::createFromServer(array $server)
+
+Using the `createFromServer` you can instantiate a new URL object from PHP's server variables. Of not you must specify the array containing the variable usually `$_SERVER`.
 
 ~~~php
 <?php
@@ -31,7 +39,7 @@ $url = Url::createFromUrl('ftp://host.example.com');
 $url = Url::createFromServer($_SERVER);
 ~~~
 
-`$url` is a `League\Url\Url` object.
+in both cases `$url` is now a `League\Url\Url` object.
 
 ## Outputting the Urls
 
@@ -58,7 +66,7 @@ Returns the string representation of the URL user info;
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
-echo $url->getUserInfo(); // returns 'user:password@';
+echo $url->getUserInfo(); // returns 'user:password';
 ~~~
 
 ### UrlInterface::getAuthority();
@@ -68,15 +76,14 @@ Returns the string representation of the URL authority part (ie: `user`, `pass`,
 ~~~php
 
 use League\Url\Url;
-use League\Url\UrlImmutable;
 
-$url = UrlImmutable::createFromUrl('http://user:password@example.com:8042/over/there');
+$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getAuthority(); // returns 'user:password@example.com:8042';
 ~~~
 
 ### UrlInterface::getBaseUrl();
 
-Returns the string representation of the URL `scheme` component and authority part;
+Returns the string representation of the URL `scheme` component prepending the authority part;
 
 ~~~php
 
@@ -86,17 +93,16 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getBaseUrl(); // returns 'http://user:password@example.com:8042';
 ~~~
 
-### UrlInterface::sameValueAs(UrlInterface $url)
+### UrlInterface::sameValueAs(UriInterface $url)
 
-Tells whether two `UrlInterface` objects share the same string representation.
+Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation. The comparison is done using the final `__toString` representation.
 
 ~~~php
 
 use League\Url\Url;
-use League\Url\UrlImmutable;
 
 $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
-$ref = UrlImmutable::createFromServer($_SERVER);
+$ref = Url::createFromServer($_SERVER);
 $alt = Url::createFromServer($_SERVER);
 echo $url->sameValuesAs($ref); // returns true if $ref->__toString() == $url->__toString()
 echo $ref->sameValueAs($alt); //will return true

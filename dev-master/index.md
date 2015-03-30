@@ -16,18 +16,24 @@ title: Url
 
 ## About
 
-`League\Url` is a simple library to ease URL parsing and editing in
-PHP. The goal of the library is to be powerful while remaining simple to use.
+The `League\Url` package provides simple and intuitive classes to create and manage Urls in PHP.
 
 [URL on Packagist](https://packagist.org/packages/league/url)
 
-## Highlights
+Highlights
+------
 
-* Simple API
-* URLs can be treated as Value Objects or as Immutable Value Objects
-* Composer ready and PSR-2 and PSR-4 compliant
-* PHP 5.4.7 as a minimal requirement
+- Simple API
+- Treats URL and URL components as Immutable Values Objects
+- Implements the `UriInterface` from the upcoming [PSR-7][]
+- Fully documented
+- Framework Agnostic
+- Composer ready, [PSR-2][] and [PSR-4][] compliant
 
 ## Questions?
 
 URL was created by Nyamagana Butera Ignace. Find him on Twitter at [@nyamsprod](https://twitter.com/nyamsprod).
+
+[PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+[PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
+[PSR-7]: https://github.com/php-fig/fig-standards/blob/master/proposed/http-message.md
