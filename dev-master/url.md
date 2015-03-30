@@ -14,17 +14,17 @@ The library handles URLs through the use of one class, the `League\Url\Url` whic
 
 ## Instantiation
 
-### Named constructors
-
 The easiest way to instantiate an URL object is via its named constructors.
 
 ### Url::createFromUrl($url = null);
 
-Using the `createFromUrl` you can instantiate a new URL object using a string. Internally, the string will be parse using PHP's `parse_url` function. So any URL parsed by this function will generate a new League\Url\Url object.
+Using the `createFromUrl` static method you can instantiate a new URL object using a string.
+
+Internally, the string will be parse using PHP's `parse_url` function. So any URL parsed by this function will generate a new `League\Url\Url` object.
 
 ### Url::createFromServer(array $server)
 
-Using the `createFromServer` you can instantiate a new URL object from PHP's server variables. Of not you must specify the array containing the variable usually `$_SERVER`.
+Using the `createFromServer` method you can instantiate a new `League\Url\Url` object from PHP's server variables. Of note, you must specify the `array` containing the variables usually `$_SERVER`.
 
 ~~~php
 <?php
@@ -43,11 +43,11 @@ in both cases `$url` is now a `League\Url\Url` object.
 
 ## Outputting the Urls
 
-The `UrlInterface` interface provide the following methods:
+The `UrlInterface` interface provide the following methods to interact with the URLs properties.
 
-### UrlInterface::__toString
+### Url::__toString
 
-Returns the string representation of a `UrlInterface` object as a valid URL.
+Returns the string representation of a `UriInterface` object as a valid URL.
 
 ~~~php
 
@@ -57,7 +57,7 @@ $url = Url::createFromServer($_SERVER);
 echo $url; // returns 'http://www.example.com'
 ~~~
 
-### UrlInterface::getUserInfo()
+### Url::getUserInfo()
 
 Returns the string representation of the URL user info;
 
@@ -69,7 +69,7 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getUserInfo(); // returns 'user:password';
 ~~~
 
-### UrlInterface::getAuthority();
+### Url::getAuthority();
 
 Returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
 
@@ -81,7 +81,7 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getAuthority(); // returns 'user:password@example.com:8042';
 ~~~
 
-### UrlInterface::getBaseUrl();
+### Url::getBaseUrl();
 
 Returns the string representation of the URL `scheme` component prepending the authority part;
 
@@ -93,9 +93,9 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getBaseUrl(); // returns 'http://user:password@example.com:8042';
 ~~~
 
-### UrlInterface::sameValueAs(UriInterface $url)
+### Url::sameValueAs(UriInterface $url)
 
-Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation. The comparison is done using the final `__toString` representation.
+Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation.
 
 ~~~php
 
@@ -108,9 +108,9 @@ echo $url->sameValuesAs($ref); // returns true if $ref->__toString() == $url->__
 echo $ref->sameValueAs($alt); //will return true
 ~~~
 
-### UrlInterface::toArray()
+### Url::toArray()
 
-Returns an array representation of the URL similar php `parse_url` function.
+Returns an array representation of the URL similar php `parse_url` function. The difference being that the `toArray` will return all Urls components even those that are not set.
 
 ~~~php
 
@@ -131,83 +131,51 @@ $arr = $url->toArray();
 // ]
 ~~~
 
-<p class="message-info">On URL output, the query string is automatically encoded following <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a>.</p>
-
 ## Manipulating URLs
 
-A URL string is composed of up to 8 components. For each object, each URL component can be accessed and modified through its own setter and getter method.
+A URL string is composed of up to 8 components. Each URL component can be accessed and modified through its own setter and getter method.
 
 * Chaining is possible since all the setter methods return a `UrlInterface` object;
-* Getter methods return an object which implements at least the [League\Url\Interfaces\ComponentInterface][basic] interface;
+* Getter methods return an object which implements at least the [League\Url\Interfaces\Component][basic] interface;
 
 Here's a complete list of all the setter and getter provided by the `UrlInterface` interface:
 
-* `setScheme($data)` set the URL scheme component;
+* `withScheme($scheme)` set the URL scheme component;
 * `getScheme()` returns a [Scheme][basic] object
-* `setUser($data)` set the URL user component;
+* `withUserInfo($user, $pass)` set the URL userinfo components;
 * `getUser()` returns a [User][basic] object
-* `setPass($data)` set the URL pass component;
 * `getPass()` returns a [Pass][basic] object
-* `setHost($data)` set the URL host component;
+* `withHost($host)` set the URL host component;
 * `getHost()` returns a [Host](/dev-master/host/) object
-* `setPort($data)` set the URL port component;
+* `withPort($port)` set the URL port component;
 * `getPort()` returns a [Port][basic] object
-* `setPath($data)` set the URL path component;
+* `withPath($path)` set the URL path component;
 * `getPath()` returns a [Path](/dev-master/path/) object
-* `setQuery($data)` set the URL query component;
+* `withQuery($query)` set the URL query component;
 * `getQuery()` returns a [Query](/dev-master/query/) object
-* `setFragment($data)` set the URL fragment component;
+* `withFragment($fragment)` set the URL fragment component;
 * `getFragment()` returns a [Fragment][basic]`object
 
-The `$data` argument can be:
+The arguments can be:
 
 * `null`;
 * a valid component string for the specified URL component;
 * an object implementing the `__toString` method;
-* an object implementing the [ComponentInterface][basic] interface;
-* for `setHost`, `setPath`, `setQuery`: an `array` or a `Traversable` object;
 
 Let's modify a `League\Url\Url` object:
 
-~~~php
-$url = Url::createFromUrl('https://www.example.com');
-$url
-	->setUser('john')
-	->setPass('doe')
-	->setPort(443)
-	->setScheme('https');
-echo $url; // https://john:doe@www.example.com:443/
-
-$port = $url->getPort();
-$port->set(80);
-echo $port; // output 80;
-echo $url; // https://john:doe@www.example.com:80/
-~~~
-
-<div class="message-warning">
-To stay immutable, the <code>League\Url\UrlImmutable</code> object:
-<ul>
-<li>never modified itself but returns a new object instead.</li>
-<li>returns a new property object instead of its own property object to avoid modification by reference.</li>
-</ul>
-</div>
-
-The same operation using a <code>League\Url\UrlImmutable</code> object:
 
 ~~~php
-$url = UrlImmutable::createFromUrl('http://www.example.com');
+$url = Url::createFromUrl('http://www.example.com');
 $new_url = $url
-	->setUser('john')
-	->setPass('doe')
-	->setPort(443)
-	->setScheme('https');
+	->withUser('john', 'doe')
+	->withPort(443)
+	->withScheme('https');
 echo $url; //remains http://www.example.com/
 echo $new_url; //output https://john:doe@www.example.com:443/
 
-$port = $new_url->getPort(); //$port is a clone object of the URL port component.
-echo $port // output 443;
-$port->set(80);
-echo $port; // output 80;
+$new_port = $new_url->getPort()->withValue(80);
+echo $new_port; // output 80;
 echo $new_url->getPort(); //remains 443
 ~~~
 
