@@ -8,7 +8,7 @@ title: URLs as Value Objects
 The library handles URLs through the use of one class, the `League\Url\Url` which implements two interfaces:
 
 * `Psr\Http\Message\UriInterface`
-* `League\Url\Interfaces`
+* `League\Url\Interfaces\Url`
 
 <p class="message-warning">While the library validates the host syntax, it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
 
@@ -26,6 +26,10 @@ Internally, the string will be parse using PHP's `parse_url` function. So any UR
 
 Using the `createFromServer` method you can instantiate a new `League\Url\Url` object from PHP's server variables. Of note, you must specify the `array` containing the variables usually `$_SERVER`.
 
+### Url::createFromComponents(array $components)
+
+Using the `createFromComponents` method you can instantiate a new `League\Url\Url` object from the result of PHP's function `parse_url`.
+
 ~~~php
 <?php
 
@@ -37,13 +41,17 @@ $url = Url::createFromUrl('ftp://host.example.com');
 //Method 2: from the current PHP page
 //don't forget to provide the $_SERVER array
 $url = Url::createFromServer($_SERVER);
+
+//Method 3: create from the result of PHP's parse_url function
+$components = parse_url('https://foo.example.com');
+$url = Url::createFromComponents($components);
 ~~~
 
-in both cases `$url` is now a `League\Url\Url` object.
+in all cases `$url` is now a `League\Url\Url` object.
 
 ## Outputting the Urls
 
-The `UrlInterface` interface provide the following methods to interact with the URLs properties.
+The `Url` interface provide the following methods to interact with the URLs properties.
 
 ### Url::__toString
 
@@ -159,11 +167,11 @@ Here's a complete list of all the setter and getter provided by the `UrlInterfac
 The arguments can be:
 
 * `null`;
-* a valid component string for the specified URL component;
+* a string;
+* an object implementing the `League\Url\Interfaces\Component` interface
 * an object implementing the `__toString` method;
 
 Let's modify a `League\Url\Url` object:
-
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com');
@@ -180,3 +188,14 @@ echo $new_url->getPort(); //remains 443
 ~~~
 
 [basic]: /dev-master/component/#simple-components
+
+### Url::resolve
+
+This method helps create new URL relative to the current URL using RFC 3986 rules.
+
+~~~php
+$url = Url::createFromUrl('http://www.example.com/path/here/now');
+$new_url = $url->resolve('../../../toto');
+echo $url; //remains http://www.example.com/path/here/now
+echo $new_url; //output http://www.example.com/toto
+~~~

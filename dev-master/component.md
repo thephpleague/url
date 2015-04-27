@@ -16,49 +16,43 @@ An URL string is composed of up to 8 components which are in order of appearance
 - Query;
 - Fragment;
 
-The `League\Url` library provides an access to each URL components via a set of interfaces and classes. These classes can all be use independently but they all implement at least the `League\Url\Interfaces\ComponentInterface`.
+The `League\Url` library provides an access to each URL components via a set of interfaces and classes. These classes can all be use independently but they all implement at least the `League\Url\Interfaces\Component` Interface.
 
 Whenever applicable URL normalization techniques which preserved the component semantics are applied for better interoperability on each component.
 
-## The ComponentInterface
+## The Component Interface
 
-Each component class implements the `League\Url\Interfaces\ComponentInterface` with the following public methods:
+Each component class implements the `League\Url\Interfaces\Component` with the following public methods:
 
-### ComponentInterface::set($data)
+### Component::withValue($data)
 
-Sets the component data.
+The `$data` argument represents the data to create a new instance of the component:
 
-The `$data` argument can be:
+- a string representation of a component.
+- another `Component` object
+- an object with the `__toString` method.
 
-* `null`;
-* a string;
-* an `array` or a `Traversable` object, for complex components;
-* an object implementing the `__toString` method;
-* an object implementing the `ComponentInterface` interface;
+### Component::get()
 
-### ComponentInterface::get()
-
-Returns the current data attached to the component as a string or null if no data is attached to the component
+Returns the current data attached to the component as a string or `null` if no data is attached to the component
 
 ~~~php
 
 use League\Url\Path;
 
-$path = new Path();
-$path->get(); // returns 'null'
-$path->set('/path/to/heaven');
-$path->get(); // returns 'path/to/heaven';
-$path->set(['path', 'to', 'my', 'crib']);
-$path->get(); // returns 'path/to/my/crib';
+$user = new User();
+$user->get(); // returns 'null'
+$new_user = $user->withValue('john');
+$new_user->get(); // returns 'john';
 ~~~
 
-### ComponentInterface::__toString()
+### Component::__toString()
 
-Returns the string representation of the component. While the `ComponentInterface::get()` method returns null when no data is attached to the component class, `ComponentInterface::__toString()` return an empty string.
+Returns the string representation of the component. While the `Component::get()` method returns `null` when no data is attached to the component class, `Component::__toString()` always return an string.
 
-### ComponentInterface::getUriComponent()
+### Component::getUriComponent()
 
-Returns an altered string representation to ease URL representation.
+Returns the string representation of the component with the added URL specific delimiter when applicable.
 
 ~~~php
 
@@ -67,16 +61,16 @@ use League\Url\Scheme;
 $scheme = new Scheme();
 $scheme->get(); // returns 'null'
 echo $scheme;  // returns ''
-echo $scheme->getUriComponent(); returns '//'
-$scheme->set('https');
-$scheme->get(); // returns 'https';
-echo $scheme;  // returns 'https';
-echo $scheme->getUriComponent(); returns 'https://'
+echo $scheme->getUriComponent(); returns ''
+$new_scheme = $scheme->withValue('https');
+$new_scheme->get(); // returns 'https';
+echo $new_scheme;  // returns 'https';
+echo $new_scheme->getUriComponent(); returns 'https:'
 ~~~
 
-### ComponentInterface::sameValueAs(ComponentInterface $component)
+### Component::sameValueAs(Component $component)
 
-Tells whether two `ComponentInterface` objects share the same string representation.
+Tells whether two `Component` objects share the same data. Internally this method compares the result of the `Component::getUriComponent()` method.
 
 ~~~php
 
@@ -85,14 +79,14 @@ use League\Url\Pass;
 
 $port = new Port(8042);
 $pass = new Pass(8042);
-$port->sameValueAs($pass); // returns true because $pass->__toString() equals $port->__toString();
+$port->sameValueAs($pass); //returns false
 ~~~
 
 <h2 id="simple-components">Single Value Components</h2>
 
 The URL components classes which represent single values only:
 
-* implement the `League\Url\Interface\ComponentInterface` interface.
+* implement the `League\Url\Interface\Component` interface.
 * differ in the way they validate and/or output the components.
 
 These classes are:

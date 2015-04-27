@@ -5,13 +5,17 @@ title: The Host component
 
 # The Host component
 
-This [URL multiple values component](/dev-master/component/#complex-components) is manage by implementing the following interfaces:
+This component is manage throught the `Host` class which implements the following interfaces:
 
 - `Countable`
 - `IteratorAggregate`
-- `League\Url\Interfaces\HostInterface`
+- `League\Url\Interfaces\Component`
+- `League\Url\Interfaces\Segment`
+- `League\Url\Interfaces\Host`
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
+
+These interfaces provide methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname by extending the [Component](/dev-master/component/#the-componentinterface) interface with the following methods:
 
 ## The Host class
 
@@ -20,9 +24,8 @@ This [URL multiple values component](/dev-master/component/#complex-components) 
 The class constructor takes a single argument `$data` which can be:
 
 - a string representation of a hostname.
-- an `array`
-- a `Traversable` object
 - another `HostInterface` object
+- an object with the `__toString` method.
 
 ~~~php
 
@@ -33,23 +36,7 @@ $alt = new Host($host);
 $alt->sameValueAs($host); //returns true
 ~~~
 
-## The HostInterface
-
-This interface provides methods to deal with <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> as well as IP like hostname by extending the [ComponentInterface](/dev-master/component/#the-componentinterface) interface with the following methods.
-
-### HostInterface::toArray()
-
-Returns an array representation of the host string
-
-~~~php
-
-use League\Url\Host;
-
-$host = new Host('master.example.com');
-$arr = $host->toArray(); returns //  ['master', 'example', 'com'];
-~~~
-
-### HostInterface::keys()
+### Host::getKeys($value = null)
 
 Returns the keys of the Host object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
 
@@ -59,10 +46,10 @@ use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
 $arr = $host->keys(); returns //  [0, 1, 2, 3];
-$arr = $host->keys('uk'); returns // ['0, 3];
+$arr = $host->keys('uk'); returns // [0, 3];
 ~~~
 
-### HostInterface::getLabel($offset, $default = null)
+### Host::getData($key, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -71,134 +58,124 @@ Returns the value of a specific offset. If the offset does not exists it will re
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->getLabel(0); //returns 'uk'
-$host->getLabel(23); //returns null
-$host->getLabel(23, 'now'); //returns 'now'
+$host->getData(0); //returns 'uk'
+$host->getData(23); //returns null
+$host->getData(23, 'now'); //returns 'now'
 ~~~
 
-### HostInterface::setLabel($offset, $value)
-
-Set a specific key from the object. `$offset` must be an integer between 0 and the total number of label. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
-
-~~~php
-
-use League\Url\Host;
-
-$host = new Host();
-count($host); // returns 0
-$host->setLabel(0, 'bar');
-$host->getLabel(0); //returns 'bar'
-count($host); // returns 1
-$host->setLabel(0, null); //returns null
-count($host); // returns 0
-$host->getLabel(0); //returns null
-~~~
-
-### HostInterface::append($data, $whence = null, $whence_index = null)
+### Host::appendWith($data)
 
 Append data to the component.
 
-- The `$data` argument which represents the data to be appended can be:
-    - a string representation of a host component;
-    - an `array`
-    - a `Traversable` object
-- The `$whence` argument represents the label **after which** the data will be included
-- The `$whence_index` represents the the index of the `$whence` argument if present multiple times
+The `$data` argument which represents the data to be appended can be:
+
+- a string representation of a hostname.
+- another `HostInterface` object
+- an object with the `__toString` method.
 
 ~~~php
 
 use League\Url\Host;
 
 $host = new Host();
-$host->append('toto');
-$host->append('example.com', 'toto');
-$host->__toString(); //returns toto.example.com
+$newHost = $host->appendWith('toto')->appendWith('example.com');
+$newHost->__toString(); //returns toto.example.com
 ~~~
 
-### HostInterface::prepend($data, $whence = null, $whence_index = null)
+### Host::prependWidth($data)
 
 Prepend data to the component.
 
-- The `$data` argument which represents the data to be prepended can be:
-    - a string representation of a host component;
-    - an `array`
-    - a `Traversable` object
-- The `$whence` argument represents the label **before which** the data will be included
-- The `$whence_index` represents the the index of the `$whence` argument if present multiple times
+The `$data` argument which represents the data to be appended can be:
+
+- a string representation of a hostname.
+- another `HostInterface` object
+- an object with the `__toString` method.
 
 ~~~php
 
 use League\Url\Host;
 
 $host = new Host();
-$host->prepend('example.com');
-$host->prepend('toto', 'example.com');
+$newHost = $host->prependWith('example.com')->prependWith('toto');
 $host->__toString(); //returns toto.example.com
 ~~~
 
-### HostInterface::remove($data)
+### Host::replaceWith($data, $key)
 
-Remove part of the `Host` component data. The method returns `true` if the `$data` has been successfully removed. The `$data` argument which represents the data to be prepended can be:
-    - a string representation of a host component;
-    - an `array`
-    - a `Traversable` object
+Replace a Host label whose offset equals `$key` with the value given in the first argument `$data`.
 
-if `$data` is present multiple times in the Host object you must repeat your call to `HostInterface::remove` method as long as the method returns `true`.
+The `$data` argument which represents the data to be appended can be:
+
+- a string representation of a hostname.
+- another `HostInterface` object
+- an object with the `__toString` method.
+
+~~~php
+
+use League\Url\Host;
+
+$host = new Host('foo.example.com');
+$newHost = $host->replaceWith('bar.baz', 0);
+$host->__toString(); //returns bar.baz.example.com
+~~~
+
+### Host::without($data)
+
+Remove data from the segment and return a new segment without the remove part.
+
+The `$data` argument which represents the data to be appended can be:
+
+- a string representation of a hostname.
+- another `HostInterface` object
+- an object with the `__toString` method.
+
+if `$data` is present multiple times in the Host object only the first occurrence found will be removed. You will have to repeat the operation as often as `$data` is present in the Host string.
 
 ~~~php
 
 use League\Url\Host;
 
 $host = new Host('toto.example.com');
-$host->remove('toto');
-$host->__toString(); //returns example.com
+$host->without('example');
+$host->__toString(); //returns toto.com
 ~~~
 
 ## IDN support
 
-### HostInterface::toUnicode()
+### Host::toUnicode()
 
 The method is an alias of `__toString()` and return the hostname internationalized name.
 
-### HostInterface::toAscii()
+### Host::toAscii()
 
 This method returns the punycode encoded hostname.
 
 ~~~php
 use League\Url\Host;
 
-$host = new Host();
-$host->set('스타벅스코리아.com'); //you set the IDN
-var_export($host->toArray());
-//will display
-// array(
-//    0 => '스타벅스코리아',
-//    1 => 'com'
-// )
-echo $host->toAscii(); // output 'xn--oy2b35ckwhba574atvuzkc.com'
-echo $host->toUnicode();  // output '스타벅스코리아.com'
+$host = new Host('스타벅스코리아.com'); //you set the IDN
 
-$host->set('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
+echo $host->toAscii();   // output 'xn--oy2b35ckwhba574atvuzkc.com'
+echo $host->toUnicode(); // output '스타벅스코리아.com'
+
+$host = new Host('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
 echo $host;  // output 'مثال.إختبار'  //the object output the IDN version
 ~~~
 
 ## Hostname as IP
 
-A hostname as IP can be specified using:
-- the constructor;
-- the `set` method inherited from the [ComponentInterface](/dev-master/component/) interface
+<p class="message-warning">A hostname as IP can be specified using the constructor. Once defined as an IP you can no longer use the <code>appendWith</code>, <code>prependWith</code> methods to modify its value.</p>
 
-Once the hostname is defined as an IP you can no longer use the `setLabel`, `append`, `prepend` methods to modify its value. The only way to modify the hostname is by setting a new value using the `set` method.
-
-### HostInterface::isIp()
+### Host::isIp()
 
 Tells whether the current hostname is a IP address
 
-### HostInterface::isIpv4()
+### Host::isIpv4()
 
 Tells whether the current hostname is a IPv4 address
 
-### HostInterface::isIpv6()
+### Host::isIpv6()
 
 Tells whether the current hostname is a IPv6 address
 
@@ -206,17 +183,17 @@ Tells whether the current hostname is a IPv6 address
 use League\Url\Components\Host;
 
 $host = new Host('127.0.0.1');
-var_export($host->toArray()); //will display ['127.0.0.1']
+echo $host; //returns '127.0.0.1'
 
-echo $host->isIp(); // returns true
+echo $host->isIp();   // returns true
 echo $host->isIpv4(); // returns true
 echo $host->isIpv6(); // returns false
 
-$host->set('FE80:0000:0000:0000:0202:B3FF:FE1E:8329');
+$new_host = $host->withValue('FE80:0000:0000:0000:0202:B3FF:FE1E:8329');
 
-echo $host->isIp(); // returns true
-echo $host->isIpv4(); // returns false
-echo $host->isIpv6(); // returns true
+echo $new_host->isIp();   // returns true
+echo $new_host->isIpv4(); // returns false
+echo $new_host->isIpv6(); // returns true
 
-echo $host->getUriComponent(); // returns '[FE80:0000:0000:0000:0202:B3FF:FE1E:8329]'
+echo $new_host->getUriComponent(); // returns '[FE80:0000:0000:0000:0202:B3FF:FE1E:8329]'
 ~~~

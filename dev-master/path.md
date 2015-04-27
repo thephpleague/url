@@ -5,13 +5,17 @@ title: The Path component
 
 # The Path component
 
-This [URL multiple values component](/dev-master/component/#complex-components) is manage by implementing the following interfaces:
+This component is manage throught the `Path` class which implements the following interfaces:
 
 - `Countable`
 - `IteratorAggregate`
-- `League\Url\Interfaces\PathInterface`
+- `League\Url\Interfaces\Component`
+- `League\Url\Interfaces\Segment`
+- `League\Url\Interfaces\Path`
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
+
+These interfaces provide methods to help normalize and modify the path in a predicable manner using the following methods:
 
 ## The Path class
 
@@ -19,10 +23,9 @@ This [URL multiple values component](/dev-master/component/#complex-components) 
 
 The class constructor takes a single argument `$data` which can be:
 
-- a string representation of a pathname.
-- an `array`
-- a `Traversable` object
+- a string representation of a Pathname.
 - another `PathInterface` object
+- an object with the `__toString` method.
 
 ~~~php
 
@@ -33,23 +36,7 @@ $alt = new Path($path);
 $alt->sameValueAs($path); //returns true
 ~~~
 
-## The PathInterface
-
-This interface extends the [ComponentInterface](/dev-master/component/#the-componentinterface) interface with the following methods.
-
-### PathInterface::toArray()
-
-Returns an array representation of the path string
-
-~~~php
-
-use League\Url\Path;
-
-$path = new Path('/path/to/the/sky');
-$arr = $path->toArray(); returns //  ['path', 'to', 'the', 'sky'];
-~~~
-
-### PathInterface::keys()
+### Path::getKeys()
 
 Returns the keys of the Path object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
 
@@ -58,11 +45,11 @@ Returns the keys of the Path object. If an argument is supplied to the method. O
 use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
-$arr = $path->keys(); returns //  [0, 1, 2, 3];
-$arr = $path->keys('path'); returns // [0, 3];
+$arr = $path->getKeys(); returns //  [0, 1, 2, 3];
+$arr = $path->getKeys('path'); returns // [0, 3];
 ~~~
 
-### PathInterface::getSegment($offset, $default = null)
+### Path::getData($key, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -71,92 +58,90 @@ Returns the value of a specific offset. If the offset does not exists it will re
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getSegment(0); //returns 'path'
-$path->getSegment(23); //returns null
-$path->getSegment(23, 'now'); //returns 'now'
+$path->getData(0); //returns 'path'
+$path->getData(23); //returns null
+$path->getData(23, 'now'); //returns 'now'
 ~~~
 
-### PathInterface::setSegment($offset, $value)
+### Path::appendWith($data)
 
-Set a specific key from the object. `$offset` must be an integer between 0 and the total number of label. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
+Append the current path with the given data and return a new Path instance.
+
+The `$data` argument which represents the data to be appended can be:
+
+- a string representation of a Pathname.
+- another `PathInterface` object
+- an object with the `__toString` method.
 
 ~~~php
 
 use League\Url\Path;
 
 $path = new Path();
-count($path); // returns 0
-$path->setSegment(0, 'bar');
-$path->getSegment(0); //returns 'bar'
-count($path); // returns 1
-$path->setSegment(0, null); //returns null
-count($path); // returns 0
-$path->getSegment(0); //returns null
+$newPath = $path->appendWith('path')->append('to/the/sky', 'path');
+$newPath->__toString(); //returns path/to/the/sky
 ~~~
 
-### PathInterface::append($data, $whence = null, $whence_index = null)
+### Path::prependWith($data)
 
-Append data to the component.
+Prepend the current path with the given data and return a new Path instance.
+
+The `$data` argument which represents the data to be appended can be:
+
+- a string representation of a Pathname.
+- another `PathInterface` object
+- an object with the `__toString` method.
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path();
+$newPath = $path->prependWith('sky')->prependWith('path/to/the', 'sky');
+$newPath->__toString(); //returns path/to/the/sky
+~~~
+
+### Path::replaceWith($data, $key)
+
+Replace a path segment whose offset equals `$key` with the value given in the first argument `$data`.
 
 - The `$data` argument which represents the data to be appended can be:
-    - a string representation of a path component;
-    - an `array`
-    - a `Traversable` object
-- The `$whence` argument represents the label **after which** the data will be included
-- The `$whence_index` represents the the index of the `$whence` argument if present multiple times
+	- a string representation of a Pathname.
+	- another `Path` interface
+	- an object with the `__toString` method.
 
 ~~~php
 
 use League\Url\Path;
 
-$path = new Path();
-$path->append('path');
-$path->append('to/the/sky', 'path');
-$path->__toString(); //returns path/to/the/sky
+$Path = new Path('/foo/example/com');
+$newPath = $Path->replaceWith('bar/baz', 0);
+$Path->__toString(); //returns /bar/baz/example/com
 ~~~
 
-### PathInterface::prepend($data, $whence = null, $whence_index = null)
+### Path::without($data)
 
-Prepend data to the component.
+Remove full segments from the Path and return a new Path object without the removed segments.
 
-- The `$data` argument which represents the data to be prepended can be:
-    - a string representation of a path component;
-    - an `array`
-    - a `Traversable` object
-- The `$whence` argument represents the label **before which** the data will be included
-- The `$whence_index` represents the the index of the `$whence` argument if present multiple times
+- The `$data` argument which represents the data to be appended can be:
+	- a string representation of a Pathname.
+	- another `PathInterface` object
+	- an object with the `__toString` method.
+
+if `$data` is present multiple times in the Path object only the first occurrence found will be removed. You will have to repeat the operation as often as `$data` is present in the Path.
 
 ~~~php
 
 use League\Url\Path;
 
-$path = new Path();
-$path->prepend('sky');
-$path->prepend('path/to/the', 'sky');
-$path->__toString(); //returns path/to/the/sky
+$Path = new Path('toto/example/com');
+$Path->without('example');
+$Path->__toString(); //returns toto/com
 ~~~
 
-### PathInterface::remove($data)
+### Path::normalize()
 
-Remove part of the `Path` component data. The method returns `true` if the `$data` has been successfully removed. The `$data` argument which represents the data to be prepended can be:
-    - a string representation of a path component;
-    - an `array`
-    - a `Traversable` object
-
-if `$data` is present multiple times in the Path object you must repeat your call to `PathInterface::remove` method as long as the method returns `true`.
-
-~~~php
-
-use League\Url\Path;
-
-$path = new Path('/path/to/the/sky');
-$path->remove('the');
-$path->__toString(); //returns path/to/sky
-~~~
-
-### PathInterface::normalize()
-
-Normalize a `PathInterface` object by removing dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6). The method which takes no arguments returns a new `PathInterface` object which represents the current object normalized.
+Normalize a `Path` object by removing dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6). The method which takes no arguments returns a new `Path` object which represents the current object normalized.
 
 ~~~php
 

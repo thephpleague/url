@@ -5,12 +5,12 @@ title: The Query Component
 
 # The Query component
 
-This [URL multiple values component](/dev-master/component/#complex-components) is manage by implementing the following interfaces:
+This component is manage throught the `Host` class which implements the following interfaces:
 
-- `ArrayAccess`
 - `Countable`
 - `IteratorAggregate`
-- `League\Url\Interfaces\QueryInterface`.
+- `League\Url\Interfaces\Component`
+- `League\Url\Interfaces\Query`
 
 <p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
@@ -18,12 +18,11 @@ This [URL multiple values component](/dev-master/component/#complex-components) 
 
 ### Query::__construct($data = null)
 
-The class constructor takes a single argument `$data` which can be:
+The `$data` argument which represents the data to be appended can be:
 
-- a string representation of a query string.
-- an `array`
-- a `Traversable` object
-- another `QueryInterface` object
+- a string representation of a query.
+- another `Query` interface.
+- an object with the `__toString` method.
 
 ~~~php
 
@@ -34,63 +33,53 @@ $alt = new Query($query);
 $alt->sameValueAs($query); //returns true
 ~~~
 
-## QueryInterface
+### Query::createFromArray
 
-This interface extends the [ComponentInterface](/dev-master/component/#the-componentinterface) by adding the following methods:
+to ease instanciation you can use this named constructor to generate a new Query class from an `array` or a `Traversable` object.
 
-### QueryInterface::modify($data)
+~~~php
 
-The method allow modifying the query. just like with the `QueryInterface::set` method, the single `$data` can be:
+use League\Url\Query;
+
+$query = Query::createFromArray(['foo' => 'bar', 'single' => '', 'toto' => 'baz']);
+echo $query; //returns 'foo=bar&single&toto=baz'
+~~~
+
+### Query::mergeWith($data)
+
+The single `$data` can be:
 
 - an `array`,
 - a `Traversable` object
 - a string representation of a query string.
 
-~~~php
-
-use League\Url\Query;
-
-$query = new Query();
-$query->modify(['foo' => 'bar', 'baz' => 'toto']);
-$query->get(); //returns foo=bar&baz=toto
-$query->modify('foo=jane');
-$query->get(); //returns foo=jane&baz=toto
-~~~
-
-### QueryInterface::getParameter($key, $default = null)
-
-Returns the value if a specific key. If the key does not exists it will return the value specified by the `$default` argument
+<p class="message-info">When providing an <code>array</code> or a <code>Traversable</code> object. If the value associated to an offset equals <code>null</code>, the resulting key will be remove from the returned new query object.</p>
 
 ~~~php
 
 use League\Url\Query;
 
-$query = new Query();
-$query->modify(['foo' => 'bar', 'baz' => 'toto']);
-$query->getParameter('baz'); //returns 'toto'
-$query->getParameter('change'); //returns null
-$query->getParameter('change', 'now'); //returns 'now'
+$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$alt->get(); //returns foo=bar&baz=toto
+$new = $alt->mergeWith('foo=jane');
+$new->get(); //returns foo=jane&baz=toto
 ~~~
 
-### QueryInterface::setParameter($key, $value)
+### Query::getData($key, $default = null)
 
-Set a specific key from the object. `$key` must be a string. If `$value` is empty or equals `null`, the specified key will be deleted from the current object.
+Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
 
 ~~~php
 
 use League\Url\Query;
 
-$query = new Query();
-count($query); // returns 0
-$query->setParameter('foo', 'bar');
-$query->getParameter('foo'); //returns 'bar'
-count($query); // returns 1
-$query->setParameter('foo', null); //returns null
-count($query); // returns 0
-$query->getParameter('foo'); //returns null
+$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$query->getData('baz'); //returns 'toto'
+$query->getData('change'); //returns null
+$query->getData('change', 'now'); //returns 'now'
 ~~~
 
-### QueryInterface::toArray()
+### Query::toArray()
 
 Returns an array representation of the query string
 
@@ -102,7 +91,7 @@ $query = new Query('foo=bar&baz=nitro');
 $arr = $query->toArray(); returns //  ['foo' => 'bar', 'baz' => 'nitro', ];
 ~~~
 
-### QueryInterface::keys()
+### Query::getKeys($value = null)
 
 Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
 
@@ -110,8 +99,7 @@ Returns the keys of the Query object. If an argument is supplied to the method. 
 
 use League\Url\Query;
 
-$query = new Query('foo=bar&baz=nitro');
-$query->setParameter('change', 'nitro');
-$arr = $query->keys(); returns //  ['foo', 'baz', 'chance'];
-$arr = $query->keys('nitro'); returns // ['baz', 'chance'];
+$query = new Query('foo=bar&baz=nitro&change=nitro');
+$arr = $query->getKeys(); returns //  ['foo', 'baz', 'chance'];
+$arr = $query->getKeys('nitro'); returns // ['baz', 'chance'];
 ~~~
