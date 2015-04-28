@@ -36,6 +36,18 @@ $alt = new Host($host);
 $alt->sameValueAs($host); //returns true
 ~~~
 
+### Host::createFromArray($data)
+
+To ease instantiation you can use this named constructor to generate a new `Host` object from an `array` or a `Traversable` object.
+
+~~~php
+
+use League\Url\Host;
+
+echo Host::createFromArray(['bar', baz'])->__toString(); //returns 'bar.baz'
+echo Host::createFromArray(['shop', 'example.com'])->__toString(); //returns 'shop.example.com'
+~~~
+
 ### Host::getKeys($value = null)
 
 Returns the keys of the Host object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
@@ -49,7 +61,7 @@ $arr = $host->keys(); returns //  [0, 1, 2, 3];
 $arr = $host->keys('uk'); returns // [0, 3];
 ~~~
 
-### Host::getData($key, $default = null)
+### Host::getLabel($key, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -58,9 +70,24 @@ Returns the value of a specific offset. If the offset does not exists it will re
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->getData(0); //returns 'uk'
-$host->getData(23); //returns null
-$host->getData(23, 'now'); //returns 'now'
+$host->getLabel(0); //returns 'uk'
+$host->getLabel(23); //returns null
+$host->getLabel(23, 'now'); //returns 'now'
+~~~
+
+### Path::toArray()
+
+Returns the `Host` object as an array of label.
+
+~~~php
+
+use League\Url\Host;
+
+$path = new Host('secure.example.com');
+$arr = $path->toArray(); returns //  ['secure.example.com];
+
+$path = new Host('::1');
+$arr = $path->toArray(); returns //  ['::1'];
 ~~~
 
 ### Host::appendWith($data)

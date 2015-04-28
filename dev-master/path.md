@@ -36,6 +36,20 @@ $alt = new Path($path);
 $alt->sameValueAs($path); //returns true
 ~~~
 
+### Path::createFromArray($data, $has_front_delimiter = false)
+
+To ease instantiation you can use this named constructor to generate a new `Path` object from an `array` or a `Traversable` object.
+
+if you want your path to start with a delimiter you need to specify it using the `$has_front_delimiter` argument.
+
+~~~php
+
+use League\Url\Path;
+
+echo Path::createFromArray(['bar', '', 'baz'])->__toString(); //returns 'bar//baz'
+echo Path::createFromArray(['bar', '', 'baz'], true)->__toString(); //returns '/bar//baz'
+~~~
+
 ### Path::getKeys()
 
 Returns the keys of the Path object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
@@ -49,7 +63,22 @@ $arr = $path->getKeys(); returns //  [0, 1, 2, 3];
 $arr = $path->getKeys('path'); returns // [0, 3];
 ~~~
 
-### Path::getData($key, $default = null)
+### Path::toArray()
+
+Returns the `Path` object as an array of segments. If the path ends with a delimiter an empty segment is added.
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$arr = $path->toArray(); returns //  ['path', 'to', 'the', 'sky'];
+
+$path = new Path('/path/to/the/sky');
+$arr = $path->toArray(); returns //  ['path', 'to', 'the', 'sky', ''];
+~~~
+
+### Path::getSegment($key, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -58,9 +87,51 @@ Returns the value of a specific offset. If the offset does not exists it will re
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getData(0); //returns 'path'
-$path->getData(23); //returns null
-$path->getData(23, 'now'); //returns 'now'
+$path->getSegment(0); //returns 'path'
+$path->getSegment(23); //returns null
+$path->getSegment(23, 'now'); //returns 'now'
+~~~
+
+### Path::getBasename()
+
+Returns the trailing segment of the Path object. If the segment ends in suffix, the suffix is included.
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$path->getBasename(); //returns 'sky'
+~~~
+
+### Path::getExtension()
+
+Returns the trailing segment extension as a string if present, otherwise the method return an empty string. The leading dot delimiter is removed from the method output.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$path->getBasename(); //returns ''
+
+$path = new Path('/path/to/file.csv');
+$path->getExtension(); //return 'csv';
+~~~
+
+### Path::withExtension($extension)
+
+Returns a new `Path` instance with the updated extension for the last segment.
+
+- If the extension contains a slash character, this method will throw a `InvalidArgumentException`.
+- If the `Path` object basename is empty, this method will throw a `LogicException`.
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$new_path = $path->withExtension('.csv');
+echo $new_path; //displays /path/to/the/sky.csv;
 ~~~
 
 ### Path::appendWith($data)

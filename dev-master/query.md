@@ -35,7 +35,7 @@ $alt->sameValueAs($query); //returns true
 
 ### Query::createFromArray
 
-to ease instanciation you can use this named constructor to generate a new Query class from an `array` or a `Traversable` object.
+To ease instantiation you can use this named constructor to generate a new `Query` object from an `array` or a `Traversable` object.
 
 ~~~php
 
