@@ -59,23 +59,10 @@ At any given time you can verify if the path you are currently manipulating is a
 use League\Url\Path;
 
 $relative_path = Path::createFromArray(['bar', '', 'baz']);
-$relative_path->isAbsolute(); //returns false;
+$relative_path->isAbsolute(); // returns false;
 
 $absolute_path  = Path::createFromArray(['bar', '', 'baz'], true);
-$absolute_path->isAbsolute(); //returns true;
-~~~
-
-### Path::getKeys($segment = null)
-
-Returns the keys of the `Path` object. If an argument is supplied to the method. Only the keys whose segment value equals the argument are returned.
-
-~~~php
-
-use League\Url\Path;
-
-$path = new Path('/path/to/the/path');
-$arr = $path->getKeys(); returns //  [0, 1, 2, 3];
-$arr = $path->getKeys('path'); returns // [0, 3];
+$absolute_path->isAbsolute(); // returns true;
 ~~~
 
 ### Path::toArray()
@@ -87,10 +74,25 @@ Returns the `Path` object as an array of segments. If the path ends with a delim
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$arr = $path->toArray(); returns //  ['path', 'to', 'the', 'sky'];
+$arr = $path->toArray(); // returns ['path', 'to', 'the', 'sky'];
 
 $path = new Path('/path/to/the/sky');
-$arr = $path->toArray(); returns //  ['path', 'to', 'the', 'sky', ''];
+$arr = $path->toArray(); // returns ['path', 'to', 'the', 'sky', ''];
+~~~
+
+### Path::normalize()
+
+Normalize a `Path` object by removing dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6). The method which takes no arguments returns a new `Path` object which represents the current object normalized.
+
+~~~php
+
+use League\Url\Path;
+
+$raw_path = new Path('path/to/./the/../the/sky%7bfoo%7d');
+$normalize_path  = $raw_path->normalize();
+echo $raw_path;        // displays 'path/to/./the/../the/sky%7bfoo%7d'
+echo $normalize_path;  // displays 'path/to/the/sky%7Bfoo%7D'
+$alt->sameValueAs($path); return false;
 ~~~
 
 ### Path::getSegment($key, $default = null)
@@ -102,9 +104,22 @@ Returns the value of a specific offset. If the offset does not exists it will re
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getSegment(0); //returns 'path'
-$path->getSegment(23); //returns null
-$path->getSegment(23, 'now'); //returns 'now'
+$path->getSegment(0);         // returns 'path'
+$path->getSegment(23);        // returns null
+$path->getSegment(23, 'now'); // returns 'now'
+~~~
+
+### Path::getKeys($segment = null)
+
+Returns the keys of the `Path` object. If an argument is supplied to the method. Only the keys whose segment value equals the argument are returned.
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path('/path/to/the/path');
+$arr = $path->getKeys();       // returns [0, 1, 2, 3];
+$arr = $path->getKeys('path'); // returns [0, 3];
 ~~~
 
 ### Path::getBasename()
@@ -116,7 +131,7 @@ Returns the trailing segment of the Path object. If the segment ends in suffix, 
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getBasename(); //returns 'sky'
+$path->getBasename(); // returns 'sky'
 ~~~
 
 ### Path::getExtension()
@@ -127,10 +142,10 @@ Returns the trailing segment extension as a string if present, otherwise the met
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getBasename(); //returns ''
+$path->getBasename(); // returns ''
 
 $path = new Path('/path/to/file.csv');
-$path->getExtension(); //return 'csv';
+$path->getExtension(); // return 'csv';
 ~~~
 
 ### Path::withExtension($extension)
@@ -146,7 +161,7 @@ use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
 $new_path = $path->withExtension('.csv');
-echo $new_path; //displays /path/to/the/sky.csv;
+echo $new_path; // displays /path/to/the/sky.csv;
 ~~~
 
 ### Path::appendWith($data)
@@ -164,8 +179,8 @@ The `$data` argument which represents the data to be appended can be:
 use League\Url\Path;
 
 $path = new Path();
-$newPath = $path->appendWith('path')->append('to/the/sky', 'path');
-$newPath->__toString(); //returns path/to/the/sky
+$newPath = $path->appendWith('path')->appendWith('to/the/sky');
+$newPath->__toString(); // returns path/to/the/sky
 ~~~
 
 ### Path::prependWith($data)
@@ -183,8 +198,8 @@ The `$data` argument which represents the data to be appended can be:
 use League\Url\Path;
 
 $path = new Path();
-$newPath = $path->prependWith('sky')->prependWith('path/to/the', 'sky');
-$newPath->__toString(); //returns path/to/the/sky
+$newPath = $path->prependWith('sky')->prependWith('path/to/the');
+$newPath->__toString(); // returns path/to/the/sky
 ~~~
 
 ### Path::replaceWith($data, $key)
@@ -202,7 +217,7 @@ use League\Url\Path;
 
 $Path = new Path('/foo/example/com');
 $newPath = $Path->replaceWith('bar/baz', 0);
-$Path->__toString(); //returns /bar/baz/example/com
+$Path->__toString(); // returns /bar/baz/example/com
 ~~~
 
 ### Path::without($data)
@@ -222,20 +237,5 @@ use League\Url\Path;
 
 $Path = new Path('toto/example/com');
 $Path->without('example');
-$Path->__toString(); //returns toto/com
-~~~
-
-### Path::normalize()
-
-Normalize a `Path` object by removing dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6). The method which takes no arguments returns a new `Path` object which represents the current object normalized.
-
-~~~php
-
-use League\Url\Path;
-
-$path = new Path('path/to/./the/../the/sky%7bfoo%7d');
-$alt  = $path->normalize();
-echo $path; // displays 'path/to/./the/../the/sky%7bfoo%7d'
-echo $alt; // displays 'path/to/the/sky%7Bfoo%7D'
-$alt->sameValueAs($path); return false;
+$Path->__toString(); // returns toto/com
 ~~~

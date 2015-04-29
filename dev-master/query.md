@@ -45,6 +45,45 @@ $query = Query::createFromArray(['foo' => 'bar', 'single' => '', 'toto' => 'baz'
 echo $query; //returns 'foo=bar&single&toto=baz'
 ~~~
 
+### Query::toArray()
+
+Returns an array representation of the query string
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('foo=bar&baz=nitro');
+$arr = $query->toArray(); returns //  ['foo' => 'bar', 'baz' => 'nitro', ];
+~~~
+
+### Query::getParamater($key, $default = null)
+
+Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
+
+~~~php
+
+use League\Url\Query;
+
+$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$query->getParamater('baz'); //returns 'toto'
+$query->getParamater('change'); //returns null
+$query->getParamater('change', 'now'); //returns 'now'
+~~~
+
+### Query::getKeys($value = null)
+
+Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('foo=bar&baz=nitro&change=nitro');
+$arr = $query->getKeys(); returns //  ['foo', 'baz', 'chance'];
+$arr = $query->getKeys('nitro'); returns // ['baz', 'chance'];
+~~~
+
 ### Query::mergeWith($data)
 
 The single `$data` can be:
@@ -63,43 +102,4 @@ $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $alt->get(); //returns foo=bar&baz=toto
 $new = $alt->mergeWith('foo=jane');
 $new->get(); //returns foo=jane&baz=toto
-~~~
-
-### Query::getData($key, $default = null)
-
-Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
-
-~~~php
-
-use League\Url\Query;
-
-$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$query->getData('baz'); //returns 'toto'
-$query->getData('change'); //returns null
-$query->getData('change', 'now'); //returns 'now'
-~~~
-
-### Query::toArray()
-
-Returns an array representation of the query string
-
-~~~php
-
-use League\Url\Query;
-
-$query = new Query('foo=bar&baz=nitro');
-$arr = $query->toArray(); returns //  ['foo' => 'bar', 'baz' => 'nitro', ];
-~~~
-
-### Query::getKeys($value = null)
-
-Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
-
-~~~php
-
-use League\Url\Query;
-
-$query = new Query('foo=bar&baz=nitro&change=nitro');
-$arr = $query->getKeys(); returns //  ['foo', 'baz', 'chance'];
-$arr = $query->getKeys('nitro'); returns // ['baz', 'chance'];
 ~~~

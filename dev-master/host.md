@@ -48,17 +48,19 @@ echo Host::createFromArray(['bar', baz'])->__toString(); //returns 'bar.baz'
 echo Host::createFromArray(['shop', 'example.com'])->__toString(); //returns 'shop.example.com'
 ~~~
 
-### Host::getKeys($label = null)
+### Host::toArray()
 
-Returns the keys of the Host object. If an argument is supplied to the method, only the keys whose label value equals the argument are returned.
+Returns the `Host` object as an array of label.
 
 ~~~php
 
 use League\Url\Host;
 
-$host = new Host('uk.example.co.uk');
-$arr = $host->keys(); returns //  [0, 1, 2, 3];
-$arr = $host->keys('uk'); returns // [0, 3];
+$host = new Host('secure.example.com');
+$arr = $host->toArray(); returns //  ['secure.example.com];
+
+$host = new Host('::1');
+$arr = $host->toArray(); returns //  ['::1'];
 ~~~
 
 ### Host::getLabel($key, $default = null)
@@ -75,19 +77,17 @@ $host->getLabel(23); //returns null
 $host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
-### Path::toArray()
+### Host::getKeys($label = null)
 
-Returns the `Host` object as an array of label.
+Returns the keys of the Host object. If an argument is supplied to the method, only the keys whose label value equals the argument are returned.
 
 ~~~php
 
 use League\Url\Host;
 
-$path = new Host('secure.example.com');
-$arr = $path->toArray(); returns //  ['secure.example.com];
-
-$path = new Host('::1');
-$arr = $path->toArray(); returns //  ['::1'];
+$host = new Host('uk.example.co.uk');
+$arr = $host->keys(); returns //  [0, 1, 2, 3];
+$arr = $host->keys('uk'); returns // [0, 3];
 ~~~
 
 ### Host::appendWith($data)
