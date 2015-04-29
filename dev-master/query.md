@@ -80,11 +80,12 @@ Returns the keys of the Query object. If an argument is supplied to the method. 
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro&change=nitro');
-$arr = $query->getOffsets(); // returns  ['foo', 'baz', 'chance'];
-$arr = $query->getOffsets('nitro'); // returns ['baz', 'chance'];
+$query->getOffsets(); // returns  ['foo', 'baz', 'chance'];
+$query->getOffsets('nitro'); // returns ['baz', 'chance'];
+$query->getOffsets('gweta'); // returns [];
 ~~~
 
-### Path::hasOffset($offset)
+### Query::hasOffset($offset)
 
 Returns `true` if the submitted `$offset` exists in the current object.
 

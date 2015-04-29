@@ -118,8 +118,9 @@ Returns the keys of the `Path` object. If an argument is supplied to the method.
 use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
-$arr = $path->getOffsets();       // returns [0, 1, 2, 3];
-$arr = $path->getOffsets('path'); // returns [0, 3];
+$path->getOffsets();       // returns [0, 1, 2, 3];
+$path->getOffsets('path'); // returns [0, 3];
+$path->getOffsets('gweta'); // returns [];
 ~~~
 
 ### Path::hasOffset($offset)

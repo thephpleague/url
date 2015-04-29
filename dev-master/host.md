@@ -86,8 +86,9 @@ Returns the keys of the Host object. If an argument is supplied to the method, o
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$arr = $host->keys(); // returns  [0, 1, 2, 3];
-$arr = $host->keys('uk'); // returns [0, 3];
+$host->keys(); // returns  [0, 1, 2, 3];
+$host->keys('uk'); // returns [0, 3];
+$host->getOffsets('gweta'); // returns [];
 ~~~
 
 ### Host::hasOffset($offset)
