@@ -57,13 +57,13 @@ Returns the `Host` object as an array of label.
 use League\Url\Host;
 
 $host = new Host('secure.example.com');
-$arr = $host->toArray(); returns //  ['secure.example.com];
+$arr = $host->toArray(); // returns  ['secure.example.com];
 
 $host = new Host('::1');
-$arr = $host->toArray(); returns //  ['::1'];
+$arr = $host->toArray(); // returns  ['::1'];
 ~~~
 
-### Host::getLabel($key, $default = null)
+### Host::getLabel($offset, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -77,7 +77,7 @@ $host->getLabel(23); //returns null
 $host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
-### Host::getKeys($label = null)
+### Host::getOffsets($label = null)
 
 Returns the keys of the Host object. If an argument is supplied to the method, only the keys whose label value equals the argument are returned.
 
@@ -86,8 +86,21 @@ Returns the keys of the Host object. If an argument is supplied to the method, o
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$arr = $host->keys(); returns //  [0, 1, 2, 3];
-$arr = $host->keys('uk'); returns // [0, 3];
+$arr = $host->keys(); // returns  [0, 1, 2, 3];
+$arr = $host->keys('uk'); // returns [0, 3];
+~~~
+
+### Host::hasOffset($offset)
+
+Returns `true` if the submitted `$offset` exists in the current object.
+
+~~~php
+
+use League\Url\Host;
+
+$host = new Host('uk.example.co.uk');
+$host->hasOffset(2); // returns true
+$host->hasOffset(23); // returns false
 ~~~
 
 ### Host::appendWith($data)
@@ -128,9 +141,9 @@ $newHost = $host->prependWith('example.com')->prependWith('toto');
 $host->__toString(); //returns toto.example.com
 ~~~
 
-### Host::replaceWith($data, $key)
+### Host::replaceWith($data, $offset)
 
-Replace a Host label whose offset equals `$key` with the value given in the first argument `$data`.
+Replace a Host label whose offset equals `$offset` with the value given in the first argument `$data`.
 
 The `$data` argument which represents the data to be appended can be:
 

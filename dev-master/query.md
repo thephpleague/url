@@ -54,10 +54,10 @@ Returns an array representation of the query string
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro');
-$arr = $query->toArray(); returns //  ['foo' => 'bar', 'baz' => 'nitro', ];
+$arr = $query->toArray(); // returns  ['foo' => 'bar', 'baz' => 'nitro', ];
 ~~~
 
-### Query::getParamater($key, $default = null)
+### Query::getParamater($offset, $default = null)
 
 Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
 
@@ -71,7 +71,7 @@ $query->getParamater('change'); //returns null
 $query->getParamater('change', 'now'); //returns 'now'
 ~~~
 
-### Query::getKeys($value = null)
+### Query::getOffsets($value = null)
 
 Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
 
@@ -80,8 +80,21 @@ Returns the keys of the Query object. If an argument is supplied to the method. 
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro&change=nitro');
-$arr = $query->getKeys(); returns //  ['foo', 'baz', 'chance'];
-$arr = $query->getKeys('nitro'); returns // ['baz', 'chance'];
+$arr = $query->getOffsets(); // returns  ['foo', 'baz', 'chance'];
+$arr = $query->getOffsets('nitro'); // returns ['baz', 'chance'];
+~~~
+
+### Path::hasOffset($offset)
+
+Returns `true` if the submitted `$offset` exists in the current object.
+
+~~~php
+
+use League\Url\Query;
+
+$query = new Query('foo=bar&baz=nitro&change=nitro');
+$query->hasOffset('foo'); // returns true
+$query->hasOffset('gweta'); // returns false
 ~~~
 
 ### Query::mergeWith($data)

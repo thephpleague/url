@@ -95,7 +95,7 @@ echo $normalize_path;  // displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); return false;
 ~~~
 
-### Path::getSegment($key, $default = null)
+### Path::getSegment($offset, $default = null)
 
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
@@ -109,7 +109,7 @@ $path->getSegment(23);        // returns null
 $path->getSegment(23, 'now'); // returns 'now'
 ~~~
 
-### Path::getKeys($segment = null)
+### Path::getOffsets($segment = null)
 
 Returns the keys of the `Path` object. If an argument is supplied to the method. Only the keys whose segment value equals the argument are returned.
 
@@ -118,8 +118,21 @@ Returns the keys of the `Path` object. If an argument is supplied to the method.
 use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
-$arr = $path->getKeys();       // returns [0, 1, 2, 3];
-$arr = $path->getKeys('path'); // returns [0, 3];
+$arr = $path->getOffsets();       // returns [0, 1, 2, 3];
+$arr = $path->getOffsets('path'); // returns [0, 3];
+~~~
+
+### Path::hasOffset($offset)
+
+Returns `true` if the submitted `$offset` exists in the current object.
+
+~~~php
+
+use League\Url\Path;
+
+$path = new Path('/path/to/the/path');
+$path->hasOffset(2); // returns true
+$path->hasOffset(23); // returns false
 ~~~
 
 ### Path::getBasename()
@@ -202,9 +215,9 @@ $newPath = $path->prependWith('sky')->prependWith('path/to/the');
 $newPath->__toString(); // returns path/to/the/sky
 ~~~
 
-### Path::replaceWith($data, $key)
+### Path::replaceWith($data, $offset)
 
-Replace a path segment whose offset equals `$key` with the value given in the first argument `$data`.
+Replace a path segment whose offset equals `$offset` with the value given in the first argument `$data`.
 
 - The `$data` argument which represents the data to be appended can be:
 	- a string representation of a Pathname.
