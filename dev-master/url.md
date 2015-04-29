@@ -139,36 +139,48 @@ $arr = $url->toArray();
 // ]
 ~~~
 
-## Manipulating URLs
+## Accessing the URLs components
 
-A URL string is composed of up to 8 components. Each URL component can be accessed and modified through its own setter and getter method.
+A Url can contain up to 8 components, to ease URL manipulation the class comes with an extensive list of method to access each 8 components:
 
-* Chaining is possible since all the setter methods return a `UrlInterface` object;
-* Getter methods return an object which implements at least the [League\Url\Interfaces\Component][basic] interface;
-
-Here's a complete list of all the setter and getter provided by the `UrlInterface` interface:
-
-* `withScheme($scheme)` set the URL scheme component;
 * `getScheme()` returns a [Scheme][basic] object
-* `withUserInfo($user, $pass)` set the URL userinfo components;
 * `getUser()` returns a [User][basic] object
 * `getPass()` returns a [Pass][basic] object
-* `withHost($host)` set the URL host component;
 * `getHost()` returns a [Host](/dev-master/host/) object
-* `withPort($port)` set the URL port component;
 * `getPort()` returns a [Port][basic] object
-* `withPath($path)` set the URL path component;
 * `getPath()` returns a [Path](/dev-master/path/) object
-* `withQuery($query)` set the URL query component;
 * `getQuery()` returns a [Query](/dev-master/query/) object
-* `withFragment($fragment)` set the URL fragment component;
 * `getFragment()` returns a [Fragment][basic]`object
 
-The arguments can be:
+Each of these object exposes more methods to deal with each component seperately. Since `Url` is a immutable value object. The returns object are clones of the current object property. so any changes apply to these returned copy won't affect your Url object.
+
+~~~php
+$url = Url::createFromUrl('http://www.example.com:443');
+
+$new_port = $url->getPort()->withValue(80);
+echo $new_port; // output 80;
+echo $url->getPort(); //remains 443
+~~~
+
+## Manipulating URLs
+
+The `Url` class is a immutable value object. This means that any modification made to one of its property returns a new instance with the modified property leaving the current object unchanged. This means that chaining is possible since all the setter methods return a new `Url` object;
+
+Here's the complete list of all the setters provider by the class:
+
+* `withScheme($scheme)` set the URL scheme component;
+* `withUserInfo($user, $pass)` set the URL userinfo components;
+* `withHost($host)` set the URL host component;
+* `withPort($port)` set the URL port component;
+* `withPath($path)` set the URL path component;
+* `withQuery($query)` set the URL query component;
+* `withFragment($fragment)` set the URL fragment component;
+
+The arguments for all setters can be:
 
 * `null`;
 * a string;
-* an object implementing the `League\Url\Interfaces\Component` interface
+* an object implementing one of the `League\Url` component dedicated interface;
 * an object implementing the `__toString` method;
 
 Let's modify a `League\Url\Url` object:
@@ -181,10 +193,6 @@ $new_url = $url
 	->withScheme('https');
 echo $url; //remains http://www.example.com/
 echo $new_url; //output https://john:doe@www.example.com:443/
-
-$new_port = $new_url->getPort()->withValue(80);
-echo $new_port; // output 80;
-echo $new_url->getPort(); //remains 443
 ~~~
 
 [basic]: /dev-master/component/#simple-components
