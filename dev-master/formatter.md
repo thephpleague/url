@@ -27,18 +27,18 @@ echo $formatter->getHostEncoding(); //display the value of Formatter::HOST_ASCII
 
 ### Query encoding strategy
 
-A League\Url\Query object is by default encoded by following RFC 3986. If you need to change this encoding to the old RFC 1738, you just need to update the query encoding as shown below using the following predefined constant:
+A `League\Url\Query` object is by default encoded by following RFC 3986. If you need to change this encoding to the old RFC 1738, you just need to update the query encoding as shown below using the following predefined constant:
 
-- `Formatter::QUERY_RFC_3986` an a alias of `PHP_RFC_3986` to set the query encoding to unicode;
-- `Formatter::QUERY_RFC_1738` an a alias of `PHP_RFC_3986` to set the query encoding to ascii;
+- `PHP_RFC_3986` to set the query encoding as per RFC 3986;
+- `PHP_RFC_1738` to set the query encoding as per RFC 1738;
 
 ~~~php
 
 use League\Url\Util\Formatter;
 
 $formatter = new Formatter();
-$formatter->setQueryEncoding(Formatter::QUERY_RFC_3986);
-echo $formatter->getQueryEncoding(); //display the value of Formatter::QUERY_RFC_3986;
+$formatter->setQueryEncoding(PHP_QUERY_RFC_1738);
+echo $formatter->getQueryEncoding(); //display the value of PHP_QUERY_RFC_1738;
 ~~~
 
 ### Modifying the query separator
@@ -75,7 +75,7 @@ use League\Url\Util\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_ASCII);
-$formatter->setQueryEncoding(Formatter::QUERY_RFC_3986);
+$formatter->setQueryEncoding(PHP_QUERY_RFC_3986);
 $formatter->setQuerySeparator('&amp;');
 
 $query = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
