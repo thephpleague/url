@@ -48,9 +48,9 @@ echo Host::createFromArray(['bar', baz'])->__toString(); //returns 'bar.baz'
 echo Host::createFromArray(['shop', 'example.com'])->__toString(); //returns 'shop.example.com'
 ~~~
 
-### Host::getKeys($value = null)
+### Host::getKeys($label = null)
 
-Returns the keys of the Host object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
+Returns the keys of the Host object. If an argument is supplied to the method, only the keys whose label value equals the argument are returned.
 
 ~~~php
 

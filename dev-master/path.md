@@ -36,11 +36,11 @@ $alt = new Path($path);
 $alt->sameValueAs($path); //returns true
 ~~~
 
-### Path::createFromArray($data, $has_front_delimiter = false)
+### Path::createFromArray($data, $is_absolute = false)
 
 To ease instantiation you can use this named constructor to generate a new `Path` object from an `array` or a `Traversable` object.
 
-if you want your path to start with a delimiter you need to specify it using the `$has_front_delimiter` argument.
+If you want your path to be absolute you need to specify it using the `$is_absolute` argument.
 
 ~~~php
 
@@ -50,9 +50,24 @@ echo Path::createFromArray(['bar', '', 'baz'])->__toString(); //returns 'bar//ba
 echo Path::createFromArray(['bar', '', 'baz'], true)->__toString(); //returns '/bar//baz'
 ~~~
 
-### Path::getKeys()
+### Path::isAbsolute()
 
-Returns the keys of the Path object. If an argument is supplied to the method. Only the keys whose value equals the argument are returned.
+At any given time you can verify if the path you are currently manipulating is absolute using this method.
+
+~~~php
+
+use League\Url\Path;
+
+$relative_path = Path::createFromArray(['bar', '', 'baz']);
+$relative_path->isAbsolute(); //returns false;
+
+$absolute_path  = Path::createFromArray(['bar', '', 'baz'], true);
+$absolute_path->isAbsolute(); //returns true;
+~~~
+
+### Path::getKeys($segment = null)
+
+Returns the keys of the `Path` object. If an argument is supplied to the method. Only the keys whose segment value equals the argument are returned.
 
 ~~~php
 
