@@ -12,6 +12,8 @@ This component is manage throught the `Query` class which implements the followi
 - `League\Url\Interfaces\Component`
 - `League\Url\Interfaces\Query`
 
+<p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
+
 <p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
 
 ## The Query class
