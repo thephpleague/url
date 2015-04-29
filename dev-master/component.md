@@ -55,25 +55,23 @@ Returns the string representation of the component. While the `Component::get()`
 Returns the string representation of the component with the added URL specific delimiter when applicable.
 
 ~~~php
-
 use League\Url\Scheme;
 
 $scheme = new Scheme();
 $scheme->get(); // returns 'null'
 echo $scheme;  // returns ''
-echo $scheme->getUriComponent(); returns ''
+echo $scheme->getUriComponent(); // returns ''
 $new_scheme = $scheme->withValue('https');
 $new_scheme->get(); // returns 'https';
 echo $new_scheme;  // returns 'https';
-echo $new_scheme->getUriComponent(); returns 'https:'
+echo $new_scheme->getUriComponent(); // returns 'https:'
 ~~~
 
 ### Component::sameValueAs(Component $component)
 
-Tells whether two `Component` objects share the same data. Internally this method compares the result of the `Component::getUriComponent()` method.
+Tells whether two `Component` objects share the same data. Internally this method compares the result of the `Component::getUriComponent()` methods.
 
 ~~~php
-
 use League\Url\Port;
 use League\Url\Pass;
 
@@ -99,10 +97,10 @@ These classes are:
 
 <h2 id="complex-components">Multiple Values Components</h2>
 
-Aside the single value components,  Urls contains 3 more complex components namely:
+Aside from these simple components, Urls contains 3 more complex components namely:
 
-* `League\Url\Query` which deals with [the query component](/dev-master/query/);
-* `League\Url\Path` which deals with [the path component](/dev-master/path/);
 * `League\Url\Host` which deals with [the host component](/dev-master/host/);
+* `League\Url\Path` which deals with [the path component](/dev-master/path/);
+* `League\Url\Query` which deals with [the query component](/dev-master/query/);
 
 Each of these classes takes into account the specifity of its related component.

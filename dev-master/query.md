@@ -5,7 +5,7 @@ title: The Query Component
 
 # The Query component
 
-This component is manage throught the `Host` class which implements the following interfaces:
+This component is manage throught the `Query` class which implements the following interfaces:
 
 - `Countable`
 - `IteratorAggregate`
@@ -25,7 +25,6 @@ The `$data` argument which represents the data to be appended can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Query;
 
 $query = new Query('?foo=bar&baz=nitro');
@@ -38,7 +37,6 @@ $alt->sameValueAs($query); //returns true
 To ease instantiation you can use this named constructor to generate a new `Query` object from an `array` or a `Traversable` object.
 
 ~~~php
-
 use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'single' => '', 'toto' => 'baz']);
@@ -50,7 +48,6 @@ echo $query; //returns 'foo=bar&single&toto=baz'
 Returns an array representation of the query string
 
 ~~~php
-
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro');
@@ -62,7 +59,6 @@ $arr = $query->toArray(); // returns  ['foo' => 'bar', 'baz' => 'nitro', ];
 Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
 
 ~~~php
-
 use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
@@ -71,12 +67,11 @@ $query->getParamater('change'); //returns null
 $query->getParamater('change', 'now'); //returns 'now'
 ~~~
 
-### Query::getOffsets($value = null)
+### Query::getOffsets($parameter = null)
 
-Returns the keys of the Query object. If an argument is supplied to the method. Only the key whose value equals the argument are returned.
+Returns the offsets associated to the current query string. If an argument is supplied to the method, only the offsets whose values equals the argument are returned. Otherwise an empty array is returned.
 
 ~~~php
-
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro&change=nitro');
@@ -90,7 +85,6 @@ $query->getOffsets('gweta'); // returns [];
 Returns `true` if the submitted `$offset` exists in the current object.
 
 ~~~php
-
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro&change=nitro');
@@ -109,7 +103,6 @@ The single `$data` can be:
 <p class="message-info">When providing an <code>array</code> or a <code>Traversable</code> object. If the value associated to an offset equals <code>null</code>, the resulting key will be remove from the returned new query object.</p>
 
 ~~~php
-
 use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);

@@ -28,7 +28,6 @@ The class constructor takes a single argument `$data` which can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
@@ -43,7 +42,6 @@ To ease instantiation you can use this named constructor to generate a new `Path
 If you want your path to be absolute you need to specify it using the `$is_absolute` argument.
 
 ~~~php
-
 use League\Url\Path;
 
 echo Path::createFromArray(['bar', '', 'baz'])->__toString(); //returns 'bar//baz'
@@ -55,7 +53,6 @@ echo Path::createFromArray(['bar', '', 'baz'], true)->__toString(); //returns '/
 At any given time you can verify if the path you are currently manipulating is absolute using this method.
 
 ~~~php
-
 use League\Url\Path;
 
 $relative_path = Path::createFromArray(['bar', '', 'baz']);
@@ -70,7 +67,6 @@ $absolute_path->isAbsolute(); // returns true;
 Returns the `Path` object as an array of segments. If the path ends with a delimiter an empty segment is added.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
@@ -85,7 +81,6 @@ $arr = $path->toArray(); // returns ['path', 'to', 'the', 'sky', ''];
 Normalize a `Path` object by removing dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6). The method which takes no arguments returns a new `Path` object which represents the current object normalized.
 
 ~~~php
-
 use League\Url\Path;
 
 $raw_path = new Path('path/to/./the/../the/sky%7bfoo%7d');
@@ -100,7 +95,6 @@ $alt->sameValueAs($path); return false;
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
@@ -114,7 +108,6 @@ $path->getSegment(23, 'now'); // returns 'now'
 Returns the keys of the `Path` object. If an argument is supplied to the method. Only the keys whose segment value equals the argument are returned.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
@@ -128,7 +121,6 @@ $path->getOffsets('gweta'); // returns [];
 Returns `true` if the submitted `$offset` exists in the current object.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
@@ -141,7 +133,6 @@ $path->hasOffset(23); // returns false
 Returns the trailing segment of the Path object. If the segment ends in suffix, the suffix is included.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
@@ -170,7 +161,6 @@ Returns a new `Path` instance with the updated extension for the last segment.
 - If the `Path` object basename is empty, this method will throw a `LogicException`.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
@@ -189,7 +179,6 @@ The `$data` argument which represents the data to be appended can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path();
@@ -208,7 +197,6 @@ The `$data` argument which represents the data to be appended can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Path;
 
 $path = new Path();
@@ -226,7 +214,6 @@ Replace a path segment whose offset equals `$offset` with the value given in the
 	- an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Path;
 
 $Path = new Path('/foo/example/com');
@@ -246,7 +233,6 @@ Remove full segments from the Path and return a new Path object without the remo
 if `$data` is present multiple times in the Path object only the first occurrence found will be removed. You will have to repeat the operation as often as `$data` is present in the Path.
 
 ~~~php
-
 use League\Url\Path;
 
 $Path = new Path('toto/example/com');
