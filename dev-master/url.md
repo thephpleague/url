@@ -31,8 +31,6 @@ Using the `createFromServer` method you can instantiate a new `League\Url\Url` o
 Using the `createFromComponents` method you can instantiate a new `League\Url\Url` object from the result of PHP's function `parse_url`.
 
 ~~~php
-<?php
-
 use League\Url\Url;
 
 //Method 1 : from a given URLs
@@ -58,7 +56,6 @@ The `Url` interface provide the following methods to interact with the URLs prop
 Returns the string representation of a `UriInterface` object as a valid URL.
 
 ~~~php
-
 use League\Url\Url;
 
 $url = Url::createFromServer($_SERVER);
@@ -70,7 +67,6 @@ echo $url; // returns 'http://www.example.com'
 Returns the string representation of the URL user info;
 
 ~~~php
-
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
@@ -82,7 +78,6 @@ echo $url->getUserInfo(); // returns 'user:password';
 Returns the string representation of the URL authority part (ie: `user`, `pass`, `host`, `port`);
 
 ~~~php
-
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
@@ -94,7 +89,6 @@ echo $url->getAuthority(); // returns 'user:password@example.com:8042';
 Returns the string representation of the URL `scheme` component prepending the authority part;
 
 ~~~php
-
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
@@ -106,7 +100,6 @@ echo $url->getBaseUrl(); // returns 'http://user:password@example.com:8042';
 Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation.
 
 ~~~php
-
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
@@ -121,7 +114,6 @@ echo $ref->sameValueAs($alt); //will return true
 Returns an array representation of the URL similar php `parse_url` function. The difference being that the `toArray` will return all Urls components even those that are not set.
 
 ~~~php
-
 use League\Url\UrlImmutable;
 
 $url = UrlImmutable::createFromUrl('http://user:password@example.com:8042/over/there');

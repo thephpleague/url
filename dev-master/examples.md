@@ -10,7 +10,6 @@ title: Examples
 A simple example to show you how to manipulate a URL and its component:
 
 ~~~php
-<?php
 use League\Url\Url;
 
 $url = Url::createFromUrl(
@@ -43,7 +42,6 @@ echo $new_url; // 'ftp://user:pass@www.example.com/mongo%20db?query=lulu%20l%27a
 A simple example to show you how to implement pagination while retaining the original URI:
 
 ~~~php
-<?php
 use League\Url\UrlImmutable;
 
 //create a URL from the current page

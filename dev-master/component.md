@@ -37,7 +37,6 @@ The `$data` argument represents the data to create a new instance of the compone
 Returns the current data attached to the component as a string or `null` if no data is attached to the component
 
 ~~~php
-
 use League\Url\Path;
 
 $user = new User();

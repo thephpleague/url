@@ -28,7 +28,6 @@ The class constructor takes a single argument `$data` which can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('master.example.com');
@@ -41,7 +40,6 @@ $alt->sameValueAs($host); //returns true
 To ease instantiation you can use this named constructor to generate a new `Host` object from an `array` or a `Traversable` object.
 
 ~~~php
-
 use League\Url\Host;
 
 echo Host::createFromArray(['bar', 'baz'])->__toString(); //returns 'bar.baz'
@@ -53,7 +51,6 @@ echo Host::createFromArray(['shop', 'example.com'])->__toString(); //returns 'sh
 Returns the `Host` object as an array of label.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('secure.example.com');
@@ -68,7 +65,6 @@ $arr = $host->toArray(); // returns  ['::1'];
 Returns the value of a specific offset. If the offset does not exists it will return the value specified by the `$default` argument
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
@@ -82,7 +78,6 @@ $host->getLabel(23, 'now'); //returns 'now'
 Returns the keys of the Host object. If an argument is supplied to the method, only the keys whose label value equals the argument are returned.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
@@ -96,7 +91,6 @@ $host->offsets('gweta'); // returns [];
 Returns `true` if the submitted `$offset` exists in the current object.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
@@ -115,7 +109,6 @@ The `$data` argument which represents the data to be appended can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host();
@@ -134,7 +127,6 @@ The `$data` argument which represents the data to be appended can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host();
@@ -153,7 +145,6 @@ The `$data` argument which represents the data to be appended can be:
 - an object with the `__toString` method.
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('foo.example.com');
@@ -170,7 +161,6 @@ The `$offsets` argument is an array containing a list of offsets to remove.
 <p class="message-warning">All specified <code>$offsets</code> must exists otherwise the newly return <code>Host</code> object will be equal to the current instance.</p>
 
 ~~~php
-
 use League\Url\Host;
 
 $host = new Host('toto.example.com');
