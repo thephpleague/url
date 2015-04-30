@@ -69,7 +69,7 @@ $query->getParamater('change'); //returns null
 $query->getParamater('change', 'now'); //returns 'now'
 ~~~
 
-### Query::getOffsets($parameter = null)
+### Query::offsets($parameter = null)
 
 Returns the offsets associated to the current query string. If an argument is supplied to the method, only the offsets whose values equals the argument are returned. Otherwise an empty array is returned.
 
@@ -77,9 +77,9 @@ Returns the offsets associated to the current query string. If an argument is su
 use League\Url\Query;
 
 $query = new Query('foo=bar&baz=nitro&change=nitro');
-$query->getOffsets(); // returns  ['foo', 'baz', 'chance'];
-$query->getOffsets('nitro'); // returns ['baz', 'chance'];
-$query->getOffsets('gweta'); // returns [];
+$query->offsets(); // returns  ['foo', 'baz', 'chance'];
+$query->offsets('nitro'); // returns ['baz', 'chance'];
+$query->offsets('gweta'); // returns [];
 ~~~
 
 ### Query::hasOffset($offset)

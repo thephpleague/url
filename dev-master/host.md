@@ -44,7 +44,7 @@ To ease instantiation you can use this named constructor to generate a new `Host
 
 use League\Url\Host;
 
-echo Host::createFromArray(['bar', baz'])->__toString(); //returns 'bar.baz'
+echo Host::createFromArray(['bar', 'baz'])->__toString(); //returns 'bar.baz'
 echo Host::createFromArray(['shop', 'example.com'])->__toString(); //returns 'shop.example.com'
 ~~~
 
@@ -77,7 +77,7 @@ $host->getLabel(23); //returns null
 $host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
-### Host::getOffsets($label = null)
+### Host::offsets($label = null)
 
 Returns the keys of the Host object. If an argument is supplied to the method, only the keys whose label value equals the argument are returned.
 
@@ -88,7 +88,7 @@ use League\Url\Host;
 $host = new Host('uk.example.co.uk');
 $host->keys(); // returns  [0, 1, 2, 3];
 $host->keys('uk'); // returns [0, 3];
-$host->getOffsets('gweta'); // returns [];
+$host->offsets('gweta'); // returns [];
 ~~~
 
 ### Host::hasOffset($offset)

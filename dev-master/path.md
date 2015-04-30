@@ -103,7 +103,7 @@ $path->getSegment(23);        // returns null
 $path->getSegment(23, 'now'); // returns 'now'
 ~~~
 
-### Path::getOffsets($segment = null)
+### Path::offsets($segment = null)
 
 Returns the keys of the `Path` object. If an argument is supplied to the method. Only the keys whose segment value equals the argument are returned.
 
@@ -111,9 +111,9 @@ Returns the keys of the `Path` object. If an argument is supplied to the method.
 use League\Url\Path;
 
 $path = new Path('/path/to/the/path');
-$path->getOffsets();        // returns [0, 1, 2, 3];
-$path->getOffsets('path');  // returns [0, 3];
-$path->getOffsets('gweta'); // returns [];
+$path->offsets();        // returns [0, 1, 2, 3];
+$path->offsets('path');  // returns [0, 3];
+$path->offsets('gweta'); // returns [];
 ~~~
 
 ### Path::hasOffset($offset)
