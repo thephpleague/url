@@ -221,21 +221,19 @@ $newPath = $path->replaceWith('bar/baz', 0);
 $Path->__toString(); // returns /bar/baz/example/com
 ~~~
 
-### Path::without($data)
+### Path::without(array $offsets = [])
 
-Remove full segments from the Path and return a new Path object without the removed segments.
+Remove labels from the current object and returns a new `Path` object without the removed segments.
 
-- The `$data` argument which represents the data to be appended can be:
-	- a string representation of a Pathname.
-	- another `PathInterface` object
-	- an object with the `__toString` method.
+The `$offsets` argument is an array containing a list of offsets to remove.
 
-if `$data` is present multiple times in the Path object only the first occurrence found will be removed. You will have to repeat the operation as often as `$data` is present in the Path.
+<p class="message-warning">All specified <code>$offsets</code> must exists otherwise the newly return <code>Path</code> object will be equal to the current instance.</p>
 
 ~~~php
+
 use League\Url\Path;
 
-$path     = new Path('toto/example/com');
-$new_path = $path->without('example');
-$new_path ->__toString(); // returns toto/com
+$host = new Path('/path/to/the/sky');
+$host->without([0, 1]);
+$host->__toString(); //returns '/the/sky'
 ~~~

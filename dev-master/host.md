@@ -161,24 +161,20 @@ $newHost = $host->replaceWith('bar.baz', 0);
 $host->__toString(); //returns bar.baz.example.com
 ~~~
 
-### Host::without($data)
+### Host::without(array $offsets = [])
 
-Remove data from the segment and return a new segment without the remove part.
+Remove labels from the current object and returns a new `Host` object without the removed labels.
 
-The `$data` argument which represents the data to be appended can be:
+The `$offsets` argument is an array containing a list of offsets to remove.
 
-- a string representation of a hostname.
-- another `HostInterface` object
-- an object with the `__toString` method.
-
-if `$data` is present multiple times in the Host object only the first occurrence found will be removed. You will have to repeat the operation as often as `$data` is present in the Host string.
+<p class="message-warning">All specified <code>$offsets</code> must exists otherwise the newly return <code>Host</code> object will be equal to the current instance.</p>
 
 ~~~php
 
 use League\Url\Host;
 
 $host = new Host('toto.example.com');
-$host->without('example');
+$host->without([1]);
 $host->__toString(); //returns toto.com
 ~~~
 
