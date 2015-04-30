@@ -5,7 +5,7 @@ title: The URL Formatter
 
 # The Formatter
 
-The `League\Url\Util\Formatter`utility class helps you output a better formatted URL and/or component to easily use them in output format like HTML.
+The `League\Url\Formatter`utility class helps you output a better formatted URL and/or component to easily use them in output format like HTML.
 
 ## Formatter Properties
 
