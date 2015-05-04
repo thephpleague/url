@@ -114,15 +114,11 @@ $host->hasOffset(2); // returns true
 $host->hasOffset(23); // returns false
 ~~~
 
-### Host::append($data)
+### Host::append(SegmentComponent $data)
 
 Append data to the component.
 
-The `$data` argument which represents the data to be appended can be:
-
-- a string representation of a hostname.
-- another `HostInterface` object
-- an object with the `__toString` method.
+Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. So you can use a Host and/or a Path object.
 
 ~~~php
 use League\Url\Host;
@@ -134,7 +130,7 @@ $newHost->__toString(); //returns toto.example.com
 
 ### Host::prepend(SegmentComponent $data)
 
-Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. So you can use a Host and/or a Path object.
+Prepend data to the component. The `$data` argument which represents the data to be prepended can be another `SegmentComponent` implementing object. So you can use a Host and/or a Path object.
 
 ~~~php
 use League\Url\Host;

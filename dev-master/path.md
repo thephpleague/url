@@ -168,15 +168,9 @@ $new_path = $path->withExtension('.csv');
 echo $new_path; // displays /path/to/the/sky.csv;
 ~~~
 
-### Path::append($data)
+### Path::append(SegmentComponent $data)
 
-Append the current path with the given data and return a new Path instance.
-
-The `$data` argument which represents the data to be appended can be:
-
-- a string representation of a Pathname.
-- another `PathInterface` object
-- an object with the `__toString` method.
+Append data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. So you can use a Host or a Path object.
 
 ~~~php
 use League\Url\Path;
@@ -186,9 +180,9 @@ $newPath = $path->appendWith('path')->appendWith('to/the/sky');
 $newPath->__toString(); // returns path/to/the/sky
 ~~~
 
-### Path::prepend($data)
+### Path::prepend(SegmentComponent $data)
 
-Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. You can use a Host and/or a Path object.
+Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. You can use a Host or a Path object.
 
 ~~~php
 use League\Url\Path;
@@ -200,7 +194,7 @@ $newPath->__toString(); // returns path/to/the/sky
 
 ### Path::replace(SegmentComponent $data, $offset)
 
-Replace a Path segment whose offset equals `$offset` with the `SegmentComponent` object given as first argument. You can use a Host and/or a Path object.
+Replace a Path segment whose offset equals `$offset` with the `SegmentComponent` object given as first argument. You can use a Host or a Path object.
 
 ~~~php
 use League\Url\Path;
