@@ -10,7 +10,7 @@ This component is manage throught the `Path` class which implements the followin
 - `Countable`
 - `IteratorAggregate`
 - `League\Url\Interfaces\Component`
-- `League\Url\Interfaces\Segment`
+- `League\Url\Interfaces\SegmentComponent`
 - `League\Url\Interfaces\Path`
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
@@ -186,7 +186,7 @@ $newPath = $path->appendWith('path')->appendWith('to/the/sky');
 $newPath->__toString(); // returns path/to/the/sky
 ~~~
 
-### Path::prependWith($data)
+### Path::prepend($data)
 
 Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. You can use a Host and/or a Path object.
 

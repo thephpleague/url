@@ -128,7 +128,7 @@ The `$data` argument which represents the data to be appended can be:
 use League\Url\Host;
 
 $host = new Host();
-$newHost = $host->appendWith('toto')->appendWith('example.com');
+$newHost = $host->append(new Host('toto'))->append(new Host('example.com'));
 $newHost->__toString(); //returns toto.example.com
 ~~~
 
@@ -140,7 +140,7 @@ Prepend data to the component. The `$data` argument which represents the data to
 use League\Url\Host;
 
 $host = new Host();
-$newHost = $host->prependWith('example.com')->prepend(new Host('toto'));
+$newHost = $host->prepend(new Host('example.com'))->prepend(new Host('toto'));
 $host->__toString(); //returns toto.example.com
 ~~~
 
@@ -194,7 +194,6 @@ echo $host;  // output 'مثال.إختبار'  //the object output the IDN vers
 
 ## Hostname as IP
 
-<p class="message-warning">A hostname as IP can be specified using the constructor. Once defined as an IP you can no longer use the <code>appendWith</code>, <code>prependWith</code> methods to modify its value.</p>
 
 ### Host::isIp()
 

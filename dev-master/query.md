@@ -103,7 +103,7 @@ use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $alt->get(); //returns foo=bar&baz=toto
-$new = $alt->merge('foo=jane');
+$new = $alt->merge(new Query('foo=jane'));
 $new->get(); //returns foo=jane&baz=toto
 ~~~
 
