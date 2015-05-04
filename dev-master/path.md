@@ -168,7 +168,7 @@ $new_path = $path->withExtension('.csv');
 echo $new_path; // displays /path/to/the/sky.csv;
 ~~~
 
-### Path::appendWith($data)
+### Path::append($data)
 
 Append the current path with the given data and return a new Path instance.
 
@@ -188,36 +188,25 @@ $newPath->__toString(); // returns path/to/the/sky
 
 ### Path::prependWith($data)
 
-Prepend the current path with the given data and return a new Path instance.
-
-The `$data` argument which represents the data to be appended can be:
-
-- a string representation of a Pathname.
-- another `PathInterface` object
-- an object with the `__toString` method.
+Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. You can use a Host and/or a Path object.
 
 ~~~php
 use League\Url\Path;
 
 $path    = new Path();
-$newPath = $path->prependWith('sky')->prependWith('path/to/the');
+$newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
 $newPath->__toString(); // returns path/to/the/sky
 ~~~
 
-### Path::replaceWith($data, $offset)
+### Path::replace(SegmentComponent $data, $offset)
 
-Replace a path segment whose offset equals `$offset` with the value given in the first argument `$data`.
-
-- The `$data` argument which represents the data to be appended can be:
-	- a string representation of a Pathname.
-	- another `Path` interface
-	- an object with the `__toString` method.
+Replace a Path segment whose offset equals `$offset` with the `SegmentComponent` object given as first argument. You can use a Host and/or a Path object.
 
 ~~~php
 use League\Url\Path;
 
 $path    = new Path('/foo/example/com');
-$newPath = $path->replaceWith('bar/baz', 0);
+$newPath = $path->replace(new Path('bar/baz'), 0);
 $Path->__toString(); // returns /bar/baz/example/com
 ~~~
 
@@ -226,8 +215,6 @@ $Path->__toString(); // returns /bar/baz/example/com
 Remove labels from the current object and returns a new `Path` object without the removed segments.
 
 The `$offsets` argument is an array containing a list of offsets to remove.
-
-<p class="message-warning">All specified <code>$offsets</code> must exists otherwise the newly return <code>Path</code> object will be equal to the current instance.</p>
 
 ~~~php
 

@@ -56,7 +56,7 @@ $query = new Query('foo=bar&baz=nitro');
 $arr = $query->toArray(); // returns  ['foo' => 'bar', 'baz' => 'nitro', ];
 ~~~
 
-### Query::getParamater($offset, $default = null)
+### Query::getParameter($offset, $default = null)
 
 Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
 
@@ -64,9 +64,9 @@ Returns the value of a specific key. If the key does not exists it will return t
 use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$query->getParamater('baz'); //returns 'toto'
-$query->getParamater('change'); //returns null
-$query->getParamater('change', 'now'); //returns 'now'
+$query->getParameter('baz'); //returns 'toto'
+$query->getParameter('change'); //returns null
+$query->getParameter('change', 'now'); //returns 'now'
 ~~~
 
 ### Query::offsets($parameter = null)
@@ -94,21 +94,30 @@ $query->hasOffset('foo'); // returns true
 $query->hasOffset('gweta'); // returns false
 ~~~
 
-### Query::mergeWith($data)
+### Query::merge(Query $query)
 
-The single `$data` can be:
-
-- an `array`,
-- a `Traversable` object
-- a string representation of a query string.
-
-<p class="message-info">When providing an <code>array</code> or a <code>Traversable</code> object. If the value associated to an offset equals <code>null</code>, the resulting key will be remove from the returned new query object.</p>
+The single `$query` argument must implement the Query interface. The data will be merge between both query object and a new instance of the Query object will be returned with the merge data. Of note, this method only adds or updates the values of the query string. You can not remove value from the query by using this method.
 
 ~~~php
 use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $alt->get(); //returns foo=bar&baz=toto
-$new = $alt->mergeWith('foo=jane');
+$new = $alt->merge('foo=jane');
 $new->get(); //returns foo=jane&baz=toto
+~~~
+
+### Query::without(array $offsets = [])
+
+Remove parameter from the current object and returns a new `Query` object without the removed parameters.
+
+The `$offsets` argument is an array containing a list of offsets to remove.
+
+~~~php
+
+use League\Url\Path;
+
+$host = new Path('/path/to/the/sky');
+$host->without([0, 1]);
+$host->__toString(); //returns '/the/sky'
 ~~~

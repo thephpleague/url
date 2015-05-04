@@ -10,7 +10,7 @@ This component is manage throught the `Host` class which implements the followin
 - `Countable`
 - `IteratorAggregate`
 - `League\Url\Interfaces\Component`
-- `League\Url\Interfaces\Segment`
+- `League\Url\Interfaces\SegmentComponent`
 - `League\Url\Interfaces\Host`
 
 <p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
@@ -35,15 +35,31 @@ $alt = new Host($host);
 $alt->sameValueAs($host); //returns true
 ~~~
 
-### Host::createFromArray($data)
+### Host::createFromArray($data, $is_absolute = false)
 
-To ease instantiation you can use this named constructor to generate a new `Host` object from an `array` or a `Traversable` object.
+To ease instantiation you can use this named constructor to generate a new `Host` object from an `array` or a `Traversable` object. The second argument is used to indicate wether the `Host` is a Full Qualified Domain Name which ends with a dot.
 
 ~~~php
 use League\Url\Host;
 
 echo Host::createFromArray(['bar', 'baz'])->__toString(); //returns 'bar.baz'
-echo Host::createFromArray(['shop', 'example.com'])->__toString(); //returns 'shop.example.com'
+echo Host::createFromArray(['shop', 'example.com'], true)->__toString(); //returns 'shop.example.com.'
+~~~
+
+### Path::isAbsolute()
+
+At any given time you can verify if the Host you are currently manipulating is a full qualified domain name.
+
+~~~php
+use League\Url\Host;
+
+$host = Host::createFromArray(['bar', 'baz']);
+$host->isAbsolute(); // returns false;
+$host->__toString(); // display bar.baz
+
+$fqdn = Host::createFromArray(['bar', 'baz'], true);
+$fqdn->isAbsolute(); // returns true;
+$fqdn->__toString(); // display bar.baz.
 ~~~
 
 ### Host::toArray()
@@ -98,7 +114,7 @@ $host->hasOffset(2); // returns true
 $host->hasOffset(23); // returns false
 ~~~
 
-### Host::appendWith($data)
+### Host::append($data)
 
 Append data to the component.
 
@@ -116,39 +132,27 @@ $newHost = $host->appendWith('toto')->appendWith('example.com');
 $newHost->__toString(); //returns toto.example.com
 ~~~
 
-### Host::prependWidth($data)
+### Host::prepend(SegmentComponent $data)
 
-Prepend data to the component.
-
-The `$data` argument which represents the data to be appended can be:
-
-- a string representation of a hostname.
-- another `HostInterface` object
-- an object with the `__toString` method.
+Prepend data to the component. The `$data` argument which represents the data to be appended can be another `SegmentComponent` implementing object. So you can use a Host and/or a Path object.
 
 ~~~php
 use League\Url\Host;
 
 $host = new Host();
-$newHost = $host->prependWith('example.com')->prependWith('toto');
+$newHost = $host->prependWith('example.com')->prepend(new Host('toto'));
 $host->__toString(); //returns toto.example.com
 ~~~
 
-### Host::replaceWith($data, $offset)
+### Host::replace(SegmentComponent $data, $offset)
 
-Replace a Host label whose offset equals `$offset` with the value given in the first argument `$data`.
-
-The `$data` argument which represents the data to be appended can be:
-
-- a string representation of a hostname.
-- another `HostInterface` object
-- an object with the `__toString` method.
+Replace a Host label whose offset equals `$offset` with the `SegmentComponent` object given as first argument.
 
 ~~~php
 use League\Url\Host;
 
 $host = new Host('foo.example.com');
-$newHost = $host->replaceWith('bar.baz', 0);
+$newHost = $host->replace(new Host('bar.baz'), 0);
 $host->__toString(); //returns bar.baz.example.com
 ~~~
 
@@ -157,8 +161,6 @@ $host->__toString(); //returns bar.baz.example.com
 Remove labels from the current object and returns a new `Host` object without the removed labels.
 
 The `$offsets` argument is an array containing a list of offsets to remove.
-
-<p class="message-warning">All specified <code>$offsets</code> must exists otherwise the newly return <code>Host</code> object will be equal to the current instance.</p>
 
 ~~~php
 use League\Url\Host;

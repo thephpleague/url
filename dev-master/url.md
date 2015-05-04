@@ -189,13 +189,13 @@ echo $new_url; //output https://john:doe@www.example.com:443/
 
 [basic]: /dev-master/component/#simple-components
 
-### Url::resolve
+### Url::resolve(UriInterface $url)
 
 This method helps create new URL relative to the current URL using RFC 3986 rules.
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/here/now');
-$new_url = $url->resolve('../../../toto');
+$new_url = $url->resolve(Url::createFromUrl('../../../toto'));
 echo $url; //remains http://www.example.com/path/here/now
 echo $new_url; //output http://www.example.com/toto
 ~~~
