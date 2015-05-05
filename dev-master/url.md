@@ -127,8 +127,8 @@ Returns whether the current URL is absolute or relative. An URL is considered ab
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('')->isAbsolute(); // returns false
-$url = Url::createFromServer($_SERVER)->isAbsolute(); // returns true
+Url::createFromUrl('')->isAbsolute(); // returns false
+Url::createFromServer($_SERVER)->isAbsolute(); // returns true
 ~~~
 
 ## Accessing the URLs components
