@@ -84,20 +84,6 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getAuthority(); // returns 'user:password@example.com:8042';
 ~~~
 
-### Url::sameValueAs(UriInterface $url)
-
-Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation.
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
-$ref = Url::createFromServer($_SERVER);
-$alt = Url::createFromServer($_SERVER);
-echo $url->sameValuesAs($ref); // returns true if $ref->__toString() == $url->__toString()
-echo $ref->sameValueAs($alt); //will return true
-~~~
-
 ### Url::toArray()
 
 Returns an array representation of the URL similar php `parse_url` function. The difference being that the `toArray` will return all Urls components even those that are not set.
@@ -120,6 +106,20 @@ $arr = $url->toArray();
 // ]
 ~~~
 
+### Url::sameValueAs(UriInterface $url)
+
+Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation.
+
+~~~php
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
+$ref = Url::createFromServer($_SERVER);
+$alt = Url::createFromServer($_SERVER);
+echo $url->sameValuesAs($ref); // returns true if $ref->__toString() == $url->__toString()
+echo $ref->sameValueAs($alt); //will return true
+~~~
+
 ### Url::isAbsolute()
 
 Returns whether the current URL is absolute or relative. An URL is considered absolute if it has an non-empty scheme component.
@@ -129,6 +129,20 @@ use League\Url\Url;
 
 Url::createFromUrl('')->isAbsolute(); // returns false
 Url::createFromServer($_SERVER)->isAbsolute(); // returns true
+~~~
+
+### Url::hasStandardPort()
+
+Returns whether the current URL uses the default port according the its scheme information.
+
+- If the scheme is not known, the method returns `false`.
+- If no port is set, the method will return `true`.
+
+~~~php
+use League\Url\Url;
+
+Url::createFromUrl('http://example.com:8042/over/there'')->hasStandardPort(); // returns false
+Url::createFromUrl('wss://example.com:443/over/there'')->hasStandardPort(); // returns true
 ~~~
 
 ## Accessing the URLs components
