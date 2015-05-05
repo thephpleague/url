@@ -47,7 +47,7 @@ $url = Url::createFromComponents($components);
 
 in all cases `$url` is now a `League\Url\Url` object.
 
-## Outputting the Urls
+## Getting URL information
 
 The `Url` interface provide the following methods to interact with the URLs properties.
 
@@ -84,17 +84,6 @@ $url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
 echo $url->getAuthority(); // returns 'user:password@example.com:8042';
 ~~~
 
-### Url::getBaseUrl();
-
-Returns the string representation of the URL `scheme` component prepending the authority part;
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('http://user:password@example.com:8042/over/there');
-echo $url->getBaseUrl(); // returns 'http://user:password@example.com:8042';
-~~~
-
 ### Url::sameValueAs(UriInterface $url)
 
 Tells whether two `Psr\Http\Message\UriInterface` objects share the same string representation.
@@ -129,6 +118,17 @@ $arr = $url->toArray();
 //   'query' => null,
 //   'fragment' => null,
 // ]
+~~~
+
+### Url::isAbsolute()
+
+Returns whether the current URL is absolute or relative. An URL is considered absolute if it has an non-empty scheme component.
+
+~~~php
+use League\Url\Url;
+
+$url = Url::createFromUrl('')->isAbsolute(); // returns false
+$url = Url::createFromServer($_SERVER)->isAbsolute(); // returns true
 ~~~
 
 ## Accessing the URLs components
