@@ -117,7 +117,7 @@ echo $host;  // output 'مثال.إختبار'  //the object output the IDN vers
 
 ### Host as an array
 
-A host can be divided into its different labels. The class provide an array representation of a the host label usung the `Host::toArray` method.
+A host can be divided into its different labels. The class provide an array representation of a the host label using the `Host::toArray` method.
 
 ~~~php
 use League\Url\Host;
@@ -201,7 +201,7 @@ $newHost->__toString(); //returns toto.com
 
 ### Append labels
 
-<p class="message-warning">Trying to append an IP Host with throw an <code>Exception</code></p>
+<p class="message-warning">Trying to append an IP Host will throw an <code>Exception</code></p>
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
@@ -215,7 +215,7 @@ $newHost->__toString(); //returns toto.example.com
 
 ### Prepend labels
 
-<p class="message-warning">Trying to prepend an IP Host with throw an <code>Exception</code></p>
+<p class="message-warning">Trying to prepend an IP Host will throw an <code>Exception</code></p>
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
 
