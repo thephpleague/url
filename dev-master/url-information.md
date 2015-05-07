@@ -30,10 +30,11 @@ echo $url->getPort(); //remains 443
 echo $new_port; // output 80;
 ~~~
 
+## Retrieving URL information
 
 ### Is the URL absolute ?
 
-An URL is absolute if it contains an non empty scheme
+A URL is considered absolute if it has a non empty scheme component.
 
 ~~~php
 $url = Url:createFromUrl('//example.com/foo');
@@ -45,50 +46,5 @@ $url->isAbsolute(); //returns true
 
 ### The URL Authority
 
-Using the `createFromServer` method you can instantiate a new `League\Url\Url` object from PHP's server variables. Of note, you must specify the `array` containing the variables usually `$_SERVER`.
+Sometimes you may want to determine the naming authority that govern the URL name space
 
-~~~php
-use League\Url\Url;
-
-//don't forget to provide the $_SERVER array
-$url = Url::createFromServer($_SERVER);
-~~~
-
-### From parse_url results
-
-Using the `createFromComponents` method you can instantiate a new `League\Url\Url` object from the result of PHP's function `parse_url`.
-
-~~~php
-use League\Url\Url;
-
-$components = parse_url('https://foo.example.com');
-$url = Url::createFromComponents($components);
-~~~
-
-### From its default constructor
-
-If you already have a all components as object that implements the package interfaces, you can directly instantiate a new `League\Url\Url` object from them.
-
-~~~php
-use League\Url\Url;
-
-$url = new Url(
-	$scheme,
-	$user,
-	$pass,
-	$host,
-	$port,
-	$path,
-	$query,
-	$fragment
-);
-
-//where $scheme is a League\Url\Scheme object
-//where $user is a League\Url\User object
-//where $pass is a League\Url\Pass object
-//where $host is a League\Interfaces\Host interface
-//where $port is a League\Url\Port object
-//where $path is a League\Interfaces\Path interface
-//where $query is a League\Interfaces\Query interface
-//where $fragment is a League\Url\Fragment object
-~~~
