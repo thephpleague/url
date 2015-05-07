@@ -121,8 +121,8 @@ The non destructives rules are:
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=I+am');
-echo $url; //displays http://www.example.com/hellow/./wor%2Fld?who=I%2Dam;
+$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
+echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 ~~~
 
 If you wish to remove the dot segments which is considered a destructive normalization you will have to explicitly call the `Url::normalize` method which takes no argument.
@@ -130,13 +130,13 @@ If you wish to remove the dot segments which is considered a destructive normali
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=I+am')->normalize();
-echo $url; //displays http://www.example.com/hello/wor%2Fld?who=I%2Dam;
+$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title')->normalize();
+echo $url; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
 ~~~
 
 ## URL comparison
 
-To compare two URLs to know if they represent the same ressource you can use the `Url::sameValueAs` method which compares two PSR-7 UriInterface object according to their respective __toString() methods.
+To compare two URLs to know if they represent the same ressource you can use the `Url::sameValueAs` method which compares two PSR-7 `UriInterface` object according to their respective `UriInterface::__toString` methods.
 
 ~~~php
 use League\Url\Url;
@@ -151,12 +151,12 @@ $url1->samaValueAs($url3); //return false;
 
 ## URL resolution
 
-The URL class also provides the mean for resolving an URL as a browser would for an anchor tag. 
+The URL class also provides the mean for resolving an URL as a browser would for an anchor tag.
 
 ~~~php
 use League\Url\Url;
 
-$url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=I+am');
-$url2 = $url->resolve('../../p#toto');
-echo $url2; //displays 'http://www.example.com/p#toto'
+$url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
+$url2 = $url->resolve('./p#~toto');
+echo $url2; //displays 'http://www.example.com/hello/p#~toto'
 ~~~
