@@ -130,8 +130,9 @@ If you wish to remove the dot segments which is considered a destructive normali
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title')->normalize();
-echo $url; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
+$url    = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
+$newUrl = $url->->normalize();
+echo $newUrl; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
 ~~~
 
 ## URL comparison
