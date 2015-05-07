@@ -129,7 +129,7 @@ $host = new Host('::1');
 $arr = $host->toArray(); // returns  ['::1'];
 ~~~
 
-## Accessing the Host label
+## Accessing Host Content
 
 ### Countable and IteratorAggregate
 
@@ -183,7 +183,7 @@ $host->getLabel(23, 'now'); //returns 'now'
 
 The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument.
 
-## Modifying the host
+## Modifying Host Content
 
 <p class="message-notice">If the modifications does not change the current object it is returned, otherwise, a new modified host object is returned.</p>
 
@@ -201,6 +201,8 @@ $newHost->__toString(); //returns toto.com
 
 ### Append labels
 
+<p class="message-warning">Trying to append an IP Host with throw an <code>Exception</code></p>
+
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
 ~~~php
@@ -212,6 +214,8 @@ $newHost->__toString(); //returns toto.example.com
 ~~~
 
 ### Prepend labels
+
+<p class="message-warning">Trying to prepend an IP Host with throw an <code>Exception</code></p>
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
 
