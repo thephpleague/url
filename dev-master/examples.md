@@ -3,9 +3,9 @@ layout: default
 title: Examples
 ---
 
-# Simple example
+# Simple examples
 
-Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate the download URL for each format. This example illustrates how easy it is to generate theses different URLs from an original URL whithout loosing its information.
+Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate each format URL. This example illustrates how easy it is to generate theses different URLs from an original URL whithout loosing its information.
 
 ~~~php
 use League\Url\Url;
