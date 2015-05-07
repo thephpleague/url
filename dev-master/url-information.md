@@ -12,7 +12,7 @@ If you want to create or update quickly an URL, then you'll need to use `League\
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('')
+$url = Url::createFromUrl('ftp://thephpleague.com/fr/')
 	->withScheme('http')
 	->withUserInfo('foo', 'bar')
 	->withHost('www.example.com')
@@ -30,7 +30,7 @@ Since every update returns a modified instance, you can chain each setter method
 
 ### URL components
 
-You can access the URL individual components using their respective getter methods.
+You can access the URL individual components using their respective getter methods. All components are object implementing the `League\Url\Interfaces\Component` interface. This interface provide a `__toString` method to help you get a quick access to its string representation.
 
 ~~~php
 use League\Url\Url;
@@ -46,7 +46,7 @@ echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components even when they are not net
+You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components even when they are not net.
 
 ~~~php
 use League\Url\Url;

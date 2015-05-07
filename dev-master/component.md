@@ -5,101 +5,137 @@ title: URL Components
 
 # URL components
 
-An URL string is composed of up to 8 components which are in order of appearance:
+An URL string is composed of 8 components. Each of these components are returned from the `League\Url\Url` class getter methods as the following specific component classes:
 
-- Scheme;
-- User;
-- Pass;
-- Host;
-- Port;
-- Path;
-- Query;
-- Fragment;
+- The `League\Url\Scheme` class represents the URL scheme component;
+- The `League\Url\User` class represents the URL user component;
+- The `League\Url\Pass` class represents the URL pass component;
+- The `League\Url\Host` class represents the URL host component;
+- The `League\Url\Port` class represents the URL port component;
+- The `League\Url\Path` class represents the URL path component;
+- The `League\Url\Query` class represents the URL query component;
+- The `League\Url\Fragment` class represents the URL fragment component;
 
-The `League\Url` library provides an access to each URL components via a set of interfaces and classes. These classes can all be use independently but they all implement at least the `League\Url\Interfaces\Component` Interface.
+Those classes share common methods to view and update their values. And just like the `League\Url\Url` class, they are defined as immutable value objects.
 
-Whenever applicable URL normalization techniques which preserved the component semantics are applied for better interoperability on each component.
+## Component instantiation
 
-## The Component Interface
+Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986. If the value is invalid an `InvalidArgumentException` is thrown.
 
-Each component class implements the `League\Url\Interfaces\Component` with the following public methods:
-
-### Component::withValue($data)
-
-The `$data` argument represents the data to create a new instance of the component:
-
-- a string representation of a component.
-- another `Component` object
-- an object with the `__toString` method.
-
-### Component::get()
-
-Returns the current data attached to the component as a string or `null` if no data is attached to the component
+<p class="message-warning">No delimiter should be submitted to the component constructor as it will be interpreted as the first character of the component value.</p>
 
 ~~~php
-use League\Url\Path;
+use League\Url;
 
-$user = new User();
-$user->get(); // returns 'null'
-$new_user = $user->withValue('john');
-$new_user->get(); // returns 'john';
+$scheme   = Url\Scheme('http');
+$user     = Url\User('john');
+$pass     = Url\Pass('doe');
+$host     = Url\Host('127.0.0.1');
+$port     = Url\Port(443);
+$path     = Url\Path('/foo/bar/file.csv');
+$query    = Url\Query('q=url&site=thephpleague');
+$fragment = Url\Fragment('paragraphid');
 ~~~
 
-### Component::__toString()
+## Component modification
 
-Returns the string representation of the component. While the `Component::get()` method returns `null` when no data is attached to the component class, `Component::__toString()` always return an string.
-
-### Component::getUriComponent()
-
-Returns the string representation of the component with the added URL specific delimiter when applicable.
+Each component can have its content modified using the `withValue` method. This method expects a string or an object with the `__toString` method.
 
 ~~~php
-use League\Url\Scheme;
+use League\Url\Url;
 
-$scheme = new Scheme();
-$scheme->get(); // returns 'null'
-echo $scheme;  // returns ''
-echo $scheme->getUriComponent(); // returns ''
-$new_scheme = $scheme->withValue('https');
-$new_scheme->get(); // returns 'https';
-echo $new_scheme;  // returns 'https';
-echo $new_scheme->getUriComponent(); // returns 'https:'
+$query     = Url\Query('q=url&site=thephpleague');
+$new_query = $query->withValue('q=yolo');
+echo $new_query; //displays 'q=yolo'
+echo $query(); //display 'q=url&site=thephpleague'
 ~~~
 
-### Component::sameValueAs(Component $component)
+Since we are using immutable value objects, the source component is not modified instead a modified copy of the original object is returned.
 
-Tells whether two `Component` objects share the same data. Internally this method compares the result of the `Component::getUriComponent()` methods.
+## Component representations
+
+Beacuse of the way with interact with each component, each class provides several ways to represent the component value.
+
+### Raw representation
+
+Returns the raw representation of the URL component, the return value can be `null` if the component is not set.
 
 ~~~php
-use League\Url\Port;
-use League\Url\Pass;
 
-$port = new Port(8042);
-$pass = new Pass(8042);
-$port->sameValueAs($pass); //returns false
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://[::1]:81/foo/bar?q=yolo#');
+$url->getScheme()->get();    //returns 'http'
+$url->getUser()->get();      //returns null
+$url->getPass()->get();      //returns null
+$url->getHost()->get();      //returns ':11'
+$url->getPort()->get();      //returns 81 as a integer
+$url->getPath()->get();      //returns '/foo/bar'
+$url->getQuery()->get();     //returns 'q=yolo'
+url->getFragment()->get();   //returns null
 ~~~
 
-<h2 id="simple-components">Single Value Components</h2>
+### String representation
 
-The URL components classes which represent single values only:
+Returns the string representation of the URL component. This is the form used when echoing the URL component from its getter methods.
 
-* implement the `League\Url\Interface\Component` interface.
-* differ in the way they validate and/or output the components.
+~~~php
 
-These classes are:
+use League\Url\Url;
 
-* `League\Url\Scheme` which deals with the scheme component;
-* `League\Url\User` which deals with the user component;
-* `League\Url\Pass` which deals with the pass component;
-* `League\Url\Port` which deals with the port component;
-* `League\Url\Fragment` which deals with the fragment component;
+$url = Url::createFromUrl('http://www.example.com:81/foo/bar?q=yolo#');
+$url->getScheme()->__toString();    //returns 'http'
+$url->getUser()->__toString();      //returns ''
+$url->getPass()->__toString();      //returns ''
+$url->getHost()->__toString();      //returns '[:11]'
+$url->getPort()->__toString();      //returns '81'
+$url->getPath()->__toString();      //returns '/foo/bar'
+$url->getQuery()->__toString();     //returns 'q=yolo'
+url->getFragment()->__toString();   //returns null
+~~~
 
-<h2 id="complex-components">Multiple Values Components</h2>
+### URL-like representation
 
-Aside from these simple components, Urls contains 3 more complex components namely:
+Returns the string representation of the URL component with its optional delimiter. This is the form used by the `Url::__toString` method when building the URL string representation.
+
+~~~php
+
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://www.example.com:81/foo/bar?q=yolo#');
+$url->getScheme()->getUriComponent();    //returns 'http:'
+$url->getUser()->getUriComponent();      //returns ''
+$url->getPass()->getUriComponent();      //returns ''
+$url->getHost()->getUriComponent();      //returns '[:11]'
+$url->getPort()->getUriComponent();      //returns ':81'
+$url->getPath()->getUriComponent();      //returns '/foo/bar'
+$url->getQuery()->getUriComponent();     //returns '?q=yolo'
+url->getFragment()->getUriComponent();   //returns ''
+~~~
+
+## Component comparison
+
+To compare two component to know if they represent the same ressource you can use the `Component::sameValueAs` method which compares two `Component` object according to their respective `Component::getUriComponent` methods.
+
+~~~php
+use League\Url\Url;
+
+$url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=I+am');
+$url2 = Url::createFromUrl('http://www.example.com/hellow/./wor%20ld?who=I%20am;');
+
+$url2->getQuery()->sameValueAs($url1->getQuery()); //returns true;
+$url2->getPath()->sameValueAs($url1->getQuery());  //returns false;
+~~~
+
+<p class="message-warning">Only components can be compared with each other, any other object or type will result in a Fatal error.</p>
+
+
+## Complex components
+
+The methods describe above works on all type of component but for more complex components care has be taken to provide more usefuls methods to interact with their data. To take into account their specifities additional methods and properties were added to the following classes:
 
 * `League\Url\Host` which deals with [the host component](/dev-master/host/);
 * `League\Url\Path` which deals with [the path component](/dev-master/path/);
 * `League\Url\Query` which deals with [the query component](/dev-master/query/);
 
-Each of these classes takes into account the specifity of its related component.
+

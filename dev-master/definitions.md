@@ -9,7 +9,7 @@ The League URL package models URLs and URLs components as [immutable](http://en.
 
 > The term "Uniform Resource Locator" (URL) refers to the subset of URIs that, in addition to identifying a resource, provide a means of locating the resource by describing its primary access mechanism. [RFC3986](http://tools.ietf.org/html/rfc3986#section-1.1.3)
 
-This means that a URL is like a street address, if you omit or change even a single character in it, you won't be able to identy, to find what your were looking for. This is exactly the definition of a value object.
+This means that a URL is like a street address, if you omit or change even a single character in it, you won't be able to find and/or identify what your are looking for. This is exactly the definition of a value object.
 
 ~~~php
 use League\Url\Url;
