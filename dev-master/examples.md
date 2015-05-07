@@ -3,64 +3,18 @@ layout: default
 title: Examples
 ---
 
-# Examples
+# Simple example
 
-## Parse and modify a URL
-
-A simple example to show you how to manipulate a URL and its component:
+Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate the download URL for each format. This example illustrates how easy it is to generate theses different URLs from an original URL whithout loosing its information.
 
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl(
-    'http://user:pass@www.example.com:81/path/index.php?query=toto+le+heros#top'
-);
+$csv_output  = Url::createFromUrl("http://download.example.com/path/to/my/file.csv");
+$xml_output  = $csv_output->withPath($csv_output->getPath()->withExtension('xml'));
+$json_output = $csv_output->withPath($csv_output->getPath()->withExtension('json'));
 
-//let's update the Query String
-$query = $url->getQuery();
-$new_query = $query->mergeWith(['query' => "lulu l'allumeuse", "foo" => "bar"]);
-
-//let's update the path
-$path = $url->getPath();
-$new_path = $path
-		->without('path/index.php')
-		->prepend('mongo db');
-
-$new_url = $url
-	->withScheme('ftp')
-	->withFragment(null)
-	->withPort(21)
-	->withPath($new_path)
-	->withQuery($new_query);
-
-echo $url; // 'http://user:pass@www.example.com:81/path/index.php?query=toto%20le%20heros#top'
-echo $new_url; // 'ftp://user:pass@www.example.com/mongo%20db?query=lulu%20l%27allumeuse&foo=bar'
+echo $csv_output;  //display "http://download.example.com/path/to/my/file.csv"
+echo $xml_output;  //display "http://download.example.com/path/to/my/file.xml"
+echo $json_output; //display "http://download.example.com/path/to/my/file.json"
 ~~~
-
-## Implementing Pagination
-
-A simple example to show you how to implement pagination while retaining the original URI:
-
-~~~php
-use League\Url\UrlImmutable;
-
-//create a URL from the current page
-$url = Url::createFromServer($_SERVER);
-// array to hold the generated URLs
-$paginations = [];
-//get the current path
-$query = $url->getQuery();
-foreach (range(1, 5) as $index) {
-    //we generate the new Url based on the original $url_immutable object
-    $paginations[] = $url->withQuery($query->mergeWith(['p' => $index]));
-}
-
-//$paginations now contains 5 new League\Url\Url objects
-//but $url has not change
-foreach ($paginations as $uri) {
-    $res = $uri instanceof 'League\Url\Url'; // $res is true
-	$url->sameValueAs($uri); // return false
-}
-~~~
-
-Learn more about how this all works in the [Overview](/overview).

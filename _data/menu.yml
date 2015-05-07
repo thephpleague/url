@@ -1,11 +1,14 @@
 'dev-master':
     Getting Started:
         Introduction: '/dev-master/'
-        Examples: '/dev-master/examples/'
         Installation: '/dev-master/installation/'
-    The API:
-        Url: '/dev-master/url/'
-        Component: '/dev-master/component/'
+        Simple example: '/dev-master/examples/'
+        Value Objects: '/dev-master/definitions/'
+    Url:
+        Instantiation: '/dev-master/url-instantiation/'
+        Accessing URL properties: '/dev-master/url/'
+        Manipulating URL: '/dev-master/component/'
+    Components:
         Host: '/dev-master/host/'
         Path: '/dev-master/path/'
         Query: '/dev-master/query/'

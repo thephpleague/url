@@ -12,41 +12,6 @@ The library handles URLs through the use of one class, the `League\Url\Url` whic
 
 <p class="message-warning">While the library validates the host syntax, it does not validate your host against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
 
-## Instantiation
-
-The easiest way to instantiate an URL object is via its named constructors.
-
-### Url::createFromUrl($url = null);
-
-Using the `createFromUrl` static method you can instantiate a new URL object using a string.
-
-Internally, the string will be parse using PHP's `parse_url` function. So any URL parsed by this function will generate a new `League\Url\Url` object.
-
-### Url::createFromServer(array $server)
-
-Using the `createFromServer` method you can instantiate a new `League\Url\Url` object from PHP's server variables. Of note, you must specify the `array` containing the variables usually `$_SERVER`.
-
-### Url::createFromComponents(array $components)
-
-Using the `createFromComponents` method you can instantiate a new `League\Url\Url` object from the result of PHP's function `parse_url`.
-
-~~~php
-use League\Url\Url;
-
-//Method 1 : from a given URLs
-$url = Url::createFromUrl('ftp://host.example.com');
-
-//Method 2: from the current PHP page
-//don't forget to provide the $_SERVER array
-$url = Url::createFromServer($_SERVER);
-
-//Method 3: create from the result of PHP's parse_url function
-$components = parse_url('https://foo.example.com');
-$url = Url::createFromComponents($components);
-~~~
-
-in all cases `$url` is now a `League\Url\Url` object.
-
 ## Getting URL information
 
 The `Url` interface provide the following methods to interact with the URLs properties.
@@ -143,29 +108,6 @@ use League\Url\Url;
 
 Url::createFromUrl('http://example.com:8042/over/there'')->hasStandardPort(); // returns false
 Url::createFromUrl('wss://example.com:443/over/there'')->hasStandardPort(); // returns true
-~~~
-
-## Accessing the URLs components
-
-A Url can contain up to 8 components, to ease URL manipulation the class comes with an extensive list of method to access each 8 components:
-
-* `getScheme()` returns a [Scheme][basic] object
-* `getUser()` returns a [User][basic] object
-* `getPass()` returns a [Pass][basic] object
-* `getHost()` returns a [Host](/dev-master/host/) object
-* `getPort()` returns a [Port][basic] object
-* `getPath()` returns a [Path](/dev-master/path/) object
-* `getQuery()` returns a [Query](/dev-master/query/) object
-* `getFragment()` returns a [Fragment][basic]`object
-
-Each of these object exposes more methods to deal with each component seperately. Since `Url` is a immutable value object. The returns object are clones of the current object property. so any changes apply to these returned copy won't affect your Url object.
-
-~~~php
-$url = Url::createFromUrl('http://www.example.com:443');
-
-$new_port = $url->getPort()->withValue(80);
-echo $new_port; // output 80;
-echo $url->getPort(); //remains 443
 ~~~
 
 ## Manipulating URLs
