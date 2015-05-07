@@ -158,7 +158,17 @@ $host->offsets('gweta'); // returns [];
 
 The methods returns all the label offsets, but if you supply an argument, only the offsets whose label value equals the argument are returned.
 
-### Host label
+If you want to be sure that an offset exists before using it you can do so using the `Host::hasOffset` method which returns `true` if the submitted `$offset` exists in the current object.
+
+~~~php
+use League\Url\Host;
+
+$host = new Host('uk.example.co.uk');
+$host->hasOffset(2); // returns true
+$host->hasOffset(23); // returns false
+~~~
+
+### Label content
 
 If you are only interested in a given label you can access it directly using the `Host::getLabel` method as show below:
 
@@ -172,16 +182,6 @@ $host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
 The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument.
-
-If you want to be sure that an offset exists before using it you can do so using the `Host::hasOffset` method which returns `true` if the submitted `$offset` exists in the current object.
-
-~~~php
-use League\Url\Host;
-
-$host = new Host('uk.example.co.uk');
-$host->hasOffset(2); // returns true
-$host->hasOffset(23); // returns false
-~~~
 
 ## Modifying the host
 
