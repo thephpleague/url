@@ -26,6 +26,8 @@ echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#titl
 
 Since every update returns a modified instance, you can chain each setter methods to simplify URL creation and/or modification.
 
+<p class="message-notice">If the modifications does not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+
 ## Getting access to URL components
 
 ### URL components
@@ -134,6 +136,8 @@ $url    = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#t
 $newUrl = $url->->normalize();
 echo $newUrl; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
 ~~~
+
+<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object will be returned.</p>
 
 ## URL comparison
 
