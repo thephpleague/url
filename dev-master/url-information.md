@@ -60,7 +60,7 @@ $url->toArray();
 //        'pass' => null,
 //        'host' => 'example.com',
 //        'port' => null,
-//        'path' => 'how/are/you',
+//        'path' => '/how/are/you',
 //        'query' => 'foo=baz',
 //        'fragment' => null,
 //    ];

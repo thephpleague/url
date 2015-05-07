@@ -6,8 +6,7 @@
         Value Objects: '/dev-master/definitions/'
     Url:
         Instantiation: '/dev-master/url-instantiation/'
-        Accessing URL properties: '/dev-master/url/'
-        Manipulating URL: '/dev-master/component/'
+        Manipulation: '/dev-master/url-information/'
     Components:
         Host: '/dev-master/host/'
         Path: '/dev-master/path/'
