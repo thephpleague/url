@@ -127,7 +127,7 @@ $url2->getQuery()->sameValueAs($url1->getQuery()); //returns true;
 $url2->getPath()->sameValueAs($url1->getQuery());  //returns false;
 ~~~
 
-<p class="message-warning">Only components can be compared with each other, any other object or type will result in a Fatal error.</p>
+<p class="message-warning">Only components objects can be compared with each other, any other object or type will result in a Fatal error.</p>
 
 
 ## Complex components

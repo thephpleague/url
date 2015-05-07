@@ -5,34 +5,13 @@ title: Getting URLs information
 
 # The URL object
 
-## Manipulating URL components
-
-If you want to create or update quickly an URL, then you'll need to use `League\Url\Url` object which implements the PSR-7 interface.
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('ftp://thephpleague.com/fr/')
-	->withScheme('http')
-	->withUserInfo('foo', 'bar')
-	->withHost('www.example.com')
-	->withPort(81)
-	->withPath('/how/are/you')
-	->withQuery('foo=baz')
-	->withFragment('title');
-
-echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
-~~~
-
-Since every update returns a modified instance, you can chain each setter methods to simplify URL creation and/or modification.
-
-<p class="message-notice">If the modifications does not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
-
 ## Getting access to URL components
 
 ### URL components
 
-You can access the URL individual components using their respective getter methods. All components are object implementing the `League\Url\Interfaces\Component` interface. This interface provide a `__toString` method to help you get a quick access to its string representation.
+You can access the URL individual components using their respective getter methods.
+
+All returned components are objects implementing the `League\Url\Interfaces\Component` interface. [This interface](/dev-master/component/) provide a `__toString` method to help you get a quick access to its string representation.
 
 ~~~php
 use League\Url\Url;
@@ -48,7 +27,7 @@ echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components even when they are not net.
+You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.
 
 ~~~php
 use League\Url\Url;
@@ -70,7 +49,7 @@ $url->toArray();
 
 ### URL parts
 
-Sometimes you may want to get the RFC3986 parts of the URLs. To do so two additionals methods are provided:
+Sometimes you may want to get the RFC3986 parts of the URL. To do so, two additionals methods are provided:
 
 ~~~php
 use League\Url\Url;
@@ -100,17 +79,42 @@ $url->isAbsolute(); //returns true
 
 If the standard port defined for a specific scheme is used it will be dropped from the string representation of the URL. The `Url::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
 
-- If the scheme is not known, the method returns `false`.
-- If no port is set, the method will return `true`.
+- If the scheme is unknown by the library, the method returns `false`.
+- If **no port** is set the method will return `true`.
 
 ~~~php
 use League\Url\Url;
 
-Url::createFromUrl('http://example.com:8042/over/there'')->hasStandardPort(); // returns false
-Url::createFromUrl('wss://example.com:443/over/there'')->hasStandardPort(); // returns true
+Url::createFromUrl('http://example.com:8042/over/there')->hasStandardPort(); // returns false
+Url::createFromUrl('wss://example.com:443/over/there')->hasStandardPort(); // returns true
 ~~~
 
-## URL normalization
+## Modifying URLs
+
+<p class="message-notice">If the modifications does not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+
+### Using the URL components
+
+If you want to create or update quickly an URL, then you'll need to use `League\Url\Url` object which implements the PSR-7 `Psr\Http\Message\UriInterface` interface.
+
+~~~php
+use League\Url\Url;
+
+$url = Url::createFromUrl('ftp://thephpleague.com/fr/')
+	->withScheme('http')
+	->withUserInfo('foo', 'bar')
+	->withHost('www.example.com')
+	->withPort(81)
+	->withPath('/how/are/you')
+	->withQuery('foo=baz')
+	->withFragment('title');
+
+echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
+~~~
+
+Since every update returns a modified instance, you can chain each setter methods to simplify URL creation and/or modification.
+
+### URL normalization
 
 Out of the box the package normalize the given URL according to the non destructive rules of RFC3986.
 
@@ -133,15 +137,27 @@ If you wish to remove the dot segments which is considered a destructive normali
 use League\Url\Url;
 
 $url    = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
-$newUrl = $url->->normalize();
+$newUrl = $url->normalize();
 echo $newUrl; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
 ~~~
 
-<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object will be returned.</p>
+### URL resolution
+
+The URL class also provides the mean for resolving an URL as a browser would for an anchor tag. When performing URL resolution the returned URL is always normalized using all rules even the destructives ones.
+
+~~~php
+use League\Url\Url;
+
+$url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
+$url2 = $url->resolve('./p#~toto');
+echo $url2; //displays 'http://www.example.com/hello/p#~toto'
+~~~
 
 ## URL comparison
 
-To compare two URLs to know if they represent the same ressource you can use the `Url::sameValueAs` method which compares two PSR-7 `UriInterface` object according to their respective `UriInterface::__toString` methods.
+You can compare two PSR-7 compliant URLs object to see if they represent the same ressource using the `Url::sameValueAs` method.
+
+This method compares the two objects according to their respective `__toString` methods response. No normalization is taken into account.
 
 ~~~php
 use League\Url\Url;
@@ -152,16 +168,4 @@ $url3 = $url2->normalize();
 
 $url1->sameValueAs($url2); //return true
 $url1->samaValueAs($url3); //return false;
-~~~
-
-## URL resolution
-
-The URL class also provides the mean for resolving an URL as a browser would for an anchor tag. When performing URL resolution the returned URL is always normalized using all rules even the destructives ones.
-
-~~~php
-use League\Url\Url;
-
-$url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
-$url2 = $url->resolve('./p#~toto');
-echo $url2; //displays 'http://www.example.com/hello/p#~toto'
 ~~~

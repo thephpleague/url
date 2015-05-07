@@ -5,12 +5,45 @@ title: The Host component
 
 # The Host component
 
-Dealing with a host component is not as trivial as it might look, this class tries to help you manipulate and access host content.
-
+The library provides a `League\Url\Host` class to ease complex host manipulation.
 
 ## Host creation
 
-A host is a collection of labels delimited by the host delimiter `.`. So apart from using the [component constructor method](/dev-master/component/#component-instantation), you can use a named constructor with a collection of labels as shown below:
+### Using the default constructor
+
+Just like any other component, a new `League\Url\Host` object can be instantiated using [the default constructor](/dev-master/component/#component-instantation).
+
+~~~php
+use League\Url\Host;
+
+$host = new Host('shop.example.com');
+echo $host; //display 'shop.example.com'
+
+$fqdn = new Host('shop.example.com.');
+echo $fqdn; //display 'shop.example.com.'
+
+$ipv4 = new Host('127.0.0.1');
+echo $ipv4; //display '127.0.0.1'
+
+$ipv6 = new Host('::1');
+echo $ipv6; //display '[::1]'
+
+$ipv6_alt = new Host('[::1]');
+echo $ipv6_alt; //display '[::1]'
+~~~
+
+<p class="message-warning">If the submitted value is not a valid host an <code>InvalidArgumentException</code> will be thrown.</p>
+
+### Using a named constructor
+
+A host is a collection of labels delimited by the host delimiter `.`. So it is possible to create a `Host` object using a collection of labels with the `Host::createFromArray` method.
+
+The method expects at most 2 arguments.
+
+- The first required argument must be a collection of label (an `array` or a `Traversable` object)
+- The second optional argument, a boolean, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not. By default this optional argument is equals to `false`.
+
+<p class="message-warning">Since an IP is not a domain name, the class will throw an <code>InvalidArgumentException</code> if you try to create an IP hostname as a FQDN.</p>
 
 ~~~php
 use League\Url\Host;
@@ -28,14 +61,7 @@ Host::createFromArray(['127.0', '0.1'], true);
 //throws InvalidArgumentException
 ~~~
 
-The method expect at most 2 arguments.
-
-- The first argument must be a collection of label (an `array` or a `Traversable object)
-- The second argument optional tell whether this is an Fully Qualified Domain Name or not
-
-<p class="message-warning">Since an IP is not domain name, you will received a <code>InvalidArgumentException</code> if you try to setup an IP hostname as a FQDN.</p>
-
-## Host Types
+## Host types
 
 ### IP address or Domain name
 
@@ -58,7 +84,7 @@ $host->isIp(); //return false;
 
 ### IPv4 or IPv6
 
-Knowing that you have a IP address is an incomplete information. Has you may be dealing with an IPv4 or an IPV6 address.
+Knowing that you are dealing with a IP hostname is good, knowing that its an IPv4 or an IPv6 is better.
 
 ~~~php
 use League\Url\Host;
@@ -76,7 +102,7 @@ $alt_host->isIpv6();   //return false
 
 ### Simple domain name or FQDN
 
-To determine whether you have a Fully qualified domain name (FQDN), you can use the following method
+If you don't have a IP hostname then it is a domaine name. The library can tell you if its a simple domain name or a FQDN.
 
 ~~~php
 use League\Url\Host;
@@ -94,11 +120,36 @@ $ip_host->isIp();       //return true
 $ip_host->isAbsolute(); //return false
 ~~~
 
-## Other representations
+<p class="message-warning">The library does not validate your domain name against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
+
+## Host representations
+
+### Basic representation
+
+Basic host representations is done using the following methods:
+
+~~~php
+use League\Url\Host;
+
+$host = new Host('example.com');
+$host->get();             //return 'example.com'
+$host->__toString();      //return 'example.com'
+$host->getUriComponent(); //return 'example.com'
+
+$ipv4 = new Host('127.0.0.1');
+$ipv4->get();             //return '127.0.0.1'
+$ipv4->__toString();      //return '127.0.0.1'
+$ipv4->getUriComponent(); //return '127.0.0.1'
+
+$ipv6 = new Host('::1');
+$ipv6->get();             //return '::1'
+$ipv6->__toString();      //return '[::1]'
+$ipv6->getUriComponent(); //return '[::1]'
+~~~
 
 ### IDN support
 
-The Host class support the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism. The class exposed two methods for this support:
+The Host class support the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism through the use of the following method:
 
 - `Host::toUnicode()` an alias of `__toString()` and returns the hostname internationalized name.
 - `Host::toAscii()` returns the punycode encoded hostname.
@@ -129,7 +180,7 @@ $host = new Host('::1');
 $arr = $host->toArray(); // returns  ['::1'];
 ~~~
 
-## Accessing Host Content
+## Accessing host contents
 
 ### Countable and IteratorAggregate
 
@@ -139,7 +190,7 @@ Apart from its string representation the class provides several methods to works
 $host = new Host('secure.example.com');
 count($host); //return 3
 foreach ($host as $offset => $label) {
-	//do something meaningfull here
+    //do something meaningful here
 }
 ~~~
 
@@ -183,9 +234,9 @@ $host->getLabel(23, 'now'); //returns 'now'
 
 The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument.
 
-## Modifying Host Content
+## Modifying host contents
 
-<p class="message-notice">If the modifications does not change the current object it is returned, otherwise, a new modified host object is returned.</p>
+<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 ### Remove labels
 
@@ -201,7 +252,7 @@ $newHost->__toString(); //returns toto.com
 
 ### Append labels
 
-<p class="message-warning">Trying to append an IP Host will throw an <code>Exception</code></p>
+<p class="message-warning">Trying to append to or with an IP based Host will throw an <code>InvalidArgumentException</code></p>
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
@@ -215,7 +266,7 @@ $newHost->__toString(); //returns toto.example.com
 
 ### Prepend labels
 
-<p class="message-warning">Trying to prepend an IP Host will throw an <code>Exception</code></p>
+<p class="message-warning">Trying to prepend to or with an IP based Host will throw an <code>InvalidArgumentException</code></p>
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
 
