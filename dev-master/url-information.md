@@ -151,7 +151,7 @@ $url1->samaValueAs($url3); //return false;
 
 ## URL resolution
 
-The URL class also provides the mean for resolving an URL as a browser would for an anchor tag.
+The URL class also provides the mean for resolving an URL as a browser would for an anchor tag. When performing URL resolution the returned URL is always normalized using all rules even the destructives ones.
 
 ~~~php
 use League\Url\Url;
