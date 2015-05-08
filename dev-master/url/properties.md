@@ -20,7 +20,7 @@ The URL authority part in itself account for up to 4 components.
 		john:doe@example.com:8042
         \_/  \_/ \_________/ \__/
          |    |       |        |
-		user pass   host     pass
+		user pass   host     port
 ~~~
 
 To be able to represents all these parts, the `League\Url\Url` class exposes the following public API:
