@@ -150,7 +150,7 @@ echo $newQuery; //displays 'z'
 
 If you want to add or to update the query parameters you need to use the `Query::merge` method. This method expect a single argument in form of an array or a `Traversable` object.
 
-<p class="message-warning">The data is merge to the current <code>Query</code> object if its value is not equal to <code>null</code>.</p>
+<p class="message-warning">Before merging parameters whose value equals <code>null</code> are filter out.</p>
 
 ~~~php
 use League\Url\Query;
@@ -158,4 +158,6 @@ use League\Url\Query;
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $new = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
 $new->get(); //returns foo=jane&baz=toto&r
+// the 'r' parameter was added
+// the 'baz' parameter was not changed
 ~~~
