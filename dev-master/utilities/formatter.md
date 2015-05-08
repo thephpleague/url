@@ -28,15 +28,15 @@ echo $formatter->getHostEncoding(); //display the value of Formatter::HOST_ASCII
 
 A `League\Url\Query` object is by default encoded by following RFC 3986. If you need to change this encoding to the old RFC 1738, you just need to update the query encoding as shown below using the following predefined constant:
 
-- `PHP_RFC_3986` to set the query encoding as per RFC 3986;
-- `PHP_RFC_1738` to set the query encoding as per RFC 1738;
+- `PHP_QUERY_RFC3986` to set the query encoding as per RFC 3986;
+- `PHP_QUERY_RFC1738` to set the query encoding as per RFC 1738;
 
 ~~~php
 use League\Url\Formatter;
 
 $formatter = new Formatter();
-$formatter->setQueryEncoding(PHP_QUERY_RFC_1738);
-echo $formatter->getQueryEncoding(); //display the value of PHP_QUERY_RFC_1738;
+$formatter->setQueryEncoding(PHP_QUERY_RFC1738);
+echo $formatter->getQueryEncoding(); //display the value of PHP_QUERY_RFC1738;
 ~~~
 
 ### Modifying the query separator
@@ -49,19 +49,13 @@ $formatter->setQuerySeparator('&amp;');
 echo $formatter->getQuerySeparator(); //returns &amp;
 ~~~
 
-## Applying the settings to your League\Url package.
+## Applying the settings to your objects.
 
-### Formatter::format($obj)
+Once your Formatter object is instantiated and set, you can transform any `League\Url` objects according to your settings using the `Formatter::format` method. The method returns the string representation of the URLs or of its component.
 
-The `$obj` parameter can be:
+<p class="message-warning">If the object is not recognized an <code>InvalidArgumentException</code> is thrown.</p>
 
-- a `League\Url\Url` object;
-- a `League\Url\Host` object;
-- a `League\Url\Query` object;
-
-The given parameter is never alter, the `format` method recreate the output by applying the modification you expect.
-
-## Concrete example
+### Concrete example
 
 ~~~php
 use League\Url\Host;
@@ -71,7 +65,7 @@ use League\Url\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_ASCII);
-$formatter->setQueryEncoding(PHP_QUERY_RFC_3986);
+$formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
 $query = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
