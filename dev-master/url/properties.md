@@ -23,7 +23,7 @@ The URL authority part in itself account for up to 4 components.
 		user pass   host     port
 ~~~
 
-To be able to represents all these parts, the `League\Url\Url` class exposes the following public API:
+To be able to access all these parts, the `League\Url\Url` class exposes the following public API:
 
 ## URL components
 
@@ -67,7 +67,7 @@ $url->toArray();
 
 ## URL parts
 
-Sometimes you may want to get the RFC3986 parts of the URL. To do so, two additionals methods are provided:
+To retrieve the missign RFC3986 parts of the URL, two additionals methods are provided:
 
 ~~~php
 use League\Url\Url;
