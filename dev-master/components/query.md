@@ -148,7 +148,7 @@ echo $newQuery; //displays 'z'
 
 ### Add or Update parameters
 
-If you want to add or to update the query parameters you need to use the `Query::merge` method. This method expect a single argument in form of an array or a `Traversable` object.
+If you want to add or update the query parameters you need to use the `Query::merge` method. This method expects a single argument in form of an `array` or a `Traversable` object.
 
 <p class="message-warning">Before merging parameters whose value equals <code>null</code> are filter out.</p>
 
