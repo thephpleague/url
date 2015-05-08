@@ -124,7 +124,7 @@ $ip_host->isAbsolute(); //return false
 
 ## Host representations
 
-### Basic representation
+### String representation
 
 Basic host representations is done using the following methods:
 
@@ -166,7 +166,7 @@ $host = new Host('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
 echo $host;  // output 'مثال.إختبار'  //the object output the IDN version
 ~~~
 
-### Host as an array
+### Array representation
 
 A host can be divided into its different labels. The class provide an array representation of a the host label using the `Host::toArray` method.
 

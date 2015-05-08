@@ -26,7 +26,7 @@ $url = Url::createFromUrl('ftp://thephpleague.com/fr/')
 echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
 ~~~
 
-Since every update returns a modified instance, you can chain each setter methods to simplify URL creation and/or modification.
+Since every update returns an instance of `League\Url\Url`, you can chain each setter methods to simplify URL creation and/or modification.
 
 ## URL normalization
 

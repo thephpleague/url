@@ -73,20 +73,20 @@ $absolute_path->isAbsolute(); // returns true;
 
 ## Path representations
 
-### Basic representation
+### String representation
 
 Basic host representations is done using the following methods:
 
 ~~~php
 use League\Url\Path;
 
-$path = new Path('/path/to/the/sky');
-$path->get();             //return '/path/to/the/sky'
-$path->__toString();      //return '/path/to/the/sky'
-$path->getUriComponent(); //return '/path/to/the/sky'
+$path = new Path('/path/to the/sky');
+$path->get();             //return '/path/to the/sky'
+$path->__toString();      //return '/path/to%20the/sky'
+$path->getUriComponent(); //return '/path/to%20the/sky'
 ~~~
 
-### Path as array
+### Array representation
 
 A path can be represented as an array of its internal segments. Through the use of the `Path::toArray` method the class returns the object array representations.
 
@@ -197,7 +197,7 @@ $path->getExtension(); // return 'csv';
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-### Path normalization
+### Removing dot segments
 
 Out of the box, the `Path` object operates a number of normalization to the submitted path. All these normalization are non destructive, for instance, the path is correctly URL encoded against the RFC rules. To remove dot segment as per as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::normalize` method as the result can be destructive. The method takes no arguments and returns a new `Path` object which represents the current object normalized.
 
