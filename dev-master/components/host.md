@@ -11,7 +11,7 @@ The library provides a `League\Url\Host` class to ease complex host manipulation
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Host` object can be instantiated using [the default constructor](/dev-master/component/#component-instantation).
+Just like any other component, a new `League\Url\Host` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Host;
@@ -100,7 +100,7 @@ $alt_host->isIpv4();   //return true
 $alt_host->isIpv6();   //return false
 ~~~
 
-### Simple domain name or FQDN
+### Simple or fully qualified domain name
 
 If you don't have a IP hostname then it is a domaine name. The library can tell you if its a simple domain name or a FQDN.
 
@@ -170,11 +170,16 @@ echo $host;  // output 'مثال.إختبار'  //the object output the IDN vers
 
 A host can be divided into its different labels. The class provide an array representation of a the host label using the `Host::toArray` method.
 
+<p class="message-warning">Once in array representation you can not distinguish a simple from a fuully qualified domain name.</p>
+
 ~~~php
 use League\Url\Host;
 
 $host = new Host('secure.example.com');
 $arr = $host->toArray(); // returns  ['secure', 'example', 'com'];
+
+$fqdn = new Host('secure.example.com.');
+$arr = $fqdn->toArray(); // returns  ['secure', 'example', 'com'];
 
 $host = new Host('::1');
 $arr = $host->toArray(); // returns  ['::1'];
@@ -237,6 +242,8 @@ The method returns the value of a specific offset. If the offset does not exists
 ## Modifying host contents
 
 <p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+
+<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
 ### Remove labels
 

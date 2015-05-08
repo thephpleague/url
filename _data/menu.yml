@@ -3,17 +3,18 @@
         Introduction: '/dev-master/'
         Installation: '/dev-master/installation/'
         Simple example: '/dev-master/examples/'
-        Value Objects: '/dev-master/definitions/'
+        Terminology: '/dev-master/definitions/'
     Url:
-        Instantiation: '/dev-master/url-instantiation/'
-        Manipulation: '/dev-master/url-information/'
+        Instantiation: '/dev-master/url/instantiation/'
+        Properties: '/dev-master/url/properties/'
+        Manipulation: '/dev-master/url/manipulation/'
     Components:
-        Introduction: '/dev-master/component/'
-        Host: '/dev-master/host/'
-        Path: '/dev-master/path/'
-        Query: '/dev-master/query/'
-    Utility Class:
-        Formatter: '/dev-master/formatter/'
+        Quick start: '/dev-master/components/overview/'
+        Host: '/dev-master/components/host/'
+        Path: '/dev-master/components/path/'
+        Query: '/dev-master/components/query/'
+    Helpers:
+        Formatter: '/dev-master/utilities/formatter/'
 '3.0':
     Getting Started:
         Introduction: '/3.0/'

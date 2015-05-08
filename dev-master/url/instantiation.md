@@ -7,7 +7,7 @@ title: URLs instantiation
 
 As URLs comes in different shape and forms the library comes with different ways to instantiate its URL object.
 
-### From an URL string
+## From an URL string
 
 Using the `createFromUrl` static method you can instantiate a new URL object using a string.
 
@@ -19,7 +19,7 @@ use League\Url\Url;
 $url = Url::createFromUrl('ftp://host.example.com');
 ~~~
 
-### From the environment
+## From the environment
 
 Using the `createFromServer` method you can instantiate a new `League\Url\Url` object from PHP's server variables. Of note, you must specify the `array` containing the variables usually `$_SERVER`.
 
@@ -30,7 +30,7 @@ use League\Url\Url;
 $url = Url::createFromServer($_SERVER);
 ~~~
 
-### From parse_url results
+## From parse_url results
 
 Using the `createFromComponents` method you can instantiate a new `League\Url\Url` object from the result of PHP's function `parse_url`.
 
@@ -41,7 +41,7 @@ $components = parse_url('https://foo.example.com');
 $url = Url::createFromComponents($components);
 ~~~
 
-### From its default constructor
+## From its default constructor
 
 If you already have a all components as object that implements the package interfaces, you can directly instantiate a new `League\Url\Url` object from them.
 

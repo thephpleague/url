@@ -134,8 +134,8 @@ $url2->getPath()->sameValueAs($url1->getQuery());  //returns false;
 
 The methods describe above works on all type of component but for more complex components care has be taken to provide more usefuls methods to interact with their data. To take into account their specifities additional methods and properties were added to the following classes:
 
-* `League\Url\Host` which deals with [the host component](/dev-master/host/);
-* `League\Url\Path` which deals with [the path component](/dev-master/path/);
-* `League\Url\Query` which deals with [the query component](/dev-master/query/);
+* `League\Url\Host` which deals with [the host component](/dev-master/components/host/);
+* `League\Url\Path` which deals with [the path component](/dev-master/components/path/);
+* `League\Url\Query` which deals with [the query component](/dev-master/components/query/);
 
 

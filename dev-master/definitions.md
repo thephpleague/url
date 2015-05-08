@@ -3,9 +3,12 @@ layout: default
 title: URLs as Value Objects
 ---
 
-# Urls as Value Objects
+# Terminology
 
-The League URL package models URLs and URLs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
+
+The League URL package models <abbr title="Uniform Resource Locator">URLs</abbr> and URLs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
+
+## Value Objects
 
 > The term "Uniform Resource Locator" (URL) refers to the subset of URIs that, in addition to identifying a resource, provide a means of locating the resource by describing its primary access mechanism. [RFC3986](http://tools.ietf.org/html/rfc3986#section-1.1.3)
 
@@ -19,6 +22,8 @@ $url2 = Url::createFromUrl("http://example.com:82/toto");
 //represent 2 different URLs with different port component.
 $url1->sameValueAs($url2); //return false;
 ~~~
+
+## Immutability
 
 To ease and ensure the integrity of the value, when a component is altered instead of modifying its current value, we return a new component with the changed value. This practice is called immutability.
 
