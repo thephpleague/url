@@ -38,7 +38,7 @@ The method expects at most 2 arguments.
 - The second optional argument, a boolean, tells whether this is an absolute or a relative path. By default this optional argument equals to `false`, meaning that you are building a relative path.
 
 ~~~php
-use League\Url\Host;
+use League\Url\Path;
 
 $relative_path =  Path::createFromArray(['shop', 'example', 'com']);
 echo $relative_path; //display 'shop/example/com'
@@ -49,7 +49,7 @@ echo $absolute_path; //display '/shop/example/com'
 $end_slash = Path::createFromArray(['shop', 'example', 'com', ''], true);
 echo $end_slash; //display '/shop/example/com/'
 
-Host::createFromArray(['127.0', '0.1'], true);
+Path::createFromArray(['127.0', '0.1'], true);
 //throws InvalidArgumentException
 ~~~
 
@@ -75,7 +75,7 @@ $absolute_path->isAbsolute(); // returns true;
 
 ### String representation
 
-Basic host representations is done using the following methods:
+Basic path representations is done using the following methods:
 
 ~~~php
 use League\Url\Path;
@@ -111,7 +111,7 @@ $relative_path->toArray(); // returns ['path', 'to', 'the', 'sky', ''];
 
 ### Countable and IteratorAggregate
 
-Apart from its string representation the class provides several methods to works with its segments. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of segments and use the `foreach` construct to iterate overs them.
+The class provides several methods to works with its segments. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of segments and use the `foreach` construct to iterate overs them.
 
 ~~~php
 use League\Url\Path;

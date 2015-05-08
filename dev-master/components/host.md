@@ -189,7 +189,7 @@ $arr = $host->toArray(); // returns  ['::1'];
 
 ### Countable and IteratorAggregate
 
-Apart from its string representation the class provides several methods to works with its labels. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of labels and use the `foreach` construct to iterate overs them.
+The class provides several methods to works with its labels. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of labels and use the `foreach` construct to iterate overs them.
 
 ~~~php
 $host = new Host('secure.example.com');

@@ -5,119 +5,157 @@ title: The Query Component
 
 # The Query component
 
-This component is manage throught the `Query` class which implements the following interfaces:
+The library proves a `League\Url\Query` class to ease complex query manipulation.
 
-- `Countable`
-- `IteratorAggregate`
-- `League\Url\Interfaces\Component`
-- `League\Url\Interfaces\Query`
+## Query creation
 
-<p class="message-warning">in version 4, this class no longer implements the <code>ArrayAccess</code> interface</p>
+### Using the default constructor
 
-<p class="message-info">On output, the query string is encoded following the <a href="http://www.faqs.org/rfcs/rfc3968" target="_blank">RFC 3986</a></p>
-
-## The Query class
-
-### Query::__construct($data = null)
-
-The `$data` argument which represents the data to be appended can be:
-
-- a string representation of a query.
-- another `Query` interface.
-- an object with the `__toString` method.
+Just like any other component, a new `League\Url\Query` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Query;
 
-$query = new Query('?foo=bar&baz=nitro');
-$alt = new Query($query);
-$alt->sameValueAs($query); //returns true
+$query = new Query('foo=bar&p=yolo&z=');
+echo $query; //display 'foo=bar&p=yolo&z'
 ~~~
 
-### Query::createFromArray
+<p class="message-warning">When using the default constructor do not prepend your query delimiter to the string as it will be considered as part of the first parameter name.</p>
 
-To ease instantiation you can use this named constructor to generate a new `Query` object from an `array` or a `Traversable` object.
+<p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
+
+### Using a named constructor
+
+In PHP, a query is assimilated to an array. So it is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method.
 
 ~~~php
 use League\Url\Query;
 
-$query = Query::createFromArray(['foo' => 'bar', 'single' => '', 'toto' => 'baz']);
-echo $query; //returns 'foo=bar&single&toto=baz'
+$query =  Query::createFromArray(['foo' => 'bar', 'p' => 'yolo', 'z' => '']);
+echo $query; //display 'foo=bar&p=yolo&z'
+
+$query =  Query::createFromArray(['foo' => 'bar', 'p' => null, 'z' => '']);
+echo $query; //display 'foo=bar&z'
 ~~~
 
-### Query::toArray()
+<p class="message-info">if a given parameter is <code>null</code> it won't be taken into account when building the <code>Query</code> obejct</p>
 
-Returns an array representation of the query string
+
+## Query representations
+
+### String representation
+
+Basic query representations is done using the following methods:
 
 ~~~php
 use League\Url\Query;
 
-$query = new Query('foo=bar&baz=nitro');
-$arr = $query->toArray(); // returns  ['foo' => 'bar', 'baz' => 'nitro', ];
+$query = new Query('foo=bar&p=y+olo&z=');
+$query->get();             //return 'foo=bar&p=y%20olo&z'
+$query->__toString();      //return 'foo=bar&p=y%20olo&z'
+$query->getUriComponent(); //return '?foo=bar&p=y%20olo&z'
 ~~~
 
-### Query::getParameter($offset, $default = null)
+### Array representation
 
-Returns the value of a specific key. If the key does not exists it will return the value specified by the `$default` argument
+A query can be represented as an array of its internal parameters. Through the use of the `Query::toArray` method the class returns the object array representation.
+
+~~~php
+use League\Url\Query;
+
+$query = new Query('foo=bar&p=y+olo&z=');
+$query->toArray();
+// returns [
+//     'foo' => 'bar',
+//     'p'   => 'y olo',
+//     'z'   => '',
+// ]
+~~~
+
+## Accessing Query content
+
+### Countable and IteratorAggregate
+
+The class provides several methods to works with its parameters. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of parameters and use the `foreach` construct to iterate overs them.
+
+~~~php
+use League\Url\Query;
+
+$query = new Query('foo=bar&p=y+olo&z=');
+count($query); //return 4
+foreach ($query as $parameter => $value) {
+    //do something meaningful here
+}
+~~~
+
+### Parameter name
+
+If you are interested in getting all the parametes name you can do so using the `Query::offsets` method like show below:
+
+~~~php
+use League\Url\Query;
+
+$query = new Query('foo=bar&p=y+olo&z=');
+$query->offsets();        //returns ['foo', 'p', 'z'];
+$query->offsets('bar');   //returns ['foo'];
+$query->offsets('gweta'); //returns [];
+~~~
+
+The methods returns all the parameters name, but if you supply an argument, only the parameters name whose value equals the argument are returned.
+
+If you want to be sure that a parameter name exists before using it you can do so using the `Query::hasOffset` method which returns `true` if the submitted parameter name exists in the current object.
+
+~~~php
+use League\Url\Query;
+
+$query = new Query('foo=bar&p=y+olo&z=');
+$query->hasOffset('p');    //returns true
+$query->hasOffset('john'); //returns false
+~~~
+
+### Parameter value
+
+If you are only interested in a given parameter you can access it directly using the `Query::getParameter` method as show below:
+
+~~~php
+use League\Url\Query;
+
+$query = new Query('foo=bar&p=y+olo&z=');
+$query->getParameter('foo');          //returns 'bar'
+$query->getParameter('gweta');        //returns null
+$query->getParameter('gweta', 'now'); //returns 'now'
+~~~
+
+The method returns the value of a specific parameter name. If the offset does not exists it will return the value specified by the second argument which default to `null`.
+
+## Modifying a query
+
+<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+
+<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
+
+### Remove parameters
+
+To remove parameters from the current object and returns a new `Query` object without them you can use the `Query::without` method. This methods expected a single argument `$offsets` which is an array containing a list of parameter names to remove.
+
+~~~php
+use League\Url\Query;
+
+$query    = new Query('foo=bar&p=y+olo&z=');
+$newQuery = $query->without(['foo', 'p']);
+echo $newQuery; //displays 'z'
+~~~
+
+### Add or Update parameters
+
+If you want to add or to update the query parameters you need to use the `Query::merge` method. This method expect a single argument in form of an array or a `Traversable` object.
+
+<p class="message-warning">The data is merge to the current <code>Query</code> object if its value is not equal to <code>null</code>.</p>
 
 ~~~php
 use League\Url\Query;
 
 $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$query->getParameter('baz'); //returns 'toto'
-$query->getParameter('change'); //returns null
-$query->getParameter('change', 'now'); //returns 'now'
-~~~
-
-### Query::offsets($parameter = null)
-
-Returns the offsets associated to the current query string. If an argument is supplied to the method, only the offsets whose values equals the argument are returned. Otherwise an empty array is returned.
-
-~~~php
-use League\Url\Query;
-
-$query = new Query('foo=bar&baz=nitro&change=nitro');
-$query->offsets(); // returns  ['foo', 'baz', 'chance'];
-$query->offsets('nitro'); // returns ['baz', 'chance'];
-$query->offsets('gweta'); // returns [];
-~~~
-
-### Query::hasOffset($offset)
-
-Returns `true` if the submitted `$offset` exists in the current object.
-
-~~~php
-use League\Url\Query;
-
-$query = new Query('foo=bar&baz=nitro&change=nitro');
-$query->hasOffset('foo'); // returns true
-$query->hasOffset('gweta'); // returns false
-~~~
-
-### Query::merge(Query $query)
-
-The single `$query` argument must implement the Query interface. The data will be merge between both query object and a new instance of the Query object will be returned with the merge data. Of note, this method only adds or updates the values of the query string. You can not remove value from the query by using this method.
-
-~~~php
-use League\Url\Query;
-
-$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$alt->get(); //returns foo=bar&baz=toto
-$new = $alt->merge(new Query('foo=jane'));
-$new->get(); //returns foo=jane&baz=toto
-~~~
-
-### Query::without(array $offsets = [])
-
-Remove parameter from the current object and returns a new `Query` object without the removed parameters.
-
-The `$offsets` argument is an array containing a list of offsets to remove.
-
-~~~php
-
-use League\Url\Path;
-
-$host = new Path('/path/to/the/sky');
-$host->without([0, 1]);
-$host->__toString(); //returns '/the/sky'
+$new = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
+$new->get(); //returns foo=jane&baz=toto&r
 ~~~
