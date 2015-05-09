@@ -5,22 +5,22 @@ title: Getting URLs informations
 
 # Extracting data from URLs
 
-An URL is composed of 5 parts which includes 8 components
+An URL is composed of several parts:
 
 ~~~
-         foo://example.com:8042/over/there?name=ferret#nose
-         \_/   \______________/\_________/ \_________/ \__/
-          |           |            |            |        |
-       scheme     authority       path        query   fragment
+foo://example.com:8042/over/there?name=ferret#nose
+\_/   \______________/\_________/ \_________/ \__/
+ |           |            |            |        |
+scheme   authority       path        query   fragment
 ~~~
 
-The URL authority part in itself account for up to 4 components.
+The URL authority part in itself can be composed of up to 4 components.
 
 ~~~
-		john:doe@example.com:8042
-        \_/  \_/ \_________/ \__/
-         |    |       |        |
-		user pass   host     port
+john:doe@example.com:8042
+\_/  \_/ \_________/ \__/
+ |    |       |        |
+user pass   host     port
 ~~~
 
 To be able to access all these parts, the `League\Url\Url` class exposes the following public API:
