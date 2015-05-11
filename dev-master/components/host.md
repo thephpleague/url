@@ -164,12 +164,7 @@ $ipv6->__toString();      //return '[::1]'
 $ipv6->getUriComponent(); //return '[::1]'
 ~~~
 
-### IDN support
-
-The Host class support the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism through the use of the following method:
-
-- `Host::toUnicode()` an alias of `__toString()` and returns the hostname internationalized name.
-- `Host::toAscii()` returns the punycode encoded hostname.
+By default the `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism through the use of the `Host::__toString` and `Host::toAscii` methods. The `Host::toAscii` method returns the punycode encoded domain name while the default string representation is always the IDN one.
 
 ~~~php
 use League\Url\Host;
@@ -177,10 +172,11 @@ use League\Url\Host;
 $host = new Host('스타벅스코리아.com'); //you set the IDN
 
 echo $host->toAscii();   // output 'xn--oy2b35ckwhba574atvuzkc.com'
-echo $host->toUnicode(); // output '스타벅스코리아.com'
+echo $host; // output '스타벅스코리아.com'
 
 $host = new Host('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
 echo $host;  // output 'مثال.إختبار'  //the object output the IDN version
+echo $host->toAscii();  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object output the Ascii version
 ~~~
 
 ### Array representation
