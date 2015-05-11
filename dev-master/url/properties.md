@@ -67,7 +67,7 @@ $url->toArray();
 
 ## URL parts
 
-To retrieve the missign RFC3986 parts of the URL, two additionals methods are provided:
+To comply with RFC3986 two additionals methods are provided to returns the URL [authority](http://tools.ietf.org/html/rfc3986#section-3.2) and [userinfo](http://tools.ietf.org/html/rfc3986#section-3.2.1) part.
 
 ~~~php
 use League\Url\Url;

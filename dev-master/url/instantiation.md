@@ -5,11 +5,11 @@ title: URLs instantiation
 
 # URL Instantiation
 
-As URLs comes in different shape and forms the library comes with different ways to instantiate its URL object.
+Because URLs come in different forms we used named constructors to offer several ways to instantiate the library objects.
 
 ## From an URL string
 
-Using the `createFromUrl` static method you can instantiate a new URL object using a string.
+Using the `createFromUrl` static method you can instantiate a new URL object from a string.
 
 Internally, the string will be parse using PHP's `parse_url` function. So any URL parsed by this function will generate a new `League\Url\Url` object.
 
