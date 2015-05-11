@@ -230,18 +230,6 @@ $newPath = $path->withExtension('.csv');
 echo $newPath; // displays /path/to/the/sky.csv;
 ~~~
 
-### Remove segments
-
-To remove segments from the current object and returns a new `Path` object without them you can use the `Path::without` method. This methods expected a single argument `$offsets` which is an array containing a list of offsets to remove.
-
-~~~php
-use League\Url\Path;
-
-$path = new Path('/path/to/the/sky');
-$newPath = $path->without([0, 1]);
-$newPath->__toString(); //returns '/the/sky'
-~~~
-
 ### Append segments
 
 To append segments to the current object you need to use the `Path::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
@@ -268,7 +256,7 @@ $newPath->__toString(); // returns path/to/the/sky
 
 ### Replace segments
 
-Last but not least you can also replace a segment with your own data. To do so you must use the `Path::replace` method with the following arguments:
+To replace a segment with your own data, you must use the `Path::replace` method with the following arguments:
 
 - `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 - `$offset` which represents the label's offset to remove if it exists.
@@ -279,4 +267,16 @@ use League\Url\Path;
 $path    = new Path('/foo/example/com');
 $newPath = $path->replace(new Path('bar/baz'), 0);
 $Path->__toString(); // returns /bar/baz/example/com
+~~~
+
+### Remove segments
+
+To remove segments from the current object and returns a new `Path` object without them you can use the `Path::without` method. This methods expected a single argument `$offsets` which is an array containing a list of offsets to remove.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$newPath = $path->without([0, 1]);
+$newPath->__toString(); //returns '/the/sky'
 ~~~

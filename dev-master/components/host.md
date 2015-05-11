@@ -48,7 +48,7 @@ The method expects at most 2 arguments.
 ~~~php
 use League\Url\Host;
 
-$host =  Host::createFromArray(['shop', 'example', 'com']);
+$host = Host::createFromArray(['shop', 'example', 'com']);
 echo $host; //display 'shop.example.com'
 
 $alt_host = Host::createFromArray(['shop', 'example', 'com'], true);
@@ -59,6 +59,23 @@ echo $ip_host; //display '127.0.0.1'
 
 Host::createFromArray(['127.0', '0.1'], true);
 //throws InvalidArgumentException
+~~~
+
+## Normalization
+
+Whenever you create a new host. You submitted data is normalized using non desctructive operations:
+
+- the host is lowercased;
+- the bracket are added if you are instantiating a IPV6 Host;
+
+~~~php
+use League\Url\Host;
+
+$host = Host::createFromArray(['shop', 'ExAmPle', 'com']);
+echo $host; //display 'shop.example.com'
+
+$ipv6 = new Host('::1');
+echo $ipv6; //display '[::1]'
 ~~~
 
 ## Host types
@@ -245,18 +262,6 @@ The method returns the value of a specific offset. If the offset does not exists
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-### Remove labels
-
-To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument `$offsets` which is an array containing a list of offsets to remove.
-
-~~~php
-use League\Url\Host;
-
-$host    = new Host('toto.example.com');
-$newHost = $host->without([1]);
-$newHost->__toString(); //returns toto.com
-~~~
-
 ### Append labels
 
 <p class="message-warning">Trying to append to or with an IP based Host will throw an <code>InvalidArgumentException</code></p>
@@ -287,7 +292,7 @@ $newHost->__toString(); //returns toto.example.com
 
 ### Replace label
 
-Last but not least you can also replace a label with your own data. To do so you must use the `Host::replace` method with the following arguments:
+To replace a label with your own data, you must use the `Host::replace` method with the following arguments:
 
 - `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 - `$offset` which represents the label's offset to remove if it exists.
@@ -300,3 +305,14 @@ $newHost = $host->replace('bar.baz', 0);
 $newHost->__toString(); //returns bar.baz.example.com
 ~~~
 
+### Remove labels
+
+To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument `$offsets` which is an array containing a list of offsets to remove.
+
+~~~php
+use League\Url\Host;
+
+$host    = new Host('toto.example.com');
+$newHost = $host->without([1]);
+$newHost->__toString(); //returns toto.com
+~~~

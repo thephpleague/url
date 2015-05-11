@@ -40,7 +40,6 @@ echo $query; //display 'foo=bar&z'
 
 <p class="message-info">if a given parameter is <code>null</code> it won't be taken into account when building the <code>Query</code> obejct</p>
 
-
 ## Query representations
 
 ### String representation
@@ -54,7 +53,13 @@ $query = new Query('foo=bar&p=y+olo&z=');
 $query->get();             //return 'foo=bar&p=y%20olo&z'
 $query->__toString();      //return 'foo=bar&p=y%20olo&z'
 $query->getUriComponent(); //return '?foo=bar&p=y%20olo&z'
+$query->format('&amp;', PHP_QUERY_RFC3986);  //return '?foo=bar&amp;p=y%20olo&z'
 ~~~
+
+The added `Query::format` method helps you format your query differently. The method accepts two parameters:
+
+- `$separator` which is the query separator sequence;
+- `$enc_type` which is the query encoding mechanism. This parameter expects one of PHP query constants (ie: `PHP_QUERY_RFC3986` or the older `PHP_QUERY_RFC1738`).
 
 ### Array representation
 
@@ -134,21 +139,18 @@ The method returns the value of a specific parameter name. If the offset does no
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-### Remove parameters
+### Add or Update parameters
 
-To remove parameters from the current object and returns a new `Query` object without them you can use the `Query::without` method. This methods expected a single argument `$offsets` which is an array containing a list of parameter names to remove.
+If you want to add or update the query parameters you need to use the `Query::merge` method. This method expects a single argument in form of an `array` or a `Traversable` object.
 
 ~~~php
 use League\Url\Query;
 
-$query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->without(['foo', 'p']);
-echo $newQuery; //displays 'z'
+$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$new = $alt->merge(['foo' => 'jane', 'r' => 'stone']);
+$new->get(); //returns foo=jane&r=stone
+// the 'r' parameter was added
 ~~~
-
-### Add or Update parameters
-
-If you want to add or update the query parameters you need to use the `Query::merge` method. This method expects a single argument in form of an `array` or a `Traversable` object.
 
 <p class="message-warning">Before merging parameters whose value equals <code>null</code> are filter out.</p>
 
@@ -159,5 +161,18 @@ $query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $new = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
 $new->get(); //returns foo=jane&baz=toto&r
 // the 'r' parameter was added
-// the 'baz' parameter was not changed
+// the 'baz' parameter was not updated
 ~~~
+
+### Remove parameters
+
+To remove parameters from the current object and returns a new `Query` object without them you must use the `Query::without` method. This methods expected a single argument `$offsets` which is an array containing a list of parameter names to remove.
+
+~~~php
+use League\Url\Query;
+
+$query    = new Query('foo=bar&p=y+olo&z=');
+$newQuery = $query->without(['foo', 'p']);
+echo $newQuery; //displays 'z'
+~~~
+
