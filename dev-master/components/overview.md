@@ -96,7 +96,7 @@ url->getFragment()->getUriComponent(); //returns ''
 
 ## Component comparison
 
-To compare two component to know if they represent the same ressource you can use the `Component::sameValueAs` method which compares two `Component` object according to their respective `Component::getUriComponent` methods.
+To compare two components to know if they represent the same ressource you can use the `Component::sameValueAs` method which compares them according to their respective `Component::getUriComponent` methods.
 
 ~~~php
 use League\Url\Url;
@@ -106,6 +106,9 @@ $url2 = Url::createFromUrl('http://www.example.com/hellow/./wor%20ld?who=I%20am;
 
 $url2->getQuery()->sameValueAs($url1->getQuery()); //returns true;
 $url2->getPath()->sameValueAs($url1->getQuery());  //returns false;
+
+$url1->getQuery->sameValueAs($url2); //PHP Fatal Error or TypeException in PHP7
+
 ~~~
 
 <p class="message-warning">Only components objects can be compared with each other, any other object or type will result in a Fatal error.</p>
