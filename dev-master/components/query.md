@@ -50,7 +50,6 @@ Basic query representations is done using the following methods:
 use League\Url\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->get();             //return 'foo=bar&p=y%20olo&z'
 $query->__toString();      //return 'foo=bar&p=y%20olo&z'
 $query->getUriComponent(); //return '?foo=bar&p=y%20olo&z'
 $query->format('&amp;', PHP_QUERY_RFC3986);  //return '?foo=bar&amp;p=y%20olo&z'
@@ -146,9 +145,9 @@ If you want to add or update the query parameters you need to use the `Query::me
 ~~~php
 use League\Url\Query;
 
-$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$new = $alt->merge(['foo' => 'jane', 'r' => 'stone']);
-$new->get(); //returns foo=jane&r=stone
+$query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$newQuery = $alt->merge(['foo' => 'jane', 'r' => 'stone']);
+$newQuery->__toString(); //returns foo=jane&r=stone
 // the 'r' parameter was added
 ~~~
 
@@ -157,9 +156,9 @@ $new->get(); //returns foo=jane&r=stone
 ~~~php
 use League\Url\Query;
 
-$query = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$new = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
-$new->get(); //returns foo=jane&baz=toto&r
+$query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$newQuery = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
+$newQuery->__toString(); //returns foo=jane&baz=toto&r
 // the 'r' parameter was added
 // the 'baz' parameter was not updated
 ~~~

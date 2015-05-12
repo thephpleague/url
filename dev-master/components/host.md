@@ -67,6 +67,7 @@ Whenever you create a new host. You submitted data is normalized using non desct
 
 - the host is lowercased;
 - the bracket are added if you are instantiating a IPV6 Host;
+- the host is encoded in its <abbr title="Internationalized Domain Name">IDN</abbr> version;
 
 ~~~php
 use League\Url\Host;
@@ -149,22 +150,21 @@ Basic host representations is done using the following methods:
 use League\Url\Host;
 
 $host = new Host('example.com');
-$host->get();             //return 'example.com'
 $host->__toString();      //return 'example.com'
 $host->getUriComponent(); //return 'example.com'
 
 $ipv4 = new Host('127.0.0.1');
-$ipv4->get();             //return '127.0.0.1'
 $ipv4->__toString();      //return '127.0.0.1'
 $ipv4->getUriComponent(); //return '127.0.0.1'
 
 $ipv6 = new Host('::1');
-$ipv6->get();             //return '::1'
 $ipv6->__toString();      //return '[::1]'
 $ipv6->getUriComponent(); //return '[::1]'
 ~~~
 
-By default the `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism through the use of the `Host::__toString` and `Host::toAscii` methods. The `Host::toAscii` method returns the punycode encoded domain name while the default string representation is always the IDN one.
+### IDN support
+
+The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism. The `Host::__toString` method always returns the IDN version of the hostname. To access the punycode encoded domain name you must used the `Host::toAscii` method.
 
 ~~~php
 use League\Url\Host;
@@ -183,7 +183,7 @@ echo $host->toAscii();  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object outpu
 
 A host can be divided into its different labels. The class provide an array representation of a the host label using the `Host::toArray` method.
 
-<p class="message-warning">Once in array representation you can not distinguish a simple from a fuully qualified domain name.</p>
+<p class="message-warning">Once in array representation you can not distinguish a simple from a fully qualified domain name.</p>
 
 ~~~php
 use League\Url\Host;
@@ -260,7 +260,7 @@ The method returns the value of a specific offset. If the offset does not exists
 
 ### Append labels
 
-<p class="message-warning">Trying to append to or with an IP based Host will throw an <code>InvalidArgumentException</code></p>
+<p class="message-warning">Trying to append to or with an IP host will throw an <code>InvalidArgumentException</code></p>
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
@@ -274,7 +274,7 @@ $newHost->__toString(); //returns toto.example.com
 
 ### Prepend labels
 
-<p class="message-warning">Trying to prepend to or with an IP based Host will throw an <code>InvalidArgumentException</code></p>
+<p class="message-warning">Trying to prepend to or with an IP Host will throw an <code>InvalidArgumentException</code></p>
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
 

@@ -54,26 +54,7 @@ Since we are using immutable value objects, the source component is not modified
 
 ## Component representations
 
-Beacuse of the way with interact with each component, each class provides several ways to represent the component value.
-
-### Raw representation
-
-Returns the raw representation of the URL component, the return value can be `null` if the component is not set.
-
-~~~php
-
-use League\Url\Url;
-
-$url = Url::createFromUrl('http://[::1]:81/foo/bar?q=yolo#');
-$url->getScheme()->get();    //returns 'http'
-$url->getUser()->get();      //returns null
-$url->getPass()->get();      //returns null
-$url->getHost()->get();      //returns ':11'
-$url->getPort()->get();      //returns 81 as a integer
-$url->getPath()->get();      //returns '/foo/bar'
-$url->getQuery()->get();     //returns 'q=yolo'
-url->getFragment()->get();   //returns null
-~~~
+Because of the way we interact with each component, each class provides several ways to represent the component value.
 
 ### String representation
 
@@ -84,14 +65,14 @@ Returns the string representation of the URL component. This is the form used wh
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://www.example.com:81/foo/bar?q=yolo#');
-$url->getScheme()->__toString();    //returns 'http'
-$url->getUser()->__toString();      //returns ''
-$url->getPass()->__toString();      //returns ''
-$url->getHost()->__toString();      //returns '[:11]'
-$url->getPort()->__toString();      //returns '81'
-$url->getPath()->__toString();      //returns '/foo/bar'
-$url->getQuery()->__toString();     //returns 'q=yolo'
-url->getFragment()->__toString();   //returns null
+$url->getScheme()->__toString();  //returns 'http'
+$url->getUser()->__toString();    //returns ''
+$url->getPass()->__toString();    //returns ''
+$url->getHost()->__toString();    //returns '[:11]'
+$url->getPort()->__toString();    //returns '81'
+$url->getPath()->__toString();    //returns '/foo/bar'
+$url->getQuery()->__toString();   //returns 'q=yolo'
+url->getFragment()->__toString(); //returns null
 ~~~
 
 ### URL-like representation
@@ -103,14 +84,14 @@ Returns the string representation of the URL component with its optional delimit
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://www.example.com:81/foo/bar?q=yolo#');
-$url->getScheme()->getUriComponent();    //returns 'http:'
-$url->getUser()->getUriComponent();      //returns ''
-$url->getPass()->getUriComponent();      //returns ''
-$url->getHost()->getUriComponent();      //returns '[:11]'
-$url->getPort()->getUriComponent();      //returns ':81'
-$url->getPath()->getUriComponent();      //returns '/foo/bar'
-$url->getQuery()->getUriComponent();     //returns '?q=yolo'
-url->getFragment()->getUriComponent();   //returns ''
+$url->getScheme()->getUriComponent();  //returns 'http:'
+$url->getUser()->getUriComponent();    //returns ''
+$url->getPass()->getUriComponent();    //returns ''
+$url->getHost()->getUriComponent();    //returns '[:11]'
+$url->getPort()->getUriComponent();    //returns ':81'
+$url->getPath()->getUriComponent();    //returns '/foo/bar'
+$url->getQuery()->getUriComponent();   //returns '?q=yolo'
+url->getFragment()->getUriComponent(); //returns ''
 ~~~
 
 ## Component comparison
@@ -129,7 +110,6 @@ $url2->getPath()->sameValueAs($url1->getQuery());  //returns false;
 
 <p class="message-warning">Only components objects can be compared with each other, any other object or type will result in a Fatal error.</p>
 
-
 ## Complex components
 
 The methods describe above works on all type of component but for more complex components care has be taken to provide more usefuls methods to interact with their data. To take into account their specifities additional methods and properties were added to the following classes:
@@ -137,5 +117,3 @@ The methods describe above works on all type of component but for more complex c
 * `League\Url\Host` which deals with [the host component](/dev-master/components/host/);
 * `League\Url\Path` which deals with [the path component](/dev-master/components/path/);
 * `League\Url\Query` which deals with [the query component](/dev-master/components/query/);
-
-

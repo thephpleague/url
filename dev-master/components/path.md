@@ -81,7 +81,6 @@ Basic path representations is done using the following methods:
 use League\Url\Path;
 
 $path = new Path('/path/to the/sky');
-$path->get();             //return '/path/to the/sky'
 $path->__toString();      //return '/path/to%20the/sky'
 $path->getUriComponent(); //return '/path/to%20the/sky'
 ~~~
