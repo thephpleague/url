@@ -5,7 +5,7 @@ title: The URL Formatter
 
 # The Formatter
 
-The `League\Url\Formatter`utility class helps you output a better formatted URL and/or component to easily use them in output format like HTML.
+The `League\Url\Output\Formatter` utility class helps you format an URL or one of its component for output format like HTML.
 
 ## Formatter Properties
 
@@ -13,15 +13,15 @@ The `League\Url\Formatter`utility class helps you output a better formatted URL 
 
 A host can be output as encoded in ascii or in unicode. By default the formatter encode the host in unicode. To set the encoding you need to specify one of the predefined constant:
 
-- `Formatter::HOST_UNICODE` to set the host encoding to unicode;
-- `Formatter::HOST_ASCII`   to set the host encoding to ascii;
+- `Formatter::HOST_AS_UNICODE` to set the host encoding to IDN;
+- `Formatter::HOST_AS_ASCII`   to set the host encoding to ascii;
 
 ~~~php
-use League\Url\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
-$formatter->setHostEncoding(Formatter::HOST_ASCII);
-echo $formatter->getHostEncoding(); //display the value of Formatter::HOST_ASCII
+$formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
+echo $formatter->getHostEncoding(); //display the value of Formatter::HOST_AS_ASCII
 ~~~
 
 ### Query encoding strategy
@@ -32,7 +32,7 @@ A `League\Url\Query` object is by default encoded by following RFC 3986. If you 
 - `PHP_QUERY_RFC1738` to set the query encoding as per RFC 1738;
 
 ~~~php
-use League\Url\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQueryEncoding(PHP_QUERY_RFC1738);
@@ -42,7 +42,7 @@ echo $formatter->getQueryEncoding(); //display the value of PHP_QUERY_RFC1738;
 ### Modifying the query separator
 
 ~~~php
-use League\Url\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');
@@ -51,7 +51,7 @@ echo $formatter->getQuerySeparator(); //returns &amp;
 
 ## Applying the settings to your objects.
 
-Once your Formatter object is instantiated and set, you can transform any `League\Url` objects according to your settings using the `Formatter::format` method. The method returns the string representation of the URLs or of its component.
+Once your Formatter object instantiated and configured, you can output a string representation of any `League\Url` objects using the `Formatter::format` method.
 
 <p class="message-warning">If the object is not recognized an <code>InvalidArgumentException</code> is thrown.</p>
 
@@ -59,29 +59,27 @@ Once your Formatter object is instantiated and set, you can transform any `Leagu
 
 ~~~php
 use League\Url\Host;
+use League\Url\Output\Formatter;
 use League\Url\Query;
 use League\Url\Url;
-use League\Url\Formatter;
 
 $formatter = new Formatter();
-$formatter->setHostEncoding(Formatter::HOST_ASCII);
+$formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
-$query = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
-
+$query        = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
 $query_string = $formatter->format($query);
-echo $query_string; //return foo=ba%20r&amp;baz=bar
-echo $query; //returns foo=ba%20r&baz=bar
+echo $query_string; //displays foo=ba%20r&amp;baz=bar
+echo $query;        //displays foo=ba%20r&baz=bar
 
-$host = new Host('рф.ru');
+$host        = new Host('рф.ru');
 $host_string = $formatter->format($host);
-echo $host_String = 'xn--p1ai.ru'
-echo $host = 'рф.ru';
+echo $host_string; //displays 'xn--p1ai.ru'
+echo $host;        //displays 'рф.ru'
 
-
-$url = Url::createFromUrl('https://рф.ru:81?foo=ba%20r&baz=bar');
+$url        = Url::createFromUrl('https://рф.ru:81?foo=ba%20r&baz=bar');
 $url_string = $formatter->format($url);
-echo $url_string; //display https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
-echo $url; //display https://рф.ru:81?foo=ba%20r&baz=bar
+echo $url_string; //displays https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
+echo $url;        //displays https://рф.ru:81?foo=ba%20r&baz=bar
 ~~~
