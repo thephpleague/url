@@ -206,7 +206,15 @@ abstract class AbstractUrl implements UrlInterface
         }
         $components = @parse_url($url);
         if (false === $components) {
-            throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
+            // inline fix for https://bugs.php.net/bug.php?id=68917
+            if (strpos($url, '/') === 0
+                && @parse_url("//example.org:80") === false
+                && is_array($components = @parse_url('http:' . $url))
+            ) {
+                unset($components['scheme']);
+            } else {
+                throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
+            }
         }
 
         $components = array_merge(array(
