@@ -12,6 +12,7 @@
 */
 namespace League\Url;
 
+use InvalidArgumentException;
 use League\Url\Components\Fragment;
 use League\Url\Components\Host;
 use League\Url\Components\Pass;
