@@ -87,6 +87,13 @@ abstract class AbstractUrl implements UrlInterface
     protected $fragment;
 
     /**
+     *  Tell whether PHP native parse_url is buggy
+     * 
+     * @var bool
+     */
+   protected static $is_parse_url_bugged;
+
+    /**
      * {@inheritdoc}
      */
     public function __toString()
@@ -204,18 +211,6 @@ abstract class AbstractUrl implements UrlInterface
         if (is_null($url)) {
             throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
         }
-        $components = @parse_url($url);
-        if (false === $components) {
-            // inline fix for https://bugs.php.net/bug.php?id=68917
-            if (strpos($url, '/') === 0
-                && @parse_url("//example.org:80") === false
-                && is_array($components = @parse_url('http:' . $url))
-            ) {
-                unset($components['scheme']);
-            } else {
-                throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
-            }
-        }
 
         $components = array_merge(array(
             'scheme' => null,
@@ -226,7 +221,7 @@ abstract class AbstractUrl implements UrlInterface
             'path' => null,
             'query' => null,
             'fragment' => null,
-        ), $components);
+        ), self::parseUrl($url));
         $components = self::formatAuthComponent($components);
         $components = self::formatPathComponent($components, $original_url);
 
@@ -240,6 +235,35 @@ abstract class AbstractUrl implements UrlInterface
             new Query($components['query']),
             new Fragment($components['fragment'])
         );
+    }
+
+    /**
+     * Parse a string as an URL
+     *
+     * @param  string $url The URL to parse
+     *
+     * @throws  InvalidArgumentException if the URL can not be parsed
+     *
+     * @return array
+     */
+    protected static function parseUrl($url)
+    {
+        $components = @parse_url($url);
+        if (! empty($components)) {
+            return $components;
+        }
+        if (is_null(static::$is_parse_url_bugged)) {
+            static::$is_parse_url_bugged = !@parse_url("//example.org:80");
+        }
+        // inline fix for https://bugs.php.net/bug.php?id=68917
+        if (static::$is_parse_url_bugged &&
+            strpos($url, '/') === 0 &&
+            is_array($components = @parse_url('http:'.$url))
+        ) {
+            unset($components['scheme']);
+            return $components;
+        }
+        throw new InvalidArgumentException(sprintf("The given URL: `%s` could not be parse", $url));
     }
 
     protected static function sanitizeUrl($url)
