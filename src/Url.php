@@ -182,7 +182,15 @@ class Url implements Interfaces\Url
         $url = trim($url);
         $components = @parse_url($url);
         if (false === $components) {
-            throw new InvalidArgumentException(sprintf("The given URL: `%s` could not be parse", $url));
+            // inline fix for https://bugs.php.net/bug.php?id=68917
+            if (strpos($url, '/') === 0
+                && @parse_url("//example.org:80") === false
+                && is_array($components = @parse_url('http:' . $url))
+            ) {
+                unset($components['scheme']);
+            } else {
+                throw new InvalidArgumentException(sprintf("The given URL: `%s` could not be parse", $url));
+            }
         }
 
         return static::createFromComponents($components);
