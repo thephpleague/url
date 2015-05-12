@@ -167,6 +167,12 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         $this->assertSame('//sdfsdfqsdfsdf/', $url->__toString());
     }
 
+    public function testCreateFromHostPortWithoutScheme()
+    {
+        $url = Url::createFromUrl('//example.org:80');
+        $this->assertSame('//example.org:80/', $url->__toString());
+    }
+
     public function testStringRepresentation()
     {
         $url = Url::createFromUrl(
