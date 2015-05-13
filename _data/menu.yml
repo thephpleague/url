@@ -9,7 +9,7 @@
         Properties: '/dev-master/url/properties/'
         Manipulation: '/dev-master/url/manipulation/'
     Components:
-        Quick start: '/dev-master/components/overview/'
+        Overview: '/dev-master/components/overview/'
         Host: '/dev-master/components/host/'
         Path: '/dev-master/components/path/'
         Query: '/dev-master/components/query/'

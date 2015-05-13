@@ -30,6 +30,8 @@ Since every update returns an instance of `League\Url\Url`, you can chain each s
 
 ## URL normalization
 
+### Non destructive normalizations
+
 Out of the box the package normalize the given URL according to the non destructive rules of RFC3986.
 
 The non destructives rules are:
@@ -45,6 +47,8 @@ $url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#titl
 echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 ~~~
 
+### Destructive normalizations
+
 If you wish to remove the dot segments which is considered a destructive normalization you will have to explicitly call the `Url::normalize` method which takes no argument.
 
 ~~~php
@@ -53,6 +57,8 @@ use League\Url\Url;
 $url    = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
 $newUrl = $url->normalize();
 echo $newUrl; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
+
+$url->sameValueAs($newUrl); //returns false
 ~~~
 
 ## URL resolution

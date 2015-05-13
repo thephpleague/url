@@ -11,7 +11,7 @@ The library provides a `League\Url\Host` class to ease complex host manipulation
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Host` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
+A new `League\Url\Host` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Host;
@@ -41,7 +41,7 @@ A host is a collection of labels delimited by the host delimiter `.`. So it is p
 The method expects at most 2 arguments.
 
 - The first required argument must be a collection of label (an `array` or a `Traversable` object)
-- The second optional argument, a boolean, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not. By default this optional argument is equals to `false`.
+- The second optional argument, a boolean, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not. By default this optional argument equals `false`.
 
 <p class="message-warning">Since an IP is not a domain name, the class will throw an <code>InvalidArgumentException</code> if you try to create an IP hostname as a FQDN.</p>
 
@@ -51,8 +51,8 @@ use League\Url\Host;
 $host = Host::createFromArray(['shop', 'example', 'com']);
 echo $host; //display 'shop.example.com'
 
-$alt_host = Host::createFromArray(['shop', 'example', 'com'], true);
-echo $host; //display 'shop.example.com.'
+$fqdn = Host::createFromArray(['shop', 'example', 'com'], true);
+echo $fqdn; //display 'shop.example.com.'
 
 $ip_host = Host::createFromArray(['127.0', '0.1']);
 echo $ip_host; //display '127.0.0.1'
@@ -81,12 +81,12 @@ echo $ipv6; //display '[::1]'
 
 ## Host types
 
-### IP address or Domain name
+### IP address or registered name
 
 There are two type of host:
 
-- Hosts represented as IP;
-- Hosts represented by domain names;
+- Hosts represented by an IP;
+- Hosts represented by a domain names;
 
 To determine what type of host you are dealing with the `Host` class provides the `isIp` method:
 
@@ -102,25 +102,25 @@ $host->isIp(); //return false;
 
 ### IPv4 or IPv6
 
-Knowing that you are dealing with a IP hostname is good, knowing that its an IPv4 or an IPv6 is better.
+Knowing that you are dealing with an IP is good, knowing that its an IPv4 or an IPv6 is better.
 
 ~~~php
 use League\Url\Host;
 
-$host = new Host('::1');
-$host->isIp();     //return true
-$host->isIpv4();   //return false
-$host->isIpv6();   //return true
+$ipv6 = new Host('::1');
+$ipv6->isIp();   //return true
+$ipv6->isIpv4(); //return false
+$ipv6->isIpv6(); //return true
 
-$alt_host = new Host('127.0.0.1');
-$alt_host->isIp();     //return true
-$alt_host->isIpv4();   //return true
-$alt_host->isIpv6();   //return false
+$ipv4 = new Host('127.0.0.1');
+$ipv4->isIp();   //return true
+$ipv4->isIpv4(); //return true
+$ipv4->isIpv6(); //return false
 ~~~
 
 ### Simple or fully qualified domain name
 
-If you don't have a IP hostname then it is a domaine name. The library can tell you if its a simple domain name or a FQDN.
+If you don't have a IP then you are dealing with a registered name. A registered name is considered absolute or as a Fully Qualified Domain Name (FQDN) if it ends with a `.`.
 
 ~~~php
 use League\Url\Host;
@@ -129,16 +129,16 @@ $host = new Host('example.com');
 $host->isIp();       //return false
 $host->isAbsolute(); //return false
 
-$alt_host = new Host('example.com.');
-$alt_host->isIp();       //return false
-$alt_host->isAbsolute(); //return true
+$fqdn = new Host('example.com.');
+$fqdn->isIp();       //return false
+$fqdn->isAbsolute(); //return true
 
-$ip_host = new Host('::1');
-$ip_host->isIp();       //return true
-$ip_host->isAbsolute(); //return false
+$ip = new Host('::1');
+$ip->isIp();       //return true
+$ip->isAbsolute(); //return false
 ~~~
 
-<p class="message-warning">The library does not validate your domain name against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
+<p class="message-warning">The library does not validate your registered name against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
 
 ## Host representations
 
@@ -164,7 +164,10 @@ $ipv6->getUriComponent(); //return '[::1]'
 
 ### IDN support
 
-The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism. The `Host::__toString` method always returns the IDN version of the hostname. To access the punycode encoded domain name you must used the `Host::toAscii` method.
+The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism.
+
+- The `Host::__toString` method always returns the IDN version of the hostname.
+- To access the punycode encoded domain name you must used the `Host::toAscii` method.
 
 ~~~php
 use League\Url\Host;
@@ -181,7 +184,7 @@ echo $host->toAscii();  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object outpu
 
 ### Array representation
 
-A host can be divided into its different labels. The class provide an array representation of a the host label using the `Host::toArray` method.
+A host can be divided into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
 
 <p class="message-warning">Once in array representation you can not distinguish a simple from a fully qualified domain name.</p>
 

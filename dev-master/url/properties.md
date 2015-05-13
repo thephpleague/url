@@ -81,7 +81,7 @@ echo $url->getUserInfo();  //displays 'foo:bar'
 
 ### Is the URL absolute ?
 
-An URL is considered absolute if it has a non empty scheme component.
+An URL is considered absolute if it has a non empty scheme component and an authority part.
 
 ~~~php
 use League\Url\Url;
@@ -89,7 +89,7 @@ use League\Url\Url;
 $url = Url:createFromUrl('//example.com/foo');
 $url->isAbsolute(); //returns false
 
-$url = Url:createFromUrl('ftp:://example.com/foo');
+$url = Url:createFromUrl('ftp://example.com/foo');
 $url->isAbsolute(); //returns true
 ~~~
 
