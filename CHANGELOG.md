@@ -2,6 +2,12 @@
 
 All Notable changes to `League\Url` will be documented in this file
 
+## 3.3.2 - 2015-05-13
+
+### Fixed
+
+- Bug fix URL parsing [issue #65](https://github.com/thephpleague/url/issues/58)
+
 ## 3.3.1 - 2015-03-26
 
 ### Fixed

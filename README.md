@@ -7,7 +7,7 @@
 [![Latest Version](https://img.shields.io/github/release/thephpleague/url.svg?style=flat-square)](https://github.com/thephpleague/url/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/league/url.svg?style=flat-square)](https://packagist.org/packages/league/url)
 
-The League Url package provides simple and intuitive classes and methods to create and manage Urls in PHP. 
+The League Url package provides simple and intuitive classes and methods to create and manage Urls in PHP.
 
 This package is compliant with [PSR-2][], and [PSR-4][].
 
