@@ -118,11 +118,11 @@ $ipv4->isIpv4(); //return true
 $ipv4->isIpv6(); //return false
 ~~~
 
-### Simple or fully qualified domain name
+### relative or fully qualified domain name
 
 If you don't have a IP then you are dealing with a host name. A host name is a [domain name](http://tools.ietf.org/html/rfc1034) subset according to [RFC1123](http://tools.ietf.org/html/rfc1123#section-2.1). As such a host name can not, for example, contain an `_`.
 
-A host name is considered absolute or as a Fully Qualified Domain Name (FQDN) if it ends with a `.`.
+A host name is considered absolute or as being a fully qualified domain name (FQDN) if it ends with a `.`, otherwise it is known as being a relative or a partially qualified domain name (PQDN).
 
 ~~~php
 use League\Url\Host;

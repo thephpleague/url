@@ -59,15 +59,17 @@ Path::createFromArray(['127.0', '0.1'], true);
 
 ### Absolute or relative path
 
-At any given time you can verify if the path you are currently manipulating is absolute using this method.
+A path is considered absolute only if it stats with the path delimiter `/`, otherwise it is considered as being relative. At any given time you can test your path status using the `Path::isAbsolute` method.
 
 ~~~php
 use League\Url\Path;
 
 $relative_path = Path::createFromArray(['bar', '', 'baz']);
+echo $relative_path; //displays 'bar//baz'
 $relative_path->isAbsolute(); // returns false;
 
 $absolute_path = Path::createFromArray(['bar', '', 'baz'], true);
+echo $absolute_path; //displays '/bar//baz'
 $absolute_path->isAbsolute(); // returns true;
 ~~~
 
