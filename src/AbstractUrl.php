@@ -12,7 +12,6 @@
 */
 namespace League\Url;
 
-use InvalidArgumentException;
 use League\Url\Components\Fragment;
 use League\Url\Components\Host;
 use League\Url\Components\Pass;
@@ -88,11 +87,11 @@ abstract class AbstractUrl implements UrlInterface
     protected $fragment;
 
     /**
-     *  Tell whether PHP native parse_url is buggy
-     * 
+     * Tell whether PHP native parse_url is buggy
+     *
      * @var bool
      */
-   protected static $is_parse_url_bugged;
+    protected static $is_parse_url_bugged;
 
     /**
      * {@inheritdoc}
@@ -116,7 +115,9 @@ abstract class AbstractUrl implements UrlInterface
             return $this->path->getUriComponent()
                 .$this->query->getUriComponent()
                 .$this->fragment->getUriComponent();
-        } elseif ($this->getBaseUrl() != $ref_url->getBaseUrl()) {
+        }
+
+        if ($this->getBaseUrl() != $ref_url->getBaseUrl()) {
             return $this->__toString();
         }
 
@@ -253,10 +254,12 @@ abstract class AbstractUrl implements UrlInterface
         if (! empty($components)) {
             return $components;
         }
+
         if (is_null(static::$is_parse_url_bugged)) {
-            static::$is_parse_url_bugged = !@parse_url("//example.org:80");
+            static::$is_parse_url_bugged = ! is_array(@parse_url("//example.org:80"));
         }
-        // inline fix for https://bugs.php.net/bug.php?id=68917
+
+        //bugfix for https://bugs.php.net/bug.php?id=68917
         if (static::$is_parse_url_bugged &&
             strpos($url, '/') === 0 &&
             is_array($components = @parse_url('http:'.$url))
@@ -264,14 +267,16 @@ abstract class AbstractUrl implements UrlInterface
             unset($components['scheme']);
             return $components;
         }
-        throw new InvalidArgumentException(sprintf("The given URL: `%s` could not be parse", $url));
+        throw new RuntimeException(sprintf("The given URL: `%s` could not be parse", $url));
     }
 
     protected static function sanitizeUrl($url)
     {
         if ('' == $url || strpos($url, '//') === 0) {
             return $url;
-        } elseif (! preg_match(',^((http|ftp|ws)s?:),i', $url, $matches)) {
+        }
+
+        if (! preg_match(',^((http|ftp|ws)s?:),i', $url, $matches)) {
             return '//'.$url;
         }
 
@@ -342,7 +347,9 @@ abstract class AbstractUrl implements UrlInterface
             }
 
             return substr($header, 0, -strlen($matches[1]));
-        } elseif (isset($server['SERVER_ADDR'])) {
+        }
+
+        if (isset($server['SERVER_ADDR'])) {
             return $server['SERVER_ADDR'];
         }
 
@@ -377,7 +384,9 @@ abstract class AbstractUrl implements UrlInterface
     {
         if (isset($server['REQUEST_URI'])) {
             return $server['REQUEST_URI'];
-        } elseif (isset($server['PHP_SELF'])) {
+        }
+
+        if (isset($server['PHP_SELF'])) {
             return $server['PHP_SELF'];
         }
 
@@ -446,7 +455,9 @@ abstract class AbstractUrl implements UrlInterface
             if (0 === strpos($components['path'], '///')) {
                 //even with the added scheme the URL is still broken
                 throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $url));
-            } elseif (0 === strpos($components['path'], '//')) {
+            }
+
+            if (0 === strpos($components['path'], '//')) {
                 $tmp = substr($components['path'], 2);
                 $components['path'] = null;
                 $res = explode('/', $tmp, 2);
