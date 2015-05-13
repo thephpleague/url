@@ -214,13 +214,10 @@ $alt->sameValueAs($path); return false;
 
 You can easily change or remove the extension from the path basename using the `Path::withExtension` method.
 
-<div class="message-warning">
-<p>This method will throw:</p>
-<ul>
-<li>an <code>InvalidArgumentException</code> If the extension contains a slash character.</li>
-<li> a <code>LogicException</code> If the <code>Path</code> object basename is empty.</li>
-</ul>
-</div>
+<p class="message-info">No update will be made is the <code>basename</code> is empty</p>
+
+<p class="message-warning">This method will throw an <code>InvalidArgumentException</code> If the extension contains a slash character.</p>
+
 ~~~php
 use League\Url\Path;
 
