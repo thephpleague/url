@@ -86,7 +86,7 @@ echo $ipv6; //display '[::1]'
 There are two type of host:
 
 - Hosts represented by an IP;
-- Hosts represented by a domain names;
+- Hosts represented by a host names;
 
 To determine what type of host you are dealing with the `Host` class provides the `isIp` method:
 
@@ -120,7 +120,9 @@ $ipv4->isIpv6(); //return false
 
 ### Simple or fully qualified domain name
 
-If you don't have a IP then you are dealing with a registered name. A registered name is considered absolute or as a Fully Qualified Domain Name (FQDN) if it ends with a `.`.
+If you don't have a IP then you are dealing with a host name. A host name is a [domain name](http://tools.ietf.org/html/rfc1034) subset according to [RFC1123](http://tools.ietf.org/html/rfc1123#section-2.1). As such a host name can not, for example, contain an `_`.
+
+A host name is considered absolute or as a Fully Qualified Domain Name (FQDN) if it ends with a `.`.
 
 ~~~php
 use League\Url\Host;
