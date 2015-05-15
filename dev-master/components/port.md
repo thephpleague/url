@@ -26,6 +26,27 @@ echo $empty_port; //display ''
 
 <p class="message-warning">If the submitted value is not a valid port number an <code>InvalidArgumentException</code> will be thrown.</p>
 
+## Port properties
+
+### Standard schemes
+
+When one or more ports are in association with a specific scheme it is called a standard port. To get a list of scheme for which the given Port object is standard you can call the `Port::getStandardScheme` method.
+
+This method which take no argument returns an array containing a list of scheme. The array is empty if no scheme is found or if the information is unknown to the package.
+
+~~~php
+use League\Url\Scheme;
+
+$scheme = new Scheme(80);
+$scheme->getStandardSchemes(); //returns ['http', 'ws'];
+
+$scheme = new Scheme(22);
+$scheme->getStandardSchemes(); //returns ['ssh'];
+
+$scheme = new Scheme(324);
+$scheme->getStandardSchemes(); //returns [];
+~~~
+
 ## Port representations
 
 ### String representation

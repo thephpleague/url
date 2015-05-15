@@ -24,19 +24,23 @@ echo $empty_Scheme; //display ''
 
 <p class="message-warning">If the submitted value is not a valid Scheme number an <code>InvalidArgumentException</code> will be thrown.</p>
 
-## Scheme Default Ports
+## Scheme Properties
 
-A number of default port, usually one but not always are attached to a specific scheme. To get a list of those port, you can call the `Scheme::getDefaultPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port number will be return sorted numerically.
+### Scheme Standard Ports
+
+When one or more ports are usually used in association with a specific scheme it is called standard. To get a list of those standard ports, you can call the `Scheme::getStandardPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port number will be return sorted numerically.
 
 ~~~php
 use League\Url\Scheme;
 
 $scheme = new Scheme('http');
-echo $scheme->getDefaultPorts(); //returns [80];
+$scheme->getStandardPorts(); //returns [80];
 
+$scheme = new Scheme('svn+ssh');
+$scheme->getStandardPorts(); //returns [22];
 
-$empty_Scheme = new Scheme('svn+ssh');
-echo $scheme->getDefaultPorts(); //returns [];
+$scheme = new Scheme('yolo');
+$scheme->getStandardPorts(); //returns [];
 ~~~
 
 To [output](/dev-master/components/overview/#components-string-representations), [compare](/dev-master/components/overview/#components-comparison) or [manipulate](/dev-master/components/overview/#components-modification) the Scheme object you should refer to the component overview section.
