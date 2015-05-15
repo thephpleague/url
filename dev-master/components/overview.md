@@ -129,6 +129,7 @@ Since we are using immutable value objects, the source component is not modified
 
 The methods describe above works on all type of component but for more complex components care has be taken to provide more useful methods to interact with their value. Additional methods and properties were added to the following classes:
 
+* `League\Url\Scheme` which deals with [the scheme component](/dev-master/components/scheme/);
 * `League\Url\Host` which deals with [the host component](/dev-master/components/host/);
 * `League\Url\Port` which deals with [the port component](/dev-master/components/port/);
 * `League\Url\Path` which deals with [the path component](/dev-master/components/path/);

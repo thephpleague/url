@@ -17,10 +17,10 @@ use League\Url\Port;
 $port = new Port(443);
 echo $port; //display '443'
 
-$string_port = new Path('443');
+$string_port = new Port('443');
 echo $string_port; //display '443'
 
-$empty_port = new Path();
+$empty_port = new Port();
 echo $empty_port; //display ''
 ~~~
 

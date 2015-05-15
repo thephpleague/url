@@ -10,6 +10,7 @@
         Manipulation: '/dev-master/url/manipulation/'
     Components:
         Overview: '/dev-master/components/overview/'
+        Scheme: '/dev-master/components/scheme/'
         Host: '/dev-master/components/host/'
         Port: '/dev-master/components/port/'
         Path: '/dev-master/components/path/'
