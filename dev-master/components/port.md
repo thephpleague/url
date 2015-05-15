@@ -35,21 +35,21 @@ Basic port representations is done using the following methods:
 ~~~php
 use League\Url\Port;
 
-$port = new Port('21');
+$port = new Port(21);
 $port->__toString();      //return '21'
 $port->getUriComponent(); //return ':21'
 ~~~
 
-### Int representation
+### Integer representation
 
-A port can be represented as an integer. Through the use of the `Port::toInt` method the class returns the integer representation of a port.
+A port can be represented as an integer through the use of the `Port::toInt` method the class.
 
 <p class="message-info">If a Port is not defined, the <code>toInt</code> method returns <code>null</code>.</p>
 
 ~~~php
 use League\Url\Port;
 
-$port = new Port('81');
+$port = new Port(81);
 $port->toInt(); //returns 81;
 
 $empty_port = new Port();
