@@ -11,6 +11,7 @@
     Components:
         Overview: '/dev-master/components/overview/'
         Host: '/dev-master/components/host/'
+        Port: '/dev-master/components/port/'
         Path: '/dev-master/components/path/'
         Query: '/dev-master/components/query/'
     Helpers:

@@ -37,6 +37,20 @@ $query    = Url\Query('q=url&site=thephpleague');
 $fragment = Url\Fragment('paragraphid');
 ~~~
 
+### Component status
+
+At any given time you may want to know if the component is empty or not. To do so you can used the `Component::isEmpty` method like shown below:
+
+~~~php
+use League\Url;
+
+$scheme   = Url\Scheme('http');
+$scheme->isEmpty(); //returns false;
+
+$port     = Url\Port();
+$port->isEmpty(); return true;
+~~~
+
 ## Components string representations
 
 Each class provides several ways to represent the component value as string.
@@ -116,5 +130,6 @@ Since we are using immutable value objects, the source component is not modified
 The methods describe above works on all type of component but for more complex components care has be taken to provide more useful methods to interact with their value. Additional methods and properties were added to the following classes:
 
 * `League\Url\Host` which deals with [the host component](/dev-master/components/host/);
+* `League\Url\Port` which deals with [the port component](/dev-master/components/port/);
 * `League\Url\Path` which deals with [the path component](/dev-master/components/path/);
 * `League\Url\Query` which deals with [the query component](/dev-master/components/query/);
