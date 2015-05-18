@@ -25,9 +25,9 @@ userinfo    host     port
 
 To be able to access all these parts, the `League\Url\Url` class exposes the following public API:
 
-## URL components
+## URL parts and components
 
-You can access the URL individual components using their respective getter methods.
+You can access the URL individual parts and components using their respective getter methods.
 
 All returned components are objects implementing the `League\Url\Interfaces\UrlPart` interface. [This interface](/dev-master/component/) provide a `__toString` method to help you get a quick access to its string representation.
 
@@ -39,12 +39,16 @@ echo $url->getScheme();    //displays 'http'
 echo $url->getUserInfo();  //displays 'foo:bar'
 echo $url->getHost();      //displays 'www.example.com'
 echo $url->getPort();      //displays '81'
+echo $url->getAuthority(); //displays 'foo:bar@www.example.com:81'
 echo $url->getPath();      //displays '/how/are/you'
 echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-<p class="message-notice">In order to access the URL credentials, you are required to proxy your call throught the <code>getUserInfo</code> method</p>
+<p class="message-notice">In order to access the URL credentials, you are required to proxy your call throught the <code>getUserInfo</code> method.</p>
+
+
+<p class="message-notice">The <code>getAuthority</code> method is the only method which returns a simple <code>string</code>.</p>
 
 ~~~php
 use League\Url\Url;
@@ -73,17 +77,6 @@ $url->toArray();
 //        'query' => 'foo=baz',
 //        'fragment' => null,
 //    ];
-~~~
-
-## URL parts
-
-To comply with RFC3986 one additional method is provided to returns the URL [authority](http://tools.ietf.org/html/rfc3986#section-3.2) part. `Url::getAuthority` returns a `string`.
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-echo $url->getAuthority(); //displays 'foo:bar@www.example.com:81'
 ~~~
 
 ## URL properties

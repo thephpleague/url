@@ -3,11 +3,11 @@ layout: default
 title: The UserInfo part
 ---
 
-# The User Info part
+# The User Information part
 
-The library provides a `League\Url\UserInfo` class to ease User Info manipulation.
+The library provides a `League\Url\UserInfo` class to ease User Information manipulation.
 
-## User Info
+## Instantiation
 
 Just like any other component, a new `League\Url\UserInfo` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation). The constructor expects 2 optional arguments. The first argument describes the user login and the latter the user password information.
 
@@ -70,8 +70,9 @@ $info->getPass(); //returns a League\Url\Pass object
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-To modify the user login and password information you need to call the respective `UserInfo::withUser` and `UserInfo::withPass` methods like shown below.
+<p class="message-notice">Unlike other component class, the <code>UserInfo</code> class does not include a <code>withValue</code> method</p>
 
+To modify the user login and password information you need to call the respective <code>UserInfo::withUser</code> and `UserInfo::withPass` methods like shown below.
 
 ~~~php
 use League\Url\UserInfo;

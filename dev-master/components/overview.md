@@ -3,9 +3,29 @@ layout: default
 title: URL Components
 ---
 
-# URL components
+# URL parts and components
 
-An URL string is composed of 8 components and 5 parts. Each of these components can be returned from the `League\Url\Url` class getter methods as the following specific component classes:
+An URL string is composed of 8 components and 5 parts:
+
+~~~
+foo://example.com:8042/over/there?name=ferret#nose
+\_/   \______________/\_________/ \_________/ \__/
+ |           |            |            |        |
+scheme   authority       path        query   fragment
+~~~
+
+The URL authority part in itself can be composed of up to 3 parts.
+
+~~~
+john:doe@example.com:8042
+\______/ \_________/ \__/
+    |         |        |
+userinfo    host     port
+~~~
+
+The userinfo part is composed of the `user` and the `pass` components.
+
+Apart from the authority part, each component and part of an URL is manageable by a dedicated class:
 
 - The `League\Url\Scheme` class represents the URL scheme component;
 - The `League\Url\UserInfo` class represents the URL userinfo part;
@@ -21,7 +41,7 @@ Those classes share common methods to view and update their values. And just lik
 
 ## URL part instantiation
 
-Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986. If the value is invalid an `InvalidArgumentException` is thrown.
+Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986 or a Object with a `__toString()` method. If the value is invalid an `InvalidArgumentException` is thrown.
 
 <p class="message-warning">No component delimiter should be submitted to the class constructors as they will be interpreted as part of the component value.</p>
 
@@ -91,7 +111,7 @@ $url->getQuery()->getUriComponent();    //returns '?q=yolo'
 url->getFragment()->getUriComponent();  //returns ''
 ~~~
 
-## Components comparison
+## URL parts comparison
 
 To compare two components to know if they represent the same value you can use the `Component::sameValueAs` method which compares them according to their respective `Component::getUriComponent` methods.
 
@@ -112,7 +132,9 @@ $url1->getQuery->sameValueAs($url2);
 
 ## Component modification
 
-Each component can have its content modified using the `withValue` method. This method expects a string or an object with the `__toString` method.
+Each URL component class can have its content modified using the `withValue` method. This method expects a string or an object with the `__toString` method.
+
+<p class="message-warning">Because the <code>UserInfo</code> class represent a URL part it does not include a <code>withValue</code> method.</p>
 
 ~~~php
 use League\Url\Url;
@@ -125,13 +147,13 @@ echo $query(); //display 'q=url&site=thephpleague'
 
 Since we are using immutable value objects, the source component is not modified instead a modified copy of the original object is returned.
 
-## Complex components
+## Complex Url parts
 
-The methods describe above works on all type of component but for more complex components care has be taken to provide more useful methods to interact with their value. Additional methods and properties were added to the following classes:
+The methods describe above work on all type of URL parts but for more complex parts/component care has be taken to provide more useful methods to interact with their values. Additional methods and properties were added to the following classes:
 
 * `League\Url\Scheme` which deals with [the scheme component](/dev-master/components/scheme/);
 * `League\Url\Host` which deals with [the host component](/dev-master/components/host/);
 * `League\Url\Port` which deals with [the port component](/dev-master/components/port/);
 * `League\Url\Path` which deals with [the path component](/dev-master/components/path/);
 * `League\Url\Query` which deals with [the query component](/dev-master/components/query/);
-* `League\Url\UserInfo` which deals with [the URL credential part](/dev-master/components/userinfo/);
+* `League\Url\UserInfo` which deals with [the URL user information part](/dev-master/components/userinfo/);
