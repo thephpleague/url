@@ -28,15 +28,15 @@ Each component class can be instantiated independently from the main `League\Url
 ~~~php
 use League\Url;
 
-$scheme    = Url\Scheme('http');
-$user      = Url\User('john');
-$pass      = Url\Pass('doe');
-$user_info = Url\UserInfo($user, $pass);
-$host      = Url\Host('127.0.0.1');
-$port      = Url\Port(443);
-$path      = Url\Path('/foo/bar/file.csv');
-$query     = Url\Query('q=url&site=thephpleague');
-$fragment  = Url\Fragment('paragraphid');
+$scheme    = new Url\Scheme('http');
+$user      = new Url\User('john');
+$pass      = new Url\Pass('doe');
+$user_info = new Url\UserInfo($user, $pass);
+$host      = new Url\Host('127.0.0.1');
+$port      = new Url\Port(443);
+$path      = new Url\Path('/foo/bar/file.csv');
+$query     = new Url\Query('q=url&site=thephpleague');
+$fragment  = new Url\Fragment('paragraphid');
 ~~~
 
 ### URL part status
@@ -46,10 +46,10 @@ At any given time you may want to know if the URL part is considered empty or no
 ~~~php
 use League\Url;
 
-$scheme = Url\Scheme('http');
+$scheme = new Url\Scheme('http');
 $scheme->isEmpty(); //returns false;
 
-$port = Url\Port();
+$port = new Url\Port();
 $port->isEmpty(); return true;
 ~~~
 
@@ -117,7 +117,7 @@ Each component can have its content modified using the `withValue` method. This 
 ~~~php
 use League\Url\Url;
 
-$query     = Url\Query('q=url&site=thephpleague');
+$query     = new Url\Query('q=url&site=thephpleague');
 $new_query = $query->withValue('q=yolo');
 echo $new_query; //displays 'q=yolo'
 echo $query(); //display 'q=url&site=thephpleague'
