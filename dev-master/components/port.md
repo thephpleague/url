@@ -56,7 +56,7 @@ $port = new Port(80);
 $port->hasStandardScheme('http'); //returns true
 
 $port = new Port(52);
-$port->hasStandardScheme(new Schme('svn+ssh')); //returns false
+$port->hasStandardScheme(new Scheme('svn+ssh')); //returns false
 ~~~
 
 ## Port representations

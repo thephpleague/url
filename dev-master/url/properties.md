@@ -14,13 +14,13 @@ foo://example.com:8042/over/there?name=ferret#nose
 scheme   authority       path        query   fragment
 ~~~
 
-The URL authority part in itself can be composed of up to 4 components.
+The URL authority part in itself can be composed of up to 3 parts.
 
 ~~~
 john:doe@example.com:8042
-\_/  \_/ \_________/ \__/
- |    |       |        |
-user pass   host     port
+\______/ \_________/ \__/
+    |         |        |
+userinfo    host     port
 ~~~
 
 To be able to access all these parts, the `League\Url\Url` class exposes the following public API:
