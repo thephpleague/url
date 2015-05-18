@@ -11,11 +11,11 @@
     URL Parts:
         Overview: '/dev-master/components/overview/'
         Scheme: '/dev-master/components/scheme/'
+        User Info: '/dev-master/components/userinfo/'
         Host: '/dev-master/components/host/'
         Port: '/dev-master/components/port/'
         Path: '/dev-master/components/path/'
         Query: '/dev-master/components/query/'
-        Credentials: '/dev-master/components/userinfo/'
     Helpers:
         Formatter: '/dev-master/utilities/formatter/'
 '3.0':
