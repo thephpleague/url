@@ -28,23 +28,35 @@ echo $empty_port; //display ''
 
 ## Port properties
 
-### Standard schemes
+### Standard ports
 
-When one or more ports are in association with a specific scheme it is called a standard port. To get a list of scheme for which the given Port object is standard you can call the `Port::getStandardScheme` method.
+When one or more ports are in association with a specific scheme it is called a standard port. To get a list of schemes for which the given Port object is standard you can call the `Port::getStandardSchemes` method.
 
-This method which take no argument returns an array containing a list of scheme. The array is empty if no scheme is found or if the information is unknown to the package.
+This method which take no argument returns an array containing a list of `League\Url\Scheme` objects. The array is empty if no scheme is found or if the information is unknown to the package.
 
 ~~~php
-use League\Url\Scheme;
+use League\Url\Port;
 
-$scheme = new Scheme(80);
-$scheme->getStandardSchemes(); //returns ['http', 'ws'];
+$port = new Port(80);
+$port->getStandardSchemes(); //returns the equivalent of [new Scheme('http'), new Scheme('ws')];
 
-$scheme = new Scheme(22);
-$scheme->getStandardSchemes(); //returns ['ssh'];
+$port = new Port(22);
+$port->getStandardSchemes(); //returns [new Scheme('ssh')];
 
-$scheme = new Scheme(324);
-$scheme->getStandardSchemes(); //returns [];
+$port = new Port(324);
+$port->getStandardSchemes(); //returns [];
+~~~
+
+If you only interested in knowing if the current port is standard to a given scheme you can simply call the `Port::hasStandardScheme` method which takes a scheme or a `League\Url\Scheme` object as its unique argument. The method returns a boolean.
+
+~~~php
+use League\Url\Port;
+
+$port = new Port(80);
+$port->hasStandardScheme('http'); //returns true
+
+$port = new Port(52);
+$port->hasStandardScheme(new Schme('svn+ssh')); //returns false
 ~~~
 
 ## Port representations

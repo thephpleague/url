@@ -192,25 +192,45 @@ $path = new Path('/path/to/file.csv');
 $path->getExtension(); // return 'csv';
 ~~~
 
-## Modifying Path
+## Path normalization
 
 <p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
+Out of the box, the `Path` object operates a number of normalization to the submitted path. All these normalization are non destructive, for instance, the path is correctly URL encoded against the RFC rules.
+
 ### Removing dot segments
 
-Out of the box, the `Path` object operates a number of normalization to the submitted path. All these normalization are non destructive, for instance, the path is correctly URL encoded against the RFC rules. To remove dot segment as per as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::normalize` method as the result can be destructive. The method takes no arguments and returns a new `Path` object which represents the current object normalized.
+To remove dot segment as per as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no arguments and returns a new `Path` object which represents the current object normalized.
 
 ~~~php
 use League\Url\Path;
 
-$raw_path        = new Path('path/to/./the/../the/sky%7bfoo%7d');
-$normalize_path  = $raw_path->normalize();
+$raw_path       = new Path('path/to/./the/../the/sky%7bfoo%7d');
+$normalize_path = $raw_path->withoutDotSegments();
 echo $raw_path;        // displays 'path/to/./the/../the/sky%7bfoo%7d'
 echo $normalize_path;  // displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); return false;
 ~~~
+
+### Removing duplicate delimiters
+
+Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutDuplicateDelimiters` method which convert you path as described below:
+
+
+~~~php
+use League\Url\Path;
+
+$raw_path       = new Path('path////to/the/sky//');
+$normalize_path = $raw_path->withoutDuplicateDelimiters();
+echo $raw_path;        // displays 'path////to/the/sky//'
+echo $normalize_path;  // displays 'path/to/the/sky/'
+$alt->sameValueAs($path); return false;
+~~~
+
+
+## Modifying Path
 
 ### Path extension manipulation
 
