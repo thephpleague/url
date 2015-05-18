@@ -134,3 +134,4 @@ The methods describe above works on all type of component but for more complex c
 * `League\Url\Port` which deals with [the port component](/dev-master/components/port/);
 * `League\Url\Path` which deals with [the path component](/dev-master/components/path/);
 * `League\Url\Query` which deals with [the query component](/dev-master/components/query/);
+* `League\Url\UserInfo` which deals with [the userinfo part](/dev-master/components/userinfo/);

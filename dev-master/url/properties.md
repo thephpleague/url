@@ -29,20 +29,30 @@ To be able to access all these parts, the `League\Url\Url` class exposes the fol
 
 You can access the URL individual components using their respective getter methods.
 
-All returned components are objects implementing the `League\Url\Interfaces\Component` interface. [This interface](/dev-master/component/) provide a `__toString` method to help you get a quick access to its string representation.
+All returned components are objects implementing the `League\Url\Interfaces\UrlPart` interface. [This interface](/dev-master/component/) provide a `__toString` method to help you get a quick access to its string representation.
 
 ~~~php
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
 echo $url->getScheme();    //displays 'http'
-echo $url->getUser();      //displays 'foo'
-echo $url->getPass();      //displays 'bar'
+echo $url->getUserInfo();  //displays 'foo:bar'
 echo $url->getHost();      //displays 'www.example.com'
 echo $url->getPort();      //displays '81'
 echo $url->getPath();      //displays '/how/are/you'
 echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
+~~~
+
+<p class="message-notice">In order to access the URL credentials, you are required to proxy your call throught the <code>getUserInfo</code> method</p>
+
+~~~php
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
+echo $url->getUserInfo();             //displays 'foo:bar'
+echo $url->getUserInfo()->getUser();  //displays 'foo'
+echo $url->getUserInfo()->getPass();  //displays 'bar'
 ~~~
 
 You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.
@@ -67,14 +77,13 @@ $url->toArray();
 
 ## URL parts
 
-To comply with RFC3986 two additionals methods are provided to returns the URL [authority](http://tools.ietf.org/html/rfc3986#section-3.2) and [userinfo](http://tools.ietf.org/html/rfc3986#section-3.2.1) part.
+To comply with RFC3986 one additional method is provided to returns the URL [authority](http://tools.ietf.org/html/rfc3986#section-3.2) part. `Url::getAuthority` returns a `string`.
 
 ~~~php
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
 echo $url->getAuthority(); //displays 'foo:bar@www.example.com:81'
-echo $url->getUserInfo();  //displays 'foo:bar'
 ~~~
 
 ## URL properties
