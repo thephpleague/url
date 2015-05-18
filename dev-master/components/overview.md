@@ -5,9 +5,10 @@ title: URL Components
 
 # URL components
 
-An URL string is composed of 8 components. Each of these components are returned from the `League\Url\Url` class getter methods as the following specific component classes:
+An URL string is composed of 8 components and 5 parts. Each of these components can be returned from the `League\Url\Url` class getter methods as the following specific component classes:
 
 - The `League\Url\Scheme` class represents the URL scheme component;
+- The `League\Url\UserInfo` class represents the URL userinfo part;
 - The `League\Url\User` class represents the URL user component;
 - The `League\Url\Pass` class represents the URL pass component;
 - The `League\Url\Host` class represents the URL host component;
@@ -18,7 +19,7 @@ An URL string is composed of 8 components. Each of these components are returned
 
 Those classes share common methods to view and update their values. And just like the `League\Url\Url` class, they are defined as immutable value objects.
 
-## Component instantiation
+## URL part instantiation
 
 Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986. If the value is invalid an `InvalidArgumentException` is thrown.
 
@@ -27,31 +28,32 @@ Each component class can be instantiated independently from the main `League\Url
 ~~~php
 use League\Url;
 
-$scheme   = Url\Scheme('http');
-$user     = Url\User('john');
-$pass     = Url\Pass('doe');
-$host     = Url\Host('127.0.0.1');
-$port     = Url\Port(443);
-$path     = Url\Path('/foo/bar/file.csv');
-$query    = Url\Query('q=url&site=thephpleague');
-$fragment = Url\Fragment('paragraphid');
+$scheme    = Url\Scheme('http');
+$user      = Url\User('john');
+$pass      = Url\Pass('doe');
+$user_info = Url\UserInfo($user, $pass);
+$host      = Url\Host('127.0.0.1');
+$port      = Url\Port(443);
+$path      = Url\Path('/foo/bar/file.csv');
+$query     = Url\Query('q=url&site=thephpleague');
+$fragment  = Url\Fragment('paragraphid');
 ~~~
 
-### Component status
+### URL part status
 
-At any given time you may want to know if the component is empty or not. To do so you can used the `Component::isEmpty` method like shown below:
+At any given time you may want to know if the URL part is considered empty or not. To do so you can used the `UrlPart::isEmpty` method like shown below:
 
 ~~~php
 use League\Url;
 
-$scheme   = Url\Scheme('http');
+$scheme = Url\Scheme('http');
 $scheme->isEmpty(); //returns false;
 
-$port     = Url\Port();
+$port = Url\Port();
 $port->isEmpty(); return true;
 ~~~
 
-## Components string representations
+## URL part representations
 
 Each class provides several ways to represent the component value as string.
 
@@ -62,15 +64,14 @@ Returns the string representation of the URL component. This is the form used wh
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('http://www.example.com:81/foo/bar?q=yolo#');
-$url->getScheme()->__toString();  //returns 'http'
-$url->getUser()->__toString();    //returns ''
-$url->getPass()->__toString();    //returns ''
-$url->getHost()->__toString();    //returns '[:11]'
-$url->getPort()->__toString();    //returns '81'
-$url->getPath()->__toString();    //returns '/foo/bar'
-$url->getQuery()->__toString();   //returns 'q=yolo'
-url->getFragment()->__toString(); //returns null
+$url = Url::createFromUrl('http://jean@www.example.com:81/foo/bar?q=yolo#');
+$url->getScheme()->__toString();   //returns 'http'
+$url->getUserInfo()->__toString(); //returns 'jean'
+$url->getHost()->__toString();     //returns '[:11]'
+$url->getPort()->__toString();     //returns '81'
+$url->getPath()->__toString();     //returns '/foo/bar'
+$url->getQuery()->__toString();    //returns 'q=yolo'
+url->getFragment()->__toString();  //returns null
 ~~~
 
 ### URL-like representation
@@ -80,15 +81,14 @@ Returns the string representation of the URL component with its optional delimit
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('http://www.example.com:81/foo/bar?q=yolo#');
-$url->getScheme()->getUriComponent();  //returns 'http:'
-$url->getUser()->getUriComponent();    //returns ''
-$url->getPass()->getUriComponent();    //returns ''
-$url->getHost()->getUriComponent();    //returns '[:11]'
-$url->getPort()->getUriComponent();    //returns ':81'
-$url->getPath()->getUriComponent();    //returns '/foo/bar'
-$url->getQuery()->getUriComponent();   //returns '?q=yolo'
-url->getFragment()->getUriComponent(); //returns ''
+$url = Url::createFromUrl('http://jean@www.example.com:81/foo/bar?q=yolo#');
+$url->getScheme()->getUriComponent();   //returns 'http:'
+$url->getUserInfo()->getUriComponent(); //returns 'jean@'
+$url->getHost()->getUriComponent();     //returns '[:11]'
+$url->getPort()->getUriComponent();     //returns ':81'
+$url->getPath()->getUriComponent();     //returns '/foo/bar'
+$url->getQuery()->getUriComponent();    //returns '?q=yolo'
+url->getFragment()->getUriComponent();  //returns ''
 ~~~
 
 ## Components comparison
