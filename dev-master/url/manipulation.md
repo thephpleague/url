@@ -72,4 +72,3 @@ $url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#tit
 $url2 = $url->resolve('./p#~toto');
 echo $url2; //displays 'http://www.example.com/hello/p#~toto'
 ~~~
-

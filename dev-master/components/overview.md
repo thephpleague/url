@@ -85,13 +85,13 @@ Returns the string representation of the URL component. This is the form used wh
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://jean@www.example.com:81/foo/bar?q=yolo#');
-$url->getScheme()->__toString();   //returns 'http'
-$url->getUserInfo()->__toString(); //returns 'jean'
-$url->getHost()->__toString();     //returns '[:11]'
-$url->getPort()->__toString();     //returns '81'
-$url->getPath()->__toString();     //returns '/foo/bar'
-$url->getQuery()->__toString();    //returns 'q=yolo'
-url->getFragment()->__toString();  //returns null
+echo $url->getScheme()->__toString();        //returns 'http'
+echo $url->getUserInfo()->__toString();      //returns 'jean'
+echo $url->getHost()->__toString();          //returns '[:11]'
+echo $url->getPortComponent()->__toString(); //returns '81'
+echo $url->getPath()->__toString();          //returns '/foo/bar'
+echo $url->getQuery()->__toString();         //returns 'q=yolo'
+echo $url->getFragment()->__toString();      //returns null
 ~~~
 
 ### URL-like representation
@@ -102,13 +102,13 @@ Returns the string representation of the URL component with its optional delimit
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://jean@www.example.com:81/foo/bar?q=yolo#');
-$url->getScheme()->getUriComponent();   //returns 'http:'
-$url->getUserInfo()->getUriComponent(); //returns 'jean@'
-$url->getHost()->getUriComponent();     //returns '[:11]'
-$url->getPort()->getUriComponent();     //returns ':81'
-$url->getPath()->getUriComponent();     //returns '/foo/bar'
-$url->getQuery()->getUriComponent();    //returns '?q=yolo'
-url->getFragment()->getUriComponent();  //returns ''
+echo $url->getScheme()->getUriComponent();        //returns 'http:'
+echo $url->getUserInfo()->getUriComponent();      //returns 'jean@'
+echo $url->getHost()->getUriComponent();          //returns '[:11]'
+echo $url->getPortComponent()->getUriComponent(); //returns ':81'
+echo $url->getPath()->getUriComponent();          //returns '/foo/bar'
+echo $url->getQuery()->getUriComponent();         //returns '?q=yolo'
+echo $url->getFragment()->getUriComponent();      //returns ''
 ~~~
 
 ## URL parts comparison
@@ -142,7 +142,7 @@ use League\Url\Url;
 $query     = new Url\Query('q=url&site=thephpleague');
 $new_query = $query->withValue('q=yolo');
 echo $new_query; //displays 'q=yolo'
-echo $query(); //display 'q=url&site=thephpleague'
+echo $query();   //display 'q=url&site=thephpleague'
 ~~~
 
 Since we are using immutable value objects, the source component is not modified instead a modified copy of the original object is returned.

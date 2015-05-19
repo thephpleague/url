@@ -53,10 +53,10 @@ If you only interested in knowing if the current port is standard to a given sch
 use League\Url\Port;
 
 $port = new Port(80);
-$port->hasStandardScheme('http'); //returns true
+$port->useStandardScheme('http'); //returns true
 
 $port = new Port(52);
-$port->hasStandardScheme(new Scheme('svn+ssh')); //returns false
+$port->useStandardScheme(new Scheme('svn+ssh')); //returns false
 ~~~
 
 ## Port representations
@@ -86,7 +86,7 @@ $port = new Port(81);
 $port->toInt(); //returns 81;
 
 $empty_port = new Port();
-$empty_port->toInt(); // returns null
+$empty_port->toInt(); //returns null
 ~~~
 
 To [compare](/dev-master/components/overview/#components-comparison) or [manipulate](/dev-master/components/overview/#components-modification) the port object you should refer to the component overview section.

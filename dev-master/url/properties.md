@@ -29,8 +29,6 @@ To be able to access all these parts, the `League\Url\Url` class exposes the fol
 
 You can access the URL individual parts and components using their respective getter methods.
 
-All returned components are objects implementing the `League\Url\Interfaces\UrlPart` interface. [This interface](/dev-master/component/) provide a `__toString` method to help you get a quick access to its string representation.
-
 ~~~php
 use League\Url\Url;
 
@@ -38,17 +36,14 @@ $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz
 echo $url->getScheme();    //displays 'http'
 echo $url->getUserInfo();  //displays 'foo:bar'
 echo $url->getHost();      //displays 'www.example.com'
-echo $url->getPort();      //displays '81'
+echo $url->getPort();      //displays 81 as an integer
 echo $url->getAuthority(); //displays 'foo:bar@www.example.com:81'
 echo $url->getPath();      //displays '/how/are/you'
 echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-<p class="message-notice">In order to access the URL credentials, you are required to proxy your call throught the <code>getUserInfo</code> method.</p>
-
-
-<p class="message-notice">The <code>getAuthority</code> method is the only method which returns a simple <code>string</code>.</p>
+In order to access the URL user info details, you are required to proxy your call throught the `getUserInfo` method.
 
 ~~~php
 use League\Url\Url;
@@ -57,6 +52,20 @@ $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz
 echo $url->getUserInfo();             //displays 'foo:bar'
 echo $url->getUserInfo()->getUser();  //displays 'foo'
 echo $url->getUserInfo()->getPass();  //displays 'bar'
+~~~
+
+The `League\Url\Url` class provides two ways to retrieve its port component.
+
+- When calling `Url::getPort` the port number value is returned;
+- When calling `Url::getPortComponent` a `League\Url\Port` object is returned;
+
+~~~php
+use League\Url\Url;
+
+$url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
+echo $url->getPort();                   //displays 81 as an integer
+echo $url->getPortComponent();          //displays '81' as a string
+echo $url->getPortComponent()->toInt(); //displays 81 as an integer
 ~~~
 
 You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.

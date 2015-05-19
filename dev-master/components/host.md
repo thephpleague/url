@@ -38,10 +38,14 @@ echo $ipv6_alt; //display '[::1]'
 
 A host is a collection of labels delimited by the host delimiter `.`. So it is possible to create a `Host` object using a collection of labels with the `Host::createFromArray` method.
 
-The method expects at most 2 arguments.
+The method expects at most 2 arguments:
 
 - The first required argument must be a collection of label (an `array` or a `Traversable` object)
-- The second optional argument, a boolean, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not. By default this optional argument equals `false`.
+- The second optional argument, a PHP constants, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not:
+    - `Host::IS_ABSOLUTE` the created object will be a FQDN;
+    - `Host::IS_RELATIVE` the created object will be a relative domain name;
+
+By default this optional argument equals `Host::IS_RELATIVE`.
 
 <p class="message-warning">Since an IP is not a domain name, the class will throw an <code>InvalidArgumentException</code> if you try to create an IP hostname as a FQDN.</p>
 

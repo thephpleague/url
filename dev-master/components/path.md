@@ -32,10 +32,12 @@ echo $end_slash; //display 'hello/world/'
 
 A path is a collection of segment delimited by the path delimiter `/`. So it is possible to create a `Path` object using a collection of segments with the `Path::createFromArray` method.
 
-The method expects at most 2 arguments.
+The method expects at most 2 arguments:
 
-- The first required argument must be a collection of string (an `array` or a `Traversable` object)
-- The second optional argument, a boolean, tells whether this is an absolute or a relative path. By default this optional argument equals to `false`, meaning that you are building a relative path.
+- The first required argument must be a collection of segments (an `array` or a `Traversable` object)
+- The second optional argument, a PHP constants, tells whether this is rootless path or not:
+    - `Path::IS_ABSOLUTE`: the created object will represent an absolute path;
+    - `Path::IS_RELATIVE`: the created object will represent a rootless path;
 
 ~~~php
 use League\Url\Path;
@@ -43,14 +45,11 @@ use League\Url\Path;
 $relative_path =  Path::createFromArray(['shop', 'example', 'com']);
 echo $relative_path; //display 'shop/example/com'
 
-$absolute_path = Path::createFromArray(['shop', 'example', 'com'], true);
+$absolute_path = Path::createFromArray(['shop', 'example', 'com'], Path::IS_ABSOLUTE);
 echo $absolute_path; //display '/shop/example/com'
 
-$end_slash = Path::createFromArray(['shop', 'example', 'com', ''], true);
+$end_slash = Path::createFromArray(['shop', 'example', 'com', ''], Path::IS_ABSOLUTE);
 echo $end_slash; //display '/shop/example/com/'
-
-Path::createFromArray(['127.0', '0.1'], true);
-//throws InvalidArgumentException
 ~~~
 
 <p class="message-info">To force the end slash when using the <code>Path::createFromArray</code> method you need to add an empty string as the last member of the submitted array.</p>
@@ -68,7 +67,7 @@ $relative_path = Path::createFromArray(['bar', '', 'baz']);
 echo $relative_path; //displays 'bar//baz'
 $relative_path->isAbsolute(); // returns false;
 
-$absolute_path = Path::createFromArray(['bar', '', 'baz'], true);
+$absolute_path = Path::createFromArray(['bar', '', 'baz'], Path::IS_ABSOLUTE);
 echo $absolute_path; //displays '/bar//baz'
 $absolute_path->isAbsolute(); // returns true;
 ~~~
@@ -209,9 +208,9 @@ use League\Url\Path;
 
 $raw_path       = new Path('path/to/./the/../the/sky%7bfoo%7d');
 $normalize_path = $raw_path->withoutDotSegments();
-echo $raw_path;        // displays 'path/to/./the/../the/sky%7bfoo%7d'
-echo $normalize_path;  // displays 'path/to/the/sky%7Bfoo%7D'
-$alt->sameValueAs($path); return false;
+echo $raw_path;           //displays 'path/to/./the/../the/sky%7bfoo%7d'
+echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
+$alt->sameValueAs($path); //return false;
 ~~~
 
 ### Removing duplicate delimiters
@@ -224,11 +223,10 @@ use League\Url\Path;
 
 $raw_path       = new Path('path////to/the/sky//');
 $normalize_path = $raw_path->withoutDuplicateDelimiters();
-echo $raw_path;        // displays 'path////to/the/sky//'
-echo $normalize_path;  // displays 'path/to/the/sky/'
-$alt->sameValueAs($path); return false;
+echo $raw_path;           //displays 'path////to/the/sky//'
+echo $normalize_path;     //displays 'path/to/the/sky/'
+$alt->sameValueAs($path); //return false;
 ~~~
-
 
 ## Modifying Path
 
@@ -245,7 +243,7 @@ use League\Url\Path;
 
 $path    = new Path('/path/to/the/sky');
 $newPath = $path->withExtension('.csv');
-echo $newPath; // displays /path/to/the/sky.csv;
+echo $newPath; //displays /path/to/the/sky.csv;
 ~~~
 
 ### Append segments
@@ -257,7 +255,7 @@ use League\Url\Path;
 
 $path    = new Path();
 $newPath = $path->appendWith('path')->appendWith('to/the/sky');
-$newPath->__toString(); // returns path/to/the/sky
+$newPath->__toString(); //returns path/to/the/sky
 ~~~
 
 ### Prepend segments
@@ -284,7 +282,7 @@ use League\Url\Path;
 
 $path    = new Path('/foo/example/com');
 $newPath = $path->replace(new Path('bar/baz'), 0);
-$Path->__toString(); // returns /bar/baz/example/com
+$Path->__toString(); //returns /bar/baz/example/com
 ~~~
 
 ### Remove segments
