@@ -47,18 +47,6 @@ $port = new Port(324);
 $port->getStandardSchemes(); //returns [];
 ~~~
 
-If you only interested in knowing if the current port is standard to a given scheme you can simply call the `Port::hasStandardScheme` method which takes a scheme or a `League\Url\Scheme` object as its unique argument. The method returns a boolean.
-
-~~~php
-use League\Url\Port;
-
-$port = new Port(80);
-$port->useStandardScheme('http'); //returns true
-
-$port = new Port(52);
-$port->useStandardScheme(new Scheme('svn+ssh')); //returns false
-~~~
-
 ## Port representations
 
 ### String representation
