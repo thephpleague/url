@@ -147,7 +147,8 @@ use League\Url\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $alt->merge(['foo' => 'jane', 'r' => 'stone']);
-$newQuery->__toString(); //returns foo=jane&r=stone
+$newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
+// the 'foo' parameter was updated
 // the 'r' parameter was added
 ~~~
 
@@ -159,6 +160,7 @@ use League\Url\Query;
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
 $newQuery->__toString(); //returns foo=jane&baz=toto&r
+// the 'foo' parameter was updated
 // the 'r' parameter was added
 // the 'baz' parameter was not updated
 ~~~
