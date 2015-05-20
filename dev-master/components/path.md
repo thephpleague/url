@@ -296,3 +296,17 @@ $path = new Path('/path/to/the/sky');
 $newPath = $path->without([0, 1]);
 $newPath->__toString(); //returns '/the/sky'
 ~~~
+
+### Filter segments
+
+You can also selectively remove segments using the `Path::filter` method which expect a `callable` function. This function is used to filter segments according to their content.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$newPath = $path->filter(function ($value) {
+    return strpos($value, 't') !== false;
+});
+$newPath->__toString(); //returns '/path/to/the'
+~~~

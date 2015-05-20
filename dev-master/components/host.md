@@ -122,7 +122,7 @@ $ipv4->isIpv4(); //return true
 $ipv4->isIpv6(); //return false
 ~~~
 
-### relative or fully qualified domain name
+### Relative or fully qualified domain name
 
 If you don't have a IP then you are dealing with a host name. A host name is a [domain name](http://tools.ietf.org/html/rfc1034) subset according to [RFC1123](http://tools.ietf.org/html/rfc1123#section-2.1). As such a host name can not, for example, contain an `_`.
 
@@ -319,5 +319,19 @@ use League\Url\Host;
 
 $host    = new Host('toto.example.com');
 $newHost = $host->without([1]);
+$newHost->__toString(); //returns toto.com
+~~~
+
+### Filter labels
+
+You can also selectively remove labels using the `Host::filter` method which expect a `callable` function. This function is used to filter labels according to their content.
+
+~~~php
+use League\Url\Host;
+
+$host    = new Host('toto.example.com');
+$newHost = $host->filter(function ($value) {
+	return $value != 'example';
+});
 $newHost->__toString(); //returns toto.com
 ~~~
