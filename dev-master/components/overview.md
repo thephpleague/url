@@ -84,14 +84,14 @@ Returns the string representation of the URL component. This is the form used wh
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('http://jean@www.example.com:81/foo/bar?q=yolo#');
-echo $url->getScheme()->__toString();        //returns 'http'
-echo $url->getUserInfo()->__toString();      //returns 'jean'
-echo $url->getHost()->__toString();          //returns '[:11]'
-echo $url->getPortComponent()->__toString(); //returns '81'
-echo $url->getPath()->__toString();          //returns '/foo/bar'
-echo $url->getQuery()->__toString();         //returns 'q=yolo'
-echo $url->getFragment()->__toString();      //returns null
+$scheme = new Url\Scheme('http');
+echo $scheme->__toString(); //displays 'http'
+
+$userinfo = new Url\UserInfo('john');
+echo $userinfo->__toString(); //displays 'john'
+
+$path = new Url\Path('/toto le heros/file.xml');
+echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
 ### URL-like representation
@@ -101,14 +101,14 @@ Returns the string representation of the URL component with its optional delimit
 ~~~php
 use League\Url\Url;
 
-$url = Url::createFromUrl('http://jean@www.example.com:81/foo/bar?q=yolo#');
-echo $url->getScheme()->getUriComponent();        //returns 'http:'
-echo $url->getUserInfo()->getUriComponent();      //returns 'jean@'
-echo $url->getHost()->getUriComponent();          //returns '[:11]'
-echo $url->getPortComponent()->getUriComponent(); //returns ':81'
-echo $url->getPath()->getUriComponent();          //returns '/foo/bar'
-echo $url->getQuery()->getUriComponent();         //returns '?q=yolo'
-echo $url->getFragment()->getUriComponent();      //returns ''
+$scheme = new Url\Scheme('http');
+echo $scheme->getUriComponent(); //displays 'http:'
+
+$userinfo = new Url\UserInfo('john');
+echo $userinfo->getUriComponent(); //displays 'john@'
+
+$path = new Url\Path('/toto le heros/file.xml');
+echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
 ## URL parts comparison
@@ -116,16 +116,17 @@ echo $url->getFragment()->getUriComponent();      //returns ''
 To compare two components to know if they represent the same value you can use the `Component::sameValueAs` method which compares them according to their respective `Component::getUriComponent` methods.
 
 ~~~php
-use League\Url\Url;
+use League\Url;
 
-$url1 = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=I+am');
-$url2 = Url::createFromUrl('http://www.example.com/hellow/./wor%20ld?who=I%20am;');
+$host1    = new Url\Host('www.ExAmPLE.com');
+$host2    = new Url\Host('www.example.com');
+$fragment = new Url\Fragment('www.example.com');
+$url      = new Url\Url::createFromUrl('www.example.com');
 
-$url2->getQuery()->sameValueAs($url1->getQuery()); //returns true;
-$url2->getPath()->sameValueAs($url1->getQuery());  //returns false;
-
-$url1->getQuery->sameValueAs($url2);
-//PHP Fatal Error Url and Component objects do not share the same interface
+$host1->sameValueAs($host2); //returns true;
+$host1->sameValueAs($fragment); //returns false;
+$host1->sameValueAs($url);
+//PHP Fatal Error Host and URL do not share the same interface
 ~~~
 
 <p class="message-warning">Only components objects can be compared with each other, any other object or type will result in a Fatal error.</p>
@@ -137,7 +138,7 @@ Each URL component class can have its content modified using the `withValue` met
 <p class="message-warning">Because the <code>UserInfo</code> class represent a URL part it does not include a <code>withValue</code> method.</p>
 
 ~~~php
-use League\Url\Url;
+use League\Url;
 
 $query     = new Url\Query('q=url&site=thephpleague');
 $new_query = $query->withValue('q=yolo');

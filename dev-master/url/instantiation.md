@@ -50,8 +50,7 @@ use League\Url\Url;
 
 $url = new Url(
 	$scheme,
-	$user,
-	$pass,
+	$userinfo,
 	$host,
 	$port,
 	$path,
@@ -60,8 +59,7 @@ $url = new Url(
 );
 
 //where $scheme is a League\Url\Scheme object
-//where $user is a League\Url\User object
-//where $pass is a League\Url\Pass object
+//where $user is a League\Url\UserInfo object
 //where $host is a League\Interfaces\Host interface
 //where $port is a League\Url\Port object
 //where $path is a League\Interfaces\Path interface

@@ -27,7 +27,7 @@ To be able to access all these parts, the `League\Url\Url` class exposes the fol
 
 ## URL parts and components
 
-You can access the URL individual parts and components using their respective getter methods.
+You can access the URL individual parts and components as string and/or integer using their respective getter methods.
 
 ~~~php
 use League\Url\Url;
@@ -43,29 +43,19 @@ echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-In order to access the URL user info details, you are required to proxy your call throught the `getUserInfo` method.
+If you need to access a specific URL part or component as a `League\Url\UrlPart` object you can call the `Url::getPart` method.
 
 ~~~php
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-echo $url->getUserInfo();             //displays 'foo:bar'
-echo $url->getUserInfo()->getUser();  //displays 'foo'
-echo $url->getUserInfo()->getPass();  //displays 'bar'
-~~~
-
-The `League\Url\Url` class provides two ways to retrieve its port component.
-
-- When calling `Url::getPort` the port number value is returned;
-- When calling `Url::getPortComponent` a `League\Url\Port` object is returned;
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-echo $url->getPort();                   //displays 81 as an integer
-echo $url->getPortComponent();          //displays '81' as a string
-echo $url->getPortComponent()->toInt(); //displays 81 as an integer
+$url->getPart('scheme');   //returns a League\Url\Scheme object
+$url->getPart('userinfo'); //returns a League\Url\UserInfo object
+$url->getPart('host');     //returns a League\Url\Host object
+$url->getPart('port');     //returns a League\Url\Port object
+$url->getPart('path');     //returns a League\Url\Path object
+$url->getPart('query');    //returns a League\Url\Query object
+$url->getPart('fragment'); //returns a League\Url\Fragment object
 ~~~
 
 You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.
@@ -114,8 +104,13 @@ If the standard port defined for a specific scheme is used it will be dropped fr
 ~~~php
 use League\Url\Url;
 
-Url::createFromUrl('http://example.com:8042/over/there')->hasStandardPort(); // returns false
-Url::createFromUrl('wss://example.com:443/over/there')->hasStandardPort(); // returns true
+$url = Url::createFromUrl('http://example.com:8042/over/there');
+$url->hasStandardPort(); //returns false
+echo $url->getPort();    //displays 8042;
+
+$alt_url = Url::createFromUrl('wss://example.com:443/over/there');
+$alt_url->hasStandardPort(); // returns true
+echo $url->getPort();        //displays null; the Port number is automatically dropped
 ~~~
 
 ### Does URLs refers to the same resource/location
