@@ -49,10 +49,10 @@ If you only interested in knowing if a given port is standard you can simply cal
 use League\Url\Scheme;
 
 $scheme = new Scheme('http');
-$scheme->useStandardPort(80); //returns true
+$scheme->hasStandardPort(80); //returns true
 
 $scheme = new Scheme('svn+ssh');
-$scheme->useStandardPort(80); //returns false
+$scheme->hasStandardPort(80); //returns false
 ~~~
 
 To [output](/dev-master/components/overview/#components-string-representations), [compare](/dev-master/components/overview/#components-comparison) or [manipulate](/dev-master/components/overview/#components-modification) the Scheme object you should refer to the component overview section.
