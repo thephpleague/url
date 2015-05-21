@@ -167,7 +167,9 @@ $newQuery->__toString(); //returns foo=jane&baz=toto&r
 
 ### Remove parameters
 
-To remove parameters from the current object and returns a new `Query` object without them you must use the `Query::without` method. This methods expected a single argument `$offsets` which is an array containing a list of parameter names to remove.
+To remove parameters from the current object and returns a new `Query` object without them you must use the `Query::without` method. This method expects a single argument.
+
+This argument can be an array containing a list of parameter names to remove.
 
 ~~~php
 use League\Url\Query;
@@ -177,26 +179,28 @@ $newQuery = $query->without(['foo', 'p']);
 echo $newQuery; //displays 'z'
 ~~~
 
-### Filter the Query
-
-You can also selectively remove parameters using two complementary methods:
-
-- `Query::filterByOffset`
-- `Query::filterByValue`
-
-Both methods expect a `callable` function. This function is used to filter parameters according to their content (`Query::filterByValue`) or their name (`Query::filterByOffset`).
+Or a callable that will select the list of parameter names to remove.
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filterByValue(function ($value) {
+$newQuery = $query->without(function ($value) {
+	return strpos($value, 'p') === false;
+});
+echo $newQuery; //displays 'p=y+olo';
+~~~
+
+### Filter the Query
+
+Another way to remove parameters from the query is to selectively remove them using a filter on theirs values. To achieve that you can use the `Query::filter` method.
+
+~~~php
+use League\Url\Query;
+
+$query    = new Query('foo=bar&p=y+olo&z=');
+$newQuery = $query->filter(function ($value) {
 	return ! empty($value);
 });
 echo $newQuery; //displays 'foo=bar&p=y+olo'
-
-$altQuery = $query->filterByOffset(function ($value) {
-	return 'p' == $value;
-});
-echo $newQuery; //displays 'p=y+olo'
 ~~~

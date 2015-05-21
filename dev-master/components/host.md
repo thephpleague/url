@@ -312,7 +312,9 @@ $newHost->__toString(); //returns bar.baz.example.com
 
 ### Remove labels
 
-To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument `$offsets` which is an array containing a list of offsets to remove.
+To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument.
+
+This argument can be an array containing a list of parameter names to remove.
 
 ~~~php
 use League\Url\Host;
@@ -320,6 +322,18 @@ use League\Url\Host;
 $host    = new Host('toto.example.com');
 $newHost = $host->without([1]);
 $newHost->__toString(); //returns toto.com
+~~~
+
+Or a callable that will select the list of offsets to remove.
+
+~~~php
+use League\Url\Host;
+
+$host    = new Host('toto.example.com');
+$newHost = $host->without(function ($value) {
+	return $value == 0;
+});
+echo $newHost; //displays 'example.com';
 ~~~
 
 ### Filter labels

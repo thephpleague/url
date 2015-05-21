@@ -287,7 +287,9 @@ $Path->__toString(); //returns /bar/baz/example/com
 
 ### Remove segments
 
-To remove segments from the current object and returns a new `Path` object without them you can use the `Path::without` method. This methods expected a single argument `$offsets` which is an array containing a list of offsets to remove.
+To remove segments from the current object and returns a new `Path` object without them you must use the `Path::without` method. This method expects a single argument.
+
+This argument can be an array containing a list of parameter names to remove.
 
 ~~~php
 use League\Url\Path;
@@ -297,30 +299,28 @@ $newPath = $path->without([0, 1]);
 $newPath->__toString(); //returns '/the/sky'
 ~~~
 
-### Filter segments
-
-You can also selectively remove segments using 2 complementary methods:
-
-`Path::filterByValue` expects a `callable` function and filters segments according to their content.
+Or a callable that will select the list of offsets to remove.
 
 ~~~php
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$newPath = $path->filterByValue(function ($value) {
+$newPath = $path->without(function ($value) {
+	return $value < 3;
+});
+echo $newPath; //displays '/sky';
+~~~
+
+### Filter segments
+
+Another way to remove segments from the path is to selectively remove them using a filter on their value. To achieve that you can use the `Path::filter` method.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$newPath = $path->filter(function ($value) {
     return strpos($value, 't') !== false;
 });
 $newPath->__toString(); //returns '/path/to/the'
-~~~
-
-`Path::filterByOffset` expects a `callable` function and filters segments according to their offset.
-
-~~~php
-use League\Url\Path;
-
-$path = new Path('/path/to/the/sky');
-$newPath = $path->filterByOffset(function ($value) {
-    return $value > 1;
-});
-$newPath->__toString(); //returns '/the/sky'
 ~~~
