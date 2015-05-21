@@ -16,7 +16,8 @@
         Port: '/dev-master/components/port/'
         Path: '/dev-master/components/path/'
         Query: '/dev-master/components/query/'
-    Helpers:
+    Services:
+        Builder: '/dev-master/utilities/builder/'
         Formatter: '/dev-master/utilities/formatter/'
 '3.0':
     Getting Started:
