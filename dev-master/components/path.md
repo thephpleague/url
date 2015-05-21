@@ -299,14 +299,28 @@ $newPath->__toString(); //returns '/the/sky'
 
 ### Filter segments
 
-You can also selectively remove segments using the `Path::filter` method which expect a `callable` function. This function is used to filter segments according to their content.
+You can also selectively remove segments using 2 complementary methods:
+
+`Path::filterByValue` expects a `callable` function and filters segments according to their content.
 
 ~~~php
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$newPath = $path->filter(function ($value) {
+$newPath = $path->filterByValue(function ($value) {
     return strpos($value, 't') !== false;
 });
 $newPath->__toString(); //returns '/path/to/the'
+~~~
+
+`Path::filterByOffset` expects a `callable` function and filters segments according to their offset.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$newPath = $path->filterByOffset(function ($value) {
+    return $value > 1;
+});
+$newPath->__toString(); //returns '/the/sky'
 ~~~

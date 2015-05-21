@@ -177,16 +177,26 @@ $newQuery = $query->without(['foo', 'p']);
 echo $newQuery; //displays 'z'
 ~~~
 
-### Filter parameters
+### Filter the Query
 
-You can also selectively remove parameters using the `Query::filter` method which expect a `callable` function. This function is used to filter parameters according to their content.
+You can also selectively remove parameters using two complementary methods:
+
+- `Query::filterByOffset`
+- `Query::filterByValue`
+
+Both methods expect a `callable` function. This function is used to filter parameters according to their content (`Query::filterByValue`) or their name (`Query::filterByOffset`).
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filter(function ($value) {
+$newQuery = $query->filterByValue(function ($value) {
 	return ! empty($value);
 });
 echo $newQuery; //displays 'foo=bar&p=y+olo'
+
+$altQuery = $query->filterByOffset(function ($value) {
+	return 'p' == $value;
+});
+echo $newQuery; //displays 'p=y+olo'
 ~~~
