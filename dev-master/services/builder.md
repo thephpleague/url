@@ -120,6 +120,14 @@ echo $urlBuilder->filterSegments(function ($segment) {
 //display /sky.php
 ~~~
 
+### Removing internal empty segments
+
+~~~php
+$urlBuilder = new Builder('http://www.example.com///path//to/the////sky//');
+echo $urlBuilder->withoutDuplicateSegments()->getURL()->getPath();
+//display /path/to/the/sky/
+~~~
+
 ### Updating the path extension
 
 ~~~php
