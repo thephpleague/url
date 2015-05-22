@@ -9,7 +9,7 @@ title: Manipulating URL
 
 ## Using the URL components
 
-If you want to create or update quickly an URL, then you'll need to use `League\Url\Url` object which implements the PSR-7 `Psr\Http\Message\UriInterface` interface.
+To create or update quickly an URL, aside from using a <a href="/dev-master/services/builder/">builder</a> You can use the `League\Url\Url` object which implements the PSR-7 `Psr\Http\Message\UriInterface` interface.
 
 ~~~php
 use League\Url\Url;

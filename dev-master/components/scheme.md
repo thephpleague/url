@@ -5,7 +5,7 @@ title: The Scheme component
 
 # The Scheme component
 
-The library proves a `League\Url\Scheme` class to ease Scheme manipulation.
+The library provides a `League\Url\Scheme` class to ease scheme manipulation.
 
 ## Scheme creation
 

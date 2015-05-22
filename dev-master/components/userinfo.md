@@ -9,7 +9,7 @@ The library provides a `League\Url\UserInfo` class to ease User Information mani
 
 ## Instantiation
 
-Just like any other component, a new `League\Url\UserInfo` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation). The constructor expects 2 optional arguments. The first argument describes the user login and the latter the user password information.
+The constructor expects 2 optional arguments. The first argument describes the user login and the latter the user password information.
 
 ~~~php
 use League\Url\UserInfo;

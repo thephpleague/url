@@ -69,7 +69,7 @@ $scheme = new Url\Scheme('http');
 $scheme->isEmpty(); //returns false;
 
 $port = new Url\Port();
-$port->isEmpty(); return true;
+$port->isEmpty(); //return true;
 ~~~
 
 ## URL part representations
@@ -128,7 +128,7 @@ $host1->sameValueAs($url);
 //PHP Fatal Error Host and URL do not share the same interface
 ~~~
 
-<p class="message-warning">Only components objects can be compared with each other, any other object or type will result in a Fatal error.</p>
+<p class="message-warning">Only Url parts objects can be compared with each others, any other object or type will result in a PHP Fatal Error.</p>
 
 ## Component modification
 

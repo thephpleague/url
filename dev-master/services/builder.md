@@ -9,7 +9,9 @@ The Builder service is a class that aim at easing URL manipulation. It provides 
 
 The Builder is an immutable value object . So any modification to its internal URL value will return a new instance of the class. This has the side effect of allowing chaining between `Builder` modifying methods.
 
-For more complex modification it is recommended to directly use the [League\Url\Url](/dev-master/url/manipulation) class directly.
+For more complex modification it is recommended to directly use the [League\Url\Url](/dev-master/url/manipulation) class.
+
+All modifying methods proxy methods attached to URL parts or URL component corresponding classes. To get a better understanding on how they work and the parameters they need a link to the corresponding URL part API is provided.
 
 ## Instantiation
 
@@ -32,7 +34,7 @@ $urlBuilder = new Builder(Url::createFromServer($_SERVER));
 
 ## Accessing the resulting URL
 
-As the name implied the builder role is only to build an URL. To get access the built URL you must call the `Builder::getUrl` method which returns a `League\Url\Url` object. The `League\Url\Url` follow the PSR-7 `UriInterface` so you can do the following for instance:
+As the name implied the builder role is only to build an URL. To get access the built URL you must call the `Builder::getUrl` method which returns a `League\Url\Url` object. The `League\Url\Url` follow the PSR-7 `UriInterface` so the following is possible:
 
 ~~~php
 use League\Url\Services\Builder;
@@ -43,11 +45,11 @@ echo $url; //display 'http://www.example.com/path/to/the/sky.php?foo=bar#~typo'
 echo $url->getHost(); //display www.example.com using a PSR-7 UriInterface method
 ~~~
 
-## Modifying URL query values
+## Modifying URL query parameters
 
-The following methods proxy the [Query methods](/dev-master/components/query/) :
+The following methods proxy the [Query methods](/dev-master/components/query/#modifying-a-query) :
 
-### Adding and Updating query values
+### Adding or Updating query parameters
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com//the/sky.php?foo=toto#~typo');
@@ -55,7 +57,7 @@ echo $urlBuilder->mergeQueryValues(['foo' => 'bar', 'taz' => ''])->getURL()->get
 //display 'foo=bar&taz'
 ~~~
 
-### Removing query values
+### Removing query parameters
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
@@ -63,7 +65,7 @@ echo $urlBuilder->withoutQueryValues(['foo'])->getURL()->getQuery();
 //display 'p=y%20olo'
 ~~~
 
-### Filtering query values
+### Filtering query parameters
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
@@ -76,7 +78,7 @@ echo $urlBuilder->filterQueryValues(function ($value) {
 
 ## Modifying URL path segments
 
-The following methods proxy the [Path methods](/dev-master/components/path/) :
+The following methods proxy the [Path methods](/dev-master/components/path/#path-normalization) :
 
 ### Appending path segments
 
@@ -90,7 +92,7 @@ echo $urlBuilder->appendSegments('/foo/bar')->getURL()->getPath();
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php');
-echo $urlBuilder->prependSegments('/foo/bar')->getURL();
+echo $urlBuilder->prependSegments('/foo/bar')->getURL()->getPath();
 //display /foo/bar/path/to/the/sky.php
 ~~~
 
@@ -98,7 +100,7 @@ echo $urlBuilder->prependSegments('/foo/bar')->getURL();
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php');
-echo $urlBuilder->replaceSegment('/foo/bar', 0)->getURL();
+echo $urlBuilder->replaceSegment('/foo/bar', 0)->getURL()->getPath();
 //display /foo/bar/to/the/sky.php
 ~~~
 
@@ -106,7 +108,7 @@ echo $urlBuilder->replaceSegment('/foo/bar', 0)->getURL();
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php');
-echo $urlBuilder->withoutSegments([0, 1])->getURL();
+echo $urlBuilder->withoutSegments([0, 1])->getURL()->getPath();
 //display /the/sky.php
 ~~~
 
@@ -138,7 +140,7 @@ echo $urlBuilder->withExtension('csv')->getURL()->getPath();
 
 ## Modifying URL host labels
 
-The following methods proxy the [Host methods](/dev-master/components/host/) :
+The following methods proxy the [Host methods](/dev-master/components/host/#modifying-the-host) :
 
 ### Appending host labels
 

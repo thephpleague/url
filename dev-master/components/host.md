@@ -261,7 +261,7 @@ $host->getLabel(23, 'now'); //returns 'now'
 
 The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument.
 
-## Modifying host contents
+## Modifying the host
 
 <p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
