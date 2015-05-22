@@ -29,8 +29,7 @@ Apart from the authority part, each component and part of an URL is manageable b
 
 - The `League\Url\Scheme` class represents the URL scheme component;
 - The `League\Url\UserInfo` class represents the URL userinfo part;
-- The `League\Url\User` class represents the URL user component;
-- The `League\Url\Pass` class represents the URL pass component;
+- The `League\Url\Component` class represents the URL user and pass component;
 - The `League\Url\Host` class represents the URL host component;
 - The `League\Url\Port` class represents the URL port component;
 - The `League\Url\Path` class represents the URL path component;
@@ -49,8 +48,8 @@ Each component class can be instantiated independently from the main `League\Url
 use League\Url;
 
 $scheme    = new Url\Scheme('http');
-$user      = new Url\User('john');
-$pass      = new Url\Pass('doe');
+$user      = new Url\Component('john');
+$pass      = new Url\Component('doe');
 $user_info = new Url\UserInfo($user, $pass);
 $host      = new Url\Host('127.0.0.1');
 $port      = new Url\Port(443);

@@ -5,7 +5,7 @@ title: The URL Formatter
 
 # The Formatter
 
-The `League\Url\Services\Formatter` utility class helps you format an URL or one of its component for output format like HTML.
+The Formatter service class helps you format your URL according to your output.
 
 ## Formatter Properties
 
@@ -17,11 +17,16 @@ A host can be output as encoded in ascii or in unicode. By default the formatter
 - `Formatter::HOST_AS_ASCII`   to set the host encoding to ascii;
 
 ~~~php
+use League\Url\Host;
 use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 echo $formatter->getHostEncoding(); //display the value of Formatter::HOST_AS_ASCII
+
+$host = new Host('рф.ru');
+echo $host; //displays 'рф.ru'
+echo $formatter->format($host); //displays 'xn--p1ai.ru'
 ~~~
 
 ### Query encoding strategy
@@ -32,52 +37,49 @@ A `League\Url\Query` object is by default encoded by following RFC 3986. If you 
 - `PHP_QUERY_RFC1738` to set the query encoding as per RFC 1738;
 
 ~~~php
+use League\Url\Query
 use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQueryEncoding(PHP_QUERY_RFC1738);
 echo $formatter->getQueryEncoding(); //display the value of PHP_QUERY_RFC1738;
+
+$query = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
+echo $query; //displays foo=ba%20&baz=bar
+echo $formatter->format($query); //displays foo=ba+r&baz=bar
 ~~~
 
 ### Modifying the query separator
 
 ~~~php
+use League\Url\Query
 use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');
 echo $formatter->getQuerySeparator(); //returns &amp;
+$query = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
+echo $query; //displays foo=ba%20&baz=bar
+echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 ~~~
 
-## Applying the settings to your objects.
+## Using the Formatter with a complete URL
 
-Once your Formatter object instantiated and configured, you can output a string representation of:
+Apart form URL component class, the `Formatter::format` method can modify the string representation of:
 
-- any `League\Url` objects using the `Formatter::format` method.
-- any string or object which exposes a `__toString` method.
+- any `League\Url\*` objects.
+- any string or object which exposes a `__toString` method like any class implementing the PSR-7 UriInterface` class.
 
 ### Concrete example
 
 ~~~php
-use League\Url\Host;
-use League\Url\Services\Formatter;
-use League\Url\Query;
 use League\Url\Url;
+use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
-
-$query        = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
-$query_string = $formatter->format($query);
-echo $query_string; //displays foo=ba%20r&amp;baz=bar
-echo $query;        //displays foo=ba%20r&baz=bar
-
-$host        = new Host('рф.ru');
-$host_string = $formatter->format($host);
-echo $host_string; //displays 'xn--p1ai.ru'
-echo $host;        //displays 'рф.ru'
 
 $url        = Url::createFromUrl('https://рф.ru:81?foo=ba%20r&baz=bar');
 $url_string = $formatter->format($url);

@@ -12,8 +12,8 @@ use League\Url\Services\Builder as UrlBuilder;
 
 $csv_raw_url  = "http://download.example.com/path/to/my/file.csv";
 $csv_output   = new UrlBuilder($csv_raw_url);
-$xml_output   = $csv_output->withPathExtension('xml')->getUrl();
-$json_output  = $csv_output->withPathExtension('json')->getUrl();
+$xml_output   = $csv_output->withExtension('xml')->getUrl();
+$json_output  = $csv_output->withExtension('json')->getUrl();
 
 echo $csv_output;  //display "http://download.example.com/path/to/my/file.csv"
 echo $xml_output;  //display "http://download.example.com/path/to/my/file.xml"
