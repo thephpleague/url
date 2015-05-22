@@ -50,7 +50,7 @@ use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
 $url->scheme;   //returns a League\Url\Scheme object
-$url->userinfo; //returns a League\Url\UserInfo object
+$url->userInfo; //returns a League\Url\UserInfo object
 $url->host;     //returns a League\Url\Host object
 $url->port;     //returns a League\Url\Port object
 $url->path;     //returns a League\Url\Path object
