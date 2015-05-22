@@ -60,9 +60,21 @@ To acces the user login and password information you need to call the respective
 use League\Url\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
-$info->getUser(); //returns a League\Url\User object
-$info->getPass(); //returns a League\Url\Pass object
+$info->getUser(); //returns 'foo'
+$info->getPass(); //returns 'bar'
 ~~~
+
+To get access to the component class you can use the magic `__get` method:
+
+
+~~~php
+use League\Url\UserInfo;
+
+$info = new UserInfo('foo', 'bar');
+$info->user; //returns a League\Url\Component class
+$info->user; //returns a League\Url\Component class
+~~~
+
 
 ## Modifying the user information
 
