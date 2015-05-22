@@ -10,10 +10,10 @@ Let's say you have a document that can be downloaded in different format (CSV, X
 ~~~php
 use League\Url\Services\Builder as UrlBuilder;
 
-$csv_raw_url  = "http://download.example.com/path/to/my/file.csv";
-$csv_output   = new UrlBuilder($csv_raw_url);
-$xml_output   = $csv_output->withExtension('xml')->getUrl();
-$json_output  = $csv_output->withExtension('json')->getUrl();
+$urlBuilder  = new UrlBuilder("http://download.example.com/path/to/my/file.csv");
+$csv_output  = $urlBuilder->getUrl();
+$xml_output  = $urlBuilder->withExtension('xml')->getUrl();
+$json_output = $urlBuilder->withExtension('json')->getUrl();
 
 echo $csv_output;  //display "http://download.example.com/path/to/my/file.csv"
 echo $xml_output;  //display "http://download.example.com/path/to/my/file.xml"
