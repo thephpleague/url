@@ -43,19 +43,19 @@ echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-If you need to access a specific URL part or component as a `League\Url\UrlPart` object you can call the `Url::getPart` method.
+To access a specific URL part or component as an object you can use the magic method `__get` as follow.
 
 ~~~php
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-$url->getPart('scheme');   //returns a League\Url\Scheme object
-$url->getPart('userinfo'); //returns a League\Url\UserInfo object
-$url->getPart('host');     //returns a League\Url\Host object
-$url->getPart('port');     //returns a League\Url\Port object
-$url->getPart('path');     //returns a League\Url\Path object
-$url->getPart('query');    //returns a League\Url\Query object
-$url->getPart('fragment'); //returns a League\Url\Fragment object
+$url->scheme;   //returns a League\Url\Scheme object
+$url->userinfo; //returns a League\Url\UserInfo object
+$url->host;     //returns a League\Url\Host object
+$url->port;     //returns a League\Url\Port object
+$url->path;     //returns a League\Url\Path object
+$url->query;    //returns a League\Url\Query object
+$url->fragment; //returns a League\Url\Fragment object
 ~~~
 
 You can also get the same information as an `array` similar to `parse_url` response if you call `Url::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.
