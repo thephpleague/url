@@ -5,9 +5,7 @@ title: The URL Formatter
 
 # The Builder
 
-The Builder service is a class that aim at easing URL manipulation. It provides simple public API to quickly modify part of an URL.
-
-The Builder is an immutable value object . So any modification to its internal URL value will return a new instance of the class. This has the side effect of allowing chaining between `Builder` modifying methods.
+The Builder service is a class that aim at easing URL manipulation. It provides simple public API to quickly modify part of an URL. A side effect is that chaining between `Builder` modifying methods is possible.
 
 For more complex modification it is recommended to directly use the [League\Url\Url](/dev-master/url/manipulation) class.
 
@@ -15,7 +13,16 @@ All modifying methods proxy methods attached to URL parts or URL component corre
 
 ## Instantiation
 
-To create a new builder object you can provide to the `__construct` method a string:
+To create a new builder object you can simply create a new instance and lately call the `Builder::setUrl` method
+
+~~~php
+use League\Url\Services\Builder;
+
+$urlBuilder = new Builder();
+$urlBuilder->setUrl('http://www.example.com');
+~~~
+
+Or provide to the `__construct` method a string:
 
 ~~~php
 use League\Url\Services\Builder;
@@ -39,8 +46,9 @@ As the name implied the builder role is only to build an URL. To get access the 
 ~~~php
 use League\Url\Services\Builder;
 
-$urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php?foo=bar#~typo');
-$url        = $urlBuilder->getUrl(); //$url is a League\Url\Url object
+$urlBuilder = new Builder();
+$urlBuilder->setUrl('http://www.example.com/path/to/the/sky.php?foo=bar#~typo');
+$url = $urlBuilder->getUrl(); //$url is a League\Url\Url object
 echo $url; //display 'http://www.example.com/path/to/the/sky.php?foo=bar#~typo'
 echo $url->getHost(); //display www.example.com using a PSR-7 UriInterface method
 ~~~
