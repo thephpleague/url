@@ -96,12 +96,15 @@ To determine what type of host you are dealing with the `Host` class provides th
 
 ~~~php
 use League\Url\Host;
+use League\Url\Url;
 
 $host = new Host('::1');
 $host->isIp();   //return true
 
 $alt_host = new Host('example.com');
 $host->isIp(); //return false;
+
+Url::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6
@@ -177,6 +180,7 @@ The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationa
 
 ~~~php
 use League\Url\Host;
+use League\Url\Url;
 
 $host = new Host('스타벅스코리아.com'); //you set the IDN
 
@@ -186,6 +190,8 @@ echo $host; // output '스타벅스코리아.com'
 $host = new Host('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
 echo $host;  // output 'مثال.إختبار'  //the object output the IDN version
 echo $host->toAscii();  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object output the Ascii version
+
+echo Url::createFromServer($_SERVER)->host->toAscii(); //output the Ascii version
 ~~~
 
 ### Array representation
@@ -273,6 +279,8 @@ The method returns the value of a specific offset. If the offset does not exists
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
+<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::appendLabels</code></p>
+
 ~~~php
 use League\Url\Host;
 
@@ -286,6 +294,8 @@ $newHost->__toString(); //returns toto.example.com
 <p class="message-warning">Trying to prepend to or with an IP Host will throw an <code>InvalidArgumentException</code></p>
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
+
+<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::prependLabels</code></p>
 
 ~~~php
 use League\Url\Host;
@@ -302,6 +312,8 @@ To replace a label with your own data, you must use the `Host::replace` method w
 - `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 - `$offset` which represents the label's offset to remove if it exists.
 
+<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::replaceLabel</code></p>
+
 ~~~php
 use League\Url\Host;
 
@@ -313,6 +325,8 @@ $newHost->__toString(); //returns bar.baz.example.com
 ### Remove labels
 
 To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument.
+
+<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::withoutLabels</code></p>
 
 This argument can be an array containing a list of parameter names to remove.
 
@@ -339,6 +353,8 @@ echo $newHost; //displays 'example.com';
 ### Filter labels
 
 You can also selectively remove labels using the `Host::filter` method which expect a `callable` function. This function is used to filter labels according to their content.
+
+<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::filterLabels</code></p>
 
 ~~~php
 use League\Url\Host;
