@@ -19,7 +19,7 @@ foreach ($extension_list as $extension) {
       ->appendPath("/purchases/summary")
       ->withExtension($extension)
       ->replaceLabel('download', 0)
-      ->getUrl();
+      ->getUrl(); //returns a PSR-7 UriInterface compatible object
 }
 
 echo $output_links['csv'];  //display "http://download.example.com/report/purchases/summary.csv"
