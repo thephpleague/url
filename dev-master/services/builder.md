@@ -108,7 +108,7 @@ echo $urlBuilder->prependSegments('/foo/bar')->getURL()->getPath();
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php');
-echo $urlBuilder->replaceSegment('/foo/bar', 0)->getURL()->getPath();
+echo $urlBuilder->replaceSegment(0, '/foo/bar')->getURL()->getPath();
 //display /foo/bar/to/the/sky.php
 ~~~
 
@@ -134,7 +134,7 @@ echo $urlBuilder->filterSegments(function ($segment) {
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com///path//to/the////sky//');
-echo $urlBuilder->withoutDuplicateSegments()->getURL()->getPath();
+echo $urlBuilder->withoutEmptySegments()->getURL()->getPath();
 //display /path/to/the/sky/
 ~~~
 
@@ -170,7 +170,7 @@ echo $urlBuilder->prependLabels('shop')->getURL()->getHost();
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php');
-echo $urlBuilder->replaceLabel('thephpleague', 1)->getURL()->getHost();
+echo $urlBuilder->replaceLabel(1, 'thephpleague')->getURL()->getHost();
 //display shop.www.thephpleague.com
 ~~~
 

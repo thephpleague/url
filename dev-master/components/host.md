@@ -309,8 +309,8 @@ $newHost->__toString(); //returns toto.example.com
 
 To replace a label with your own data, you must use the `Host::replace` method with the following arguments:
 
-- `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 - `$offset` which represents the label's offset to remove if it exists.
+- `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 
 <p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::replaceLabel</code></p>
 
@@ -318,7 +318,7 @@ To replace a label with your own data, you must use the `Host::replace` method w
 use League\Url\Host;
 
 $host    = new Host('foo.example.com');
-$newHost = $host->replace('bar.baz', 0);
+$newHost = $host->replace(0, 'bar.baz');
 $newHost->__toString(); //returns bar.baz.example.com
 ~~~
 

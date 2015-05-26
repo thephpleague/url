@@ -213,16 +213,16 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-### Removing duplicate delimiters
+### Removing empty segments
 
-Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutDuplicateDelimiters` method which convert you path as described below:
+Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
 
 
 ~~~php
 use League\Url\Path;
 
 $raw_path       = new Path('path////to/the/sky//');
-$normalize_path = $raw_path->withoutDuplicateDelimiters();
+$normalize_path = $raw_path->withoutEmptySegments();
 echo $raw_path;           //displays 'path////to/the/sky//'
 echo $normalize_path;     //displays 'path/to/the/sky/'
 $alt->sameValueAs($path); //return false;
@@ -274,14 +274,14 @@ $newPath->__toString(); // returns path/to/the/sky
 
 To replace a segment with your own data, you must use the `Path::replace` method with the following arguments:
 
-- `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 - `$offset` which represents the label's offset to remove if it exists.
+- `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 
 ~~~php
 use League\Url\Path;
 
 $path    = new Path('/foo/example/com');
-$newPath = $path->replace(new Path('bar/baz'), 0);
+$newPath = $path->replace(0, new Path('bar/baz'));
 $Path->__toString(); //returns /bar/baz/example/com
 ~~~
 
