@@ -24,6 +24,15 @@ echo $empty_Scheme; //display ''
 
 <p class="message-warning">If the submitted value is not a valid Scheme number an <code>InvalidArgumentException</code> will be thrown.</p>
 
+### Using a League\Url object
+
+~~~php
+use League\Url\Url;
+
+$url  = Url::createFromUrl('http://url.thephpleague.com/');
+$scheme = $url->scheme; // $scheme is a League\Url\Scheme object;
+~~~
+
 ## Scheme Properties
 
 ### Scheme Standard Ports

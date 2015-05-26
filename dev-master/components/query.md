@@ -24,6 +24,15 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
 
+### Using a League\Url object
+
+~~~php
+use League\Url\Url;
+
+$url  = Url::createFromUrl('http://url.thephpleague.com/path/to/here?foo=bar');
+$query = $url->query; // $query is a League\Url\Query object;
+~~~
+
 ### Using a named constructor
 
 In PHP, a query is assimilated to an array. So it is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method.

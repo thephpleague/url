@@ -34,6 +34,15 @@ echo $ipv6_alt; //display '[::1]'
 
 <p class="message-warning">If the submitted value is not a valid host an <code>InvalidArgumentException</code> will be thrown.</p>
 
+### Using a League\Url object
+
+~~~php
+use League\Url\Url;
+
+$url  = Url::createFromUrl('http://url.thephpleague.com/');
+$host = $url->host; // $host is a League\Url\Host object;
+~~~
+
 ### Using a named constructor
 
 A host is a collection of labels delimited by the host delimiter `.`. So it is possible to create a `Host` object using a collection of labels with the `Host::createFromArray` method.

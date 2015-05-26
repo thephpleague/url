@@ -28,6 +28,15 @@ echo $end_slash; //display 'hello/world/'
 
 <p class="message-warning">If the submitted value is not a valid path an <code>InvalidArgumentException</code> will be thrown.</p>
 
+### Using a League\Url object
+
+~~~php
+use League\Url\Url;
+
+$url  = Url::createFromUrl('http://url.thephpleague.com/path/to/here');
+$path = $url->path; // $path is a League\Url\Path object;
+~~~
+
 ### Using a named constructor
 
 A path is a collection of segment delimited by the path delimiter `/`. So it is possible to create a `Path` object using a collection of segments with the `Path::createFromArray` method.

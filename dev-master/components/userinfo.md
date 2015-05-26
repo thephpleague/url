@@ -21,6 +21,16 @@ $empty_info = new UserInfo();
 echo $empty_info; //display ''
 ~~~
 
+You can also get a UserInfo object from an League\Url\Url class:
+
+~~~php
+use League\Url;
+
+$url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
+$userInfo = $url->userInfo; //returns a League\Url\UserInfo() object
+echo $userInfo; // display 'john:doe'
+~~~
+
 <p class="message-warning">If the submitted value are not valid user and/or password string an <code>InvalidArgumentException</code> will be thrown.</p>
 
 ## User info representations
@@ -33,8 +43,8 @@ Basic representations is done using the following methods:
 use League\Url\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
-$query->__toString();      //return 'foo:bar'
-$query->getUriComponent(); //return 'foo:bar@'
+$info->__toString();      //return 'foo:bar'
+$info->getUriComponent(); //return 'foo:bar@'
 ~~~
 
 ### Array representation
@@ -57,15 +67,19 @@ $info->toArray();
 To acces the user login and password information you need to call the respective `UserInfo::getUser` and `UserInfo::getPass` methods like shown below.
 
 ~~~php
+use League\Url\Url;
 use League\Url\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
 $info->getUser(); //returns 'foo'
 $info->getPass(); //returns 'bar'
+
+$url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
+$url->userInfo->getUser(); //returns 'john'
+$url->userInfo->getPass(); //returns 'doe'
 ~~~
 
 To get access to the component class you can use the magic `__get` method:
-
 
 ~~~php
 use League\Url\UserInfo;
@@ -73,6 +87,10 @@ use League\Url\UserInfo;
 $info = new UserInfo('foo', 'bar');
 $info->user; //returns a League\Url\Component class
 $info->user; //returns a League\Url\Component class
+
+$url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
+$url->userInfo->user->__toString(); //returns 'john'
+$url->userInfo->pass->__toString(); //returns 'doe'
 ~~~
 
 

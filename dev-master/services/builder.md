@@ -5,32 +5,21 @@ title: The URL Formatter
 
 # The Builder
 
-The Builder service is a class that aim at easing URL manipulation. It provides simple public API to quickly modify part of an URL. A side effect is that chaining between `Builder` modifying methods is possible.
+The Builder service provides a convenient, fluent interface to create and manipulate URL. It can be used to perform most URL parts operations in your application.
 
-For more complex modification it is recommended to directly use the [League\Url\Url](/dev-master/url/manipulation) class.
-
-All modifying methods proxy methods attached to URL parts or URL component corresponding classes. To get a better understanding on how they work and the parameters they need a link to the corresponding URL part API is provided.
+All modifying methods proxy methods attached to URL parts or components corresponding classes. To get a better understanding on how they work and the parameters they need a link to the corresponding URL part API is provided.
 
 ## Instantiation
 
-To create a new builder object you can simply create a new instance and lately call the `Builder::setUrl` method
+To create a new builder object you can simply create a new instance  as shown below:
 
 ~~~php
-use League\Url\Services\Builder;
+use League\Url\Services\Builder as UrlBuilder;
 
-$urlBuilder = new Builder();
-$urlBuilder->setUrl('http://www.example.com');
+$urlBuilder = new UrlBuilder('http://www.example.com');
 ~~~
 
-Or provide to the `__construct` method a string:
-
-~~~php
-use League\Url\Services\Builder;
-
-$urlBuilder = new Builder('http://www.example.com');
-~~~
-
-Or a object which exposes the `__toString` method like the `League\Url\Url` object:
+The constructor accepts a string or an object which exposes the `__toString` method like any PSR-7 `UriInterface` complinat object:
 
 ~~~php
 use League\Url\Url;
@@ -46,11 +35,10 @@ As the name implied the builder role is only to build an URL. To get access the 
 ~~~php
 use League\Url\Services\Builder;
 
-$urlBuilder = new Builder();
-$urlBuilder->setUrl('http://www.example.com/path/to/the/sky.php?foo=bar#~typo');
+$urlBuilder = new Builder('http://www.example.com/path/to/the/sky.php?foo=bar#~typo');
 $url = $urlBuilder->getUrl(); //$url is a League\Url\Url object
 echo $url; //display 'http://www.example.com/path/to/the/sky.php?foo=bar#~typo'
-echo $url->getHost(); //display www.example.com using a PSR-7 UriInterface method
+echo $url->getHost(); //display www.example.com using the PSR-7 UriInterface method
 ~~~
 
 ## Modifying URL query parameters
@@ -61,7 +49,7 @@ The following methods proxy the [Query methods](/dev-master/components/query/#mo
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com//the/sky.php?foo=toto#~typo');
-echo $urlBuilder->mergeQueryValues(['foo' => 'bar', 'taz' => ''])->getURL()->getQuery();
+echo $urlBuilder->mergeQueryParameters(['foo' => 'bar', 'taz' => ''])->getURL()->getQuery();
 //display 'foo=bar&taz'
 ~~~
 
@@ -69,7 +57,7 @@ echo $urlBuilder->mergeQueryValues(['foo' => 'bar', 'taz' => ''])->getURL()->get
 
 ~~~php
 $urlBuilder = new Builder('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
-echo $urlBuilder->withoutQueryValues(['foo'])->getURL()->getQuery();
+echo $urlBuilder->withoutQueryParameters(['foo'])->getURL()->getQuery();
 //display 'p=y%20olo'
 ~~~
 

@@ -4,14 +4,11 @@
         Installation: '/dev-master/installation/'
         Simple example: '/dev-master/examples/'
         Terminology: '/dev-master/definitions/'
-    Services:
-        Builder: '/dev-master/services/builder/'
-        Formatter: '/dev-master/services/formatter/'
-    Url API:
+    Url:
         Instantiation: '/dev-master/url/instantiation/'
         Properties: '/dev-master/url/properties/'
         Manipulation: '/dev-master/url/manipulation/'
-    URL Parts API:
+    Url Parts API:
         Overview: '/dev-master/components/overview/'
         Scheme: '/dev-master/components/scheme/'
         User Info: '/dev-master/components/userinfo/'
@@ -19,6 +16,9 @@
         Port: '/dev-master/components/port/'
         Path: '/dev-master/components/path/'
         Query: '/dev-master/components/query/'
+    Services:
+        Builder: '/dev-master/services/builder/'
+        Formatter: '/dev-master/services/formatter/'
 '3.0':
     Getting Started:
         Introduction: '/3.0/'

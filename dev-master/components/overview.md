@@ -98,7 +98,7 @@ echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 Returns the string representation of the URL component with its optional delimiters. This is the form used by the `Url::__toString` method when building the URL string representation.
 
 ~~~php
-use League\Url\Url;
+use League\Url;
 
 $scheme = new Url\Scheme('http');
 echo $scheme->getUriComponent(); //displays 'http:'

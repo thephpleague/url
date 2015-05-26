@@ -26,6 +26,15 @@ echo $empty_port; //display ''
 
 <p class="message-warning">If the submitted value is not a valid port number an <code>InvalidArgumentException</code> will be thrown.</p>
 
+### Using a League\Url object
+
+~~~php
+use League\Url\Url;
+
+$url  = Url::createFromUrl('http://url.thephpleague.com:82');
+$port = $url->port; // $port is a League\Url\Port object;
+~~~
+
 ## Port properties
 
 ### Standard ports
