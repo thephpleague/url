@@ -9,7 +9,7 @@ title: Manipulating URL
 
 ## Using the URL components
 
-To create or update quickly an URL, aside from using a <a href="/dev-master/services/builder/">builder</a> You can use the `League\Url\Url` object which implements the PSR-7 `Psr\Http\Message\UriInterface` interface.
+if your goal is to completely replace one of the URL part you can do so easily using the `Psr\Http\Message\UriInterface` interface modifying methods expose by the object
 
 ~~~php
 use League\Url\Url;
@@ -28,38 +28,7 @@ echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#titl
 
 Since every update returns an instance of `League\Url\Url`, you can chain each setter methods to simplify URL creation and/or modification.
 
-## URL normalization
-
-### Non destructive normalizations
-
-Out of the box the package normalize the given URL according to the non destructive rules of RFC3986.
-
-The non destructives rules are:
-
-- scheme and host components are lowercased;
-- query, path, fragment components are URL encoded;
-- the port number is stripped from the URL output if the standard port is used;
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
-echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
-~~~
-
-### Destructive normalizations
-
-If you wish to remove the dot segments which is considered a destructive normalization you will have to explicitly call the `Url::normalize` method which takes no argument.
-
-~~~php
-use League\Url\Url;
-
-$url    = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
-$newUrl = $url->normalize();
-echo $newUrl; //displays http://www.example.com/hellow/wor%20ld?who=f%203#title
-
-$url->sameValueAs($newUrl); //returns false
-~~~
+<p class="message-notice">To partially update a URL component you should use the package <a href="/dev-master/services/builder/">builder</a> object instead.</p>
 
 ## URL resolution
 
