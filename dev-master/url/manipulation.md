@@ -28,9 +28,9 @@ echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#titl
 
 Since every update returns an instance of `League\Url\Url`, you can chain each setter methods to simplify URL creation and/or modification.
 
-## Partial component modifications
+## Partial modifications
 
-Sometimes what you want to change is not the complete URL component/part but just add, update or remove part of the component. To ease these kind of modification the class comes with various modifying methods to update your URL.
+Often what you want to change is not the complete URL component/part but just add, update or remove some of their content. To ease these kind of modifications the class comes with various modifying methods to update your URL. Each method is presented independently but keep in mind that you can chain them as they all return an instance of `League\Url\Url`.
 
 ### Modifying URL query parameters
 
@@ -199,7 +199,7 @@ uses the same arguments as `League\Url\Host::prepend`
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->replaceLabel(1, 'thephpleague');
 echo $newUrl->getHost();
-//display shop.www.thephpleague.com
+//display www.thephpleague.com
 ~~~
 
 uses the same arguments as `League\Url\Host::replace`

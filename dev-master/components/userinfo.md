@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The UserInfo part
+title: The User Information part
 ---
 
 # The User Information part
@@ -21,7 +21,7 @@ $empty_info = new UserInfo();
 echo $empty_info; //display ''
 ~~~
 
-You can also get a UserInfo object from an League\Url\Url class:
+You can also get a `UserInfo` object from an League\Url\Url class:
 
 ~~~php
 use League\Url;
