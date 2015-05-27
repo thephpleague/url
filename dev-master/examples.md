@@ -22,6 +22,7 @@ foreach ($extension_list as $extension) {
       //returns a PSR-7 UriInterface compatible object
 }
 
+echo $url;           //display "http://www.example.com/report"
 echo $links['csv'];  //display "ftp://download.example.com/report/purchases/summary.csv"
 echo $links['xml'];  //display "ftp://download.example.com/report/purchases/summary.xml"
 echo $links['json']; //display "ftp://download.example.com/report/purchases/summary.json"
