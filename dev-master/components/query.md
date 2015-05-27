@@ -24,6 +24,8 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
 
+<p class="message-warning">To preserve parameters keys and value, the method does not uses PHP <code>parse_str</code> function.</p>
+
 ### Using a League\Url object
 
 ~~~php
@@ -35,19 +37,22 @@ $query = $url->query; // $query is a League\Url\Query object;
 
 ### Using a named constructor
 
-In PHP, a query is assimilated to an array. So it is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method.
+It is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method. The expected array must not contain any nested array.
+
+<p class="message-warning">The method does not uses PHP <code>http_build_query</code> as this methods corrupt key parameters.</p>
+
+- If a given parameter value is `null` it will be rendered without any value in the resulting query string;
+- If a given parameter value is an empty string il will be rendered without any value **but** with a `=` sign appended to it;
 
 ~~~php
 use League\Url\Query;
 
 $query =  Query::createFromArray(['foo' => 'bar', 'p' => 'yolo', 'z' => '']);
-echo $query; //display 'foo=bar&p=yolo&z'
+echo $query; //display 'foo=bar&p=yolo&z='
 
 $query =  Query::createFromArray(['foo' => 'bar', 'p' => null, 'z' => '']);
-echo $query; //display 'foo=bar&z'
+echo $query; //display 'foo=bar&p&z='
 ~~~
-
-<p class="message-info">if a given parameter is <code>null</code> it won't be taken into account when building the <code>Query</code> obejct</p>
 
 ## Query representations
 
@@ -84,6 +89,9 @@ $query->toArray();
 //     'z'   => '',
 // ]
 ~~~
+
+The array returned by `toArray` differs from the one returned by `parse_str` has it preserves the query string values.
+
 
 ## Accessing Query content
 
@@ -161,17 +169,17 @@ $newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
 // the 'r' parameter was added
 ~~~
 
-<p class="message-warning">Before merging parameters whose value equals <code>null</code> are filter out.</p>
+<p class="message-notice">Parameters whose value equals <code>null</code> or an empty string are merge differently.</p>
 
 ~~~php
 use League\Url\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$newQuery = $alt->merge(['foo' => 'jane', 'baz' => null, 'r' => '']);
-$newQuery->__toString(); //returns foo=jane&baz=toto&r
+$newQuery = $alt->merge(['foo' => 'jane', 'baz' => '', 'r' => null]);
+$newQuery->__toString(); //returns foo=jane&baz=&r
 // the 'foo' parameter was updated
-// the 'r' parameter was added
-// the 'baz' parameter was not updated
+// the 'r' parameter was added without any value
+// the 'baz' parameter was updated to an empty string and its = sign remains
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::mergeQueryParameters</code></p>
