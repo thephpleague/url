@@ -17,7 +17,6 @@
         Path: '/dev-master/components/path/'
         Query: '/dev-master/components/query/'
     Services:
-        Builder: '/dev-master/services/builder/'
         Formatter: '/dev-master/services/formatter/'
 '3.0':
     Getting Started:

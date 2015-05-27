@@ -288,7 +288,7 @@ The method returns the value of a specific offset. If the offset does not exists
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
-<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::appendLabels</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendLabels</code></p>
 
 ~~~php
 use League\Url\Host;
@@ -304,7 +304,7 @@ $newHost->__toString(); //returns toto.example.com
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
 
-<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::prependLabels</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependLabels</code></p>
 
 ~~~php
 use League\Url\Host;
@@ -321,7 +321,7 @@ To replace a label with your own data, you must use the `Host::replace` method w
 - `$offset` which represents the label's offset to remove if it exists.
 - `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
 
-<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::replaceLabel</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceLabel</code></p>
 
 ~~~php
 use League\Url\Host;
@@ -335,7 +335,7 @@ $newHost->__toString(); //returns bar.baz.example.com
 
 To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument.
 
-<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::withoutLabels</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutLabels</code></p>
 
 This argument can be an array containing a list of parameter names to remove.
 
@@ -363,7 +363,7 @@ echo $newHost; //displays 'example.com';
 
 You can also selectively remove labels using the `Host::filter` method which expect a `callable` function. This function is used to filter labels according to their content.
 
-<p class="message-notice">This method is used by the <code>Builder</code> class as <code>Builder::filterLabels</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterLabels</code></p>
 
 ~~~php
 use League\Url\Host;

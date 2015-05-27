@@ -174,6 +174,8 @@ $newQuery->__toString(); //returns foo=jane&baz=toto&r
 // the 'baz' parameter was not updated
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::mergeQueryParameters</code></p>
+
 ### Remove parameters
 
 To remove parameters from the current object and returns a new `Query` object without them you must use the `Query::without` method. This method expects a single argument.
@@ -200,6 +202,8 @@ $newQuery = $query->without(function ($value) {
 echo $newQuery; //displays 'p=y+olo';
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutQueryParameters</code></p>
+
 ### Filter the Query
 
 Another way to remove parameters from the query is to selectively remove them using a filter on theirs values. To achieve that you can use the `Query::filter` method.
@@ -213,3 +217,5 @@ $newQuery = $query->filter(function ($value) {
 });
 echo $newQuery; //displays 'foo=bar&p=y+olo'
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQueryValues</code></p>

@@ -222,6 +222,8 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutDotSegments</code></p>
+
 ### Removing empty segments
 
 Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
@@ -236,6 +238,8 @@ echo $raw_path;           //displays 'path////to/the/sky//'
 echo $normalize_path;     //displays 'path/to/the/sky/'
 $alt->sameValueAs($path); //return false;
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutEmptySegments</code></p>
 
 ## Modifying Path
 
@@ -255,6 +259,8 @@ $newPath = $path->withExtension('.csv');
 echo $newPath; //displays /path/to/the/sky.csv;
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withExtension</code></p>
+
 ### Append segments
 
 To append segments to the current object you need to use the `Path::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
@@ -263,9 +269,11 @@ To append segments to the current object you need to use the `Path::append` meth
 use League\Url\Path;
 
 $path    = new Path();
-$newPath = $path->appendWith('path')->appendWith('to/the/sky');
+$newPath = $path->append('path')->append('to/the/sky');
 $newPath->__toString(); //returns path/to/the/sky
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendSegments</code></p>
 
 ### Prepend segments
 
@@ -278,6 +286,8 @@ $path    = new Path();
 $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
 $newPath->__toString(); // returns path/to/the/sky
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependSegments</code></p>
 
 ### Replace segments
 
@@ -293,6 +303,8 @@ $path    = new Path('/foo/example/com');
 $newPath = $path->replace(0, new Path('bar/baz'));
 $Path->__toString(); //returns /bar/baz/example/com
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceSegment</code></p>
 
 ### Remove segments
 
@@ -320,6 +332,8 @@ $newPath = $path->without(function ($value) {
 echo $newPath; //displays '/sky';
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutSegments</code></p>
+
 ### Filter segments
 
 Another way to remove segments from the path is to selectively remove them using a filter on their value. To achieve that you can use the `Path::filter` method.
@@ -333,3 +347,5 @@ $newPath = $path->filter(function ($value) {
 });
 $newPath->__toString(); //returns '/path/to/the'
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterSegments</code></p>

@@ -8,21 +8,21 @@ title: Examples
 Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate each format URL. This example illustrates how easy it is to generate theses different URLs from an original URL.
 
 ~~~php
-use League\Url\Services\Builder as UrlBuilder;
+use League\Url\Url;
 
-$urlBuilder  = new UrlBuilder();
+$url = Url::createFromUrl("http://www.example.com/report");
 $extension_list = ['csv', 'json', 'xml'];
-$output_links = [];
+$links = [];
 foreach ($extension_list as $extension) {
-    $output_links[$extension] = $urlBuilder
-      ->setUrl("http://www.example.com/report")
-      ->appendPath("/purchases/summary")
+    $links[$extension] = $url
+      ->appendSegments("/purchases/summary")
       ->withExtension($extension)
-      ->replaceLabel('download', 0)
-      ->getUrl(); //returns a PSR-7 UriInterface compatible object
+      ->replaceLabel(0, 'download')
+      ->withScheme('ftp');
+      //returns a PSR-7 UriInterface compatible object
 }
 
-echo $output_links['csv'];  //display "http://download.example.com/report/purchases/summary.csv"
-echo $output_links['xml'];  //display "http://download.example.com/report/purchases/summary.xml"
-echo $output_links['json']; //display "http://download.example.com/report/purchases/summary.json"
+echo $links['csv'];  //display "ftp://download.example.com/report/purchases/summary.csv"
+echo $links['xml'];  //display "ftp://download.example.com/report/purchases/summary.xml"
+echo $links['json']; //display "ftp://download.example.com/report/purchases/summary.json"
 ~~~
