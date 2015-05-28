@@ -214,16 +214,42 @@ echo $newQuery; //displays 'p=y+olo';
 
 ### Filter the Query
 
-Another way to remove parameters from the query is to selectively remove them using a filter on theirs values. To achieve that you can use the `Query::filter` method.
+Another way to remove parameters from the query is to filter them.
+
+You can filter the query according to its parameters value using the `Query::filterByContent` method.
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filter(function ($value) {
+$newQuery = $query->filterByContent(function ($value) {
 	return ! empty($value);
 });
 echo $newQuery; //displays 'foo=bar&p=y+olo'
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQueryValues</code></p>
+
+You can filter the query according to its parameters name using the `Query::filterByOffsets` method.
+
+~~~php
+use League\Url\Query;
+
+$query    = new Query('foo=bar&p=y+olo&z=');
+$newQuery = $query->filterByOffset(function ($value) {
+	return 'foo' == $value;
+});
+echo $newQuery; //displays 'foo=bar'
+~~~
+
+When filtering by offset you can also provide an array as the sole argument
+
+~~~php
+use League\Url\Query;
+
+$query    = new Query('foo=bar&p=y+olo&z=');
+$newQuery = $query->filterByOffset(['p', 'z']);
+echo $newQuery; //displays 'p=y%20olo&z='
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQueryParameters</code></p>

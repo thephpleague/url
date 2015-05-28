@@ -361,7 +361,7 @@ echo $newHost; //displays 'example.com';
 
 ### Filter labels
 
-You can also selectively remove labels using the `Host::filter` method which expect a `callable` function. This function is used to filter labels according to their content.
+You can also selectively remove labels using the `Host::filterByContent` method which expect a `callable` function. This function is used to filter labels according to their content.
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterLabels</code></p>
 
@@ -369,7 +369,7 @@ You can also selectively remove labels using the `Host::filter` method which exp
 use League\Url\Host;
 
 $host    = new Host('toto.example.com');
-$newHost = $host->filter(function ($value) {
+$newHost = $host->filterByContent(function ($value) {
 	return $value != 'example';
 });
 $newHost->__toString(); //returns toto.com

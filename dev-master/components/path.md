@@ -336,13 +336,13 @@ echo $newPath; //displays '/sky';
 
 ### Filter segments
 
-Another way to remove segments from the path is to selectively remove them using a filter on their value. To achieve that you can use the `Path::filter` method.
+Another way to remove segments from the path is to selectively remove them using a filter on their value. To achieve that you can use the `Path::filterByContent` method.
 
 ~~~php
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$newPath = $path->filter(function ($value) {
+$newPath = $path->filterByContent(function ($value) {
     return strpos($value, 't') !== false;
 });
 $newPath->__toString(); //returns '/path/to/the'
