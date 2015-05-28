@@ -361,16 +361,47 @@ echo $newHost; //displays 'example.com';
 
 ### Filter labels
 
-You can also selectively remove labels using the `Host::filterByContent` method which expect a `callable` function. This function is used to filter labels according to their content.
+Another way to select labels from the host object is to filter them.
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterLabels</code></p>
+You can filter the host according to its labels value or offsets using the `Host::filter` method.
+
+To specify if you want to use the offsets or the value you must use one of the two available constants:
+
+- use `Host::FILTER_USE_VALUE` to filter according to the segment value;
+- use `Host::FILTER_USE_KEY` to filter according to the segment offset;
+
+If no flag is specify the method will filter by value.
+
+The first parameter can be a `callable`
 
 ~~~php
 use League\Url\Host;
 
-$host    = new Host('toto.example.com');
-$newHost = $host->filterByContent(function ($value) {
-	return $value != 'example';
+$host    = new Host('www.11.be');
+$newHost = $host->filter(function ($value) {
+	return ! is_numeric($value);
 });
-$newHost->__toString(); //returns toto.com
+echo $newHost; //displays 'www.be'
 ~~~
+
+Or an array
+
+~~~php
+use League\Url\Host;
+
+$host    = new Host('www.11.be');
+$newHost = $host->filter(['11', 'be']);
+echo $newHost; //displays '11.be'
+~~~
+
+If you specify the second argument flag then the filtering will be done using the parameter names.
+
+~~~php
+use League\Url\Host;
+
+$host    = new Host('www.11.be');
+$newHost = $host->filter([0, 2], Host::FILTER_USE_KEY);
+echo $newHost; //displays 'www.be'
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterHost</code></p>

@@ -7,6 +7,18 @@ title: Manipulating URL
 
 <p class="message-notice">If the modifications does not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
+## URL resolution
+
+The URL class provides the mean for resolving an URL as a browser would for an anchor tag. When performing URL resolution the returned URL is always normalized using all rules even the destructives ones.
+
+~~~php
+use League\Url\Url;
+
+$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
+$newUrl = $url->resolve('./p#~toto');
+echo $newUrl; //displays 'http://www.example.com/hello/p#~toto'
+~~~
+
 ## Using the URL components
 
 if your goal is to completely replace one of the URL part you can do so easily using the `Psr\Http\Message\UriInterface` interface modifying methods expose by the object
@@ -30,13 +42,13 @@ Since every update returns an instance of `League\Url\Url`, you can chain each s
 
 ## Partial modifications
 
-Often what you want to change is not the complete URL component/part but just add, update or remove some of their content. To ease these kind of modifications the class comes with various modifying methods to update your URL. Each method is presented independently but keep in mind that you can chain them as they all return an instance of `League\Url\Url`.
+Often what you want is not to update the complete URL component/part but just add, update or remove some of their content. To ease partial modifications the class comes with various modifying methods to update your URL. Each method is presented independently but keep in mind that you can chain them as they all return an instance of `League\Url\Url`.
 
 ### Modifying URL query parameters
 
 The following methods proxy the [Query modifying methods](/dev-master/components/query/#modifying-a-query) :
 
-#### Adding or Updating query parameters
+#### Add or Update query parameters
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com//the/sky.php?foo=toto#~typo');
@@ -45,10 +57,9 @@ echo $newUrl->getQuery();
 //display 'foo=bar&taz'
 ~~~
 
-uses the same arguments as `League\Url\Query::merge`
+uses the same arguments as [League\Url\Query::merge](/dev-master/components/query/#add-or-update-parameters)
 
-
-#### Removing query parameters
+#### Remove query parameters
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
@@ -57,13 +68,13 @@ echo $newUrl->getQuery();
 //display 'p=y%20olo'
 ~~~
 
-uses the same arguments as `League\Url\Query::without`
+uses the same arguments as [League\Url\Query::without](/dev-master/components/query/#remove-parameters)
 
-#### Filtering query parameters
+#### Filter query
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
-$newUrl = $url->filterQueryValues(function ($value) {
+$newUrl = $url->filterQuery(function ($value) {
 	return ! is_array($value);
 });
 echo $newUrl->getQuery();
@@ -71,13 +82,13 @@ echo $newUrl->getQuery();
 //will update the query string by removing all array-like parameters
 ~~~
 
-uses the same arguments as `League\Url\Query::filter`
+uses the same arguments as [League\Url\Query::filter](/dev-master/components/query/#filter-the-query)
 
 ### Modifying URL path segments
 
 The following methods proxy the [Path methods](/dev-master/components/path/#path-normalization) :
 
-#### Appending path segments
+#### Append path segments
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -86,9 +97,9 @@ echo $newUrl->getPath();
 //display /path/to/the/sky.php/foo/bar
 ~~~
 
-uses the same arguments as `League\Url\Path::append`
+uses the same arguments as [League\Url\Path::append](/dev-master/components/path/#append-segments)
 
-#### Prepending path segments
+#### Prepend path segments
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -97,9 +108,9 @@ echo $newUrl->getPath();
 //display /foo/bar/path/to/the/sky.php
 ~~~
 
-uses the same arguments as `League\Url\Path::prepend`
+uses the same arguments as [League\Url\Path::prepend](/dev-master/components/path/#prepend-segments)
 
-#### Replacing a path segment
+#### Replace a path segment
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -108,9 +119,9 @@ echo $newUrl->getPath();
 //display /foo/bar/to/the/sky.php
 ~~~
 
-uses the same arguments as `League\Url\Path::replace`
+uses the same arguments as [League\Url\Path::replace](/dev-master/components/path/#replace-segments)
 
-#### Removing path segments
+#### Remove path segments
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -119,33 +130,33 @@ echo $newUrl->getPath();
 //display /the/sky.php
 ~~~
 
-uses the same arguments as `League\Url\Path::without`
+uses the same arguments as [League\Url\Path::without](/dev-master/components/path/#remove-segments)
 
-#### Filtering path segments
+#### Filter the path
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
-$newUrl = $url->filterSegments(function ($segment) {
+$newUrl = $url->filterPath(function ($segment) {
 	return strpos($segment, 't') === false;
 });
 echo $newUrl->getPath();
 //display /sky.php
 ~~~
 
-uses the same arguments as `League\Url\Path::filter`
+uses the same arguments as [League\Url\Path::filter](/dev-master/components/path/#filter-segments)
 
-#### Removing dot segments
+#### Remove dot segments
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/../to/the/./sky/');
-$newUrl = $url->withoutEmptySegments();
+$newUrl = $url->withoutDotSegments();
 echo $newUrl->getPath();
 //display /to/the/sky/
 ~~~
 
-operates like `League\Url\Path::withoutDotSegments`
+operates like [League\Url\Path::withoutDotSegments](/dev-master/components/path/#removing-dot-segments)
 
-#### Removing internal empty segments
+#### Remove internal empty segments
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com///path//to/the////sky//');
@@ -154,9 +165,9 @@ echo $newUrl->getPath();
 //display /path/to/the/sky/
 ~~~
 
-operates like `League\Url\Path::withoutEmptySegments`
+operates like [League\Url\Path::withoutEmptySegments](/dev-master/components/path/#removing-empty-segments)
 
-#### Updating the path extension
+#### Update the path extension
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -165,13 +176,13 @@ echo $newUrl->getPath();
 //display /path/to/the/sky.csv
 ~~~
 
-uses the same arguments as `League\Url\Path::withExtension`
+uses the same arguments as [League\Url\Path::withExtension](/dev-master/components/path/#path-extension-manipulation)
 
 ### Modifying URL host labels
 
 The following methods proxy the [Host methods](/dev-master/components/host/#modifying-the-host) :
 
-#### Appending host labels
+#### Append host labels
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -180,9 +191,9 @@ echo $newUrl->getHost();
 //display example.com.be
 ~~~
 
-uses the same arguments as `League\Url\Host::append`
+uses the same arguments as [League\Url\Host::append](/dev-master/components/host/#append-labels)
 
-#### Prepending host labels
+#### Prepend host labels
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -191,9 +202,9 @@ echo $newUrl->getHost();
 //display shop.www.example.com
 ~~~
 
-uses the same arguments as `League\Url\Host::prepend`
+uses the same arguments as [League\Url\Host::prepend](/dev-master/components/host/#prepend-labels)
 
-#### Replacing a host label
+#### Replace a host label
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -202,9 +213,9 @@ echo $newUrl->getHost();
 //display www.thephpleague.com
 ~~~
 
-uses the same arguments as `League\Url\Host::replace`
+uses the same arguments as [League\Url\Host::replace](/dev-master/components/host/#replace-label)
 
-#### Removing host labels
+#### Remove host labels
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
@@ -213,13 +224,13 @@ echo $newUrl->getHost();
 //display example.com
 ~~~
 
-uses the same arguments as `League\Url\Host::without`
+uses the same arguments as [League\Url\Host::without](/dev-master/components/host/#remove-labels)
 
-#### Filtering host labels
+#### Filter the host
 
 ~~~php
 $url = Url::createFromUrl('http://www.eshop.com/path/to/the/sky.php');
-$newUrl = $url->filterLabels(function ($label) {
+$newUrl = $url->filterHost(function ($label) {
 	return strpos($label, 'shop') === false;
 });
 echo $newUrl->getHost();
@@ -227,16 +238,4 @@ echo $newUrl->getHost();
 //will keep all labels which do not contain the word 'shop'
 ~~~
 
-uses the same arguments as `League\Url\Host::filter`
-
-## URL resolution
-
-The URL class also provides the mean for resolving an URL as a browser would for an anchor tag. When performing URL resolution the returned URL is always normalized using all rules even the destructives ones.
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
-$newUrl = $url->resolve('./p#~toto');
-echo $newUrl; //displays 'http://www.example.com/hello/p#~toto'
-~~~
+uses the same arguments as [League\Url\Host::filter](/dev-master/components/host/#filter-labels)

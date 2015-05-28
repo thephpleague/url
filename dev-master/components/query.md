@@ -214,42 +214,47 @@ echo $newQuery; //displays 'p=y+olo';
 
 ### Filter the Query
 
-Another way to remove parameters from the query is to filter them.
+Another way to select parameters from the query  object is to filter them.
 
-You can filter the query according to its parameters value using the `Query::filterByContent` method.
+You can filter the query according to its parameters name or value using the `Query::filter` method.
+
+To specify if you want to use the offsets or the value you must use one of the two available constants:
+
+- use `Query::FILTER_USE_VALUE` to filter according to the parameter value;
+- use `Query::FILTER_USE_KEY` to filter according to the parameter name;
+
+If no flag is specify the method will filter by value.
+
+The first parameter can be a `callable`
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filterByContent(function ($value) {
+$newQuery = $query->filter(function ($value) {
 	return ! empty($value);
 });
 echo $newQuery; //displays 'foo=bar&p=y+olo'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQueryValues</code></p>
-
-You can filter the query according to its parameters name using the `Query::filterByOffsets` method.
+Or an array
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filterByOffset(function ($value) {
-	return 'foo' == $value;
-});
+$newQuery = $query->filter(['bar']);
 echo $newQuery; //displays 'foo=bar'
 ~~~
 
-When filtering by offset you can also provide an array as the sole argument
+If you specify the second argument flag then the filtering will be done using the parameter names.
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filterByOffset(['p', 'z']);
+$newQuery = $query->filter(['p', 'z'], Query::FILTER_USE_KEY);
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQueryParameters</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQuery</code></p>

@@ -336,16 +336,47 @@ echo $newPath; //displays '/sky';
 
 ### Filter segments
 
-Another way to remove segments from the path is to selectively remove them using a filter on their value. To achieve that you can use the `Path::filterByContent` method.
+Another way to select segments from the path object is to filter them.
+
+You can filter the path according to its segments value or offsets using the `Path::filter` method.
+
+To specify if you want to use the offsets or the value you must use one of the two available constants:
+
+- use `Path::FILTER_USE_VALUE` to filter according to the segment value;
+- use `Path::FILTER_USE_KEY` to filter according to the segment offset;
+
+If no flag is specify the method will filter by value.
+
+The first parameter can be a `callable`
 
 ~~~php
 use League\Url\Path;
 
-$path = new Path('/path/to/the/sky');
-$newPath = $path->filterByContent(function ($value) {
-    return strpos($value, 't') !== false;
+$path    = new Path('/foo/bar/yolo/');
+$newPath = $path->filter(function ($value) {
+	return ! empty($value);
 });
-$newPath->__toString(); //returns '/path/to/the'
+echo $newPath; //displays '/foo/bar/yolo'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterSegments</code></p>
+Or an array
+
+~~~php
+use League\Url\Path;
+
+$path    = new Path('/foo/bar/yolo/');
+$newPath = $path->filter(['bar']);
+echo $newPath; //displays '/bar'
+~~~
+
+If you specify the second argument flag then the filtering will be done using the parameter names.
+
+~~~php
+use League\Url\Path;
+
+$path    = new Path('/foo/bar/yolo/');
+$newPath = $query->filter([0, 2], Path::FILTER_USE_KEY);
+echo $newPath; //displays '/foo/yolo'
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterPath</code></p>
