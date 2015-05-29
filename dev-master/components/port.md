@@ -26,7 +26,7 @@ echo $empty_port; //display ''
 
 <p class="message-warning">If the submitted value is not a valid port number an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Url object
+### Using a League\Url\Url object
 
 ~~~php
 use League\Url\Url;

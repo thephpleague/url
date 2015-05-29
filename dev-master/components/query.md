@@ -26,7 +26,7 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">To preserve parameters keys and value, the method does not uses PHP <code>parse_str</code> function.</p>
 
-### Using a League\Url object
+### Using a League\Url\Url object
 
 ~~~php
 use League\Url\Url;
