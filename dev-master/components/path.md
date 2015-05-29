@@ -273,7 +273,7 @@ $newPath = $path->append('path')->append('to/the/sky');
 $newPath->__toString(); //returns path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendSegments</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendPath</code></p>
 
 ### Prepend segments
 
@@ -287,7 +287,7 @@ $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
 $newPath->__toString(); // returns path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependSegments</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependPath</code></p>
 
 ### Replace segments
 
@@ -338,16 +338,9 @@ echo $newPath; //displays '/sky';
 
 Another way to select segments from the path object is to filter them.
 
-You can filter the path according to its segments value or offsets using the `Path::filter` method.
+You can filter the path according to its segments using the `Path::filter` method.
 
-To specify if you want to use the offsets or the value you must use one of the two available constants:
-
-- use `Path::FILTER_USE_VALUE` to filter according to the segment value;
-- use `Path::FILTER_USE_KEY` to filter according to the segment offset;
-
-If no flag is specify the method will filter by value.
-
-The first parameter can be a `callable`
+The first parameter must be a `callable`
 
 ~~~php
 use League\Url\Path;
@@ -359,23 +352,20 @@ $newPath = $path->filter(function ($value) {
 echo $newPath; //displays '/foo/bar/yolo'
 ~~~
 
-Or an array
+By specifying the second argument flag you can change how filtering is done:
+
+- use `Path::FILTER_USE_VALUE` to filter according to the segment value;
+- use `Path::FILTER_USE_KEY` to filter according to the segment offset;
+
+By default, if no flag is specified the method will filter by value.
 
 ~~~php
 use League\Url\Path;
 
 $path    = new Path('/foo/bar/yolo/');
-$newPath = $path->filter(['bar']);
-echo $newPath; //displays '/bar'
-~~~
-
-If you specify the second argument flag then the filtering will be done using the parameter names.
-
-~~~php
-use League\Url\Path;
-
-$path    = new Path('/foo/bar/yolo/');
-$newPath = $query->filter([0, 2], Path::FILTER_USE_KEY);
+$newPath = $query->filter(function ($value) {
+	return 1 != $value;
+}, Path::FILTER_USE_KEY);
 echo $newPath; //displays '/foo/yolo'
 ~~~
 

@@ -244,8 +244,8 @@ If you are interested in getting all the label offsets you can do so using the `
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->keys(); // returns  [0, 1, 2, 3];
-$host->keys('uk'); // returns [0, 3];
+$host->offsets(); // returns  [0, 1, 2, 3];
+$host->offsets('uk'); // returns [0, 3];
 $host->offsets('gweta'); // returns [];
 ~~~
 
@@ -288,7 +288,7 @@ The method returns the value of a specific offset. If the offset does not exists
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendLabels</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendHost</code></p>
 
 ~~~php
 use League\Url\Host;
@@ -304,7 +304,7 @@ $newHost->__toString(); //returns toto.example.com
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependLabels</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependHost</code></p>
 
 ~~~php
 use League\Url\Host;
@@ -363,16 +363,9 @@ echo $newHost; //displays 'example.com';
 
 Another way to select labels from the host object is to filter them.
 
-You can filter the host according to its labels value or offsets using the `Host::filter` method.
+You can filter the host according to its labels using the `Host::filter` method.
 
-To specify if you want to use the offsets or the value you must use one of the two available constants:
-
-- use `Host::FILTER_USE_VALUE` to filter according to the segment value;
-- use `Host::FILTER_USE_KEY` to filter according to the segment offset;
-
-If no flag is specify the method will filter by value.
-
-The first parameter can be a `callable`
+The first parameter must be a `callable`
 
 ~~~php
 use League\Url\Host;
@@ -384,23 +377,20 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays 'www.be'
 ~~~
 
-Or an array
+By specifying the second argument flag you can change how filtering is done:
+
+- use `Host::FILTER_USE_VALUE` to filter according to the label value;
+- use `Host::FILTER_USE_KEY` to filter according to the label offset;
+
+By default, if no flag is specified the method will filter by value.
 
 ~~~php
 use League\Url\Host;
 
 $host    = new Host('www.11.be');
-$newHost = $host->filter(['11', 'be']);
-echo $newHost; //displays '11.be'
-~~~
-
-If you specify the second argument flag then the filtering will be done using the parameter names.
-
-~~~php
-use League\Url\Host;
-
-$host    = new Host('www.11.be');
-$newHost = $host->filter([0, 2], Host::FILTER_USE_KEY);
+$newHost = $host->filter(function ($value) {
+	return $value != 1;
+}, Host::FILTER_USE_KEY);
 echo $newHost; //displays 'www.be'
 ~~~
 

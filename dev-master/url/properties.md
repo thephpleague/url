@@ -23,26 +23,7 @@ john:doe@example.com:8042
 userinfo    host     port
 ~~~
 
-## URL normalization
-
-Out of the box the package normalize the any given URL according to the non destructive rules of RFC3986.
-
-These non destructives rules are:
-
-- scheme and host components are lowercased;
-- query, path, fragment components are URL encoded;
-- the port number is stripped from the URL output if the standard port is used;
-
-~~~php
-use League\Url\Url;
-
-$url = Url::createFromUrl('hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title');
-echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
-~~~
-
-To be able to access all these parts, the `League\Url\Url` class exposes the following public API:
-
-## URL parts and components
+## Accessing URL parts and components
 
 ### URL as an array
 
@@ -66,9 +47,9 @@ $url->toArray();
 //    ];
 ~~~
 
-### Implementing PSR-7 UriInterface
+### Parts and components as strings
 
-You can access the URL individual parts and components as string and/or integer using their respective getter methods.
+You can access the URL individual parts and components as string or integer using their respective getter methods.
 
 ~~~php
 use League\Url\Url;
@@ -84,7 +65,7 @@ echo $url->getQuery();     //displays 'foo=baz'
 echo $url->getFragment();  //displays 'title'
 ~~~
 
-### Accessing individual component properties
+### Parts and components as objects
 
 To access a specific URL part or component as an object you can use the magic method `__get` as follow.
 
@@ -108,7 +89,7 @@ use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz');
 $url->host->isIp();        //returns false the URL uses a registered hostname
-$url->fragment->isEmpty(); //returns true because to fragment component is present
+$url->fragment->isEmpty(); //returns true because to fragment component is empty
 $url->path->getBasename(); //returns 'you';
 ~~~
 
@@ -134,7 +115,7 @@ $url->isAbsolute(); //returns true
 
 If the standard port defined for a specific scheme is used it will be remove from the URL object and any of its representation. The `Url::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
 
-- If the scheme is unknown by the library, the method returns `false`.
+- If **no scheme** is set, the method returns `false`.
 - If **no port** is set the method will return `true`.
 
 ~~~php
@@ -151,7 +132,7 @@ echo $url->getPort();        //displays null; the Port number is automatically d
 
 ### Does URLs refers to the same resource/location
 
-You can compare two PSR-7 compliant URLs object to see if they represent the same resource using the `Url::sameValueAs` method.
+You can compare two PSR-7 `UriInterface` compliant URLs object to see if they represent the same resource using the `Url::sameValueAs` method.
 
 This method compares the two objects according to their respective `__toString` methods response.
 

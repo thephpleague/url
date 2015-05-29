@@ -15,7 +15,7 @@ $extension_list = ['csv', 'json', 'xml'];
 $links = [];
 foreach ($extension_list as $extension) {
     $links[$extension] = $url
-      ->appendSegments("/purchases/summary")
+      ->appendPath("/purchases/summary")
       ->withExtension($extension)
       ->replaceLabel(0, 'download')
       ->withScheme('ftp');

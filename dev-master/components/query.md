@@ -218,14 +218,7 @@ Another way to select parameters from the query  object is to filter them.
 
 You can filter the query according to its parameters name or value using the `Query::filter` method.
 
-To specify if you want to use the offsets or the value you must use one of the two available constants:
-
-- use `Query::FILTER_USE_VALUE` to filter according to the parameter value;
-- use `Query::FILTER_USE_KEY` to filter according to the parameter name;
-
-If no flag is specify the method will filter by value.
-
-The first parameter can be a `callable`
+The first parameter must be a `callable`
 
 ~~~php
 use League\Url\Query;
@@ -237,23 +230,20 @@ $newQuery = $query->filter(function ($value) {
 echo $newQuery; //displays 'foo=bar&p=y+olo'
 ~~~
 
-Or an array
+By specifying the second argument flag you can change how filtering is done:
+
+- use `Query::FILTER_USE_VALUE` to filter according to the query parameter value;
+- use `Query::FILTER_USE_KEY` to filter according to the query parameter name;
+
+By default, if no flag is specified the method will filter by value.
 
 ~~~php
 use League\Url\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filter(['bar']);
-echo $newQuery; //displays 'foo=bar'
-~~~
-
-If you specify the second argument flag then the filtering will be done using the parameter names.
-
-~~~php
-use League\Url\Query;
-
-$query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filter(['p', 'z'], Query::FILTER_USE_KEY);
+$newQuery = $query->filter(function ($value) {
+	return $value != 'foo';
+}, Query::FILTER_USE_KEY);
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
