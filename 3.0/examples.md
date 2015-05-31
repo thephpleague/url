@@ -17,7 +17,7 @@ $url = Url::createFromUrl(
     'http://user:pass@www.example.com:81/path/index.php?query=toto+le+heros#top'
 );
 
-//let update the Query String
+//let's update the Query String
 $query = $url->getQuery();
 $query->modify(array('query' => "lulu l'allumeuse", "foo" => "bar")); 
 $query['sarah'] = "o connors"; //adding a new parameter
@@ -52,7 +52,7 @@ foreach (range(1, 5) as $index) {
 }
 
 //$paginations now contains 5 new League\Url\UrlImmutable objects 
-//but $url has not change
+//but $url has not changed
 foreach ($paginations as $uri) {
     $res = $uri instanceof 'League\Url\UrlImmutable'; // $res is true
 	$url->sameValueAs($uri); // return false
