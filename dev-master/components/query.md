@@ -136,15 +136,15 @@ $query->hasOffset('john'); //returns false
 
 ### Parameter value
 
-If you are only interested in a given parameter you can access it directly using the `Query::getParameter` method as show below:
+If you are only interested in a given parameter you can access it directly using the `Query::getValue` method as show below:
 
 ~~~php
 use League\Url\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->getParameter('foo');          //returns 'bar'
-$query->getParameter('gweta');        //returns null
-$query->getParameter('gweta', 'now'); //returns 'now'
+$query->getValue('foo');          //returns 'bar'
+$query->getValue('gweta');        //returns null
+$query->getValue('gweta', 'now'); //returns 'now'
 ~~~
 
 The method returns the value of a specific parameter name. If the offset does not exists it will return the value specified by the second argument which default to `null`.
@@ -157,19 +157,45 @@ The method returns the value of a specific parameter name. If the offset does no
 
 ### Add or Update parameters
 
-If you want to add or update the query parameters you need to use the `Query::merge` method. This method expects a single argument in form of an `array` or a `Traversable` object.
+If you want to add or update the query parameters you need to use the `Query::merge` method. This method expects a single argument. This argument can be:
+
+A string or a stringable object
 
 ~~~php
 use League\Url\Query;
 
-$query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$newQuery = $alt->merge(['foo' => 'jane', 'r' => 'stone']);
+$query    = new Query('foo=bar&baz=toto');
+$newQuery = $query->merge('foo=jane&r=stone');
 $newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
 // the 'foo' parameter was updated
 // the 'r' parameter was added
 ~~~
 
-<p class="message-notice">Parameters whose value equals <code>null</code> or an empty string are merge differently.</p>
+An `array` or a `Traversable` object
+
+~~~php
+use League\Url\Query;
+
+$query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$newQuery = $query->merge(['foo' => 'jane', 'r' => 'stone']);
+$newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
+// the 'foo' parameter was updated
+// the 'r' parameter was added
+~~~
+
+Another `Query` object
+
+~~~php
+use League\Url\Query;
+
+$query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
+$newQuery = $query->merge(new Query('foo=jane&r=stone'));
+$newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
+// the 'foo' parameter was updated
+// the 'r' parameter was added
+~~~
+
+<p class="message-notice">Values equal to <code>null</code> or the empty string are merge differently.</p>
 
 ~~~php
 use League\Url\Query;

@@ -75,23 +75,23 @@ Often what you really want is to partially update the URL component. Using the c
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com//the/sky.php?foo=toto#~typo');
-$newUrl = $url->mergeQueryParameters(['foo' => 'bar', 'taz' => '']);
+$newUrl = $url->mergeQuery(['foo' => 'bar', 'taz' => '']);
 echo $newUrl->getQuery();
 //display 'foo=bar&taz'
 ~~~
 
-`Url::mergeQueryParameters` is a facade to [League\Url\Query::merge](/dev-master/components/query/#add-or-update-parameters).
+`Url::mergeQuery` is a proxy to [League\Url\Query::merge](/dev-master/components/query/#add-or-update-parameters).
 
 #### Remove query parameters
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
-$newUrl = $url->withoutQueryParameters(['foo']);
+$newUrl = $url->withoutQueryValues(['foo']);
 echo $newUrl->getQuery();
 //display 'p=y%20olo'
 ~~~
 
-`Url::withoutQueryParameters` is a facade to [League\Url\Query::without](/dev-master/components/query/#remove-parameters).
+`Url::withoutQueryValues` is a proxy to [League\Url\Query::without](/dev-master/components/query/#remove-parameters).
 
 #### Filter query
 
@@ -105,7 +105,7 @@ echo $newUrl->getQuery();
 //will update the query string by removing all array-like parameters
 ~~~
 
-`Url::filterQuery` is a facade to [League\Url\Query::filter](/dev-master/components/query/#filter-the-query).
+`Url::filterQuery` is a proxy to [League\Url\Query::filter](/dev-master/components/query/#filter-the-query).
 
 ### Modifying URL path segments
 
@@ -118,7 +118,7 @@ echo $newUrl->getPath();
 //display /path/to/the/sky.php/foo/bar
 ~~~
 
-`Url::appendPath` is a facade to [League\Url\Path::append](/dev-master/components/path/#append-segments).
+`Url::appendPath` is a proxy to [League\Url\Path::append](/dev-master/components/path/#append-segments).
 
 #### Prepend path segments
 
@@ -129,7 +129,7 @@ echo $newUrl->getPath();
 //display /foo/bar/path/to/the/sky.php
 ~~~
 
-`Url::prependPath` is a facade to [League\Url\Path::prepend](/dev-master/components/path/#prepend-segments).
+`Url::prependPath` is a proxy to [League\Url\Path::prepend](/dev-master/components/path/#prepend-segments).
 
 #### Replace a path segment
 
@@ -140,7 +140,7 @@ echo $newUrl->getPath();
 //display /foo/bar/to/the/sky.php
 ~~~
 
-`Url::replaceSegment` is a facade to [League\Url\Path::replace](/dev-master/components/path/#replace-segments).
+`Url::replaceSegment` is a proxy to [League\Url\Path::replace](/dev-master/components/path/#replace-segments).
 
 #### Remove path segments
 
@@ -151,7 +151,7 @@ echo $newUrl->getPath();
 //display /the/sky.php
 ~~~
 
-`Url::withoutSegments` is a facade to [League\Url\Path::without](/dev-master/components/path/#remove-segments).
+`Url::withoutSegments` is a proxy to [League\Url\Path::without](/dev-master/components/path/#remove-segments).
 
 #### Filter the path
 
@@ -164,7 +164,7 @@ echo $newUrl->getPath();
 //display /sky.php
 ~~~
 
-`Url::filterPath` is a facade to [League\Url\Path::filter](/dev-master/components/path/#filter-segments).
+`Url::filterPath` is a proxy to [League\Url\Path::filter](/dev-master/components/path/#filter-segments).
 
 #### Remove dot segments
 
@@ -175,7 +175,7 @@ echo $newUrl->getPath();
 //display /to/the/sky/
 ~~~
 
-`Url::withoutDotSegments` is a facade to [League\Url\Path::withoutDotSegments](/dev-master/components/path/#removing-dot-segments).
+`Url::withoutDotSegments` is a proxy to [League\Url\Path::withoutDotSegments](/dev-master/components/path/#removing-dot-segments).
 
 #### Remove internal empty segments
 
@@ -186,7 +186,7 @@ echo $newUrl->getPath();
 //display /path/to/the/sky/
 ~~~
 
-`Url::withoutEmptySegments` is a facade to [League\Url\Path::withoutEmptySegments](/dev-master/components/path/#removing-empty-segments).
+`Url::withoutEmptySegments` is a proxy to [League\Url\Path::withoutEmptySegments](/dev-master/components/path/#removing-empty-segments).
 
 #### Update the path extension
 
@@ -197,7 +197,7 @@ echo $newUrl->getPath();
 //display /path/to/the/sky.csv
 ~~~
 
-`Url::withExtension` is a facade to [League\Url\Path::withExtension](/dev-master/components/path/#path-extension-manipulation).
+`Url::withExtension` is a proxy to [League\Url\Path::withExtension](/dev-master/components/path/#path-extension-manipulation).
 
 ### Modifying URL host labels
 
@@ -210,7 +210,7 @@ echo $newUrl->getHost();
 //display example.com.be
 ~~~
 
-`Url::appendHost` is a facade to [League\Url\Host::append](/dev-master/components/host/#append-labels).
+`Url::appendHost` is a proxy to [League\Url\Host::append](/dev-master/components/host/#append-labels).
 
 #### Prepend host labels
 
@@ -221,7 +221,7 @@ echo $newUrl->getHost();
 //display shop.www.example.com
 ~~~
 
-`Url::prependHost` is a facade to [League\Url\Host::prepend](/dev-master/components/host/#prepend-labels).
+`Url::prependHost` is a proxy to [League\Url\Host::prepend](/dev-master/components/host/#prepend-labels).
 
 #### Replace a host label
 
@@ -232,7 +232,7 @@ echo $newUrl->getHost();
 //display www.thephpleague.com
 ~~~
 
-`Url::replaceLabel` is a facade to [League\Url\Host::replace](/dev-master/components/host/#replace-label).
+`Url::replaceLabel` is a proxy to [League\Url\Host::replace](/dev-master/components/host/#replace-label).
 
 #### Remove host labels
 
@@ -243,7 +243,7 @@ echo $newUrl->getHost();
 //display example.com
 ~~~
 
-`Url::withoutLabels` is a facade to [League\Url\Host::without](/dev-master/components/host/#remove-labels).
+`Url::withoutLabels` is a proxy to [League\Url\Host::without](/dev-master/components/host/#remove-labels).
 
 #### Filter the host
 
@@ -257,4 +257,4 @@ echo $newUrl->getHost();
 //will keep all labels which do not contain the word 'shop'
 ~~~
 
-`Url::filterHost` is a facade to [League\Url\Host::filter](/dev-master/components/host/#filter-labels).
+`Url::filterHost` is a proxy to [League\Url\Host::filter](/dev-master/components/host/#filter-labels).
