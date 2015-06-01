@@ -80,7 +80,7 @@ Whenever you create a new host. You submitted data is normalized using non desct
 
 - the host is lowercased;
 - the bracket are added if you are instantiating a IPV6 Host;
-- the host is encoded in its <abbr title="Internationalized Domain Name">IDN</abbr> version;
+- the host is encoded using the punycode algorithm to take into account <abbr title="Internationalized Domain Name">IDN</abbr>;
 
 ~~~php
 use League\Url\Host;
@@ -184,8 +184,8 @@ $ipv6->getUriComponent(); //return '[::1]'
 
 The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism.
 
-- The `Host::__toString` method always returns the IDN version of the hostname.
-- To access the punycode encoded domain name you must used the `Host::toAscii` method.
+- The `Host::__toString` method always returns the punycode encoded hostname.
+- To access the IDN domain name you must used the `Host::toUnicode` method.
 
 ~~~php
 use League\Url\Host;
@@ -193,14 +193,14 @@ use League\Url\Url;
 
 $host = new Host('스타벅스코리아.com'); //you set the IDN
 
-echo $host->toAscii();   // output 'xn--oy2b35ckwhba574atvuzkc.com'
-echo $host; // output '스타벅스코리아.com'
+echo $host->__toString();   // output 'xn--oy2b35ckwhba574atvuzkc.com'
+echo $host->toUnicode; // output '스타벅스코리아.com'
 
 $host = new Host('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
-echo $host;  // output 'مثال.إختبار'  //the object output the IDN version
-echo $host->toAscii();  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object output the Ascii version
+echo $host;  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object output the Ascii version
+echo $host->toUnicode(); // output 'مثال.إختبار'   //the object output the IDN version
 
-echo Url::createFromServer($_SERVER)->host->toAscii(); //output the Ascii version
+echo Url::createFromServer($_SERVER)->host->toUnicode(); //output the IDN version
 ~~~
 
 ### Array representation
