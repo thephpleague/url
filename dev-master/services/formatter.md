@@ -18,7 +18,7 @@ A host can be output as encoded in ascii or in unicode. By default the formatter
 
 ~~~php
 use League\Url\Host;
-use League\Url\Services\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
@@ -38,7 +38,7 @@ A `League\Url\Query` object is by default encoded by following RFC 3986. If you 
 
 ~~~php
 use League\Url\Query
-use League\Url\Services\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQueryEncoding(PHP_QUERY_RFC1738);
@@ -53,7 +53,7 @@ echo $formatter->format($query); //displays foo=ba+r&baz=bar
 
 ~~~php
 use League\Url\Query
-use League\Url\Services\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');
@@ -74,7 +74,7 @@ Apart form URL component class, the `Formatter::format` method can modify the st
 
 ~~~php
 use League\Url\Url;
-use League\Url\Services\Formatter;
+use League\Url\Output\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
