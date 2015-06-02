@@ -71,7 +71,7 @@ echo $newUrl; // display http://www.example.com//the/sky.php?foo=bar&taz#~typo
 
 To ease these operations various modifying methods where added. Each method is presented independently but keep in mind that:
 
-- The proxy pattern is used to integrate specific components modifying methods. They accept the same arguments and work the same but instead of returning a specific component object, their return a `League\Url\Url` object.
+- The methods arguments are proxied to a specific component modifying methods but instead of returning the specific component object, their return a `League\Url\Url` object.
 
 - You can chain them as they all return an instance of `League\Url\Url`.
 
