@@ -13,7 +13,7 @@ The library provides a `League\Url\Query` class to ease complex query manipulati
 
 Instead, the `Query` object uses internally and exposes two public static methods that can be used to parse a query string into an array of key value pairs. And conversely creates a valid query string from the resulting array.
 
-### Parsing the query string
+### Parsing the query string into an array
 
 - `parse_str` replaces any invalid characters from the query string pair key that can not be included in a PHP variable name by an underscore `_`.
 - `parse_str` merges query string values. This behavior, specific to PHP, may be considered to be a data loss transformation in other languages.
@@ -22,7 +22,7 @@ Instead, the `Query` object uses internally and exposes two public static method
 $query_string = 'toto.foo=bar&toto.foo=baz';
 parse_str($query_string, $arr);
 var_export($arr);
-// $arr include the following data ["toto_foo" => "baz"]
+// $arr = ["toto_foo" => "baz"]
 ~~~
 
 To avoid these transformations, the `Query::parse` static method returns an `array` representation of the query string which preserve key/value pairs. The method expects at most 3 arguments:
@@ -37,7 +37,7 @@ use League\Url\Query;
 $query_string = 'toto.foo=bar&toto.foo=baz';
 $arr = Query::parse($query_string, '&', PHP_RFC3986);
 var_export($arr);
-// $arr include the following data ["toto.foo" => [["bar", "baz"]]
+// $arr = ["toto.foo" => [["bar", "baz"]]
 ~~~
 
 ### Building the query string from an array
@@ -49,10 +49,10 @@ using PHP's `parse_str`
 ~~~php
 $query_string = 'foo[]=bar&foo[]=baz';
 parse_str($query_string, $arr);
-$arr = ["foo" => ['bar', 'baz']];
+// $arr = ["foo" => ['bar', 'baz']];
 
 $res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
-//$res equals foo[0]=bar&foo[1]=baz
+// $res equals foo[0]=bar&foo[1]=baz
 ~~~
 
 or using `Query::parse`
@@ -62,10 +62,10 @@ use League\Url\Query;
 
 $query_string = 'foo[]=bar&foo[]=baz';
 $arr = Query::parse($query_string, '&', PHP_RFC3986);
-$arr = ["foo[]" => ['bar', 'baz']];
+// $arr = ["foo[]" => ['bar', 'baz']];
 
 $res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
-//$res equals foo[][0]=bar&oo[][1]=baz
+// $res equals foo[][0]=bar&oo[][1]=baz
 ~~~
 
 The `Query::build` static method returns an preserve string representation of the query string from the `Query::parse` array result. the method expects at most 3 arguments:
@@ -83,7 +83,7 @@ var_export($arr);
 // $arr include the following data ["foo[]" => ['bar', 'baz']];
 
 $res = Query::build($arr, '&', false);
-//$res equals 'foo[]=bar&foo[]=baz'
+// $res equals 'foo[]=bar&foo[]=baz'
 ~~~
 
 No key indexes is added and the query string is safely recreated
