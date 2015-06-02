@@ -24,9 +24,8 @@ Highlights
 ------
 
 - Simple API
-- Treats URL and URL components as Immutable Values Objects
 - [RFC3986][] compliant
-- Implements the `Psr\Http\Message\UriInterface` from [PSR-7][]
+- Implements the `UriInterface` from [PSR-7][]
 - Fully documented
 - Framework Agnostic
 - Composer ready, [PSR-2][] and [PSR-4][] compliant

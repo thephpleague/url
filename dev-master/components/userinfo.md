@@ -100,7 +100,7 @@ $url->userInfo->pass->__toString(); //returns 'doe'
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-<p class="message-notice">Unlike other component class, the <code>UserInfo</code> class does not include a <code>withValue</code> method</p>
+<p class="message-notice">Unlike other component class, the <code>UserInfo</code> class does not include a <code>modify</code> method</p>
 
 To modify the user login and password information you need to call the respective <code>UserInfo::withUser</code> and `UserInfo::withPass` methods like shown below.
 

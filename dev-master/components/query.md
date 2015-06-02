@@ -5,7 +5,9 @@ title: The Query Component
 
 # The Query component
 
-The library proves a `League\Url\Query` class to ease complex query manipulation.
+The library provides a `League\Url\Query` class to ease complex query manipulation.
+
+<p class="message-warning">To preserve the query string, the library no longer relies on PHP's <code>parse_str</code> and <code>http_build_query</code> functions.</p>
 
 ## Query creation
 
@@ -24,8 +26,6 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
 
-<p class="message-warning">To preserve parameters keys and value, the method does not uses PHP <code>parse_str</code> function.</p>
-
 ### Using a League\Url\Url object
 
 ~~~php
@@ -37,9 +37,7 @@ $query = $url->query; // $query is a League\Url\Query object;
 
 ### Using a named constructor
 
-It is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method. The expected array must not contain any nested array.
-
-<p class="message-warning">The method does not uses PHP <code>http_build_query</code> as this methods corrupt key parameters.</p>
+It is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method.
 
 - If a given parameter value is `null` it will be rendered without any value in the resulting query string;
 - If a given parameter value is an empty string il will be rendered without any value **but** with a `=` sign appended to it;
@@ -274,3 +272,72 @@ echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQuery</code></p>
+
+## Utility functions
+
+PHP built-in function `parse_str` and `http_build_query` can modify the query values and keys when parsing or building the query string.
+
+~~~php
+$query_string = 'toto.foo=bar&toto.foo=baz';
+parse_str($query_string, $arr);
+var_export($arr);
+// $arr include the following data ["toto_foo" => "baz"]
+
+$res = http_build_query($arr, '', PHP_QUERY_RFC3986);
+//$res equals toto_foo=baz
+~~~
+
+- [For historical reasons][] `parse_str` replace not only the `.` character but any invalid characters from the pair key that can not be included in a PHP variable name.
+- The query string values are merged. This is an usual behavior for PHP but in other languages they are never merged. They can be considered as array instead.
+
+~~~php
+$query_string = 'foo[]=bar&foo[]=baz';
+parse_str($query_string, $arr);
+var_export($arr);
+// $arr include the following data ["foo" => ['bar', 'baz']];
+
+$res = http_build_query($arr, '', PHP_QUERY_RFC3986);
+//$res equals foo%5B0%5D=bar&foo%5B1%5D=baz <- this is data corruption!!
+~~~
+
+`http_build_query` adds the array numeric prefix to the query string which where not present to begin with!!
+
+To avoid these pitfalls, the Query object exposes two static methods that can be used to parse a query string into an array of key value pairs. And conversely to create a valid query string from the resulting array.
+
+- the `Query::parse` static method returns an `array` representation of the query string expects at most 3 arguments:
+	- the query string;
+	- the query string separator, by default it is set to `&`;
+	- the query string encryption. One of PHP constant `PHP_QUERY_RFC3986` or `PHP_QUERY_RFC1738` or false if you don't want any encryption. By default it is set to PHP constants `PHP_QUERY_RFC3986`
+
+- the `Query::build` static method returns an `string` representation of the query string from the array result form `Query::parse`. the method expects at most 3 arguments:
+	- an `array` of data to convert;
+	- the query string separator, by default it is set to `&`;
+	- the query string encryption. One of PHP constant `PHP_QUERY_RFC3986` or `PHP_QUERY_RFC1738` or false if you don't want any encryption. By default it is set to PHP constants `PHP_QUERY_RFC3986`
+
+~~~php
+use League\Url\Query;
+
+$query_string = 'toto.foo=bar&toto.foo=baz';
+$arr = Query::parse($query_string, '&', PHP_RFC3986);
+var_export($arr);
+// $arr include the following data ["toto.foo" => [["bar", "baz"]]
+
+$res = Query::build($arr, '&', PHP_QUERY_RFC3986);
+//$res equals 'toto.foo=bar&toto.foo=baz'
+~~~
+
+The `.` is preserved and the query string is safely recreated without data loss.
+
+~~~php
+$query_string = 'foo[]=bar&foo[]=baz';
+$arr = Query::parse($query_string, '&', PHP_RFC3986);
+var_export($arr);
+// $arr include the following data ["foo[]" => ['bar', 'baz']];
+
+$res = Query::build($arr, '&', false);
+//$res equals 'foo[]=bar&foo[]=baz'
+~~~
+
+No key indexes is added and the query string is safely recreated
+
+[For historical reasons]:https://php.net/manual/en/language.variables.external.php#language.variables.external.dot-in-names

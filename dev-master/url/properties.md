@@ -55,14 +55,14 @@ You can access the URL individual parts and components as string or integer usin
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-echo $url->getScheme();    //displays 'http'
-echo $url->getUserInfo();  //displays 'foo:bar'
-echo $url->getHost();      //displays 'www.example.com'
-echo $url->getPort();      //displays 81 as an integer
-echo $url->getAuthority(); //displays 'foo:bar@www.example.com:81'
-echo $url->getPath();      //displays '/how/are/you'
-echo $url->getQuery();     //displays 'foo=baz'
-echo $url->getFragment();  //displays 'title'
+echo $url->getScheme();    // displays 'http'
+echo $url->getUserInfo();  // displays 'foo:bar'
+echo $url->getHost();      // displays 'www.example.com'
+echo $url->getPort();      // displays 81 as an integer
+echo $url->getAuthority(); // displays 'foo:bar@www.example.com:81'
+echo $url->getPath();      // displays '/how/are/you'
+echo $url->getQuery();     // displays 'foo=baz'
+echo $url->getFragment();  // displays 'title'
 ~~~
 
 ### Parts and components as objects
@@ -73,13 +73,13 @@ To access a specific URL part or component as an object you can use the magic me
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-$url->scheme;   //returns a League\Url\Scheme object
-$url->userInfo; //returns a League\Url\UserInfo object
-$url->host;     //returns a League\Url\Host object
-$url->port;     //returns a League\Url\Port object
-$url->path;     //returns a League\Url\Path object
-$url->query;    //returns a League\Url\Query object
-$url->fragment; //returns a League\Url\Fragment object
+$url->scheme;   // returns a League\Url\Scheme object
+$url->userInfo; // returns a League\Url\UserInfo object
+$url->host;     // returns a League\Url\Host object
+$url->port;     // returns a League\Url\Port object
+$url->path;     // returns a League\Url\Path object
+$url->query;    // returns a League\Url\Query object
+$url->fragment; // returns a League\Url\Fragment object
 ~~~
 
 Using this technique you can get even more informations regarding a URL.
@@ -105,10 +105,10 @@ An URL is considered absolute if it has a non empty scheme component and an auth
 use League\Url\Url;
 
 $url = Url:createFromUrl('//example.com/foo');
-$url->isAbsolute(); //returns false
+$url->isAbsolute(); // returns false
 
 $url = Url:createFromUrl('ftp://example.com/foo');
-$url->isAbsolute(); //returns true
+$url->isAbsolute(); // returns true
 ~~~
 
 ### Does the URL uses the standard port ?
@@ -122,12 +122,12 @@ If the standard port defined for a specific scheme is used it will be remove fro
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://example.com:8042/over/there');
-$url->hasStandardPort(); //returns false
-echo $url->getPort();    //displays 8042;
+$url->hasStandardPort(); // returns false
+echo $url->getPort();    // displays 8042;
 
 $alt_url = Url::createFromUrl('wss://example.com:443/over/there');
 $alt_url->hasStandardPort(); // returns true
-echo $url->getPort();        //displays null; the Port number is automatically dropped
+echo $url->getPort();        // displays null; the Port number is automatically dropped
 ~~~
 
 ### Does URLs refers to the same resource/location
@@ -138,9 +138,10 @@ This method compares the two objects according to their respective `__toString` 
 
 ~~~php
 use League\Url\Url;
+use GuzzleHttp\Psr7\Uri;
 
-$url1 = Url::createFromUrl('http://www.example.com:80/hello/world');
-$url2 = Url::createFromUrl('http://www.example.com/hello/world');
+$leagueUrl = Url::createFromUrl('http://www.example.com:80/hello/world');
+$guzzleUrl = new Uri('http://www.example.com/hello/world');
 
-$url1->sameValueAs($url2); //return true
+$leagueUrl->sameValueAs($guzzleUrl); // return true
 ~~~

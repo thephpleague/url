@@ -78,10 +78,10 @@ Each class provides several ways to represent the component value as string.
 
 ### String representation
 
-Returns the string representation of the URL component. This is the form used when echoing the URL component from its getter methods. No component delimiter is returned.
+The `Component::__toString` method returns the string representation of the URL part. This is the form used when echoing the URL component from the `League\Url\Url` getter methods. No component delimiter is returned.
 
 ~~~php
-use League\Url\Url;
+use League\Url;
 
 $scheme = new Url\Scheme('http');
 echo $scheme->__toString(); //displays 'http'
@@ -95,7 +95,7 @@ echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 
 ### URL-like representation
 
-Returns the string representation of the URL component with its optional delimiters. This is the form used by the `Url::__toString` method when building the URL string representation.
+The `Component::getUriComponent` Returns the string representation of the URL part with its optional delimiters. This is the form used by the `Url::__toString` method when building the URL string representation.
 
 ~~~php
 use League\Url;
@@ -132,15 +132,15 @@ $host1->sameValueAs($url);
 
 ## Component modification
 
-Each URL component class can have its content modified using the `withValue` method. This method expects a string or an object with the `__toString` method.
+Each URL component class can have its content modified using the `modify` method. This method expects a string or an object with the `__toString` method.
 
-<p class="message-warning">Because the <code>UserInfo</code> class represent a URL part it does not include a <code>withValue</code> method.</p>
+<p class="message-warning">Because the <code>UserInfo</code> class represent a URL part it does not include a <code>modify</code> method.</p>
 
 ~~~php
 use League\Url;
 
 $query     = new Url\Query('q=url&site=thephpleague');
-$new_query = $query->withValue('q=yolo');
+$new_query = $query->modify('q=yolo');
 echo $new_query; //displays 'q=yolo'
 echo $query();   //display 'q=url&site=thephpleague'
 ~~~

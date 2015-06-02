@@ -16,7 +16,6 @@ These non destructives rules are:
 - scheme and host components are lowercased;
 - query, path, fragment components are URL encoded;
 - the port number is removed from the URL object if the standard port is used;
-- if no host is present, the user information part and the port are removed from the URL object;
 
 ~~~php
 use League\Url\Url;
@@ -60,14 +59,23 @@ Since every update returns an instance of `League\Url\Url`, you can chain each s
 
 ## Partial URL components modifications
 
-Often what you really want is to partially update the URL component. Using the current public API it is possible but requires boilerplate code. To ease these operations various modifying methods where added. Each method is presented independently but keep in mind that:
+Often what you really want is to partially update the URL component. Using the current public API it is possible but requires boilerplate code. For instance here's how you would update the query string from a given URL object:
 
-- The [facade pattern](http://en.wikipedia.org/wiki/Facade_pattern
-) is used to integrate specific components modifying methods. They accept the same arguments and work the same but instead of returning a specific component object, their return a `League\Url\Url` object.
+~~~php
+$url         = Url::createFromUrl('http://www.example.com//the/sky.php?foo=toto#~typo');
+$urlQuery    = $url->query;
+$updateQuery = $urlQuery->merge(['foo' => 'bar', 'taz' => '']);
+$newUrl      = $url->withQuery($updateQuery);
+echo $newUrl; // display http://www.example.com//the/sky.php?foo=bar&taz#~typo
+~~~
+
+To ease these operations various modifying methods where added. Each method is presented independently but keep in mind that:
+
+- The proxy pattern is used to integrate specific components modifying methods. They accept the same arguments and work the same but instead of returning a specific component object, their return a `League\Url\Url` object.
 
 - You can chain them as they all return an instance of `League\Url\Url`.
 
-- You can get more informations on how the method works by following the link to the method referenced.
+- You can get more informations on how the method works by following the link to the method proxied.
 
 ### Modifying URL query parameters
 
@@ -82,7 +90,7 @@ echo $newUrl->getQuery();
 
 `Url::mergeQuery` is a proxy to [League\Url\Query::merge](/dev-master/components/query/#add-or-update-parameters).
 
-#### Remove query parameters
+#### Remove query values
 
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');

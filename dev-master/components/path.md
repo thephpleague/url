@@ -5,7 +5,7 @@ title: The Path component
 
 # The Path component
 
-The library proves a `League\Url\Path` class to ease complex path manipulation.
+The library provides a `League\Url\Path` class to ease complex path manipulation.
 
 ## Path creation
 

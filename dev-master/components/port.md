@@ -5,7 +5,7 @@ title: The Port component
 
 # The Port component
 
-The library proves a `League\Url\Port` class to ease port manipulation.
+The library provides a `League\Url\Port` class to ease port manipulation.
 
 ## Port creation
 
