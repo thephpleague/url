@@ -22,7 +22,7 @@ $empty_Scheme = new Scheme();
 echo $empty_Scheme; //display ''
 ~~~
 
-<p class="message-warning">If the submitted value is not a valid Scheme number an <code>InvalidArgumentException</code> will be thrown.</p>
+<p class="message-warning">If the submitted value is not a valid scheme or is an unsupported scheme an <code>InvalidArgumentException</code> will be thrown.</p>
 
 ### Using a League\Url\Url object
 
@@ -47,9 +47,6 @@ $scheme->getStandardPorts(); //returns the equivalent of [new Port(80)];
 
 $scheme = new Scheme('svn+ssh');
 $scheme->getStandardPorts(); //returns the equivalent of [new Port(22)];
-
-$scheme = new Scheme('yolo');
-$scheme->getStandardPorts(); //returns [];
 ~~~
 
 If you only interested in knowing if a given port is standard you can simply call the `Schme::hasStandardPort` method which takes a Port number or a League\Url\Port object as its unique argument. The method returns a boolean.
