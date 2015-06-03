@@ -11,7 +11,7 @@ The library provides a `League\Url\Path` class to ease complex path manipulation
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Path` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Path` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Path;

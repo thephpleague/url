@@ -92,7 +92,7 @@ No key indexes is added and the query string is safely recreated
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Query` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Query` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Query;

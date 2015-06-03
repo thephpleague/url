@@ -9,7 +9,7 @@ The library provides a `League\Url\Port` class to ease port manipulation.
 
 ## Port creation
 
-Just like any other component, a new `League\Url\Port` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Port` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Port;
@@ -86,4 +86,4 @@ $empty_port = new Port();
 $empty_port->toInt(); //returns null
 ~~~
 
-To [compare](/dev-master/components/overview/#components-comparison) or [manipulate](/dev-master/components/overview/#components-modification) the port object you should refer to the component overview section.
+To [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the port object you should refer to the component overview section.

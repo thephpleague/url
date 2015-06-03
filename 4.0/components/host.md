@@ -11,7 +11,7 @@ The library provides a `League\Url\Host` class to ease complex host manipulation
 
 ### Using the default constructor
 
-A new `League\Url\Host` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
+A new `League\Url\Host` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Host;

@@ -9,7 +9,7 @@ The library provides a `League\Url\Scheme` class to ease scheme manipulation.
 
 ## Scheme creation
 
-Just like any other component, a new `League\Url\Scheme` object can be instantiated using [the default constructor](/dev-master/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Scheme` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
 use League\Url\Scheme;
@@ -37,7 +37,7 @@ $scheme = $url->scheme; // $scheme is a League\Url\Scheme object;
 
 ### Scheme Standard Ports
 
-When one or more ports are usually used in association with a specific scheme it is called standard. To get a list of those standard ports, you can call the `Scheme::getStandardPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port will be return as an array of [League\Url\Port](/dev-master/components/port/) objects.
+When one or more ports are usually used in association with a specific scheme it is called standard. To get a list of those standard ports, you can call the `Scheme::getStandardPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port will be return as an array of [League\Url\Port](/4.0/components/port/) objects.
 
 ~~~php
 use League\Url\Scheme;
@@ -61,4 +61,4 @@ $scheme = new Scheme('svn+ssh');
 $scheme->hasStandardPort(80); //returns false
 ~~~
 
-To [output](/dev-master/components/overview/#components-string-representations), [compare](/dev-master/components/overview/#components-comparison) or [manipulate](/dev-master/components/overview/#components-modification) the Scheme object you should refer to the component overview section.
+To [output](/4.0/components/overview/#components-string-representations), [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the Scheme object you should refer to the component overview section.

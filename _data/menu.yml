@@ -1,23 +1,23 @@
-'dev-master':
+'4.0':
     Getting Started:
-        Introduction: '/dev-master/'
-        Installation: '/dev-master/installation/'
-        Simple example: '/dev-master/examples/'
-        Terminology: '/dev-master/definitions/'
+        Introduction: '/4.0/'
+        Installation: '/4.0/installation/'
+        Simple example: '/4.0/examples/'
+        Terminology: '/4.0/definitions/'
     Url:
-        Instantiation: '/dev-master/url/instantiation/'
-        Properties: '/dev-master/url/properties/'
-        Manipulation: '/dev-master/url/manipulation/'
+        Instantiation: '/4.0/url/instantiation/'
+        Properties: '/4.0/url/properties/'
+        Manipulation: '/4.0/url/manipulation/'
     Url Parts API:
-        Overview: '/dev-master/components/overview/'
-        Scheme: '/dev-master/components/scheme/'
-        User Information: '/dev-master/components/userinfo/'
-        Host: '/dev-master/components/host/'
-        Port: '/dev-master/components/port/'
-        Path: '/dev-master/components/path/'
-        Query: '/dev-master/components/query/'
+        Overview: '/4.0/components/overview/'
+        Scheme: '/4.0/components/scheme/'
+        User Information: '/4.0/components/userinfo/'
+        Host: '/4.0/components/host/'
+        Port: '/4.0/components/port/'
+        Path: '/4.0/components/path/'
+        Query: '/4.0/components/query/'
     Services:
-        Formatter: '/dev-master/services/formatter/'
+        Formatter: '/4.0/services/formatter/'
 '3.0':
     Getting Started:
         Introduction: '/3.0/'

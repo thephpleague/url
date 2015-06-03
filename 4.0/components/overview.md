@@ -151,9 +151,9 @@ Since we are using immutable value objects, the source component is not modified
 
 The methods describe above work on all type of URL parts but for more complex parts/component care has be taken to provide more useful methods to interact with their values. Additional methods and properties were added to the following classes:
 
-* `League\Url\Scheme` which deals with [the scheme component](/dev-master/components/scheme/);
-* `League\Url\Host` which deals with [the host component](/dev-master/components/host/);
-* `League\Url\Port` which deals with [the port component](/dev-master/components/port/);
-* `League\Url\Path` which deals with [the path component](/dev-master/components/path/);
-* `League\Url\Query` which deals with [the query component](/dev-master/components/query/);
-* `League\Url\UserInfo` which deals with [the URL user information part](/dev-master/components/userinfo/);
+* `League\Url\Scheme` which deals with [the scheme component](/4.0/components/scheme/);
+* `League\Url\Host` which deals with [the host component](/4.0/components/host/);
+* `League\Url\Port` which deals with [the port component](/4.0/components/port/);
+* `League\Url\Path` which deals with [the path component](/4.0/components/path/);
+* `League\Url\Query` which deals with [the query component](/4.0/components/query/);
+* `League\Url\UserInfo` which deals with [the URL user information part](/4.0/components/userinfo/);

@@ -93,7 +93,7 @@ $url->fragment->isEmpty(); //returns true because to fragment component is empty
 $url->path->getBasename(); //returns 'you';
 ~~~
 
-To get more informations about component properties refer to the [components documentation](/dev-master/components/overview/)
+To get more informations about component properties refer to the [components documentation](/4.0/components/overview/)
 
 ## URL properties
 
