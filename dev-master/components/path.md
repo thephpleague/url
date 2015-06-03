@@ -95,6 +95,24 @@ $path->__toString();      //return '/path/to%20the/sky'
 $path->getUriComponent(); //return '/path/to%20the/sky'
 ~~~
 
+The path string representation may vary depending on its context, when used standalone or in a URL string. The `Path::getUriComponent` enable these other representation using two optional arguments:
+
+- the `context` argument tell in which context we are using two constants `Path::PATH_AS_STANDALONE` and `Path::PATH_AS_URLPART`
+- the `has_authority_part` argument is used to inform the path about the presence or the absence of an authority part in the URL using a boolean.
+
+By default the context is set to `Path::PATH_AS_STANDALONE` and the second optional argument is set to `false`
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('path/to the/sky');
+$path->getUriComponent(); //return 'path/to%20the/sky'
+$path->getUriComponent(Path::PATH_AS_URLPART, true); //return '/path/to%20the/sky'
+
+$anotherPath = new Path();
+$anotherPath->getUriComponent(Path::PATH_AS_URLPART, true); //return ''
+~~~
+
 ### Array representation
 
 A path can be represented as an array of its internal segments. Through the use of the `Path::toArray` method the class returns the object array representations.

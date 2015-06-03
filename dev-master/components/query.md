@@ -143,13 +143,7 @@ use League\Url\Query;
 $query = new Query('foo=bar&p=y+olo&z=');
 $query->__toString();      //return 'foo=bar&p=y%20olo&z'
 $query->getUriComponent(); //return '?foo=bar&p=y%20olo&z'
-$query->format('&amp;', PHP_QUERY_RFC3986);  //return '?foo=bar&amp;p=y%20olo&z'
 ~~~
-
-The added `Query::format` method helps you format your query differently. The method accepts two parameters:
-
-- `$separator` which is the query separator sequence;
-- `$enc_type` which is the query encoding mechanism. This parameter expects one of PHP query constants (ie: `PHP_QUERY_RFC3986` or the older `PHP_QUERY_RFC1738`).
 
 ### Array representation
 
