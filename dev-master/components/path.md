@@ -192,7 +192,7 @@ The method returns the value of a specific offset. If the offset does not exists
 
 ### The basename
 
-To ease working with path you can get directly the trailing segment of a Path object by using the `Path::getBasename` method, this method takes no argument. If the segment ends in suffix, the suffix is included.
+To ease working with path you can get the trailing segment of a Path object by using the `Path::getBasename` method, this method takes no argument. If the segment ends in suffix, the suffix is included.
 
 ~~~php
 use League\Url\Path;
@@ -216,6 +216,18 @@ $path->getBasename(); // returns ''
 
 $path = new Path('/path/to/file.csv');
 $path->getExtension(); // return 'csv';
+~~~
+
+### The dirname
+
+Conversely, you can get the path dirname by using the `Path::getDirname` method, this method takes no argument. This methods works like PHP's `dirname` function.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky');
+$path->getBasename(); // returns 'sky'
+$path->getDirname(); // returns '/path/to/the'
 ~~~
 
 ## Path normalization
