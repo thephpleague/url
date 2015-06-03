@@ -95,12 +95,12 @@ $path->__toString();      //return '/path/to%20the/sky'
 $path->getUriComponent(); //return '/path/to%20the/sky'
 ~~~
 
-The path string representation may vary depending on its context, when used standalone or in a URL string. The `Path::getUriComponent` enable these other representation using two optional arguments:
+The path string representation may vary depending on its context, when used standalone or in a URL string. The `Path::getUriComponent` enable these other representations using two optional arguments:
 
-- the `context` argument tell in which context we are using two constants `Path::PATH_AS_STANDALONE` and `Path::PATH_AS_URLPART`
-- the `has_authority_part` argument is used to inform the path about the presence or the absence of an authority part in the URL using a boolean.
+- the `$context` argument selects the context using two constants `Path::PATH_AS_STANDALONE` and `Path::PATH_AS_URLPART`
+- the `$has_authority_part` argument informs the path about the presence or absence of an authority part in the URL using a boolean when `Path::PATH_AS_URLPART` is used.
 
-By default the context is set to `Path::PATH_AS_STANDALONE` and the second optional argument is set to `false`
+By default `context` is set to `Path::PATH_AS_STANDALONE` and `has_authority_part` to `false`
 
 ~~~php
 use League\Url\Path;

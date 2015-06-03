@@ -116,7 +116,7 @@ $query = $url->query; // $query is a League\Url\Query object;
 
 ### Using a named constructor
 
-It is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method. The resulting array must be compatible with the static method `Query::build`.
+It is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method. The submitted data must provide an array which preserved key/value pairs similar to the result of `Query::parse`.
 
 - If a given parameter value is `null` it will be rendered without any value in the resulting query string;
 - If a given parameter value is an empty string il will be rendered without any value **but** with a `=` sign appended to it;
