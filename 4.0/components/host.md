@@ -203,10 +203,10 @@ echo $host->toUnicode(); // output 'مثال.إختبار'   //the object output
 echo Url::createFromServer($_SERVER)->host->toUnicode(); //output the IDN version
 ~~~
 
-If you are only interested in encoding or decoding a host label using the punycode algorithm. The `Host` class provide the following static methods:
+If you are only interested in encoding or decoding a host label using the punycode algorithm, the `Host` class provides the following static methods:
 
-- `Host::encodeLabel` which will encode an valid hostname label into its punycode representation
-- `Host::decodeLabel` which will decode a punycode encoded hostname into its original unicode representation.
+- `Host::encodeLabel`: encode a hostname label into its punycode representation
+- `Host::decodeLabel`: decode a punycode encoded label into its original unicode representation.
 
 ~~~php
 use League\Url;
