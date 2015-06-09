@@ -9,6 +9,21 @@ The library provides a `League\Url\Scheme` class to ease scheme manipulation.
 
 ## Scheme creation
 
+### Is the submitted scheme supported
+
+To know beforehand if a scheme is supported by the library you can use the `Scheme::isSupported` static method like shown below:
+
+~~~php
+use League\Url\Scheme;
+
+Scheme::isSupported('Http'); //returns true;
+Scheme::isSupported('yolo'); //returns false;
+~~~
+
+For instance, following the above example, trying to create a `League\Url\Scheme` **or** a `League\Url\Url` object using the `yolo` scheme will throw an `InvalidArgumentException` exception.
+
+### Using the default constructor
+
 Just like any other component, a new `League\Url\Scheme` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
