@@ -68,7 +68,7 @@ $res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
 // $res equals foo[][0]=bar&oo[][1]=baz
 ~~~
 
-The `Query::build` static method returns an preserve string representation of the query string from the `Query::parse` array result. the method expects at most 3 arguments:
+The `Query::build` static method returns and preserve string representation of the query string from the `Query::parse` array result. the method expects at most 3 arguments:
 
 - A valid `array` of data to convert;
 - The query string separator, by default it is set to `&`;
