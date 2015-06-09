@@ -43,7 +43,7 @@ $url = Url::createFromComponents($components);
 
 ## From its default constructor
 
-If you already have a all components as object that implements the package interfaces, you can directly instantiate a new `League\Url\Url` object from them.
+If you already have all the URLs components as object that implements the package interfaces, you can directly instantiate a new `League\Url\Url` object from them.
 
 ~~~php
 use League\Url\Url;

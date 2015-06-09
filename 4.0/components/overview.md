@@ -25,7 +25,7 @@ userinfo    host     port
 
 The userinfo part is composed of the `user` and the `pass` components.
 
-Apart from the authority part, each component and part of an URL is manageable by a dedicated class:
+Apart from the authority part, each component and part of an URL is manageable through a dedicated class:
 
 - The `League\Url\Scheme` class represents the URL scheme component;
 - The `League\Url\UserInfo` class represents the URL userinfo part;
@@ -40,9 +40,9 @@ Those classes share common methods to view and update their values. And just lik
 
 ## URL part instantiation
 
-Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986 or a Object with a `__toString()` method. If the value is invalid an `InvalidArgumentException` is thrown.
+Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986 or an object with a `__toString()` method. If the value is invalid an `InvalidArgumentException` exception is thrown.
 
-<p class="message-warning">No component delimiter should be submitted to the class constructors as they will be interpreted as part of the component value.</p>
+<p class="message-warning">No component delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
 
 ~~~php
 use League\Url;
@@ -142,7 +142,7 @@ use League\Url;
 $query     = new Url\Query('q=url&site=thephpleague');
 $new_query = $query->modify('q=yolo');
 echo $new_query; //displays 'q=yolo'
-echo $query();   //display 'q=url&site=thephpleague'
+echo $query;     //display 'q=url&site=thephpleague'
 ~~~
 
 Since we are using immutable value objects, the source component is not modified instead a modified copy of the original object is returned.

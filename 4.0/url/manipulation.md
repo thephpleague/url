@@ -9,11 +9,12 @@ title: Manipulating URL
 
 ## URL normalization
 
-Out of the box the package normalize any given URL according to the non destructive rules of RFC3986.
+Out of the box the package normalizes any given URL according to the non destructive rules of RFC3986.
 
 These non destructives rules are:
 
 - scheme and host components are lowercased;
+- host component is encoded using the punycode algorithm if needed
 - query, path, fragment components are URL encoded;
 - the port number is removed from the URL object if the standard port is used;
 
@@ -38,7 +39,7 @@ echo $newUrl; //displays 'http://www.example.com/hello/p#~toto'
 
 ## Complete URL components and parts modifications
 
-To completely replace one of the URL part you can do so easily using the `Psr\Http\Message\UriInterface` interface modifying methods expose by the object
+To completely replace one of the URL part you can use the `Psr\Http\Message\UriInterface` interface modifying methods exposed by the object
 
 ~~~php
 use League\Url\Url;
@@ -59,7 +60,7 @@ Since every update returns an instance of `League\Url\Url`, you can chain each s
 
 ## Partial URL components modifications
 
-Often what you really want is to partially update the URL component. Using the current public API it is possible but requires boilerplate code. For instance here's how you would update the query string from a given URL object:
+Often what you really want is to partially update on of the URL component. Using the current public API it is possible but requires boilerplate code. For instance here's how you would update the query string from a given URL object:
 
 ~~~php
 $url         = Url::createFromUrl('http://www.example.com//the/sky.php?foo=toto#~typo');
@@ -69,12 +70,10 @@ $newUrl      = $url->withQuery($updateQuery);
 echo $newUrl; // display http://www.example.com//the/sky.php?foo=bar&taz#~typo
 ~~~
 
-To ease these operations various modifying methods where added. Each method is presented independently but keep in mind that:
+To ease these operations various modifying methods were added. Each method is presented independently but keep in mind that:
 
-- The methods arguments are proxied to a specific component modifying methods but instead of returning the specific component object, their return a `League\Url\Url` object.
-
-- You can chain them as they all return an instance of `League\Url\Url`.
-
+- The methods return a `League\Url\Url` object. So you can chain them to simplify URL manipulation.
+- The methods arguments are proxied to a specific component modifying methods.
 - You can get more informations on how the method works by following the link to the method proxied.
 
 ### Modifying URL query parameters
@@ -88,7 +87,7 @@ echo $newUrl->getQuery();
 //display 'foo=bar&taz'
 ~~~
 
-`Url::mergeQuery` is a proxy to [League\Url\Query::merge](/4.0/components/query/#add-or-update-parameters).
+`Url::mergeQuery` is a proxy for [League\Url\Query::merge](/4.0/components/query/#add-or-update-parameters).
 
 #### Remove query values
 
@@ -99,7 +98,7 @@ echo $newUrl->getQuery();
 //display 'p=y%20olo'
 ~~~
 
-`Url::withoutQueryValues` is a proxy to [League\Url\Query::without](/4.0/components/query/#remove-parameters).
+`Url::withoutQueryValues` is a proxy for [League\Url\Query::without](/4.0/components/query/#remove-parameters).
 
 #### Filter query
 
@@ -113,7 +112,7 @@ echo $newUrl->getQuery();
 //will update the query string by removing all array-like parameters
 ~~~
 
-`Url::filterQuery` is a proxy to [League\Url\Query::filter](/4.0/components/query/#filter-the-query).
+`Url::filterQuery` is a proxy for [League\Url\Query::filter](/4.0/components/query/#filter-the-query).
 
 ### Modifying URL path segments
 
@@ -126,7 +125,7 @@ echo $newUrl->getPath();
 //display /path/to/the/sky.php/foo/bar
 ~~~
 
-`Url::appendPath` is a proxy to [League\Url\Path::append](/4.0/components/path/#append-segments).
+`Url::appendPath` is a proxy for [League\Url\Path::append](/4.0/components/path/#append-segments).
 
 #### Prepend path segments
 
@@ -137,7 +136,7 @@ echo $newUrl->getPath();
 //display /foo/bar/path/to/the/sky.php
 ~~~
 
-`Url::prependPath` is a proxy to [League\Url\Path::prepend](/4.0/components/path/#prepend-segments).
+`Url::prependPath` is a proxy for [League\Url\Path::prepend](/4.0/components/path/#prepend-segments).
 
 #### Replace a path segment
 
@@ -148,7 +147,7 @@ echo $newUrl->getPath();
 //display /foo/bar/to/the/sky.php
 ~~~
 
-`Url::replaceSegment` is a proxy to [League\Url\Path::replace](/4.0/components/path/#replace-segments).
+`Url::replaceSegment` is a proxy for [League\Url\Path::replace](/4.0/components/path/#replace-segments).
 
 #### Remove path segments
 
@@ -159,7 +158,7 @@ echo $newUrl->getPath();
 //display /the/sky.php
 ~~~
 
-`Url::withoutSegments` is a proxy to [League\Url\Path::without](/4.0/components/path/#remove-segments).
+`Url::withoutSegments` is a proxy for [League\Url\Path::without](/4.0/components/path/#remove-segments).
 
 #### Filter the path
 
@@ -172,7 +171,7 @@ echo $newUrl->getPath();
 //display /sky.php
 ~~~
 
-`Url::filterPath` is a proxy to [League\Url\Path::filter](/4.0/components/path/#filter-segments).
+`Url::filterPath` is a proxy for [League\Url\Path::filter](/4.0/components/path/#filter-segments).
 
 #### Remove dot segments
 
@@ -183,7 +182,7 @@ echo $newUrl->getPath();
 //display /to/the/sky/
 ~~~
 
-`Url::withoutDotSegments` is a proxy to [League\Url\Path::withoutDotSegments](/4.0/components/path/#removing-dot-segments).
+`Url::withoutDotSegments` is a proxy for [League\Url\Path::withoutDotSegments](/4.0/components/path/#removing-dot-segments).
 
 #### Remove internal empty segments
 
@@ -194,7 +193,7 @@ echo $newUrl->getPath();
 //display /path/to/the/sky/
 ~~~
 
-`Url::withoutEmptySegments` is a proxy to [League\Url\Path::withoutEmptySegments](/4.0/components/path/#removing-empty-segments).
+`Url::withoutEmptySegments` is a proxy for [League\Url\Path::withoutEmptySegments](/4.0/components/path/#removing-empty-segments).
 
 #### Update the path extension
 
@@ -205,7 +204,7 @@ echo $newUrl->getPath();
 //display /path/to/the/sky.csv
 ~~~
 
-`Url::withExtension` is a proxy to [League\Url\Path::withExtension](/4.0/components/path/#path-extension-manipulation).
+`Url::withExtension` is a proxy for [League\Url\Path::withExtension](/4.0/components/path/#path-extension-manipulation).
 
 ### Modifying URL host labels
 
@@ -218,7 +217,7 @@ echo $newUrl->getHost();
 //display example.com.be
 ~~~
 
-`Url::appendHost` is a proxy to [League\Url\Host::append](/4.0/components/host/#append-labels).
+`Url::appendHost` is a proxy for [League\Url\Host::append](/4.0/components/host/#append-labels).
 
 #### Prepend host labels
 
@@ -229,7 +228,7 @@ echo $newUrl->getHost();
 //display shop.www.example.com
 ~~~
 
-`Url::prependHost` is a proxy to [League\Url\Host::prepend](/4.0/components/host/#prepend-labels).
+`Url::prependHost` is a proxy for [League\Url\Host::prepend](/4.0/components/host/#prepend-labels).
 
 #### Replace a host label
 
@@ -240,7 +239,7 @@ echo $newUrl->getHost();
 //display www.thephpleague.com
 ~~~
 
-`Url::replaceLabel` is a proxy to [League\Url\Host::replace](/4.0/components/host/#replace-label).
+`Url::replaceLabel` is a proxy for [League\Url\Host::replace](/4.0/components/host/#replace-label).
 
 #### Remove host labels
 
@@ -251,7 +250,7 @@ echo $newUrl->getHost();
 //display example.com
 ~~~
 
-`Url::withoutLabels` is a proxy to [League\Url\Host::without](/4.0/components/host/#remove-labels).
+`Url::withoutLabels` is a proxy for [League\Url\Host::without](/4.0/components/host/#remove-labels).
 
 #### Filter the host
 
@@ -265,4 +264,4 @@ echo $newUrl->getHost();
 //will keep all labels which do not contain the word 'shop'
 ~~~
 
-`Url::filterHost` is a proxy to [League\Url\Host::filter](/4.0/components/host/#filter-labels).
+`Url::filterHost` is a proxy for [League\Url\Host::filter](/4.0/components/host/#filter-labels).

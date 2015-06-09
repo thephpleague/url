@@ -37,7 +37,7 @@ $scheme = $url->scheme; // $scheme is a League\Url\Scheme object;
 
 ### Scheme Standard Ports
 
-When one or more ports are usually used in association with a specific scheme it is called standard. To get a list of those standard ports, you can call the `Scheme::getStandardPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port will be return as an array of [League\Url\Port](/4.0/components/port/) objects.
+When one or several ports are associated to a specific scheme (through their RFCs) the port is called standard. To get a list of those standard ports, you can call the `Scheme::getStandardPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port will be return as an array of [League\Url\Port](/4.0/components/port/) objects.
 
 ~~~php
 use League\Url\Scheme;

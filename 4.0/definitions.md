@@ -5,7 +5,6 @@ title: URLs as Value Objects
 
 # Terminology
 
-
 The League URL package models <abbr title="Uniform Resource Locator">URLs</abbr> and URLs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
 
 ## Value Objects
