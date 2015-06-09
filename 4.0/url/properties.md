@@ -97,6 +97,24 @@ To get more informations about component properties refer to the [components doc
 
 ## URL properties
 
+### Is the URL empty ?
+
+An URL can have a empty string representation even if some components or URL parts are not.
+
+~~~php
+use League\Url\Url;
+
+$url = Url:createFromUrl('//example.com:82');
+$url->getPort(); // returns 82
+$url->getHost(); // returns 'example.com'
+$url->isEmpty(); // returns false
+
+$newUrl = $url->withHost('');
+$newUrl->getPort(); // returns 82
+$newUrl->getHost(); // returns ''
+$newUrl->isEmpty(); // returns true
+~~~
+
 ### Is the URL absolute ?
 
 An URL is considered absolute if it has a non empty scheme component and an authority part.
