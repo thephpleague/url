@@ -66,3 +66,5 @@ $url = new Url(
 //where $query is a League\Interfaces\Query interface
 //where $fragment is a League\Url\Fragment object
 ~~~
+
+<p class="message-warning">If the submitted value can not return a new instance a <code>InvalidArgumentException</code> exception will be thrown.</p>
