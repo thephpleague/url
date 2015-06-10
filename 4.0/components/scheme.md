@@ -9,19 +9,6 @@ The library provides a `League\Url\Scheme` class to ease scheme manipulation.
 
 ## Scheme creation
 
-### Is the submitted scheme supported
-
-To know beforehand if a scheme is supported by the library you can use the `Scheme::isSupported` static method like shown below:
-
-~~~php
-use League\Url\Scheme;
-
-Scheme::isSupported('Http'); //returns true;
-Scheme::isSupported('yolo'); //returns false;
-~~~
-
-For instance, following the above example, trying to create a `League\Url\Scheme` **or** a `League\Url\Url` object using the `yolo` scheme will throw an `InvalidArgumentException` exception.
-
 ### Using the default constructor
 
 Just like any other component, a new `League\Url\Scheme` object can be instantiated using its default constructor.
@@ -49,6 +36,67 @@ use League\Url\Url;
 $url  = Url::createFromUrl('http://url.thephpleague.com/');
 $scheme = $url->scheme; // $scheme is a League\Url\Scheme object;
 ~~~
+
+### Is the submitted scheme supported
+
+To know beforehand if a scheme is supported by the library you can use the `Scheme::isSupported` static method like shown below:
+
+~~~php
+use League\Url\Scheme;
+
+Scheme::isSupported('Http'); //returns true;
+Scheme::isSupported('yolo'); //returns false;
+~~~
+
+For instance, following the above example, trying to create a `League\Url\Scheme` **or** a `League\Url\Url` object using the `yolo` scheme will throw an `InvalidArgumentException` exception.
+
+### Loading additional schemes
+
+Ouf of the box the library supports the following standard schemes:
+
+- http, https (HTTP protocols)
+- ftp, ftps, (FTP protocols)
+- ws, wss (websocket)
+- file (legacy)
+- ssh
+
+ But you can easily extends the number of supported protocols by calling the static method `Scheme::loadDefinitions` as shown below:
+
+~~~php
+use League\Url\Scheme;
+
+Scheme::loadDefinitions(['yolo' => [8080, 2020]]);
+
+Scheme::isSupported('Http'); //returns true;
+Scheme::isSupported('yolo'); //returns true;
+~~~
+
+This way you have registered the `yolo` scheme and its standard port and the `yolo` protocol is now available to use with the library.
+
+To be registrabable a scheme and his associated standard ports must be valid according to RFC3986 rules otherwise a `InvalidArgumentException` exception will be thrown.
+
+You can registered a scheme without associating it with a port by supplying an empty array.
+
+~~~php
+use League\Url\Scheme;
+
+Scheme::loadDefinitions(['yolo' => []]);
+
+$scheme = new Scheme('yolo');
+~~~
+
+You can registered multiple schemes in one call.
+
+~~~php
+use League\Url\Scheme;
+
+Scheme::loadDefinitions([
+    'yolo' => [8080],
+    'foo' => [125, 8961],
+    'bar' => [80]
+]);
+~~~
+
 
 ## Scheme Properties
 
