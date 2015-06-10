@@ -11,7 +11,7 @@ The library provides a `League\Url\Host` class to ease complex host manipulation
 
 ### Using the default constructor
 
-A new `League\Url\Host` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
+A new `League\Url\Host` object can be instantiated using the default constructor.
 
 ~~~php
 use League\Url\Host;
@@ -36,6 +36,8 @@ echo $ipv6_alt; //display '[::1]'
 
 ### Using a League\Url\Url object
 
+You can also get a `Host` object from an `League\Url\Url` class:
+
 ~~~php
 use League\Url\Url;
 
@@ -50,13 +52,13 @@ A host is a collection of labels delimited by the host delimiter `.`. So it is p
 The method expects at most 2 arguments:
 
 - The first required argument must be a collection of label (an `array` or a `Traversable` object)
-- The second optional argument, a PHP constants, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not:
-    - `Host::IS_ABSOLUTE` the created object will be a FQDN;
-    - `Host::IS_RELATIVE` the created object will be a relative domain name;
+- The second optional argument, a `Host` constant, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not:
+    - `Host::IS_ABSOLUTE` creates an object with a FQDN;
+    - `Host::IS_RELATIVE` creates an object with a relative domain name;
 
-By default this optional argument equals `Host::IS_RELATIVE`.
+By default this optional argument equals to `Host::IS_RELATIVE`.
 
-<p class="message-warning">Since an IP is not a domain name, the class will throw an <code>InvalidArgumentException</code> if you try to create an IP hostname as a FQDN.</p>
+<p class="message-warning">Since an IP is not a hostname, the class will throw an <code>InvalidArgumentException</code> if you try to create an FQDN hostname with a valid IP address.</p>
 
 ~~~php
 use League\Url\Host;
@@ -64,19 +66,19 @@ use League\Url\Host;
 $host = Host::createFromArray(['shop', 'example', 'com']);
 echo $host; //display 'shop.example.com'
 
-$fqdn = Host::createFromArray(['shop', 'example', 'com'], true);
+$fqdn = Host::createFromArray(['shop', 'example', 'com'], Host::IS_ABSOLUTE);
 echo $fqdn; //display 'shop.example.com.'
 
 $ip_host = Host::createFromArray(['127.0', '0.1']);
 echo $ip_host; //display '127.0.0.1'
 
-Host::createFromArray(['127.0', '0.1'], true);
+Host::createFromArray(['127.0', '0.1'], Host::IS_ABSOLUTE);
 //throws InvalidArgumentException
 ~~~
 
 ## Normalization
 
-Whenever you create a new host. You submitted data is normalized using non desctructive operations:
+Whenever you create a new host your submitted data is normalized using non desctructive operations:
 
 - the host is lowercased;
 - the bracket are added if you are instantiating a IPV6 Host;
@@ -94,12 +96,12 @@ echo $ipv6; //display '[::1]'
 
 ## Host types
 
-### IP address or registered name
+### IP address or hostname
 
 There are two type of host:
 
 - Hosts represented by an IP;
-- Hosts represented by a host names;
+- Hosts represented by a hostname;
 
 To determine what type of host you are dealing with the `Host` class provides the `isIp` method:
 
@@ -219,7 +221,7 @@ echo Url\Host::decodeLabel('xn--bb-23'), PHP_EOL; //display 'xn--bb-23'
 
 ### Array representation
 
-A host can be divided into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
+A host can be exploded into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
 
 <p class="message-warning">Once in array representation you can not distinguish a simple from a fully qualified domain name.</p>
 
@@ -240,7 +242,7 @@ $arr = $host->toArray(); // returns  ['::1'];
 
 ### Countable and IteratorAggregate
 
-The class provides several methods to works with its labels. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of labels and use the `foreach` construct to iterate overs them.
+The class provides several methods to works with its labels. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of labels and use the `foreach` construct to iterate over them.
 
 ~~~php
 $host = new Host('secure.example.com');
@@ -252,7 +254,7 @@ foreach ($host as $offset => $label) {
 
 ### Label offsets
 
-If you are interested in getting all the label offsets you can do so using the `Host::offsets` method like show below:
+If you are interested in getting all the label offsets you can do so using the `Host::offsets` method like shown below:
 
 ~~~php
 use League\Url\Host;
@@ -265,7 +267,7 @@ $host->offsets('gweta'); // returns [];
 
 The methods returns all the label offsets, but if you supply an argument, only the offsets whose label value equals the argument are returned.
 
-If you want to be sure that an offset exists before using it you can do so using the `Host::hasOffset` method which returns `true` if the submitted `$offset` exists in the current object.
+To know If an offset exists before using it you can use the `Host::hasOffset` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
 
 ~~~php
 use League\Url\Host;
@@ -288,7 +290,7 @@ $host->getLabel(23); //returns null
 $host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
-The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument.
+The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument or `null`.
 
 ## Modifying the host
 
@@ -300,40 +302,40 @@ The method returns the value of a specific offset. If the offset does not exists
 
 <p class="message-warning">Trying to append to or with an IP host will throw an <code>InvalidArgumentException</code></p>
 
-To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
-
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendHost</code></p>
+To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Host` object:
 
 ~~~php
 use League\Url\Host;
 
 $host    = new Host();
-$newHost = $host->append('toto')->append('example.com');
+$newHost = $host->append('toto')->append(new Host('example.com'));
 $newHost->__toString(); //returns toto.example.com
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendHost</code></p>
 
 ### Prepend labels
 
 <p class="message-warning">Trying to prepend to or with an IP Host will throw an <code>InvalidArgumentException</code></p>
 
-To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
-
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependHost</code></p>
+To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string, an object which implements the `__toString` method or another `Host` object:
 
 ~~~php
 use League\Url\Host;
 
 $host    = new Host();
-$newHost = $host->prepend('example.com')->prepend('toto');
+$newHost = $host->prepend('example.com')->prepend(new Host('toto'));
 $newHost->__toString(); //returns toto.example.com
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependHost</code></p>
 
 ### Replace label
 
 To replace a label with your own data, you must use the `Host::replace` method with the following arguments:
 
 - `$offset` which represents the label's offset to remove if it exists.
-- `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
+- `$data` which represents the data to be inject. This data can be a string, an object which implements the `__toString` method or another `Host` object.
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceLabel</code></p>
 
@@ -347,11 +349,11 @@ $newHost->__toString(); //returns bar.baz.example.com
 
 ### Remove labels
 
-To remove labels from the current object and returns a new `Host` object without the removed labels you can use the `Host::without` method. This methods expected a single argument.
+To remove labels from the current object you can use the `Host::without` method. This methods expected a single argument and will returns a new `Host` object without the selected labels.
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutLabels</code></p>
 
-This argument can be an array containing a list of parameter names to remove.
+The argument can be an array containing a list of offsets to remove.
 
 ~~~php
 use League\Url\Host;
@@ -375,9 +377,7 @@ echo $newHost; //displays 'example.com';
 
 ### Filter labels
 
-Another way to select labels from the host object is to filter them.
-
-You can filter the host according to its labels using the `Host::filter` method.
+You can filter the `Host` object using the `Host::filter` method.
 
 The first parameter must be a `callable`
 
@@ -396,7 +396,7 @@ By specifying the second argument flag you can change how filtering is done:
 - use `Host::FILTER_USE_VALUE` to filter according to the label value;
 - use `Host::FILTER_USE_KEY` to filter according to the label offset;
 
-By default, if no flag is specified the method will filter by value.
+By default, if no flag is specified the method will use the `Host::FILTER_USE_VALUE` flag.
 
 ~~~php
 use League\Url\Host;

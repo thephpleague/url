@@ -5,16 +5,16 @@ title: The User Information part
 
 # The User Information part
 
-The library provides a `League\Url\UserInfo` class to ease User Information manipulation.
+The library provides a `League\Url\UserInfo` class to ease interacting with the user information URL part.
 
 ## Instantiation
 
 The constructor expects 2 optional arguments. The first argument describes the user login and the latter the user password information.
 
 ~~~php
-use League\Url\UserInfo;
+use League\Url;
 
-$info = new UserInfo('foo', 'bar');
+$info = new Url\UserInfo('foo', 'bar');
 echo $scheme; //display 'foo:bar'
 
 $empty_info = new UserInfo();
@@ -92,6 +92,21 @@ $url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
 $url->userInfo->user->__toString(); //returns 'john'
 $url->userInfo->pass->__toString(); //returns 'doe'
 ~~~
+
+### User information state
+
+Unlike other URL part, the `UserInfo` part is considered empty if its user property is empty.
+
+~~~php
+use League\Url\UserInfo;
+
+$info = new UserInfo('', 'bar');
+$info->isEmpty(); //returns true
+$info->user->isEmpty(); //return true
+$info->pass->isEmpty(); //return true
+~~~
+
+<p class="message-warning">The password information is automatically removed when the user information is empty</p>
 
 
 ## Modifying the user information

@@ -27,20 +27,24 @@ The userinfo part is composed of the `user` and the `pass` components.
 
 Apart from the authority part, each component and part of an URL is manageable through a dedicated class:
 
-- The `League\Url\Scheme` class represents the URL scheme component;
-- The `League\Url\UserInfo` class represents the URL userinfo part;
-- The `League\Url\Component` class represents the URL user and pass component;
-- The `League\Url\Host` class represents the URL host component;
-- The `League\Url\Port` class represents the URL port component;
-- The `League\Url\Path` class represents the URL path component;
-- The `League\Url\Query` class represents the URL query component;
-- The `League\Url\Fragment` class represents the URL fragment component;
+- The `League\Url\Scheme` class handles the URL scheme component;
+- The `League\Url\UserInfo` class handles the URL userinfo part;
+- The `League\Url\Component` class handles the URL user and pass components;
+- The `League\Url\Host` class handles the URL host component;
+- The `League\Url\Port` class handles the URL port component;
+- The `League\Url\Path` class handles the URL path component;
+- The `League\Url\Query` class handles the URL query component;
+- The `League\Url\Fragment` class handles the URL fragment component;
 
-Those classes share common methods to view and update their values. And just like the `League\Url\Url` class, they are defined as immutable value objects.
+Those classes share common methods to view and update their values and just like the `League\Url\Url` class, they are defined as immutable value objects.
 
 ## URL part instantiation
 
-Each component class can be instantiated independently from the main `League\Url\Url` object. They all expect a valid string according to their component validation rules as explain in RFC3986 or an object with a `__toString()` method. If the value is invalid an `InvalidArgumentException` exception is thrown.
+Each component class can be instantiated independently from the main `League\Url\Url` object.
+
+They all expect a valid string according to their component validation rules as explain in RFC3986 or an object with a `__toString()` method.
+
+<p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
 
 <p class="message-warning">No component delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
 
@@ -149,11 +153,11 @@ Since we are using immutable value objects, the source component is not modified
 
 ## Complex Url parts
 
-The methods describe above work on all type of URL parts but for more complex parts/component care has be taken to provide more useful methods to interact with their values. Additional methods and properties were added to the following classes:
+For more complex parts/components care has be taken to provide more useful methods to interact with their values. Additional methods and properties were added to the following classes:
 
-* `League\Url\Scheme` which deals with [the scheme component](/4.0/components/scheme/);
-* `League\Url\Host` which deals with [the host component](/4.0/components/host/);
-* `League\Url\Port` which deals with [the port component](/4.0/components/port/);
-* `League\Url\Path` which deals with [the path component](/4.0/components/path/);
-* `League\Url\Query` which deals with [the query component](/4.0/components/query/);
-* `League\Url\UserInfo` which deals with [the URL user information part](/4.0/components/userinfo/);
+* `League\Url\Scheme` which handles [the scheme component](/4.0/components/scheme/);
+* `League\Url\UserInfo` which handles [the URL user information part](/4.0/components/userinfo/);
+* `League\Url\Host` which handles [the host component](/4.0/components/host/);
+* `League\Url\Port` which handles [the port component](/4.0/components/port/);
+* `League\Url\Path` which handles [the path component](/4.0/components/path/);
+* `League\Url\Query` which handles [the query component](/4.0/components/query/);

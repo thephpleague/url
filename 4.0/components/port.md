@@ -9,7 +9,7 @@ The library provides a `League\Url\Port` class to ease port manipulation.
 
 ## Port creation
 
-Just like any other component, a new `League\Url\Port` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Port` object can be instantiated using its default constructor.
 
 ~~~php
 use League\Url\Port;
@@ -28,10 +28,12 @@ echo $empty_port; //display ''
 
 ### Using a League\Url\Url object
 
-~~~php
-use League\Url\Url;
+Another way to acces to `League\Url\Port` is to use a already instantiated `League\Url\Url` object.
 
-$url  = Url::createFromUrl('http://url.thephpleague.com:82');
+~~~php
+use League\Url;
+
+$url  = Url\Url::createFromUrl('http://url.thephpleague.com:82');
 $port = $url->port; // $port is a League\Url\Port object;
 ~~~
 

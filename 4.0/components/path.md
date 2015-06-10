@@ -11,7 +11,7 @@ The library provides a `League\Url\Path` class to ease complex path manipulation
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Path` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Path` object can be instantiated using its default constructor.
 
 ~~~php
 use League\Url\Path;
@@ -44,7 +44,7 @@ A path is a collection of segment delimited by the path delimiter `/`. So it is 
 The method expects at most 2 arguments:
 
 - The first required argument must be a collection of segments (an `array` or a `Traversable` object)
-- The second optional argument, a PHP constants, tells whether this is rootless path or not:
+- The second optional argument, a Path constant, tells whether this is rootless path or not:
     - `Path::IS_ABSOLUTE`: the created object will represent an absolute path;
     - `Path::IS_RELATIVE`: the created object will represent a rootless path;
 
@@ -134,7 +134,7 @@ foreach ($path as $offset => $segment) {
 
 ### Segment offsets
 
-If you are interested in getting all the segments offsets you can do so using the `Path::offsets` method like show below:
+If you are interested in getting all the segments offsets you can do so using the `Path::offsets` method like shown below:
 
 ~~~php
 use League\Url\Path;
@@ -147,7 +147,7 @@ $path->offsets('gweta'); // returns [];
 
 The methods returns all the segments offsets, but if you supply an argument, only the offsets whose segment value equals the argument are returned.
 
-If you want to be sure that an offset exists before using it you can do so using the `Path::hasOffset` method which returns `true` if the submitted `$offset` exists in the current object.
+To know If an offset exists before using it you can use the `Path::hasOffset` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
 
 ~~~php
 use League\Url\Path;
@@ -188,7 +188,7 @@ $alt_path->getBasename(); // returns 'sky.html'
 
 ### The basename extension
 
-If you are only interested in getting the basename extension, you can directly call the `Path::getBasename` method, this method takes no argument. The method return the trailign segment extension as a string if present or an empty string. The leading `.` delimiter is removed from the method output.
+If you are only interested in getting the basename extension, you can directly call the `Path::getExtension` method, this method takes no argument. The method return the trailign segment extension as a string if present or an empty string. The leading `.` delimiter is removed from the method output.
 
 ~~~php
 use League\Url\Path;
@@ -268,20 +268,21 @@ use League\Url\Path;
 
 $path    = new Path('/path/to/the/sky');
 $newPath = $path->withExtension('.csv');
-echo $newPath; //displays /path/to/the/sky.csv;
+echo $newPath->getExtension(); //displays csv;
+echo $path->getExtension(); //displays '';
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withExtension</code></p>
 
 ### Append segments
 
-To append segments to the current object you need to use the `Path::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string or an object with the `__toString` method.
+To append segments to the current object you need to use the `Path::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
 
 ~~~php
 use League\Url\Path;
 
 $path    = new Path();
-$newPath = $path->append('path')->append('to/the/sky');
+$newPath = $path->append(new Path('path'))->append('to/the/sky');
 $newPath->__toString(); //returns path/to/the/sky
 ~~~
 
@@ -289,7 +290,7 @@ $newPath->__toString(); //returns path/to/the/sky
 
 ### Prepend segments
 
-To prepend segments to the current path you need to use the `Path::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string or an object with the `__toString` method.
+To prepend segments to the current path you need to use the `Path::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
 
 ~~~php
 use League\Url\Path;
@@ -305,8 +306,8 @@ $newPath->__toString(); // returns path/to/the/sky
 
 To replace a segment with your own data, you must use the `Path::replace` method with the following arguments:
 
-- `$offset` which represents the label's offset to remove if it exists.
-- `$data` which represents the data to be inject. This data can be a string or an object with the `__toString` method.
+- `$offset` which represents the segment offset to remove if it exists.
+- `$data` which represents the data to be inject.  This data can be a string, an object which implements the `__toString` method or another `Path` object.
 
 ~~~php
 use League\Url\Path;
@@ -348,9 +349,7 @@ echo $newPath; //displays '/sky';
 
 ### Filter segments
 
-Another way to select segments from the path object is to filter them.
-
-You can filter the path according to its segments using the `Path::filter` method.
+You can filter the `Path` object using the `Path::filter` method.
 
 The first parameter must be a `callable`
 
@@ -369,7 +368,7 @@ By specifying the second argument flag you can change how filtering is done:
 - use `Path::FILTER_USE_VALUE` to filter according to the segment value;
 - use `Path::FILTER_USE_KEY` to filter according to the segment offset;
 
-By default, if no flag is specified the method will filter by value.
+By default, if no flag is specified the method will use the `Path::FILTER_USE_VALUE` flag.
 
 ~~~php
 use League\Url\Path;

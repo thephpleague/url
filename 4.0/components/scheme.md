@@ -24,7 +24,7 @@ For instance, following the above example, trying to create a `League\Url\Scheme
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Scheme` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
+Just like any other component, a new `League\Url\Scheme` object can be instantiated using its default constructor.
 
 ~~~php
 use League\Url\Scheme;
@@ -40,6 +40,8 @@ echo $empty_Scheme; //display ''
 <p class="message-warning">If the submitted value is not a valid scheme or is an unsupported scheme an <code>InvalidArgumentException</code> will be thrown.</p>
 
 ### Using a League\Url\Url object
+
+Another way to acces to `League\Url\Scheme` is to use a already instantiated `League\Url\Url` object.
 
 ~~~php
 use League\Url\Url;
@@ -76,4 +78,4 @@ $scheme = new Scheme('svn+ssh');
 $scheme->hasStandardPort(80); //returns false
 ~~~
 
-To [output](/4.0/components/overview/#components-string-representations), [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the Scheme object you should refer to the component overview section.
+To [output](/4.0/components/overview/#components-string-representations), [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the `Scheme` object you should refer to the component overview section.
