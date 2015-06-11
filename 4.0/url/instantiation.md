@@ -68,3 +68,14 @@ $url = new Url(
 ~~~
 
 <p class="message-warning">If the submitted value can not return a new instance a <code>InvalidArgumentException</code> exception will be thrown.</p>
+
+## Limitations
+
+Ouf of the box the library supports the following standard schemes:
+
+- http, https (HTTP protocols)
+- ftp, ftps, (FTP protocols)
+- ws, wss (websockets)
+- file (legacy)
+
+If you try to instantiate a `League\Url\Url` object with another scheme an InvalidArgumentException exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/components/scheme/#scheme-registration-system)

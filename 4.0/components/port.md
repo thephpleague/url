@@ -51,8 +51,8 @@ use League\Url\Port;
 $port = new Port(80);
 $port->getStandardSchemes(); //returns the equivalent of [new Scheme('http'), new Scheme('ws')];
 
-$port = new Port(22);
-$port->getStandardSchemes(); //returns [new Scheme('ssh')];
+$port = new Port(433);
+$port->getStandardSchemes(); //returns [new Scheme('https')];
 
 $port = new Port(324);
 $port->getStandardSchemes(); //returns [];
