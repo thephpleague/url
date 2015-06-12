@@ -35,7 +35,7 @@ $url  = Url::createFromUrl('http://url.thephpleague.com/');
 $scheme = $url->scheme; // $scheme is a League\Url\Scheme object;
 ~~~
 
-<p class="message-warning">If the submitted value is not a valid scheme or is an unregisterd scheme an <code>InvalidArgumentException</code> will be thrown.</p>
+<p class="message-warning">If the submitted value is not a valid scheme or is an removed scheme an <code>InvalidArgumentException</code> will be thrown.</p>
 
 ## Scheme Properties
 
@@ -71,7 +71,7 @@ Ouf of the box the library supports the following schemes:
 - ws, wss (websockets)
 - the empty scheme (which is a pseudo scheme)
 
-### Registering additional schemes
+### Registering new schemes
 
 To extend the number of supported scheme use a modified `League\Url\Utilities\SchemeRegistry` object as the second argument of the scheme contructor method like shown below:
 
@@ -140,9 +140,9 @@ $registry->has('Http'); //returns true;
 $registry->has('yolo'); //returns true;
 ~~~
 
-### Unregistered a scheme
+### Unregistering a scheme
 
-At any given time you can unregistered an additional scheme using the `SchemeRegistry::remove` method like shown below:
+At any given time you can removeed an additional scheme using the `SchemeRegistry::remove` method like shown below:
 
 ~~~php
 use League\Url\Utilities\SchemeRegistry
@@ -150,7 +150,7 @@ use League\Url\Utilities\SchemeRegistry
 $registry = new SchemeRegistry();
 $registry->add('yOlo', 8080);
 $registry->has('yolo'); //returns true;
-$registry->unRegister('yolo');
+$registry->remove('yolo');
 $registry->has('yolo'); //returns false;
 ~~~
 
@@ -170,4 +170,4 @@ $url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
 $altRegistry = $url->scheme->getSchemeRegistry();
 // $altRegistry is equals but is not the same as $registry
 ~~~
-<p class="message-notice">To preserve the <code>Scheme</code> immutability the method returns a copy of the <code>SchemeRegistry</code> object.</p>
+<p class="message-notice">To preserve the <code>Scheme</code> immutability the method returns a copy of the internal <code>SchemeRegistry</code> object.</p>
