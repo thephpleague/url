@@ -78,4 +78,15 @@ Ouf of the box the library supports the following standard schemes:
 - ws, wss (websockets)
 - file (legacy)
 
-If you try to instantiate a `League\Url\Url` object with another scheme an InvalidArgumentException exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/components/scheme/#scheme-registration-system)
+If you try to instantiate a `League\Url\Url` object with another scheme an InvalidArgumentException exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/components/scheme/#scheme-registration-system) and add an optional `League\Url\Utilities\SchemeRegistry` object as the second parameter of the named constructors.
+
+
+~~~php
+use League\Url\Url;
+use League\Url\Utilities\SchemeRegistry;
+
+$registry = new SchemeRegistry();
+$registry->register('ssh', 22);
+$components = parse_url('ssh://foo.example.com');
+$url = Url::createFromComponents($components, $registry);
+~~~

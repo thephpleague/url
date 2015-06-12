@@ -69,20 +69,35 @@ Ouf of the box the library supports the following standard schemes:
 - http, https (HTTP protocols)
 - ftp, ftps, (FTP protocols)
 - ws, wss (websockets)
-- file (legacy)
+- the empty scheme (which is a pseudo scheme)
 
 ### Registering additional schemes
 
-If you still want to use the library with other schemes, you can easily extends the number of supported protocols by calling the static method `Scheme::register` as shown below:
+If you want to use the library with other schemes, you can easily extends the number of supported protocols by using the `League\Url\Utilities\SchemeRegistry` class in the Scheme contructor like shown below:
 
 ~~~php
+League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
 use League\Url\Url;
 
-Scheme::register('yOlo', 8080);
-$scheme = Scheme('yolo'); //will now works
+$registry = new SchemeRegistry(['yolo' => 8080]);
+$scheme = new Scheme('yolo', $registry); //will now works
 $scheme->getStandardPorts(); //return [8080]
-$url = Url::createFromUrl('yolo:/path/to/heaven'); //will now works
+$url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
+~~~
+
+If you already have a SchemeRegistry object you can add additionals schemes using its `register` method:
+
+~~~php
+League\Url\Utilities\SchemeRegistry
+use League\Url\Scheme;
+use League\Url\Url;
+
+$registry = new SchemeRegistry();
+$registry->register('yOlo', 8080);
+$scheme = new Scheme('yolo', $registry); //will now works
+$scheme->getStandardPorts(); //return [8080]
+$url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
 ~~~
 
 - The first required argument must be a valid scheme.
@@ -91,20 +106,26 @@ $url = Url::createFromUrl('yolo:/path/to/heaven'); //will now works
 If the scheme or the port are invalid a `InvalidArgumentException` exception will be thrown.
 
 ~~~php
+League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
+use League\Url\Url;
 
-Scheme::register('yólo');     //throw a InvalidArgumentException
-Scheme::register('yolo', -1); //throw a InvalidArgumentException
+$registry = new SchemeRegistry();
+$registry->register('yólo');     //throw a InvalidArgumentException
+$registry->register('yolo', -1); //throw a InvalidArgumentException
 ~~~
 
 You can registered multiple standard ports for a given scheme.
 
 ~~~php
+League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
+use League\Url\Url;
 
-Scheme::register('yOlo', 8080);
-Scheme::register('yolo', 8020);
-$scheme = Scheme('yolo');
+$registry = new SchemeRegistry();
+$registry->register('yOlo', 8080);
+$registry->register('yolo', 8020);
+$scheme = Scheme('yolo', $registry);
 $scheme->getStandardPorts(); //return [8020, 8080]
 ~~~
 
@@ -113,35 +134,40 @@ $scheme->getStandardPorts(); //return [8020, 8080]
 To know beforehand if a scheme is registered by the library you can use the `Scheme::isRegistered` static method like shown below:
 
 ~~~php
-use League\Url\Scheme;
+League\Url\Utilities\SchemeRegistry
 
-Scheme::isRegistered('Http'); //returns true;
-Scheme::isRegistered('yolo'); //returns false;
+$registry = new SchemeRegistry();
+$registry->has('Http'); //returns true;
+$registry->has('yolo'); //returns false;
 ~~~
 
 For instance, following the above example, trying to create a `League\Url\Scheme` **or** a `League\Url\Url` object using the `yolo` scheme will throw an `InvalidArgumentException` exception.
 
 ~~~php
+League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
+use League\Url\Url;
 
-Scheme::register('yOlo', 8080);
-Scheme::isRegistered('Http'); //returns true;
-Scheme::isRegistered('yolo'); //returns true;
+$registry = new SchemeRegistry();
+$registry->register('yOlo', 8080);
+$registry->has('Http'); //returns true;
+$registry->has('yolo'); //returns true;
 ~~~
-
-Conversely, once registered the `yolo` scheme becomes available for both objects.
 
 ### Unregistered a scheme
 
 At any given time you can unregistered an additional scheme using the `Scheme::unRegister` static method like shown below:
 
 ~~~php
+League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
+use League\Url\Url;
 
-Scheme::register('yOlo', 8080);
-Scheme::isRegistered('yolo'); //returns true;
-Scheme::unRegister('yolo');
-Scheme::isRegistered('yolo'); //returns false;
+$registry = new SchemeRegistry();
+$registry->register('yOlo', 8080);
+$registry->has('yolo'); //returns true;
+$registry->unRegister('yolo');
+$registry->has('yolo'); //returns false;
 ~~~
 
 <p class="message-warning">The registration system <strong>can not modify</strong> the default schemes. Attempt to modify them will result in an <code>InvalidArgumentException</code> being thrown.</p>
