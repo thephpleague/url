@@ -37,27 +37,6 @@ $url  = Url\Url::createFromUrl('http://url.thephpleague.com:82');
 $port = $url->port; // $port is a League\Url\Port object;
 ~~~
 
-## Port properties
-
-### Standard ports
-
-When one or more ports are in association with a specific scheme it is called a standard port. To get a list of schemes for which the given Port object is standard you can call the `Port::getStandardSchemes` method.
-
-This method which take no argument returns an array containing a list of `League\Url\Scheme` objects. The array is empty if no scheme is found or if the information is unknown to the package.
-
-~~~php
-use League\Url\Port;
-
-$port = new Port(80);
-$port->getStandardSchemes(); //returns the equivalent of [new Scheme('http'), new Scheme('ws')];
-
-$port = new Port(433);
-$port->getStandardSchemes(); //returns [new Scheme('https')];
-
-$port = new Port(324);
-$port->getStandardSchemes(); //returns [];
-~~~
-
 ## Port representations
 
 ### String representation

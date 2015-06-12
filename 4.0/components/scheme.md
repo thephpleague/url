@@ -64,41 +64,30 @@ To [output](/4.0/components/overview/#components-string-representations), [compa
 
 ## Scheme registration system
 
-Ouf of the box the library supports the following standard schemes:
+Ouf of the box the library supports the following schemes:
 
-- http, https (HTTP protocols)
 - ftp, ftps, (FTP protocols)
+- http, https (HTTP protocols)
 - ws, wss (websockets)
 - the empty scheme (which is a pseudo scheme)
 
 ### Registering additional schemes
 
-If you want to use the library with other schemes, you can easily extends the number of supported protocols by using the `League\Url\Utilities\SchemeRegistry` class in the Scheme contructor like shown below:
+To extend the number of supported scheme use a modified `League\Url\Utilities\SchemeRegistry` object as the second argument of the scheme contructor method like shown below:
 
 ~~~php
-League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
 use League\Url\Url;
-
-$registry = new SchemeRegistry(['yolo' => 8080]);
-$scheme = new Scheme('yolo', $registry); //will now works
-$scheme->getStandardPorts(); //return [8080]
-$url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
-~~~
-
-If you already have a SchemeRegistry object you can add additionals schemes using its `register` method:
-
-~~~php
-League\Url\Utilities\SchemeRegistry
-use League\Url\Scheme;
-use League\Url\Url;
+use League\Url\Utilities\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->register('yOlo', 8080);
+$registry->add('yolo', 8080);
 $scheme = new Scheme('yolo', $registry); //will now works
 $scheme->getStandardPorts(); //return [8080]
 $url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
 ~~~
+
+The `SchemeRegistry::add` method add a new scheme definition using the following arguments:
 
 - The first required argument must be a valid scheme.
 - The second optional argument is the standard port associated to it if it exists.
@@ -107,31 +96,28 @@ If the scheme or the port are invalid a `InvalidArgumentException` exception wil
 
 ~~~php
 League\Url\Utilities\SchemeRegistry
-use League\Url\Scheme;
-use League\Url\Url;
 
 $registry = new SchemeRegistry();
-$registry->register('yólo');     //throw a InvalidArgumentException
-$registry->register('yolo', -1); //throw a InvalidArgumentException
+$registry->add('yólo');     //throw a InvalidArgumentException
+$registry->add('yolo', -1); //throw a InvalidArgumentException
 ~~~
 
 You can registered multiple standard ports for a given scheme.
 
 ~~~php
-League\Url\Utilities\SchemeRegistry
 use League\Url\Scheme;
-use League\Url\Url;
+use League\Url\Utilities\SchemeRegistry
 
 $registry = new SchemeRegistry();
-$registry->register('yOlo', 8080);
-$registry->register('yolo', 8020);
-$scheme = Scheme('yolo', $registry);
+$registry->add('yOlo', 8080);
+$registry->add('yolo', 8020);
+$scheme = new Scheme('yolo', $registry);
 $scheme->getStandardPorts(); //return [8020, 8080]
 ~~~
 
 ### Is the scheme registered
 
-To know beforehand if a scheme is registered by the library you can use the `Scheme::isRegistered` static method like shown below:
+To know beforehand if a scheme is registered by the library you can use the `SchemeRegistry::has` method like shown below:
 
 ~~~php
 League\Url\Utilities\SchemeRegistry
@@ -143,31 +129,45 @@ $registry->has('yolo'); //returns false;
 
 For instance, following the above example, trying to create a `League\Url\Scheme` **or** a `League\Url\Url` object using the `yolo` scheme will throw an `InvalidArgumentException` exception.
 
+This will not be the case with the example below:
+
 ~~~php
 League\Url\Utilities\SchemeRegistry
-use League\Url\Scheme;
-use League\Url\Url;
 
 $registry = new SchemeRegistry();
-$registry->register('yOlo', 8080);
+$registry->add('yOlo', 8080);
 $registry->has('Http'); //returns true;
 $registry->has('yolo'); //returns true;
 ~~~
 
 ### Unregistered a scheme
 
-At any given time you can unregistered an additional scheme using the `Scheme::unRegister` static method like shown below:
+At any given time you can unregistered an additional scheme using the `SchemeRegistry::remove` method like shown below:
 
 ~~~php
-League\Url\Utilities\SchemeRegistry
-use League\Url\Scheme;
-use League\Url\Url;
+use League\Url\Utilities\SchemeRegistry
 
 $registry = new SchemeRegistry();
-$registry->register('yOlo', 8080);
+$registry->add('yOlo', 8080);
 $registry->has('yolo'); //returns true;
 $registry->unRegister('yolo');
 $registry->has('yolo'); //returns false;
 ~~~
 
 <p class="message-warning">The registration system <strong>can not modify</strong> the default schemes. Attempt to modify them will result in an <code>InvalidArgumentException</code> being thrown.</p>
+
+### Accessing the SchemeRegistry Object
+
+Since the registry is attached to the `Scheme` object at any given time you can access it using `Scheme:getSchemeRegistry` method.
+
+~~~php
+use League\Url\Url;
+use League\Url\Utilities\SchemeRegistry;
+
+$registry = new SchemeRegistry();
+$registry->add('yolo', 8080);
+$url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
+$altRegistry = $url->scheme->getSchemeRegistry();
+// $altRegistry is equals but is not the same as $registry
+~~~
+<p class="message-notice">To preserve the <code>Scheme</code> immutability the method returns a copy of the <code>SchemeRegistry</code> object.</p>

@@ -63,6 +63,36 @@ echo $query; //displays foo=ba%20&baz=bar
 echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 ~~~
 
+### Extending the Formatter capability by attaching a SchemeRegistry object
+
+Just like the [Scheme component](/4.0/components/scheme/#scheme-registration-system) you can add additional URL support to the formatter by setting a `SchemeRegistry` object.
+
+~~~php
+use League\Url\Output\Formater;
+use League\Url\Utilities\SchemeRegistry;
+
+$registry = new SchemeRegistry();
+$registry->add('yolo', 8080);
+$formatter = new Formatter();
+$formatter->setSchemeRegistry($registry);
+~~~
+
+You can access this registry at any given time using its getter method
+
+~~~php
+use League\Url\Output\Formater;
+use League\Url\Utilities\SchemeRegistry;
+
+$registry = new SchemeRegistry();
+$registry->add('yolo', 8080);
+$formatter = new Formatter();
+$formatter->setSchemeRegistry($registry);
+$altRegistry = $formatter->getSchemeRegistry();
+//$altRegistry and $registry are the same
+~~~
+
+<p class="message-notice">Since the <code>Formatter</code> <strong>is a mutable object</strong> the getter method always return the same object.</p>
+
 ## Using the Formatter with a complete URL
 
 Apart form URL component class, the `Formatter::format` method can modify the string representation of:

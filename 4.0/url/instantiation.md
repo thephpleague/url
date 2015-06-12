@@ -69,24 +69,25 @@ $url = new Url(
 
 <p class="message-warning">If the submitted value can not return a new instance a <code>InvalidArgumentException</code> exception will be thrown.</p>
 
-## Limitations
+## Scheme Limitations
 
-Ouf of the box the library supports the following standard schemes:
+Ouf of the box the library supports the following schemes:
 
-- http, https (HTTP protocols)
 - ftp, ftps, (FTP protocols)
+- http, https (HTTP protocols)
 - ws, wss (websockets)
-- file (legacy)
+- the empty scheme (which is a pseudo scheme)
 
-If you try to instantiate a `League\Url\Url` object with another scheme an InvalidArgumentException exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/components/scheme/#scheme-registration-system) and add an optional `League\Url\Utilities\SchemeRegistry` object as the second parameter of the named constructors.
-
+If you try to instantiate a `League\Url\Url` object with another scheme an InvalidArgumentException exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/components/scheme/#scheme-registration-system) and add an optional `League\Url\Utilities\SchemeRegistry` object as the second parameter of any named constructors.
 
 ~~~php
 use League\Url\Url;
 use League\Url\Utilities\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->register('ssh', 22);
+$registry->add('ssh', 22);
 $components = parse_url('ssh://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 ~~~
+
+In the example above, the SSH scheme is added and the `League\Url\Url` object is correctly instantiated.
