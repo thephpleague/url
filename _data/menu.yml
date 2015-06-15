@@ -18,6 +18,7 @@
         Path: '/4.0/components/path/'
         Query: '/4.0/components/query/'
     Services:
+        Scheme Registration: '/4.0/services/scheme-registration/'
         Formatter: '/4.0/services/formatter/'
 '3.0':
     Getting Started:

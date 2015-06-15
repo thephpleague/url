@@ -78,11 +78,11 @@ Ouf of the box the library supports the following schemes:
 - ws, wss (websockets)
 - the empty scheme (which is a pseudo scheme)
 
-If you try to instantiate a `League\Url\Url` object with another scheme an InvalidArgumentException exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/components/scheme/#scheme-registration-system) and add an optional `League\Url\Utilities\SchemeRegistry` object as the second parameter of any named constructors.
+If you try to instantiate a `League\Url\Url` object with another scheme an `InvalidArgumentException` exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/services/scheme-registration/) via the optional `League\Url\Services\SchemeRegistry` object as the second parameter of any named constructors.
 
 ~~~php
 use League\Url\Url;
-use League\Url\Utilities\SchemeRegistry;
+use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $registry->add('ssh', 22);
@@ -91,3 +91,5 @@ $url = Url::createFromComponents($components, $registry);
 ~~~
 
 In the example above, the SSH scheme is added and the `League\Url\Url` object is correctly instantiated.
+
+For the default constructor, the `SchemeRegistry` object will be loaded using the [Scheme constructor](/4.0/components/scheme/).

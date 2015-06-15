@@ -18,7 +18,7 @@ A host can be output as encoded in ascii or in unicode. By default the formatter
 
 ~~~php
 use League\Url\Host;
-use League\Url\Output\Formatter;
+use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
@@ -38,7 +38,7 @@ A `League\Url\Query` object is by default encoded by following RFC 3986. If you 
 
 ~~~php
 use League\Url\Query
-use League\Url\Output\Formatter;
+use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQueryEncoding(PHP_QUERY_RFC1738);
@@ -53,7 +53,7 @@ echo $formatter->format($query); //displays foo=ba+r&baz=bar
 
 ~~~php
 use League\Url\Query
-use League\Url\Output\Formatter;
+use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');
@@ -65,11 +65,11 @@ echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 
 ### Extending the Formatter capability by attaching a SchemeRegistry object
 
-Just like the [Scheme component](/4.0/components/scheme/#scheme-registration-system) you can add additional URL support to the formatter by setting a `SchemeRegistry` object.
+Just like the [Scheme component](/4.0/components/scheme/) you can add additional scheme support to the formatter using the library [scheme registry system](/4.0/services/scheme-registration/).
 
 ~~~php
-use League\Url\Output\Formater;
-use League\Url\Utilities\SchemeRegistry;
+use League\Url\Services\Formater;
+use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $registry->add('yolo', 8080);
@@ -80,8 +80,8 @@ $formatter->setSchemeRegistry($registry);
 You can access this registry at any given time using its getter method
 
 ~~~php
-use League\Url\Output\Formater;
-use League\Url\Utilities\SchemeRegistry;
+use League\Url\Services\Formater;
+use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $registry->add('yolo', 8080);
@@ -104,7 +104,7 @@ Apart form URL component class, the `Formatter::format` method can modify the st
 
 ~~~php
 use League\Url\Url;
-use League\Url\Output\Formatter;
+use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);

@@ -16,7 +16,7 @@ These non destructives rules are:
 - scheme and host components are lowercased;
 - host component is encoded using the punycode algorithm if needed
 - query, path, fragment components are URL encoded;
-- the port number is removed from the URL object if the standard port is used;
+- the port number is removed from the URL string representation if the standard port is used;
 
 ~~~php
 use League\Url\Url;
