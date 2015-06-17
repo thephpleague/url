@@ -7,9 +7,14 @@ title: The Scheme Registration System
 
 Ouf of the box the library supports the following schemes:
 
-- ftp, ftps, (FTP protocols)
-- http, https (HTTP protocols)
-- ws, wss (websockets)
+- ftp,
+- gopher,
+- http, https
+- ldap, ldaps
+- nntp, snews
+- ssh,
+- ws, wss
+- telnet, wais (websockets)
 - the empty scheme (which is a pseudo scheme)
 
 But sometimes you may want to work with other schemes. The scheme registration system allow you to extends the `League\Url` functionnalities to other schemes.
@@ -26,18 +31,18 @@ use League\Url\Services\SchemeRegistry;
 $registry = new SchemeRegistry();
 $registry->add('yolo', 8080);
 $scheme = new Scheme('yolo', $registry); //will now works
-$registry->getStandardPorts('yolo'); //return [new Port(8080)]
+$registry->getStandardPort('yolo'); //return [new Port(8080)]
 $url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
 ~~~
 
-<p class="message-notice">Once attached to a scheme object, you can no longer alter the <code>SchemeRegistry</code> object.</p>
+<p class="message-notice">Once attached to a Scheme object, you can no longer alter the <code>SchemeRegistry</code> object.</p>
 
 The `SchemeRegistry::add` method add a new scheme definition using the following arguments:
 
 - The first required argument must be a valid scheme.
 - The second optional argument is the standard port associated to it if it exists. It can be expressed as a `League\Url\Port` object, a valid int or an empty string.
 
-If the scheme or the port are invalid a `InvalidArgumentException` exception will be thrown.
+If the scheme or the port are invalid an `InvalidArgumentException` exception will be thrown.
 
 ~~~php
 League\Url\Services\SchemeRegistry
@@ -47,7 +52,7 @@ $registry->add('yólo');     //throw a InvalidArgumentException
 $registry->add('yolo', -1); //throw a InvalidArgumentException
 ~~~
 
-You can registered multiple standard ports for a given scheme.
+If you try to register an already registered scheme an `InvalidArgumentException` exception will be thrown.
 
 ~~~php
 use League\Url\Scheme;
@@ -56,8 +61,6 @@ use League\Url\Services\SchemeRegistry
 $registry = new SchemeRegistry();
 $registry->add('yOlo', 8080);
 $registry->add('yolo', 8020);
-$scheme = new Scheme('yolo', $registry);
-$scheme->getStandardPorts(); //return [8020, 8080]
 ~~~
 
 ### Is the scheme registered
@@ -119,7 +122,7 @@ $altRegistry = $url->scheme->getSchemeRegistry();
 
 ### Scheme Standard Ports
 
-When one or several ports are associated to a specific scheme (through their RFCs) the port is called standard. To get a list of those standard ports, you can call the `SchemeRegistry::getStandardPorts` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port will be return as an array of [League\Url\Port](/4.0/components/port/) objects.
+When one or several ports are associated to a specific scheme (through their RFCs) the port is called standard. To get a list of those standard ports, you can call the `SchemeRegistry::getStandardPort` method. If the default ports are unknown an empty array will be returned. Otherwise a list of found Port will be return as an array of [League\Url\Port](/4.0/components/port/) objects.
 
 ~~~php
 use League\Url\Services\SchemeRegistry
@@ -127,7 +130,7 @@ use League\Url\Services\SchemeRegistry
 $registry = new SchemeRegistry();
 $registry->getStandardPort('http'); //returns [new Port(80)]
 $registry->getStandardPort('yolo'); //will throw an InvalidArgumentException
-                                    //because the scheme yolo is not registered yet
+                                    //because the scheme 'yolo' is not registered yet
 ~~~
 
 If you only interested in knowing if a given port is standard you can simply call the `SchemeRegistry::isStandardPort` method which requires the following arguments:
@@ -146,4 +149,3 @@ $registry->isStandardPort('http', 81); //returns false
 $registry->isStandardPort('yolo', 42); //will throw an InvalidArgumentException
                                        //because the scheme yolo is not registered yet
 ~~~
-

@@ -85,8 +85,8 @@ To get access to the component class you can use the magic `__get` method:
 use League\Url\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
-$info->user; //returns a League\Url\Component class
-$info->user; //returns a League\Url\Component class
+$info->user; //returns a League\Url\User class
+$info->user; //returns a League\Url\Pass class
 
 $url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
 $url->userInfo->user->__toString(); //returns 'john'
@@ -103,11 +103,8 @@ use League\Url\UserInfo;
 $info = new UserInfo('', 'bar');
 $info->isEmpty(); //returns true
 $info->user->isEmpty(); //return true
-$info->pass->isEmpty(); //return true
+$info->pass->isEmpty(); //return false
 ~~~
-
-<p class="message-warning">The password information is automatically removed when the user information is empty</p>
-
 
 ## Modifying the user information
 

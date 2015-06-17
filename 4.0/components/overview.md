@@ -29,7 +29,8 @@ Apart from the authority part, each component and part of an URL is manageable t
 
 - The `League\Url\Scheme` class handles the URL scheme component;
 - The `League\Url\UserInfo` class handles the URL userinfo part;
-- The `League\Url\Component` class handles the URL user and pass components;
+- The `League\Url\User` class handles the URL user components;
+- The `League\Url\Pass` class handles the URL pass components;
 - The `League\Url\Host` class handles the URL host component;
 - The `League\Url\Port` class handles the URL port component;
 - The `League\Url\Path` class handles the URL path component;
@@ -52,8 +53,8 @@ They all expect a valid string according to their component validation rules as 
 use League\Url;
 
 $scheme    = new Url\Scheme('http');
-$user      = new Url\Component('john');
-$pass      = new Url\Component('doe');
+$user      = new Url\User('john');
+$pass      = new Url\Pass('doe');
 $user_info = new Url\UserInfo($user, $pass);
 $host      = new Url\Host('127.0.0.1');
 $port      = new Url\Port(443);
