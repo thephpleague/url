@@ -212,9 +212,9 @@ trait UrlModifier
     /**
      * Convert to an Url object
      *
-     * @param  Url|string $url
+     * @param  Url\Url|string $url
      *
-     * @return Url
+     * @return Url\Url
      */
     protected function convertToUrlObject($url)
     {
