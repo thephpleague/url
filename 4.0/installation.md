@@ -9,6 +9,7 @@ title: Installation
 
 * **PHP >= 5.4.7** but the latest stable version of PHP is recommended;
 * `mbstring` extension;
+* `intl` extension;
 
 ## Composer
 
