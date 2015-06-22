@@ -84,8 +84,7 @@ If you try to instantiate a `League\Url\Url` object with another scheme an `Inva
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = new SchemeRegistry();
-$registry->add('ssh', 22);
+$registry = (new SchemeRegistry())->merge(['ssh' => 22]);
 $components = parse_url('ssh://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 ~~~

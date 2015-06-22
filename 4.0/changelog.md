@@ -14,6 +14,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - A system to manage registration of other schemes using the `SchemeRegistry` Interface.
 - Added default support for the following schemes: `ldap`, `ldaps`, `nntp`, `snews`, `telnet`, `wais`
 - Support for IPv6 zone identifier
+- Intl extension is now required to use the library
 
 ### Remove
 
@@ -21,6 +22,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - `Port::getStandardSchemes`
 - `Scheme::getStandardPort` use the `SchemeRegistry` class to get this information.
 - `Scheme::hasStandardPort` use the `SchemeRegistry` class to get this information.
+- support for `PHP 5.4`
 
 ## 4.0.0-beta.3
 

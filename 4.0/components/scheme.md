@@ -26,10 +26,15 @@ echo $empty_Scheme; //display ''
 
 Ouf of the box the library supports the following schemes:
 
-- ftp, ftps, (FTP protocols)
-- http, https (HTTP protocols)
-- ws, wss (websockets)
-- the empty scheme (which is a pseudo scheme)
+- ftp, ftps
+- file,
+- gopher,
+- http, https
+- ldap, ldaps
+- nntp, snews
+- ssh,
+- ws, wss
+- telnet, wais
 
 If you try to instantiate a scheme object with a different scheme and `InvalidArgumentException` exception will be thrown. To overcome this limitation, the scheme constructor can take an optional second argument which is a `SchemeRegistry` class. Depending on the values the registry object contains you will be able to instantiate other schemes like shown below:
 
@@ -39,8 +44,7 @@ use League\Url\Scheme;
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = new SchemeRegistry();
-$registry->add('yolo');
+$registry = (new SchemeRegistry())->merge(['yolo' => null]);
 $scheme = new Scheme('yolo', $registry); //will now works
 $url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
 ~~~
