@@ -17,7 +17,7 @@ Ouf of the box the library supports the following schemes:
 - ws, wss
 - telnet, wais
 
-But sometimes you may want to extend or restrict the schemes used by the library. To do so the library uses a scheme registration system to help you manage which schemes is allowed. The system est control by the `League\Url\Services\SchemeRegistry` class. This class is a immutable value object so any action that changes the registry state return a new registry. Using this class you:
+But sometimes you may want to extend, restrict or change the supported schemes used by the library. To do so the library uses a scheme registration system to help you manage the allowed schemes. The system is controlled through the use of the `League\Url\Services\SchemeRegistry` class. Once instantiated, this immutable value object can help you:
 
 extend the registry scheme list.
 
@@ -30,7 +30,7 @@ $components = parse_url('ssh://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 ~~~
 
-or restrict the registry scheme list.
+restrict the registry scheme list.
 
 ~~~php
 use League\Url\Url;
@@ -39,13 +39,25 @@ use League\Url\Services\SchemeRegistry;
 $registry = (new SchemeRegistry())>filter(function ($port) {
 	return $port == 80;
 });
-$components = parse_url('https://foo.example.com');
-$url = Url::createFromComponents($components, $registry);
+$url = Url::createFromUrl('https://foo.example.com', $registry);
 //will throw an InvalidArgumentException as only
 // the 'http' and the 'ws' scheme are now supported
 ~~~
 
-The registry class is an optional argument the the Scheme object constructor.
+or create a totally new SchemeRegistry
+
+~~~php
+use League\Url\Url;
+use League\Url\Services\SchemeRegistry;
+
+$registry = new SchemeRegistry(['yolo' => 2020]);
+$components = parse_url('https://foo.example.com');
+$url = Url::createFromComponents($components, $registry);
+// will throw an InvalidArgumentException as only
+// the 'yolo' scheme is now supported
+~~~
+
+Once you have instantiated a registry object you can specify it as an optional argument to the `Url\Scheme` object constructor or one of the `League\Url\Url` named constructor.
 
 ~~~php
 use League\Url\Scheme;
@@ -104,6 +116,20 @@ $registry->toArray();
 
 ## Getting information from the registry
 
+### Countable and IteratorAggregate
+
+The class provides several methods to works with its schemes. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of schemes and use the `foreach` construct to iterate overs them.
+
+~~~php
+use League\Url\Services\SchemeRegistry;
+
+$registry = new SchemeRegistry();
+count($registry); //return 4
+foreach ($registry as $scheme => $port) {
+    //do something meaningful here
+}
+~~~
+
 ### Detecting the scheme
 
 If you only want to know if a particular scheme is registered then you can simply use the `SchemeRegistry::hasOffset` method.
@@ -116,7 +142,9 @@ $registry->hasOffset("yolo"); //returns false
 $registry->hasOffset("wss"); //return true
 ~~~
 
-The "yolo" scheme is not registered by default while the `wss` secure websocket scheme is registered by defaut.
+The `yolo` scheme is not registered by default while the `wss` secure websocket scheme is registered by defaut.
+
+### Listing available schemes
 
 To list all the registered schemes use the `SchemeRegistry::offsets` method. This method will always return an array containing the found scheme as string.
 
@@ -155,7 +183,7 @@ $registry->getPort('http'); //returns [new Port(80)]
 $registry->getPort("yolo"); //throws an InvalidArgumentException
 ~~~
 
-To avoid the exception it is recommended to first issue a `SchemeRegistry::hasOffset` call prior to calling the `SchemeRegistry::getPort` method.
+<p class="message-notice">To avoid the exception it is recommended to first issue a <code>SchemeRegistry::hasOffset</code> call prior to calling the <code>SchemeRegistry::getPort</code> method.</p>
 
 ## Modifying the registry.
 
@@ -163,7 +191,7 @@ To avoid the exception it is recommended to first issue a `SchemeRegistry::hasOf
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-### Add or Update schemes
+### Add or update registered schemes
 
 If you want to add or update the registry you need to use the `SchemeRegistry::merge` method. This method expects a single argument. This argument can be:
 
@@ -230,7 +258,7 @@ $newRegistry->offsets(80); //returns ['http', 'ws'];
 
 ### Filter the registry
 
-Another way to select parameters from the registry is to filter them.
+Another way to reduce the number of scheme from the registry is to filter them.
 
 You can filter the registry according to its scheme or its port using the `SchemeRegistry::filter` method.
 
