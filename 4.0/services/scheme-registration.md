@@ -44,7 +44,7 @@ $url = Url::createFromUrl('https://foo.example.com', $registry);
 // the 'http' and the 'ws' scheme are now supported
 ~~~
 
-or create a totally new SchemeRegistry
+or create a totally new scheme registry
 
 ~~~php
 use League\Url\Url;
@@ -69,11 +69,11 @@ $registry = (new SchemeRegistry())>filter(function ($port) {
 $scheme = new Scheme('http', $registry);
 ~~~
 
-If no $registry object is supplied, a default registry object is instantiated with the default schemes and their standard port attached to the class.
+If no scheme registry object is supplied, a default registry object is instantiated with the default schemes and their standard port attached to the class.
 
 ## Creating the registry
 
-We first need to instantiate a new SchemeRegistry object using its constructor. This method accept on argument which is a array of scheme/standard port pair. Each scheme and pair are syntaxically validated before addition.
+We first need to instantiate a new `SchemeRegistry` object using its constructor. This method accept only one argument which is a array of scheme/standard port pair. Each scheme and pair are syntaxically validated before addition. The schemes are normalized to their lowercase string representation.
 
 ~~~php
 use League\Url\Services\SchemeRegistry;
@@ -92,7 +92,7 @@ $registry = new SchemeRegistry([
 
 By defaut if no array is provided, the registry is instantiated using the default supported schemes.
 
-## Array Representation.
+## Exporting the registry.
 
 If you are interested in getting the full registry data you can use the `SchemeRegistry::toArray` method. The method will return an array of the currently registered scheme/standard port pairs.
 
@@ -112,9 +112,9 @@ $registry->toArray();
 //];
 ~~~
 
-**Of note:** the array is sorted and the scheme normalize to their lowercase string representation.
+<p class="message-info"><strong>Of note:</strong> the array is sorted and the scheme normalize to their lowercase string representation.</p>
 
-## Getting information from the registry
+## Getting informations from the registry
 
 ### Countable and IteratorAggregate
 
