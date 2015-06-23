@@ -73,22 +73,27 @@ $url = new Url(
 
 Ouf of the box the library supports the following schemes:
 
-- ftp, ftps, (FTP protocols)
-- http, https (HTTP protocols)
-- ws, wss (websockets)
-- the empty scheme (which is a pseudo scheme)
+- ftp, ftps
+- file,
+- gopher,
+- http, https
+- ldap, ldaps
+- nntp, snews
+- ssh,
+- ws, wss
+- telnet, wais
 
-If you try to instantiate a `League\Url\Url` object with another scheme an `InvalidArgumentException` exception will be thrown. To overcome this limitation you can use the [Scheme registration system](/4.0/services/scheme-registration/) via the optional `League\Url\Services\SchemeRegistry` object as the second parameter of any named constructors.
+Instantiating a `League\Url\Url` object with an unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provide a [Scheme registration system](/4.0/services/scheme-registration/). You can register a new scheme into the registry object and provide this object as the second parameter of any `League\Url` named constructors.
 
 ~~~php
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())->merge(['ssh' => 22]);
-$components = parse_url('ssh://foo.example.com');
+$registry = (new SchemeRegistry())->merge(['yolo' => 8020]);
+$components = parse_url('yolo://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 ~~~
 
-In the example above, the SSH scheme is added and the `League\Url\Url` object is correctly instantiated.
+In the example above, the `yolo` scheme is added to the scheme registry and the `League\Url\Url` object can be correctly instantiated.
 
-For the default constructor, the `SchemeRegistry` object will be loaded using the [Scheme constructor](/4.0/components/scheme/).
+For the default constructor, the `SchemeRegistry` object is loaded using the [Scheme constructor](/4.0/components/scheme/).

@@ -41,12 +41,10 @@ If you try to instantiate a scheme object with a different scheme and `InvalidAr
 
 ~~~php
 use League\Url\Scheme;
-use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
 $registry = (new SchemeRegistry())->merge(['yolo' => null]);
 $scheme = new Scheme('yolo', $registry); //will now works
-$url = Url::createFromUrl('yolo:/path/to/heaven', $registry); //will now works
 ~~~
 
 Get more informations about the [SchemeRegistry class](/4.0/services/scheme-registration/)

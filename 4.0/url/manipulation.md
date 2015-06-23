@@ -252,6 +252,17 @@ echo $newUrl->getHost();
 
 `Url::withoutLabels` is a facade to simplify the use of [League\Url\Host::without](/4.0/components/host/#remove-labels).
 
+### Remove the host zone identifier
+
+~~~php
+$url = Url::createFromUrl('http://[fe80::1%25eth0-1]/path/to/the/sky.php');
+$newUrl = $url->withoutZoneIdentifier([0]);
+echo $newUrl->getHost();
+//display [fe80::1]
+~~~
+
+`Url::withoutZoneIdentifier` is a facade to simplify the use of [League\Url\Host::withoutZoneIdentifier](/4.0/components/host/#remove-zone-identifier).
+
 #### Filter the host
 
 ~~~php

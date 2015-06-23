@@ -361,6 +361,22 @@ $newHost = $host->without(function ($value) {
 echo $newHost; //displays 'example.com';
 ~~~
 
+### Remove zone identifier
+
+According to [RFC6874](http://tools.ietf.org/html/rfc6874#section-4).
+
+> You **must** remove any ZoneID attached to an outgoing URI, as it has only local significance at the sending host.
+
+To fullfill this requirement, the `Host::withoutZoneIdentifier` method is provided. The method takes not parameter and return a new host instance without its zone identifier, it the host was an IPv6 one with a zone identifier. Otherwise the current instance is returned unchanged.
+
+~~~php
+use League\Url\Host;
+
+$host    = new Host('[fe80::1%25eth0-1]');
+$newHost = $host->withoutZoneIdentifier();
+echo $newHost; //displays '[fe80::1]';
+~~~
+
 ### Filter labels
 
 You can filter the `Host` object using the `Host::filter` method.

@@ -25,8 +25,8 @@ extend the registry scheme list.
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())->merge(['ssh' => 22]);
-$components = parse_url('ssh://foo.example.com');
+$registry = (new SchemeRegistry())->merge(['yolo' => 22]);
+$components = parse_url('yolo://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 ~~~
 
@@ -69,7 +69,7 @@ $registry = (new SchemeRegistry())>filter(function ($port) {
 $scheme = new Scheme('http', $registry);
 ~~~
 
-If no scheme registry object is supplied, a default registry object is instantiated with the default schemes and their standard port attached to the class.
+<p class="message-notice">If no <code>SchemeRegistry</code> object is supplied, a default registry object is instantiated with the default schemes and their standard port attached to the class.</p>
 
 ## Creating the registry
 
@@ -127,6 +127,7 @@ $registry = new SchemeRegistry();
 count($registry); //return 4
 foreach ($registry as $scheme => $port) {
     //do something meaningful here
+    //$port is a Url\Port object
 }
 ~~~
 
@@ -179,7 +180,7 @@ To get the standard port for a given scheme you can use the `SchemeRegistry::get
 use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->getPort('http'); //returns [new Port(80)]
+$registry->getPort('http'); //returns new Port(80)
 $registry->getPort("yolo"); //throws an InvalidArgumentException
 ~~~
 
