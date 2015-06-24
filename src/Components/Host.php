@@ -13,7 +13,7 @@
 namespace League\Url\Components;
 
 use RuntimeException;
-use True\Punycode;
+use TrueBV\Punycode;
 
 /**
  *  A class to manipulate URL Host component
@@ -30,7 +30,7 @@ class Host extends AbstractSegment implements HostInterface
 
     /**
      * Punycode Algorithm Object
-     * @var \True\Punycode
+     * @var Punycode
      */
     protected $punycode;
 
@@ -49,7 +49,7 @@ class Host extends AbstractSegment implements HostInterface
     {
         $this->encoding = mb_internal_encoding();
         if (stripos($this->encoding, 'utf-8') === false) {
-            mb_internal_encoding('utf-8');
+            mb_internal_encoding('UTF-8');
         }
     }
 
@@ -68,7 +68,7 @@ class Host extends AbstractSegment implements HostInterface
      */
     public function __construct($data = null)
     {
-        $this->punycode = new Punycode();
+        $this->punycode = new Punycode('UTF-8');
         parent::__construct($data);
     }
 
@@ -157,10 +157,14 @@ class Host extends AbstractSegment implements HostInterface
         if (! $this->isValidHostLength($data)) {
             $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid hostname, check its length');
-        } elseif (! $this->isValidHostPattern($data)) {
+        }
+
+        if (! $this->isValidHostPattern($data)) {
             $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid host label, check its content');
-        } elseif (! $this->isValidHostLabels($data)) {
+        }
+
+        if (! $this->isValidHostLabels($data)) {
             $this->restoreInternalEncoding();
             throw new RuntimeException('Invalid host label counts, check its count');
         }

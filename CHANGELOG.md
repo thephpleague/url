@@ -2,6 +2,11 @@
 
 All Notable changes to `League\Url` will be documented in this file
 
+## Next - 2015-xx-xx
+
+### Fixed
+- Update `True\Punycode` requirement to 2.0.0 to allow PHP7 support
+
 ## 3.3.2 - 2015-05-13
 
 ### Fixed
