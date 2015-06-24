@@ -135,9 +135,13 @@ abstract class AbstractArray implements IteratorAggregate, Countable
     {
         if (is_null($data)) {
             return array();
-        } elseif ($data instanceof Traversable) {
+        }
+
+        if ($data instanceof Traversable) {
             return iterator_to_array($data);
-        } elseif (self::isStringable($data)) {
+        }
+
+        if (self::isStringable($data)) {
             $data = (string) $data;
             $data = trim($data);
             $data = $callback($data);

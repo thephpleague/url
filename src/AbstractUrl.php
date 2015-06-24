@@ -12,14 +12,6 @@
 */
 namespace League\Url;
 
-use League\Url\Components\Fragment;
-use League\Url\Components\Host;
-use League\Url\Components\Pass;
-use League\Url\Components\Path;
-use League\Url\Components\Port;
-use League\Url\Components\Query;
-use League\Url\Components\Scheme;
-use League\Url\Components\User;
 use RuntimeException;
 
 /**
@@ -33,56 +25,56 @@ abstract class AbstractUrl implements UrlInterface
     /**
     * Scheme
     *
-    * @var \League\Url\Components\Scheme
+    * @var Components\Scheme
     */
     protected $scheme;
 
     /**
     * User
     *
-    * @var \League\Url\Components\User
+    * @var Components\User
     */
     protected $user;
 
     /**
     * Pass
     *
-    * @var \League\Url\Components\Pass
+    * @var Components\Pass
     */
     protected $pass;
 
     /**
      * Host
      *
-     * @var \League\Url\Components\Host
+     * @var Components\Host
      */
     protected $host;
 
     /**
      * Port
      *
-     *@var \League\Url\Components\Port
+     *@var Components\Port
      */
     protected $port;
 
     /**
      * Path
      *
-     * @var \League\Url\Components\Path
+     * @var Components\Path
      */
     protected $path;
 
     /**
      * Query
      *
-     * @var \League\Url\Components\Query
+     * @var Components\Query
      */
     protected $query;
 
     /**
      * Fragment
      *
-     * @var \League\Url\Components\Fragment
+     * @var Components\Fragment
      */
     protected $fragment;
 
@@ -228,14 +220,14 @@ abstract class AbstractUrl implements UrlInterface
         $components = self::formatPathComponent($components, $original_url);
 
         return new static(
-            new Scheme($components['scheme']),
-            new User($components['user']),
-            new Pass($components['pass']),
-            new Host($components['host']),
-            new Port($components['port']),
-            new Path($components['path']),
-            new Query($components['query']),
-            new Fragment($components['fragment'])
+            new Components\Scheme($components['scheme']),
+            new Components\User($components['user']),
+            new Components\Pass($components['pass']),
+            new Components\Host($components['host']),
+            new Components\Port($components['port']),
+            new Components\Path($components['path']),
+            new Components\Query($components['query']),
+            new Components\Fragment($components['fragment'])
         );
     }
 
