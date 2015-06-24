@@ -131,7 +131,7 @@ $url->isAbsolute(); // returns true
 
 ### Does the URL uses the standard port ?
 
-If the standard port defined for a specific scheme is used it will be remove from the URL object and any of its representation. The `Url::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
+If the standard port defined for a specific scheme is used it will be remove from the URL string or array representations. The `Url::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
 
 - If **no scheme** is set, the method returns `false`.
 - If **no port** is set the method will return `true`.

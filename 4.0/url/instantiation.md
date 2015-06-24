@@ -58,13 +58,13 @@ $url = new Url(
 	$fragment
 );
 
-//where $scheme is a League\Url\Scheme object
-//where $user is a League\Url\UserInfo object
-//where $host is a League\Interfaces\Host interface
-//where $port is a League\Url\Port object
-//where $path is a League\Interfaces\Path interface
-//where $query is a League\Interfaces\Query interface
-//where $fragment is a League\Url\Fragment object
+//where $scheme is a League\Interfaces\Scheme implementing object
+//where $user is a League\Interfaces\UserInfo implementing object
+//where $host is a League\Interfaces\Host implementing interface
+//where $port is a League\Interfaces\Port implementing object
+//where $path is a League\Interfaces\Path implementing interface
+//where $query is a League\Interfaces\Query implementing interface
+//where $fragment is a League\Interfaces\Fragment implementing object
 ~~~
 
 <p class="message-warning">If the submitted value can not return a new instance a <code>InvalidArgumentException</code> exception will be thrown.</p>
@@ -83,17 +83,17 @@ Ouf of the box the library supports the following schemes:
 - ws, wss
 - telnet, wais
 
-Instantiating a `League\Url\Url` object with an unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provide a [Scheme registration system](/4.0/services/scheme-registration/). You can register a new scheme into the registry object and provide this object as the second parameter of any `League\Url` named constructors.
+Instantiating a `League\Url\Url` object with an unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provides a [Scheme registry object](/4.0/services/scheme-registration/). With it, you can register your own list of supported schemes and enable the package to work with other schemes. The scheme registry object must be provided as the second parameter of any `League\Url` named constructors.
 
 ~~~php
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())->merge(['yolo' => 8020]);
+$registry = new SchemeRegistry(['yolo' => 8020]);
 $components = parse_url('yolo://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 ~~~
 
-In the example above, the `yolo` scheme is added to the scheme registry and the `League\Url\Url` object can be correctly instantiated.
+In the example above, a new scheme registry is created which only support the `yolo` scheme. Thus the `League\Url\Url` object can be correctly instantiated with a `yolo` schemed URL.
 
-For the default constructor, the `SchemeRegistry` object is loaded using the [Scheme constructor](/4.0/components/scheme/).
+For the default constructor, you don't need to specify any optional argument as the `SchemeRegistry` object is attached to the [Scheme component](/4.0/components/scheme/).

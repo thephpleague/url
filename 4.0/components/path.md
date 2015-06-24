@@ -67,7 +67,7 @@ echo $end_slash; //display '/shop/example/com/'
 
 ### Absolute or relative path
 
-A path is considered absolute only if it stats with the path delimiter `/`, otherwise it is considered as being relative. At any given time you can test your path status using the `Path::isAbsolute` method.
+A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative. At any given time you can test your path status using the `Path::isAbsolute` method.
 
 ~~~php
 use League\Url\Path;
@@ -174,7 +174,7 @@ The method returns the value of a specific offset. If the offset does not exists
 
 ### The basename
 
-To ease working with path you can get the trailing segment of a Path object by using the `Path::getBasename` method, this method takes no argument. If the segment ends in suffix, the suffix is included.
+To ease working with path you can get the trailing segment of a Path object by using the `Path::getBasename` method, this method takes no argument. If the segment ends with an extension, it will be included in the output.
 
 ~~~php
 use League\Url\Path;
@@ -216,13 +216,13 @@ $path->getDirname(); // returns '/path/to/the'
 
 <p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
-<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
+<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 
-Out of the box, the `Path` object operates a number of normalization to the submitted path. All these normalization are non destructive, for instance, the path is correctly URL encoded against the RFC rules.
+Out of the box, the `Path` object operates a number of normalization to the submitted path. All these normalization are non destructive, for instance, the path is correctly URL encoded against the RFC3986 rules.
 
 ### Removing dot segments
 
-To remove dot segment as per as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no arguments and returns a new `Path` object which represents the current object normalized.
+To remove dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no arguments and returns a new `Path` object which represents the current object normalized.
 
 ~~~php
 use League\Url\Path;
@@ -244,7 +244,7 @@ Sometimes your path may contain multiple adjacent delimiters. Since removing the
 ~~~php
 use League\Url\Path;
 
-$raw_path       = new Path('path////to/the/sky//');
+$raw_path       = new Path("path////to/the/sky//");
 $normalize_path = $raw_path->withoutEmptySegments();
 echo $raw_path;           //displays 'path////to/the/sky//'
 echo $normalize_path;     //displays 'path/to/the/sky/'
@@ -259,9 +259,9 @@ $alt->sameValueAs($path); //return false;
 
 You can easily change or remove the extension from the path basename using the `Path::withExtension` method.
 
-<p class="message-info">No update will be made is the <code>basename</code> is empty</p>
+<p class="message-info">No update will be made if the <code>basename</code> is empty</p>
 
-<p class="message-warning">This method will throw an <code>InvalidArgumentException</code> If the extension contains a slash character.</p>
+<p class="message-warning">This method will throw an <code>InvalidArgumentException</code> exception if the extension contains the path delimiter.</p>
 
 ~~~php
 use League\Url\Path;

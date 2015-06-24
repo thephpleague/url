@@ -38,20 +38,30 @@ Ouf of the box the library supports the following schemes:
 
 If you try to instantiate a scheme object with a different scheme and `InvalidArgumentException` exception will be thrown. To overcome this limitation, the scheme constructor can take an optional second argument which is a `SchemeRegistry` class. Depending on the values the registry object contains you will be able to instantiate other schemes like shown below:
 
-
 ~~~php
 use League\Url\Scheme;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())->merge(['yolo' => null]);
-$scheme = new Scheme('yolo', $registry); //will now works
+$registry = new SchemeRegistry();
+$newRegistry = $registry->merge(['yolo' => null]);
+$scheme = new Scheme('yolo', $newRegistry); //will now works
+~~~
+
+At any given time you can get access to the `SchemeRegistry` object using the `getSchemeRegistry` method.
+
+~~~php
+use League\Url\Scheme;
+
+$scheme = new Scheme('ldap');
+$registry = $scheme->getSchemeRegistry();
+$registry->hasOffset('ldap'); //returns true
 ~~~
 
 Get more informations about the [SchemeRegistry class](/4.0/services/scheme-registration/)
 
 ### Using a League\Url\Url object
 
-Another way to acces to `League\Url\Scheme` is to use a already instantiated `League\Url\Url` object.
+Another way to acces to `League\Url\Scheme` is to use an already instantiated `League\Url\Url` object.
 
 ~~~php
 use League\Url\Url;

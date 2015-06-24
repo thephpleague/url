@@ -21,12 +21,12 @@ use League\Url\Host;
 use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
-$formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
+$formatter->setHostEncoding(Formatter::HOST_AS_UNICODE);
 echo $formatter->getHostEncoding(); //display the value of Formatter::HOST_AS_ASCII
 
 $host = new Host('рф.ru');
-echo $host; //displays 'рф.ru'
-echo $formatter->format($host); //displays 'xn--p1ai.ru'
+echo $host;                     //displays 'xn--p1ai.ru'
+echo $formatter->format($host); //displays 'рф.ru'
 ~~~
 
 ### Query encoding strategy
@@ -65,16 +65,29 @@ echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 
 ### Extending the Formatter capability by attaching a SchemeRegistry object
 
-Just like the [Scheme component](/4.0/components/scheme/) you can add additional scheme support to the formatter using the library [scheme registry system](/4.0/services/scheme-registration/).
+Just like the [Scheme component](/4.0/components/scheme/) you can manage the object scheme support using the library [scheme registry system](/4.0/services/scheme-registration/).
+
+Using the constructor you can optionally provide a `SchemeRegistry` object.
 
 ~~~php
 use League\Url\Services\Formater;
 use League\Url\Services\SchemeRegistry;
 
-$registry = new SchemeRegistry();
-$registry->add('yolo', 8080);
-$formatter = new Formatter();
-$formatter->setSchemeRegistry($registry);
+$registry    = new SchemeRegistry();
+$newRegistry = $registry->merge(['yolo' => 8080]);
+$formatter   = new Formatter($newRegistry);
+~~~
+
+You can also use the `setSchemeRegistry` method:
+
+~~~php
+use League\Url\Services\Formater;
+use League\Url\Services\SchemeRegistry;
+
+$registry    = new SchemeRegistry();
+$newRegistry = $registry->merge(['yolo' => 8080]);
+$formatter   = new Formatter();
+$formatter->setSchemeRegistry($newRegistry);
 ~~~
 
 You can access this registry at any given time using its getter method
@@ -83,15 +96,13 @@ You can access this registry at any given time using its getter method
 use League\Url\Services\Formater;
 use League\Url\Services\SchemeRegistry;
 
-$registry = new SchemeRegistry();
-$registry->add('yolo', 8080);
-$formatter = new Formatter();
-$formatter->setSchemeRegistry($registry);
+$registry    = new SchemeRegistry();
+$newRegistry = $registry->merge(['yolo' => 8080]);
+$formatter   = new Formatter();
+$formatter->setSchemeRegistry($newRegistry);
 $altRegistry = $formatter->getSchemeRegistry();
-//$altRegistry and $registry are the same
+//$altRegistry and $newRegistry are the same
 ~~~
-
-<p class="message-notice">Since the <code>Formatter</code> <strong>is a mutable object</strong> the getter method always return the same object.</p>
 
 ## Using the Formatter with a complete URL
 
@@ -107,12 +118,12 @@ use League\Url\Url;
 use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
-$formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
+$formatter->setHostEncoding(Formatter::HOST_AS_UNICODE);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
 $url        = Url::createFromUrl('https://рф.ru:81?foo=ba%20r&baz=bar');
 $url_string = $formatter->format($url);
-echo $url_string; //displays https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
-echo $url;        //displays https://рф.ru:81?foo=ba%20r&baz=bar
+echo $url_string; //displays https://рф.ru:81?foo=ba%20r&amp;baz=bar
+echo $url;        //displays https://xn--p1ai.ru:81?foo=ba%20r&baz=bar
 ~~~

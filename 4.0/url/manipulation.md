@@ -45,13 +45,13 @@ To completely replace one of the URL part you can use the `Psr\Http\Message\UriI
 use League\Url\Url;
 
 $url = Url::createFromUrl('ftp://thephpleague.com/fr/')
-	->withScheme('http')
-	->withUserInfo('foo', 'bar')
-	->withHost('www.example.com')
-	->withPort(81)
-	->withPath('/how/are/you')
-	->withQuery('foo=baz')
-	->withFragment('title');
+    ->withScheme('http')
+    ->withUserInfo('foo', 'bar')
+    ->withHost('www.example.com')
+    ->withPort(81)
+    ->withPath('/how/are/you')
+    ->withQuery('foo=baz')
+    ->withFragment('title');
 
 echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
 ~~~
@@ -60,13 +60,13 @@ Since every update returns an instance of `League\Url\Url`, you can chain each s
 
 ## Partial URL components modifications
 
-Often what you really want is to partially update on of the URL component. Using the current public API it is possible but requires boilerplate code. For instance here's how you would update the query string from a given URL object:
+Often what you really want is to partially update one of the URL component. Using the current public API it is possible but requires boilerplate code. For instance here's how you would update the query string from a given URL object:
 
 ~~~php
-$url         = Url::createFromUrl('http://www.example.com//the/sky.php?foo=toto#~typo');
+$url         = Url::createFromUrl("http://www.example.com//the/sky.php?foo=toto#~typo");
 $urlQuery    = $url->query;
 $updateQuery = $urlQuery->merge(['foo' => 'bar', 'taz' => '']);
-$newUrl      = $url->withQuery($updateQuery);
+$newUrl      = $url->withQuery($updateQuery->__toString());
 echo $newUrl; // display http://www.example.com//the/sky.php?foo=bar&taz#~typo
 ~~~
 
@@ -81,7 +81,7 @@ To ease these operations various modifying methods were added. Each method is pr
 #### Add or Update query parameters
 
 ~~~php
-$url = Url::createFromUrl('http://www.example.com//the/sky.php?foo=toto#~typo');
+$url = Url::createFromUrl("http://www.example.com//the/sky.php?foo=toto#~typo");
 $newUrl = $url->mergeQuery(['foo' => 'bar', 'taz' => '']);
 echo $newUrl->getQuery();
 //display 'foo=bar&taz'
@@ -105,7 +105,7 @@ echo $newUrl->getQuery();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
 $newUrl = $url->filterQuery(function ($value) {
-	return ! is_array($value);
+    return ! is_array($value);
 });
 echo $newUrl->getQuery();
 //display 'foo=toto&p=y%20olo'
@@ -165,7 +165,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->filterPath(function ($segment) {
-	return strpos($segment, 't') === false;
+    return strpos($segment, 't') === false;
 });
 echo $newUrl->getPath();
 //display /sky.php
@@ -256,7 +256,7 @@ echo $newUrl->getHost();
 
 ~~~php
 $url = Url::createFromUrl('http://[fe80::1%25eth0-1]/path/to/the/sky.php');
-$newUrl = $url->withoutZoneIdentifier([0]);
+$newUrl = $url->withoutZoneIdentifier();
 echo $newUrl->getHost();
 //display [fe80::1]
 ~~~
@@ -268,7 +268,7 @@ echo $newUrl->getHost();
 ~~~php
 $url = Url::createFromUrl('http://www.eshop.com/path/to/the/sky.php');
 $newUrl = $url->filterHost(function ($label) {
-	return strpos($label, 'shop') === false;
+    return strpos($label, 'shop') === false;
 });
 echo $newUrl->getHost();
 //display www.com

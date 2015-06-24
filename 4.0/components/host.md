@@ -209,7 +209,7 @@ echo Url::createFromServer($_SERVER)->host->toUnicode(); //output the IDN versio
 
 A host can be exploded into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
 
-<p class="message-warning">Once in array representation you can not distinguish a simple from a fully qualified domain name.</p>
+<p class="message-warning">Once in array representation you can not distinguish a partial from a fully qualified domain name.</p>
 
 ~~~php
 use League\Url\Host;
@@ -282,11 +282,11 @@ The method returns the value of a specific offset. If the offset does not exists
 
 <p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
-<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
+<p class="message-warning">When a modification fails an <code>InvalidArgumentException</code> exception is thrown.</p>
 
 ### Append labels
 
-<p class="message-warning">Trying to append to or with an IP host will throw an <code>InvalidArgumentException</code></p>
+<p class="message-warning">Trying to append to or with an IP host will throw an <code>InvalidArgumentException</code> exception</p>
 
 To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Host` object:
 
@@ -323,8 +323,6 @@ To replace a label with your own data, you must use the `Host::replace` method w
 - `$offset` which represents the label's offset to remove if it exists.
 - `$data` which represents the data to be inject. This data can be a string, an object which implements the `__toString` method or another `Host` object.
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceLabel</code></p>
-
 ~~~php
 use League\Url\Host;
 
@@ -333,11 +331,11 @@ $newHost = $host->replace(0, 'bar.baz');
 $newHost->__toString(); //returns bar.baz.example.com
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceLabel</code></p>
+
 ### Remove labels
 
 To remove labels from the current object you can use the `Host::without` method. This methods expected a single argument and will returns a new `Host` object without the selected labels.
-
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutLabels</code></p>
 
 The argument can be an array containing a list of offsets to remove.
 
@@ -361,9 +359,11 @@ $newHost = $host->without(function ($value) {
 echo $newHost; //displays 'example.com';
 ~~~
 
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutLabels</code></p>
+
 ### Remove zone identifier
 
-According to [RFC6874](http://tools.ietf.org/html/rfc6874#section-4).
+According to [RFC6874](http://tools.ietf.org/html/rfc6874#section-4):
 
 > You **must** remove any ZoneID attached to an outgoing URI, as it has only local significance at the sending host.
 
@@ -376,6 +376,8 @@ $host    = new Host('[fe80::1%25eth0-1]');
 $newHost = $host->withoutZoneIdentifier();
 echo $newHost; //displays '[fe80::1]';
 ~~~
+
+<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutZoneIdentifier</code></p>
 
 ### Filter labels
 

@@ -9,7 +9,10 @@ The library provides a `League\Url\UserInfo` class to ease interacting with the 
 
 ## Instantiation
 
-The constructor expects 2 optional arguments. The first argument describes the user login and the latter the user password information.
+The constructor expects 2 optional arguments:
+
+- the user login
+- the user password
 
 ~~~php
 use League\Url;
@@ -27,7 +30,7 @@ You can also get a `UserInfo` object from an `League\Url\Url` class:
 use League\Url;
 
 $url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
-$userInfo = $url->userInfo; //returns a League\Url\UserInfo() object
+$userInfo = $url->userInfo; //returns a League\Url\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~
 
@@ -79,7 +82,7 @@ $url->userInfo->getUser(); //returns 'john'
 $url->userInfo->getPass(); //returns 'doe'
 ~~~
 
-To get access to the component class you can use the magic `__get` method:
+To get access to the component classes you can use the magic `__get` method:
 
 ~~~php
 use League\Url\UserInfo;
@@ -95,7 +98,7 @@ $url->userInfo->pass->__toString(); //returns 'doe'
 
 ### User information state
 
-Unlike other URL part, the `UserInfo` part is considered empty if its user property is empty.
+The `UserInfo` part is considered empty if its user property is empty.
 
 ~~~php
 use League\Url\UserInfo;
@@ -120,7 +123,7 @@ To modify the user login and password information you need to call the respectiv
 use League\Url\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
-$new_info = $info->withUser('john')->getPass('doe');
+$new_info = $info->withUser('john')->withPass('doe');
 echo $new_info; //displays john:doe
 echo $info;     //displays foo:bar
 ~~~

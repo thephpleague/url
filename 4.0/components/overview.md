@@ -130,7 +130,7 @@ $url      = new Url\Url::createFromUrl('www.example.com');
 $host1->sameValueAs($host2); //returns true;
 $host1->sameValueAs($fragment); //returns false;
 $host1->sameValueAs($url);
-//PHP Fatal Error Host and URL do not share the same interface
+//PHP Fatal Error because Host and URL do not share the same interface
 ~~~
 
 <p class="message-warning">Only Url parts objects can be compared with each others, any other object or type will result in a PHP Fatal Error.</p>
@@ -139,7 +139,7 @@ $host1->sameValueAs($url);
 
 Each URL component class can have its content modified using the `modify` method. This method expects a string or an object with the `__toString` method.
 
-<p class="message-warning">Because the <code>UserInfo</code> class represent a URL part it does not include a <code>modify</code> method.</p>
+<p class="message-warning">The <code>UserInfo</code> class does not include a <code>modify</code> method.</p>
 
 ~~~php
 use League\Url;

@@ -25,9 +25,10 @@ extend the registry scheme list.
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())->merge(['yolo' => 22]);
+$registry = new SchemeRegistry();
+$newRegistry = $registry->merge(['yolo' => 22]);
 $components = parse_url('yolo://foo.example.com');
-$url = Url::createFromComponents($components, $registry);
+$url = Url::createFromComponents($components, $newRegistry);
 ~~~
 
 restrict the registry scheme list.
@@ -36,10 +37,11 @@ restrict the registry scheme list.
 use League\Url\Url;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())>filter(function ($port) {
+$registry = new SchemeRegistry();
+$newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-$url = Url::createFromUrl('https://foo.example.com', $registry);
+$url = Url::createFromUrl('https://foo.example.com', $newRegistry);
 //will throw an InvalidArgumentException as only
 // the 'http' and the 'ws' scheme are now supported
 ~~~
@@ -63,13 +65,14 @@ Once you have instantiated a registry object you can specify it as an optional a
 use League\Url\Scheme;
 use League\Url\Services\SchemeRegistry;
 
-$registry = (new SchemeRegistry())>filter(function ($port) {
+$registry = new SchemeRegistry();
+$newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-$scheme = new Scheme('http', $registry);
+$scheme = new Scheme('http', $newRegistry);
 ~~~
 
-<p class="message-notice">If no <code>SchemeRegistry</code> object is supplied, a default registry object is instantiated with the default schemes and their standard port attached to the class.</p>
+<p class="message-notice">If no <code>SchemeRegistry</code> object is supplied, a default registry object is instantiated with the default supported schemes and their respective standard port and attached to the scheme object.</p>
 
 ## Creating the registry
 
@@ -112,7 +115,7 @@ $registry->toArray();
 //];
 ~~~
 
-<p class="message-info"><strong>Of note:</strong> the array is sorted and the scheme normalize to their lowercase string representation.</p>
+<p class="message-info"><strong>Of note:</strong> the schemes are normalized to their lowercase string representation and the array is sorted according to the scheme names.</p>
 
 ## Getting informations from the registry
 
@@ -190,7 +193,7 @@ $registry->getPort("yolo"); //throws an InvalidArgumentException
 
 <p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
-<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
+<p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 
 ### Add or update registered schemes
 

@@ -21,7 +21,7 @@ foreach ($extension_list as $extension) {
       ->withScheme('ftp');
 }
 
-// $links is a array of League\Url\Url objects
+// $links is an array of League\Url\Url objects
 
 echo $url;           // display "http://www.example.com/report"
 echo $links['csv'];  // display "ftp://download.example.com/report/purchases/summary.csv"
