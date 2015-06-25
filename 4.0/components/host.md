@@ -330,7 +330,7 @@ $newHost = $host->replace(0, 'bar.baz');
 $newHost->__toString(); //returns bar.baz.example.com
 ~~~
 
-<p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
+<p class="message-notice">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
 
 <p class="message-notice">This method is used by the <code>League\Url\Url::replaceLabel</code> method</p>
 

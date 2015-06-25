@@ -148,7 +148,7 @@ echo $url;               //displays 'http://example.com:8042/over/there'
 $alt_url = Url::createFromUrl('wss://example.com:443/over/there');
 $alt_url->hasStandardPort(); //returns true
 echo $alt_url->getPort();    //displays 443
-echo alt_url;                //displays 'wss://example.com/over/there'
+echo $alt_url;               //displays 'wss://example.com/over/there'
 ~~~
 
 ### Does URLs refers to the same resource/location

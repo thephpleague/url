@@ -132,7 +132,7 @@ $url      = new Url\Url::createFromUrl('www.example.com');
 $host->sameValueAs($alt_host); //returns true;
 $host->sameValueAs($fragment); //returns false;
 $host->sameValueAs($url);
-//PHP Fatal Error or PHP7+ TypeError is thrown because Host and URL do not share the same interface
+//a PHP Fatal Error is issue or a PHP7+ TypeError is thrown
 ~~~
 
 <p class="message-warning">Only Url parts objects can be compared with each others, any other object will result in a PHP Fatal Error or a PHP7+ TypeError will be thrown.</p>
