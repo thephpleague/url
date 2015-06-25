@@ -20,8 +20,8 @@ $scheme = new Scheme('http');
 echo $scheme; //display 'http'
 
 
-$empty_Scheme = new Scheme();
-echo $empty_Scheme; //display ''
+$empty_scheme = new Scheme();
+echo $empty_scheme; //display ''
 ~~~
 
 Ouf of the box the library supports the following schemes:
@@ -36,7 +36,7 @@ Ouf of the box the library supports the following schemes:
 - ws, wss
 - telnet, wais
 
-If you try to instantiate a scheme object with a different scheme and `InvalidArgumentException` exception will be thrown. To overcome this limitation, the scheme constructor can take an optional second argument which is a `SchemeRegistry` class. Depending on the values the registry object contains you will be able to instantiate other schemes like shown below:
+If you try to instantiate a scheme object with a different scheme and `InvalidArgumentException` exception will be thrown. To overcome this limitation, the scheme constructor can take an optional second argument which is a `SchemeRegistry` class. Depending the registry values you will be able to instantiate other schemes like shown below:
 
 ~~~php
 use League\Url\Scheme;
@@ -61,7 +61,7 @@ Get more informations about the [SchemeRegistry class](/4.0/services/scheme-regi
 
 ### Using a League\Url\Url object
 
-Another way to acces to `League\Url\Scheme` is to use an already instantiated `League\Url\Url` object.
+Another way to acces to a `League\Url\Scheme` is to use an already instantiated `League\Url\Url` object.
 
 ~~~php
 use League\Url\Url;

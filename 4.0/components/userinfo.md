@@ -9,6 +9,8 @@ The library provides a `League\Url\UserInfo` class to ease interacting with the 
 
 ## Instantiation
 
+### Using the default constructor
+
 The constructor expects 2 optional arguments:
 
 - the user login
@@ -18,11 +20,13 @@ The constructor expects 2 optional arguments:
 use League\Url;
 
 $info = new Url\UserInfo('foo', 'bar');
-echo $scheme; //display 'foo:bar'
+echo $info; //display 'foo:bar'
 
 $empty_info = new UserInfo();
 echo $empty_info; //display ''
 ~~~
+
+### Using a League\Url\Url object
 
 You can also get a `UserInfo` object from an `League\Url\Url` class:
 
@@ -70,10 +74,9 @@ $info->toArray();
 To acces the user login and password information you need to call the respective `UserInfo::getUser` and `UserInfo::getPass` methods like shown below.
 
 ~~~php
-use League\Url\Url;
-use League\Url\UserInfo;
+use League\Url;
 
-$info = new UserInfo('foo', 'bar');
+$info = new Url\UserInfo('foo', 'bar');
 $info->getUser(); //returns 'foo'
 $info->getPass(); //returns 'bar'
 
@@ -85,9 +88,9 @@ $url->userInfo->getPass(); //returns 'doe'
 To get access to the component classes you can use the magic `__get` method:
 
 ~~~php
-use League\Url\UserInfo;
+use League\Url;
 
-$info = new UserInfo('foo', 'bar');
+$info = new Url\UserInfo('foo', 'bar');
 $info->user; //returns a League\Url\User class
 $info->user; //returns a League\Url\Pass class
 
@@ -111,11 +114,11 @@ $info->pass->isEmpty(); //return false
 
 ## Modifying the user information
 
-<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+<p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-<p class="message-notice">Unlike other component class, the <code>UserInfo</code> class does not include a <code>modify</code> method</p>
+<p class="message-notice">Because the <code>UserInfo</code> class does not represent a URL component, it does not include a <code>modify</code> method</p>
 
 To modify the user login and password information you need to call the respective <code>UserInfo::withUser</code> and `UserInfo::withPass` methods like shown below.
 

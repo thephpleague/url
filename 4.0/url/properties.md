@@ -33,18 +33,18 @@ You can get the URL as an `array` similar to `parse_url` response if you call `U
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://www.example.com/how/are/you?foo=baz');
-$url->toArray();
+var_export($url->toArray());
 //returns the following array
-//    [
-//        'scheme' => 'http',
-//        'user' => null,
-//        'pass' => null,
-//        'host' => 'example.com',
-//        'port' => null,
-//        'path' => '/how/are/you',
-//        'query' => 'foo=baz',
-//        'fragment' => null,
-//    ];
+// array (
+//  'scheme' => 'http',
+//  'user' => NULL,
+//  'pass' => NULL,
+//  'host' => 'www.example.com',
+//  'port' => NULL,
+//  'path' => '/how/are/you',
+//  'query' => 'foo=baz',
+//  'fragment' => NULL,
+// );
 ~~~
 
 ### Parts and components as strings
@@ -55,14 +55,14 @@ You can access the URL individual parts and components as string or integer usin
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-echo $url->getScheme();    // displays 'http'
-echo $url->getUserInfo();  // displays 'foo:bar'
-echo $url->getHost();      // displays 'www.example.com'
-echo $url->getPort();      // displays 81 as an integer
-echo $url->getAuthority(); // displays 'foo:bar@www.example.com:81'
-echo $url->getPath();      // displays '/how/are/you'
-echo $url->getQuery();     // displays 'foo=baz'
-echo $url->getFragment();  // displays 'title'
+echo $url->getScheme();    //displays 'http'
+echo $url->getUserInfo();  //displays 'foo:bar'
+echo $url->getHost();      //displays 'www.example.com'
+echo $url->getPort();      //displays 81 as an integer
+echo $url->getAuthority(); //displays 'foo:bar@www.example.com:81'
+echo $url->getPath();      //displays '/how/are/you'
+echo $url->getQuery();     //displays 'foo=baz'
+echo $url->getFragment();  //displays 'title'
 ~~~
 
 ### Parts and components as objects
@@ -73,13 +73,13 @@ To access a specific URL part or component as an object you can use the magic me
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-$url->scheme;   // returns a League\Url\Scheme object
-$url->userInfo; // returns a League\Url\UserInfo object
-$url->host;     // returns a League\Url\Host object
-$url->port;     // returns a League\Url\Port object
-$url->path;     // returns a League\Url\Path object
-$url->query;    // returns a League\Url\Query object
-$url->fragment; // returns a League\Url\Fragment object
+$url->scheme;   //returns a League\Url\Scheme object
+$url->userInfo; //returns a League\Url\UserInfo object
+$url->host;     //returns a League\Url\Host object
+$url->port;     //returns a League\Url\Port object
+$url->path;     //returns a League\Url\Path object
+$url->query;    //returns a League\Url\Query object
+$url->fragment; //returns a League\Url\Fragment object
 ~~~
 
 Using this technique you can get even more informations regarding a URL.
@@ -88,9 +88,10 @@ Using this technique you can get even more informations regarding a URL.
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz');
-$url->host->isIp();        //returns false the URL uses a registered hostname
-$url->fragment->isEmpty(); //returns true because to fragment component is empty
-$url->path->getBasename(); //returns 'you';
+$url->host->isIp();           //returns false the URL uses a registered hostname
+$url->fragment->isEmpty();    //returns true because to fragment component is empty
+$url->path->getBasename();    //returns 'you'
+$url->query->getValue('foo'); //returns 'baz'
 ~~~
 
 To get more informations about component properties refer to the [components documentation](/4.0/components/overview/)
@@ -105,14 +106,14 @@ An URL can have a empty string representation even if some components or URL par
 use League\Url\Url;
 
 $url = Url:createFromUrl('//example.com:82');
-$url->getPort(); // returns 82
-$url->getHost(); // returns 'example.com'
-$url->isEmpty(); // returns false
+$url->getPort(); //returns 82
+$url->getHost(); //returns 'example.com'
+$url->isEmpty(); //returns false
 
 $newUrl = $url->withHost('');
-$newUrl->getPort(); // returns 82
-$newUrl->getHost(); // returns ''
-$newUrl->isEmpty(); // returns true
+$newUrl->getPort(); //returns 82
+$newUrl->getHost(); //returns ''
+$newUrl->isEmpty(); //returns true
 ~~~
 
 ### Is the URL absolute ?
@@ -123,10 +124,10 @@ An URL is considered absolute if it has a non empty scheme component and an auth
 use League\Url\Url;
 
 $url = Url:createFromUrl('//example.com/foo');
-$url->isAbsolute(); // returns false
+$url->isAbsolute(); //returns false
 
 $url = Url:createFromUrl('ftp://example.com/foo');
-$url->isAbsolute(); // returns true
+$url->isAbsolute(); //returns true
 ~~~
 
 ### Does the URL uses the standard port ?
@@ -140,19 +141,19 @@ If the standard port defined for a specific scheme is used it will be remove fro
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://example.com:8042/over/there');
-$url->hasStandardPort(); // returns false
-echo $url->getPort();    // displays 8042;
+$url->hasStandardPort(); //returns false
+echo $url->getPort();    //displays 8042
+echo $url;               //displays 'http://example.com:8042/over/there'
 
 $alt_url = Url::createFromUrl('wss://example.com:443/over/there');
-$alt_url->hasStandardPort(); // returns true
-echo $url->getPort();        // displays null; the Port number is automatically dropped
+$alt_url->hasStandardPort(); //returns true
+echo $alt_url->getPort();    //displays 443
+echo alt_url;                //displays 'wss://example.com/over/there'
 ~~~
 
 ### Does URLs refers to the same resource/location
 
-You can compare two PSR-7 `UriInterface` compliant URLs object to see if they represent the same resource using the `Url::sameValueAs` method.
-
-This method compares the two objects according to their respective `__toString` methods response.
+You can compare two PSR-7 `UriInterface` compliant URLs object to see if they represent the same resource using the `Url::sameValueAs` method. The method compares the two objects according to their respective `__toString` methods.
 
 ~~~php
 use League\Url\Url;

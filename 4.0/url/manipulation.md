@@ -5,7 +5,7 @@ title: Manipulating URL
 
 # Modifying URLs
 
-<p class="message-notice">If the modifications does not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+<p class="message-notice">If the modifications do not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 ## URL normalization
 
@@ -60,20 +60,20 @@ Since every update returns an instance of `League\Url\Url`, you can chain each s
 
 ## Partial URL components modifications
 
-Often what you really want is to partially update one of the URL component. Using the current public API it is possible but requires boilerplate code. For instance here's how you would update the query string from a given URL object:
+Often what you really want is to partially update one of the URL component. Using the current public API it is possible but requires several intermediary steps. For instance here's how you would update the query string from a given URL object:
 
 ~~~php
-$url         = Url::createFromUrl("http://www.example.com//the/sky.php?foo=toto#~typo");
+$url         = Url::createFromUrl("http://www.example.com/the/sky.php?foo=toto#~typo");
 $urlQuery    = $url->query;
 $updateQuery = $urlQuery->merge(['foo' => 'bar', 'taz' => '']);
 $newUrl      = $url->withQuery($updateQuery->__toString());
-echo $newUrl; // display http://www.example.com//the/sky.php?foo=bar&taz#~typo
+echo $newUrl; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
 ~~~
 
 To ease these operations various modifying methods were added. Each method is presented independently but keep in mind that:
 
-- The methods return a `League\Url\Url` object. So you can chain them to simplify URL manipulation.
-- The methods arguments are proxied to a specific component modifying methods.
+- They return a `League\Url\Url` object. So you can chain them to simplify URL manipulation.
+- Their arguments are always proxied to a specific component modifying methods.
 - You can get more informations on how the method works by following the link to the method proxied.
 
 ### Modifying URL query parameters
@@ -81,10 +81,9 @@ To ease these operations various modifying methods were added. Each method is pr
 #### Add or Update query parameters
 
 ~~~php
-$url = Url::createFromUrl("http://www.example.com//the/sky.php?foo=toto#~typo");
+$url = Url::createFromUrl("http://www.example.com/the/sky.php?foo=toto#~typo");
 $newUrl = $url->mergeQuery(['foo' => 'bar', 'taz' => '']);
-echo $newUrl->getQuery();
-//display 'foo=bar&taz'
+echo $newUrl; //display 'http://www.example.com/the/sky.php?foo=bar&taz#~typo'
 ~~~
 
 `Url::mergeQuery` is a facade to simplify the use of [League\Url\Query::merge](/4.0/components/query/#add-or-update-parameters).
@@ -94,8 +93,7 @@ echo $newUrl->getQuery();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
 $newUrl = $url->withoutQueryValues(['foo']);
-echo $newUrl->getQuery();
-//display 'p=y%20olo'
+echo $newUrl; //display 'http://www.example.com/the/sky.php?p=y%20olo#~typo'
 ~~~
 
 `Url::withoutQueryValues` is a facade to simplify the use of [League\Url\Query::without](/4.0/components/query/#remove-parameters).
@@ -103,12 +101,11 @@ echo $newUrl->getQuery();
 #### Filter query
 
 ~~~php
-$url = Url::createFromUrl('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
+$url = Url::createFromUrl('http://www.example.com/to/sky.php?foo[]=toto&foo[]=bar&p=y+olo#~typo');
 $newUrl = $url->filterQuery(function ($value) {
     return ! is_array($value);
 });
-echo $newUrl->getQuery();
-//display 'foo=toto&p=y%20olo'
+echo $newUrl; //display 'http://www.example.com/the/sky.php?p=y%20olo#~typo'
 //will update the query string by removing all array-like parameters
 ~~~
 
@@ -121,8 +118,7 @@ echo $newUrl->getQuery();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->appendPath('/foo/bar');
-echo $newUrl->getPath();
-//display /path/to/the/sky.php/foo/bar
+echo $newUrl; //display 'http://www.example.com/path/to/the/sky.php/foo/bar'
 ~~~
 
 `Url::appendPath` is a facade to simplify the use of [League\Url\Path::append](/4.0/components/path/#append-segments).
@@ -132,8 +128,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->prependPath('/foo/bar');
-echo $newUrl->getPath();
-//display /foo/bar/path/to/the/sky.php
+echo $newUrl; //display 'http://www.example.com/foo/bar/path/to/the/sky.php'
 ~~~
 
 `Url::prependPath` is a facade to simplify the use of [League\Url\Path::prepend](/4.0/components/path/#prepend-segments).
@@ -143,8 +138,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->replaceSegment(0, '/foo/bar');
-echo $newUrl->getPath();
-//display /foo/bar/to/the/sky.php
+echo $newUrl; //display 'http://www.example.com/foo/bar/to/the/sky.php'
 ~~~
 
 `Url::replaceSegment` is a facade to simplify the use of [League\Url\Path::replace](/4.0/components/path/#replace-segments).
@@ -154,8 +148,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->withoutSegments([0, 1]);
-echo $newUrl->getPath();
-//display /the/sky.php
+echo $newUrl; //display 'http://www.example.com/the/sky.php'
 ~~~
 
 `Url::withoutSegments` is a facade to simplify the use of [League\Url\Path::without](/4.0/components/path/#remove-segments).
@@ -167,8 +160,7 @@ $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->filterPath(function ($segment) {
     return strpos($segment, 't') === false;
 });
-echo $newUrl->getPath();
-//display /sky.php
+echo $newUrl; //display 'http://www.example.com/sky.php'
 ~~~
 
 `Url::filterPath` is a facade to simplify the use of [League\Url\Path::filter](/4.0/components/path/#filter-segments).
@@ -178,8 +170,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/../to/the/./sky/');
 $newUrl = $url->withoutDotSegments();
-echo $newUrl->getPath();
-//display /to/the/sky/
+echo $newUrl; //display 'http://www.example.com/to/the/sky/'
 ~~~
 
 `Url::withoutDotSegments` is a facade to simplify the use of [League\Url\Path::withoutDotSegments](/4.0/components/path/#removing-dot-segments).
@@ -189,8 +180,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com///path//to/the////sky//');
 $newUrl = $url->withoutEmptySegments();
-echo $newUrl->getPath();
-//display /path/to/the/sky/
+echo $newUrl; //display 'http://www.example.com/path/to/the/sky/'
 ~~~
 
 `Url::withoutEmptySegments` is a facade to simplify the use of [League\Url\Path::withoutEmptySegments](/4.0/components/path/#removing-empty-segments).
@@ -200,8 +190,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->withExtension('csv');
-echo $newUrl->getPath();
-//display /path/to/the/sky.csv
+echo $newUrl; //display 'http://www.example.com/path/to/the/sky.csv'
 ~~~
 
 `Url::withExtension` is a facade to simplify the use of [League\Url\Path::withExtension](/4.0/components/path/#path-extension-manipulation).
@@ -213,8 +202,7 @@ echo $newUrl->getPath();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->appendHost('be');
-echo $newUrl->getHost();
-//display example.com.be
+echo $newUrl; //display 'http://www.example.com.be/path/to/the/sky.php'
 ~~~
 
 `Url::appendHost` is a facade to simplify the use of [League\Url\Host::append](/4.0/components/host/#append-labels).
@@ -224,8 +212,7 @@ echo $newUrl->getHost();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->prependHost('shop');
-echo $newUrl->getHost();
-//display shop.www.example.com
+echo $newUrl; //display 'http://shop.www.example.com/path/to/the/sky.php'
 ~~~
 
 `Url::prependHost` is a facade to simplify the use of [League\Url\Host::prepend](/4.0/components/host/#prepend-labels).
@@ -235,8 +222,7 @@ echo $newUrl->getHost();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->replaceLabel(1, 'thephpleague');
-echo $newUrl->getHost();
-//display www.thephpleague.com
+echo $newUrl; //display 'http://www.thephpleague.com/path/to/the/sky.php'
 ~~~
 
 `Url::replaceLabel` is a facade to simplify the use of [League\Url\Host::replace](/4.0/components/host/#replace-label).
@@ -246,8 +232,7 @@ echo $newUrl->getHost();
 ~~~php
 $url = Url::createFromUrl('http://www.example.com/path/to/the/sky.php');
 $newUrl = $url->withoutLabels([0]);
-echo $newUrl->getHost();
-//display example.com
+echo $newUrl; //display 'http://example.com/path/to/the/sky.php'
 ~~~
 
 `Url::withoutLabels` is a facade to simplify the use of [League\Url\Host::without](/4.0/components/host/#remove-labels).
@@ -257,8 +242,7 @@ echo $newUrl->getHost();
 ~~~php
 $url = Url::createFromUrl('http://[fe80::1%25eth0-1]/path/to/the/sky.php');
 $newUrl = $url->withoutZoneIdentifier();
-echo $newUrl->getHost();
-//display [fe80::1]
+echo $newUrl; //display 'http://[fe80::1]/path/to/the/sky.php'
 ~~~
 
 `Url::withoutZoneIdentifier` is a facade to simplify the use of [League\Url\Host::withoutZoneIdentifier](/4.0/components/host/#remove-zone-identifier).
@@ -270,8 +254,7 @@ $url = Url::createFromUrl('http://www.eshop.com/path/to/the/sky.php');
 $newUrl = $url->filterHost(function ($label) {
     return strpos($label, 'shop') === false;
 });
-echo $newUrl->getHost();
-//display www.com
+echo $newUrl; //display 'http://www.com/path/to/the/sky.php'
 //will keep all labels which do not contain the word 'shop'
 ~~~
 

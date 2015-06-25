@@ -55,7 +55,7 @@ $port->getUriComponent(); //return ':21'
 
 A port can be represented as an integer through the use of the `Port::toInt` method the class.
 
-<p class="message-info">If a Port is not defined, the <code>toInt</code> method returns <code>null</code>.</p>
+<p class="message-info">If a no port number is defined, the <code>toInt</code> method returns <code>null</code>.</p>
 
 ~~~php
 use League\Url\Port;

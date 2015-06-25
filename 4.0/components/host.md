@@ -106,16 +106,15 @@ There are two type of host:
 To determine what type of host you are dealing with the `Host` class provides the `isIp` method:
 
 ~~~php
-use League\Url\Host;
-use League\Url\Url;
+use League\Url;
 
-$host = new Host('::1');
+$host = new Url\Host('::1');
 $host->isIp();   //return true
 
-$alt_host = new Host('example.com');
+$alt_host = new Url\Host('example.com');
 $host->isIp(); //return false;
 
-Url::createFromServer($_SERVER)->host->isIp(); //return a boolean
+Url\Url::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6
@@ -190,19 +189,17 @@ The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationa
 - To access the IDN domain name you must used the `Host::toUnicode` method.
 
 ~~~php
-use League\Url\Host;
-use League\Url\Url;
+use League\Url;
 
-$host = new Host('스타벅스코리아.com'); //you set the IDN
+$host = new Url\Host('스타벅스코리아.com'); //you set the IDN
+echo $host->__toString(); //display 'xn--oy2b35ckwhba574atvuzkc.com'
+echo $host->toUnicode;    //display '스타벅스코리아.com'
 
-echo $host->__toString();   // output 'xn--oy2b35ckwhba574atvuzkc.com'
-echo $host->toUnicode; // output '스타벅스코리아.com'
+$idn_host = new Url\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+echo $idn_host;              //display 'xn--mgbh0fb.xn--kgbechtv'
+echo $idn_host->toUnicode(); //display 'مثال.إختبار'
 
-$host = new Host('xn--mgbh0fb.xn--kgbechtv'); //you set a ascii hostname
-echo $host;  // output 'xn--mgbh0fb.xn--kgbechtv'  //the object output the Ascii version
-echo $host->toUnicode(); // output 'مثال.إختبار'   //the object output the IDN version
-
-echo Url::createFromServer($_SERVER)->host->toUnicode(); //output the IDN version
+echo Url\Url::createFromServer($_SERVER)->host->toUnicode(); //output the IDN version
 ~~~
 
 ### Array representation
@@ -215,13 +212,13 @@ A host can be exploded into its different labels. The class provides an array re
 use League\Url\Host;
 
 $host = new Host('secure.example.com');
-$arr = $host->toArray(); // returns  ['secure', 'example', 'com'];
+$arr = $host->toArray(); //return  ['secure', 'example', 'com'];
 
 $fqdn = new Host('secure.example.com.');
-$arr = $fqdn->toArray(); // returns  ['secure', 'example', 'com'];
+$arr = $fqdn->toArray(); //return ['secure', 'example', 'com'];
 
 $host = new Host('::1');
-$arr = $host->toArray(); // returns  ['::1'];
+$arr = $host->toArray(); //return ['::1'];
 ~~~
 
 ## Accessing host contents
@@ -231,6 +228,8 @@ $arr = $host->toArray(); // returns  ['::1'];
 The class provides several methods to works with its labels. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of labels and use the `foreach` construct to iterate over them.
 
 ~~~php
+use League\Url\Host;
+
 $host = new Host('secure.example.com');
 count($host); //return 3
 foreach ($host as $offset => $label) {
@@ -246,9 +245,9 @@ If you are interested in getting all the label offsets you can do so using the `
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->offsets(); // returns  [0, 1, 2, 3];
-$host->offsets('uk'); // returns [0, 3];
-$host->offsets('gweta'); // returns [];
+$host->offsets();        //return [0, 1, 2, 3];
+$host->offsets('uk');    //return [0, 3];
+$host->offsets('gweta'); //return [];
 ~~~
 
 The methods returns all the label offsets, but if you supply an argument, only the offsets whose label value equals the argument are returned.
@@ -259,8 +258,8 @@ To know If an offset exists before using it you can use the `Host::hasOffset` me
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->hasOffset(2); // returns true
-$host->hasOffset(23); // returns false
+$host->hasOffset(2);  //return true
+$host->hasOffset(23); //return false
 ~~~
 
 ### Label content
@@ -271,16 +270,16 @@ If you are only interested in a given label you can access it directly using the
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->getLabel(0); //returns 'uk'
-$host->getLabel(23); //returns null
+$host->getLabel(0);         //returns 'uk'
+$host->getLabel(23);        //returns null
 $host->getLabel(23, 'now'); //returns 'now'
 ~~~
 
-The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument or `null`.
+The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
 
 ## Modifying the host
 
-<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+<p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails an <code>InvalidArgumentException</code> exception is thrown.</p>
 
@@ -298,7 +297,7 @@ $newHost = $host->append('toto')->append(new Host('example.com'));
 $newHost->__toString(); //returns toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendHost</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::appendHost</code> method</p>
 
 ### Prepend labels
 
@@ -314,11 +313,11 @@ $newHost = $host->prepend('example.com')->prepend(new Host('toto'));
 $newHost->__toString(); //returns toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependHost</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::prependHost</code> method</p>
 
 ### Replace label
 
-To replace a label with your own data, you must use the `Host::replace` method with the following arguments:
+To replace a label you must use the `Host::replace` method with the following arguments:
 
 - `$offset` which represents the label's offset to remove if it exists.
 - `$data` which represents the data to be inject. This data can be a string, an object which implements the `__toString` method or another `Host` object.
@@ -331,7 +330,9 @@ $newHost = $host->replace(0, 'bar.baz');
 $newHost->__toString(); //returns bar.baz.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceLabel</code></p>
+<p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
+
+<p class="message-notice">This method is used by the <code>League\Url\Url::replaceLabel</code> method</p>
 
 ### Remove labels
 
@@ -359,7 +360,9 @@ $newHost = $host->without(function ($value) {
 echo $newHost; //displays 'example.com';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutLabels</code></p>
+<p class="message-notice">if the specified offsets do not exist, no modification is performed and the current object is returned.</p>
+
+<p class="message-notice">This method is used by the <code>League\Url\Url::withoutLabels</code> method</p>
 
 ### Remove zone identifier
 
@@ -367,7 +370,7 @@ According to [RFC6874](http://tools.ietf.org/html/rfc6874#section-4):
 
 > You **must** remove any ZoneID attached to an outgoing URI, as it has only local significance at the sending host.
 
-To fullfill this requirement, the `Host::withoutZoneIdentifier` method is provided. The method takes not parameter and return a new host instance without its zone identifier, it the host was an IPv6 one with a zone identifier. Otherwise the current instance is returned unchanged.
+To fullfill this requirement, the `Host::withoutZoneIdentifier` method is provided. The method takes not parameter and return a new host instance without its zone identifier, if the host was an IPv6 with a zone identifier. Otherwise the current instance is returned unchanged.
 
 ~~~php
 use League\Url\Host;
@@ -377,7 +380,7 @@ $newHost = $host->withoutZoneIdentifier();
 echo $newHost; //displays '[fe80::1]';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutZoneIdentifier</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::withoutZoneIdentifier</code> method</p>
 
 ### Filter labels
 
@@ -412,4 +415,4 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays 'www.be'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterHost</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::filterHost</code> method</p>

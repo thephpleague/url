@@ -9,20 +9,21 @@ The library provides a `League\Url\Query` class to ease complex query manipulati
 
 ## Parsing and building the query string
 
-<p class="message-warning">To preserve the query string, the library no longer relies on PHP's <code>parse_str</code> and <code>http_build_query</code> functions.</p>
+<p class="message-warning">To preserve the query string, the library does not rely on PHP's <code>parse_str</code> and <code>http_build_query</code> functions.</p>
 
-Instead, the `Query` object uses internally and exposes two public static methods that can be used to parse a query string into an array of key value pairs. And conversely creates a valid query string from the resulting array.
+Instead, the `League\Url\Query` object uses internally and exposes two public static methods that can be used to parse a query string into an array of key value pairs. And conversely creates a valid query string from the resulting array.
 
 ### Parsing the query string into an array
 
 - `parse_str` replaces any invalid characters from the query string pair key that can not be included in a PHP variable name by an underscore `_`.
-- `parse_str` merges query string values. This behavior, specific to PHP, may be considered to be a data loss transformation in other languages.
+- `parse_str` merges query string values.
+
+These behaviors, specific to PHP, may be considered to be a data loss transformation in other languages.
 
 ~~~php
 $query_string = 'toto.foo=bar&toto.foo=baz';
 parse_str($query_string, $arr);
-var_export($arr);
-// $arr = ["toto_foo" => "baz"]
+// $arr is an array containing ["toto_foo" => "baz"]
 ~~~
 
 To avoid these transformations, the `Query::parse` static method returns an `array` representation of the query string which preserve key/value pairs. The method expects at most 3 arguments:
@@ -36,8 +37,7 @@ use League\Url\Query;
 
 $query_string = 'toto.foo=bar&toto.foo=baz';
 $arr = Query::parse($query_string, '&', PHP_RFC3986);
-var_export($arr);
-// $arr = ["toto.foo" => [["bar", "baz"]]
+// $arr is an array containing ["toto.foo" => [["bar", "baz"]]
 ~~~
 
 ### Building the query string from an array
@@ -222,7 +222,7 @@ The method returns the value of a specific parameter name. If the offset does no
 
 ## Modifying a query
 
-<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+<p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
@@ -279,7 +279,7 @@ $newQuery->__toString(); //returns foo=jane&baz=&r
 // the 'baz' parameter was updated to an empty string and its = sign remains
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::mergeQuery</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::mergeQuery</code> method</p>
 
 ### Remove parameters
 
@@ -307,7 +307,7 @@ $newQuery = $query->without(function ($value) {
 echo $newQuery; //displays 'p=y+olo';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutQueryValues</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::withoutQueryValues</code> method</p>
 
 ### Filter the Query
 
@@ -344,4 +344,4 @@ $newQuery = $query->filter(function ($value) {
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterQuery</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::filterQuery</code> method</p>

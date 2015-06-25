@@ -44,7 +44,7 @@ A path is a collection of segment delimited by the path delimiter `/`. So it is 
 The method expects at most 2 arguments:
 
 - The first required argument must be a collection of segments (an `array` or a `Traversable` object)
-- The second optional argument, a Path constant, tells whether this is rootless path or not:
+- The second optional argument, a `Url\Path` constant, tells whether this is a rootless path or not:
     - `Path::IS_ABSOLUTE`: the created object will represent an absolute path;
     - `Path::IS_RELATIVE`: the created object will represent a rootless path;
 
@@ -67,18 +67,18 @@ echo $end_slash; //display '/shop/example/com/'
 
 ### Absolute or relative path
 
-A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative. At any given time you can test your path status using the `Path::isAbsolute` method.
+A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative or rootless. At any given time you can test your path status using the `Path::isAbsolute` method.
 
 ~~~php
 use League\Url\Path;
 
 $relative_path = Path::createFromArray(['bar', '', 'baz']);
 echo $relative_path; //displays 'bar//baz'
-$relative_path->isAbsolute(); // returns false;
+$relative_path->isAbsolute(); //returns false;
 
 $absolute_path = Path::createFromArray(['bar', '', 'baz'], Path::IS_ABSOLUTE);
 echo $absolute_path; //displays '/bar//baz'
-$absolute_path->isAbsolute(); // returns true;
+$absolute_path->isAbsolute(); //returns true;
 ~~~
 
 ## Path representations
@@ -107,13 +107,13 @@ A path can be represented as an array of its internal segments. Through the use 
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->toArray(); // returns ['path', 'to', 'the', 'sky'];
+$path->toArray(); //returns ['path', 'to', 'the', 'sky'];
 
 $absolute_path = new Path('/path/to/the/sky/');
-$absolute_path->toArray(); // returns ['path', 'to', 'the', 'sky', ''];
+$absolute_path->toArray(); //returns ['path', 'to', 'the', 'sky', ''];
 
 $relative_path = new Path('path/to/the/sky/');
-$relative_path->toArray(); // returns ['path', 'to', 'the', 'sky', ''];
+$relative_path->toArray(); //returns ['path', 'to', 'the', 'sky', ''];
 ~~~
 
 ## Accessing Path content
@@ -140,12 +140,12 @@ If you are interested in getting all the segments offsets you can do so using th
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->offsets(); // returns  [0, 1, 2, 3];
-$path->offsets('sky'); // returns [3];
-$path->offsets('gweta'); // returns [];
+$path->offsets();        //returns [0, 1, 2, 3];
+$path->offsets('sky');   //returns [3];
+$path->offsets('gweta'); //returns [];
 ~~~
 
-The methods returns all the segments offsets, but if you supply an argument, only the offsets whose segment value equals the argument are returned.
+The method returns an array containing all the segments offsets. If you supply an argument, only the offsets whose segment value equals the argument are returned.
 
 To know If an offset exists before using it you can use the `Path::hasOffset` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
 
@@ -153,8 +153,8 @@ To know If an offset exists before using it you can use the `Path::hasOffset` me
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->hasOffset(2); // returns true
-$path->hasOffset(23); // returns false
+$path->hasOffset(2);  //returns true
+$path->hasOffset(23); //returns false
 ~~~
 
 ### Segment content
@@ -165,64 +165,65 @@ If you are only interested in a given segment you can access it directly using t
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getSegment(0); //returns 'path'
-$path->getSegment(23); //returns null
+$path->getSegment(0);         //returns 'path'
+$path->getSegment(23);        //returns null
 $path->getSegment(23, 'now'); //returns 'now'
 ~~~
 
-The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the second `$default` argument.
+The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
 
 ### The basename
 
-To ease working with path you can get the trailing segment of a Path object by using the `Path::getBasename` method, this method takes no argument. If the segment ends with an extension, it will be included in the output.
+To ease working with path you can get the trailing segment of a path by using the `Path::getBasename` method, this method takes no argument. If the segment ends with an extension, it will be included in the output.
 
 ~~~php
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getBasename(); // returns 'sky'
+$path->getBasename(); //returns 'sky'
 
 $alt_path = new Path('path/to/the/sky.html');
-$alt_path->getBasename(); // returns 'sky.html'
+$alt_path->getBasename(); //returns 'sky.html'
 ~~~
 
 ### The basename extension
 
-If you are only interested in getting the basename extension, you can directly call the `Path::getExtension` method, this method takes no argument. The method return the trailign segment extension as a string if present or an empty string. The leading `.` delimiter is removed from the method output.
+If you are only interested in getting the basename extension, you can directly call the `Path::getExtension` method. This method, which takes no argument, returns the trailing segment extension as a string if present or an empty string. The leading `.` delimiter is removed from the method output.
 
 ~~~php
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getBasename(); // returns ''
+$path->getBasename(); //returns ''
 
 $path = new Path('/path/to/file.csv');
-$path->getExtension(); // return 'csv';
+$path->getExtension(); //return 'csv';
 ~~~
 
 ### The dirname
 
-Conversely, you can get the path dirname by using the `Path::getDirname` method, this method takes no argument. This methods works like PHP's `dirname` function.
+Conversely, you can get the path dirname by using the `Path::getDirname` method, this method takes no argument and works like PHP's `dirname` function.
 
 ~~~php
 use League\Url\Path;
 
-$path = new Path('/path/to/the/sky');
-$path->getBasename(); // returns 'sky'
-$path->getDirname(); // returns '/path/to/the'
+$path = new Path('/path/to/the/sky.txt');
+$path->getExtension(); //returns 'txt'
+$path->getBasename();  //returns 'sky.txt'
+$path->getDirname();   //returns '/path/to/the'
 ~~~
 
 ## Path normalization
 
-<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+<p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 
-Out of the box, the `Path` object operates a number of normalization to the submitted path. All these normalization are non destructive, for instance, the path is correctly URL encoded against the RFC3986 rules.
+Out of the box, the `Path` object operates a number of non destructive normalizations. For instance, the path is correctly URL encoded against the RFC3986 rules.
 
 ### Removing dot segments
 
-To remove dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no arguments and returns a new `Path` object which represents the current object normalized.
+To remove dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no argument and returns a new `Path` object which represents the current object normalized.
 
 ~~~php
 use League\Url\Path;
@@ -234,12 +235,11 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutDotSegments</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::withoutDotSegments</code> method</p>
 
 ### Removing empty segments
 
 Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
-
 
 ~~~php
 use League\Url\Path;
@@ -251,7 +251,7 @@ echo $normalize_path;     //displays 'path/to/the/sky/'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutEmptySegments</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::withoutEmptySegments</code> method</p>
 
 ## Modifying Path
 
@@ -269,14 +269,14 @@ use League\Url\Path;
 $path    = new Path('/path/to/the/sky');
 $newPath = $path->withExtension('.csv');
 echo $newPath->getExtension(); //displays csv;
-echo $path->getExtension(); //displays '';
+echo $path->getExtension();    //displays '';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withExtension</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::withExtension</code> method</p>
 
 ### Append segments
 
-To append segments to the current object you need to use the `Path::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
+To append segments to the current object you need to use the `Path::append` method. This method accept a single argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
 
 ~~~php
 use League\Url\Path;
@@ -286,25 +286,25 @@ $newPath = $path->append(new Path('path'))->append('to/the/sky');
 $newPath->__toString(); //returns path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::appendPath</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::appendPath</code> method</p>
 
 ### Prepend segments
 
-To prepend segments to the current path you need to use the `Path::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
+To prepend segments to the current path you need to use the `Path::prepend` method. This method accept a single argument which represents the data to be prepended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
 
 ~~~php
 use League\Url\Path;
 
 $path    = new Path();
 $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
-$newPath->__toString(); // returns path/to/the/sky
+$newPath->__toString(); //returns path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::prependPath</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::prependPath</code> method</p>
 
 ### Replace segments
 
-To replace a segment with your own data, you must use the `Path::replace` method with the following arguments:
+To replace a segment you must use the `Path::replace` method with the following arguments:
 
 - `$offset` which represents the segment offset to remove if it exists.
 - `$data` which represents the data to be inject.  This data can be a string, an object which implements the `__toString` method or another `Path` object.
@@ -317,7 +317,9 @@ $newPath = $path->replace(0, new Path('bar/baz'));
 $Path->__toString(); //returns /bar/baz/example/com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::replaceSegment</code></p>
+<p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
+
+<p class="message-notice">This method is used by the <code>League\Url\Url::replaceSegment</code> method</p>
 
 ### Remove segments
 
@@ -345,7 +347,9 @@ $newPath = $path->without(function ($value) {
 echo $newPath; //displays '/sky';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::withoutSegments</code></p>
+<p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
+
+<p class="message-notice">This method is used by the <code>League\Url\Url::withoutSegments</code> method</p>
 
 ### Filter segments
 
@@ -380,4 +384,4 @@ $newPath = $query->filter(function ($value) {
 echo $newPath; //displays '/foo/yolo'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url</code> class as <code>Url::filterPath</code></p>
+<p class="message-notice">This method is used by the <code>League\Url\Url::filterPath</code> method</p>

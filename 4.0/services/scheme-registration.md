@@ -191,7 +191,7 @@ $registry->getPort("yolo"); //throws an InvalidArgumentException
 
 ## Modifying the registry.
 
-<p class="message-notice">If the modifications does not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
+<p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 

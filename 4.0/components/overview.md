@@ -1,6 +1,6 @@
 ---
 layout: default
-title: URL Components
+title: URL Components and Parts
 ---
 
 # URL parts and components
@@ -37,7 +37,9 @@ Apart from the authority part, each component and part of an URL is manageable t
 - The `League\Url\Query` class handles the URL query component;
 - The `League\Url\Fragment` class handles the URL fragment component;
 
-Those classes share common methods to view and update their values and just like the `League\Url\Url` class, they are defined as immutable value objects.
+Those classes share common methods to view and update their values.
+
+<p class="message-notice">Just like the <code>League\Url\Url</code> class, they are defined as immutable value objects.</p>
 
 ## URL part instantiation
 
@@ -122,18 +124,18 @@ To compare two components to know if they represent the same value you can use t
 ~~~php
 use League\Url;
 
-$host1    = new Url\Host('www.ExAmPLE.com');
-$host2    = new Url\Host('www.example.com');
+$host     = new Url\Host('www.ExAmPLE.com');
+$alt_host = new Url\Host('www.example.com');
 $fragment = new Url\Fragment('www.example.com');
 $url      = new Url\Url::createFromUrl('www.example.com');
 
-$host1->sameValueAs($host2); //returns true;
-$host1->sameValueAs($fragment); //returns false;
-$host1->sameValueAs($url);
-//PHP Fatal Error because Host and URL do not share the same interface
+$host->sameValueAs($alt_host); //returns true;
+$host->sameValueAs($fragment); //returns false;
+$host->sameValueAs($url);
+//PHP Fatal Error or PHP7+ TypeError is thrown because Host and URL do not share the same interface
 ~~~
 
-<p class="message-warning">Only Url parts objects can be compared with each others, any other object or type will result in a PHP Fatal Error.</p>
+<p class="message-warning">Only Url parts objects can be compared with each others, any other object will result in a PHP Fatal Error or a PHP7+ TypeError will be thrown.</p>
 
 ## Component modification
 
