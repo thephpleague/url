@@ -213,6 +213,20 @@ $path->getBasename();  //return 'sky.txt'
 $path->getDirname();   //return '/path/to/the'
 ~~~
 
+### Trailing delimiter
+
+The `Path` object can tell you whether the current path ends with a delimiter or not using the `Path::hasTrailingDelimiter` method. This method takes no argument and return a boolean.
+
+~~~php
+use League\Url\Path;
+
+$path = new Path('/path/to/the/sky.txt');
+$path->hasTrailingDelimiter(); //return false
+
+$altPath = new Path('/path/');
+$altPath->hasTrailingDelimiter(); //return true
+~~~
+
 ## Path normalization
 
 <p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
