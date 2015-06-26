@@ -13,9 +13,10 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 
 - A system to manage registration of other schemes using the `SchemeRegistry` Interface.
 - Added default support for the following schemes: `ldap`, `ldaps`, `nntp`, `snews`, `telnet`, `wais`
-- Support for IPv6 zone identifier according to RFC6874
-- Intl extension is now required to use the library
-- Support for parsing Public Suffix List to the Host object
+- Support for IPv6 zone identifier
+- `Intl` extension is now required to use the library
+- Domain parsing capabilities to `Host` using `jeremykendall/php-domain-parser` package
+- Add `Path::hasTrailingDelimiter` method
 
 ### Remove
 
@@ -24,7 +25,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - `Scheme::getStandardPort` use the `SchemeRegistry` class to get this information.
 - `Scheme::hasStandardPort` use the `SchemeRegistry` class to get this information.
 - support for `PHP 5.4`
-- remove Punycode PHP implementation
+- Remove relying on Pure PHP implementation of the Punycode algorithm
 
 ## 4.0.0-beta.3
 
