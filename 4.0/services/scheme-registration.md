@@ -108,7 +108,7 @@ $registry = new SchemeRegistry([
 	'file' => null
 ]);
 $registry->toArray();
-//returns [
+//return [
 //	'file' => null,
 //	'http' => 80,
 //	'yolo' => 8080,
@@ -142,7 +142,7 @@ If you only want to know if a particular scheme is registered then you can simpl
 use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->hasOffset("yolo"); //returns false
+$registry->hasOffset("yolo"); //return false
 $registry->hasOffset("wss"); //return true
 ~~~
 
@@ -160,7 +160,7 @@ $registry = new SchemeRegistry([
 	'HtTp' => 80,
 	'file' => null
 ]);
-$registry->offsets(); //returns ['file', 'http', 'yolo'];
+$registry->offsets(); //return ['file', 'http', 'yolo'];
 ~~~
 
 the `SchemeRegistry::offsets` method can also list the schemes that share the same standard port.
@@ -169,8 +169,8 @@ the `SchemeRegistry::offsets` method can also list the schemes that share the sa
 use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->offsets(80); //returns ["http", "ws"]
-$registry->offsets(352); //returns []
+$registry->offsets(80); //return ["http", "ws"]
+$registry->offsets(352); //return []
 ~~~
 
 If no scheme is found the method will return an empty array.
@@ -183,7 +183,7 @@ To get the standard port for a given scheme you can use the `SchemeRegistry::get
 use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->getPort('http'); //returns new Port(80)
+$registry->getPort('http'); //return new Port(80)
 $registry->getPort("yolo"); //throws an InvalidArgumentException
 ~~~
 
@@ -206,9 +206,9 @@ use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->merge(['yolo' => 8080, 'r' => '68']);
-count($registry); //returns 15
-count($newRegistry); //returns 17
-$newRegistry->hasOffset('yolo') //returns true
+count($registry); //return 15
+count($newRegistry); //return 17
+$newRegistry->hasOffset('yolo') //return true
 ~~~
 
 Another `SchemeRegistry` object
@@ -224,10 +224,10 @@ $altregistry = new SchemeRegistry([
 ]);
 
 $newRegistry = $registry->merge($altregistry);
-count($registry);    //returns 15
-count($altregistry); //returns 3
-count($newRegistry); //returns 16
-$newRegistry->hasOffset('yolo') //returns true
+count($registry);    //return 15
+count($altregistry); //return 3
+count($newRegistry); //return 16
+$newRegistry->hasOffset('yolo') //return true
 ~~~
 
 ### Remove schemes
@@ -241,9 +241,9 @@ use League\Url\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->without(['https', 'WsS']);
-count($registry);    //returns 15
-count($newRegistry); //returns 13
-$newRegistry->hasOffset('wss'); //returns false
+count($registry);    //return 15
+count($newRegistry); //return 13
+$newRegistry->hasOffset('wss'); //return false
 ~~~
 
 Or a callable that will select the list of parameter names to remove.
@@ -255,9 +255,9 @@ $registry = new SchemeRegistry();
 $newRegistry = $registry->without(function ($port) {
 	return $port !== 80;
 });
-count($registry);    //returns 15
-count($newRegistry); //returns 2
-$newRegistry->offsets(80); //returns ['http', 'ws'];
+count($registry);    //return 15
+count($newRegistry); //return 2
+$newRegistry->offsets(80); //return ['http', 'ws'];
 ~~~
 
 ### Filter the registry
@@ -275,9 +275,9 @@ $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-count($registry);    //returns 15
-count($newRegistry); //returns 2
-$newRegistry->offsets(80); //returns ['http', 'ws'];
+count($registry);    //return 15
+count($newRegistry); //return 2
+$newRegistry->offsets(80); //return ['http', 'ws'];
 ~~~
 
 By specifying the second argument flag you can change how filtering is done:
@@ -294,7 +294,7 @@ $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($value) {
 	return strpos($value, 'http') === 0;
 }, SchemeRegistry::FILTER_USE_KEY);
-count($registry);    //returns 15
-count($newRegistry); //returns 2
-$newRegistry->offsets(80); //returns ['http', 'https'];
+count($registry);    //return 15
+count($newRegistry); //return 2
+$newRegistry->offsets(80); //return ['http', 'https'];
 ~~~

@@ -54,7 +54,7 @@ use League\Url\Scheme;
 
 $scheme = new Scheme('ldap');
 $registry = $scheme->getSchemeRegistry();
-$registry->hasOffset('ldap'); //returns true
+$registry->hasOffset('ldap'); //return true
 ~~~
 
 Get more informations about the [SchemeRegistry class](/4.0/services/scheme-registration/)

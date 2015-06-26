@@ -57,7 +57,7 @@ use League\Url\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');
-echo $formatter->getQuerySeparator(); //returns &amp;
+echo $formatter->getQuerySeparator(); //return &amp;
 $query = Query::createFromArray(['foo' => 'ba r', "baz" => "bar"]);
 echo $query; //displays foo=ba%20&baz=bar
 echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar

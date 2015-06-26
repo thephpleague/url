@@ -188,9 +188,9 @@ If you are interested in getting all the parametes name you can do so using the 
 use League\Url\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->offsets();        //returns ['foo', 'p', 'z'];
-$query->offsets('bar');   //returns ['foo'];
-$query->offsets('gweta'); //returns [];
+$query->offsets();        //return ['foo', 'p', 'z'];
+$query->offsets('bar');   //return ['foo'];
+$query->offsets('gweta'); //return [];
 ~~~
 
 The methods returns all the parameters name, but if you supply an argument, only the parameters name whose value equals the argument are returned.
@@ -201,8 +201,8 @@ If you want to be sure that a parameter name exists before using it you can do s
 use League\Url\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->hasOffset('p');    //returns true
-$query->hasOffset('john'); //returns false
+$query->hasOffset('p');    //return true
+$query->hasOffset('john'); //return false
 ~~~
 
 ### Parameter value
@@ -213,9 +213,9 @@ If you are only interested in a given parameter you can access it directly using
 use League\Url\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->getValue('foo');          //returns 'bar'
-$query->getValue('gweta');        //returns null
-$query->getValue('gweta', 'now'); //returns 'now'
+$query->getValue('foo');          //return 'bar'
+$query->getValue('gweta');        //return null
+$query->getValue('gweta', 'now'); //return 'now'
 ~~~
 
 The method returns the value of a specific parameter name. If the offset does not exists it will return the value specified by the second argument which default to `null`.
@@ -237,7 +237,7 @@ use League\Url\Query;
 
 $query    = new Query('foo=bar&baz=toto');
 $newQuery = $query->merge('foo=jane&r=stone');
-$newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
+$newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 // the 'foo' parameter was updated
 // the 'r' parameter was added
 ~~~
@@ -249,7 +249,7 @@ use League\Url\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $query->merge(['foo' => 'jane', 'r' => 'stone']);
-$newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
+$newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 // the 'foo' parameter was updated
 // the 'r' parameter was added
 ~~~
@@ -261,7 +261,7 @@ use League\Url\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $query->merge(new Query('foo=jane&r=stone'));
-$newQuery->__toString(); //returns foo=jane&baz=toto&r=stone
+$newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 // the 'foo' parameter was updated
 // the 'r' parameter was added
 ~~~
@@ -273,7 +273,7 @@ use League\Url\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $alt->merge(['foo' => 'jane', 'baz' => '', 'r' => null]);
-$newQuery->__toString(); //returns foo=jane&baz=&r
+$newQuery->__toString(); //return foo=jane&baz=&r
 // the 'foo' parameter was updated
 // the 'r' parameter was added without any value
 // the 'baz' parameter was updated to an empty string and its = sign remains

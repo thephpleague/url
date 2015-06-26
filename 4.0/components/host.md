@@ -157,8 +157,6 @@ $ip->isIp();       //return true
 $ip->isAbsolute(); //return false
 ~~~
 
-<p class="message-warning">The library does not validate your registered name against a valid <a href="https://publicsuffix.org/" target="_blank">public suffix list</a>.</p>
-
 ## Host representations
 
 ### String representation
@@ -270,12 +268,33 @@ If you are only interested in a given label you can access it directly using the
 use League\Url\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->getLabel(0);         //returns 'uk'
-$host->getLabel(23);        //returns null
-$host->getLabel(23, 'now'); //returns 'now'
+$host->getLabel(0);         //return 'uk'
+$host->getLabel(23);        //return null
+$host->getLabel(23, 'now'); //return 'now'
 ~~~
 
 The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
+
+### Host public informations
+
+Using data from [the public suffix list](http://publicsuffix.org/) and the [PHP Domain Parser](https://github.com/jeremykendall/php-domain-parser) every `Host` object can:
+
+- return the subdomain using the `Host::getSubdomain` method;
+- return the registerable domain using the `Host::getRegisterableDomain` method;
+- return the public suffix using the `Host::getPublicSuffix` method;
+- tell you if the found public suffix is valid using the `Host::isPublicSuffixValid` method;
+
+~~~php
+use League\Url\Host;
+
+$host = new Host('www.example.co.uk');
+echo $host->getPublicSuffix();        //display 'co.uk'
+echo $host->getRegisterableDomain();  //display 'example.co.uk'
+echo $host->getSubdomain();           //display 'www'
+$host->isPublicSuffixValid();         //return a boolean 'true' in this example
+~~~
+
+<p class="message-notice">If no information is found, in the case of an IP type address, all the method will return <code>null</code> except for the <code>Host::isPublicSuffixValid</code> which returns <code>false</code></p>
 
 ## Modifying the host
 
@@ -294,7 +313,7 @@ use League\Url\Host;
 
 $host    = new Host();
 $newHost = $host->append('toto')->append(new Host('example.com'));
-$newHost->__toString(); //returns toto.example.com
+$newHost->__toString(); //return toto.example.com
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url::appendHost</code> method</p>
@@ -310,7 +329,7 @@ use League\Url\Host;
 
 $host    = new Host();
 $newHost = $host->prepend('example.com')->prepend(new Host('toto'));
-$newHost->__toString(); //returns toto.example.com
+$newHost->__toString(); //return toto.example.com
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url::prependHost</code> method</p>
@@ -327,7 +346,7 @@ use League\Url\Host;
 
 $host    = new Host('foo.example.com');
 $newHost = $host->replace(0, 'bar.baz');
-$newHost->__toString(); //returns bar.baz.example.com
+$newHost->__toString(); //return bar.baz.example.com
 ~~~
 
 <p class="message-notice">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
@@ -345,7 +364,7 @@ use League\Url\Host;
 
 $host    = new Host('toto.example.com');
 $newHost = $host->without([1]);
-$newHost->__toString(); //returns toto.com
+$newHost->__toString(); //return toto.com
 ~~~
 
 Or a callable that will select the list of offsets to remove.

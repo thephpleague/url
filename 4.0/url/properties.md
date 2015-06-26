@@ -34,7 +34,7 @@ use League\Url\Url;
 
 $url = Url::createFromUrl('http://www.example.com/how/are/you?foo=baz');
 var_export($url->toArray());
-//returns the following array
+//return the following array
 // array (
 //  'scheme' => 'http',
 //  'user' => NULL,
@@ -73,13 +73,13 @@ To access a specific URL part or component as an object you can use the magic me
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz#title');
-$url->scheme;   //returns a League\Url\Scheme object
-$url->userInfo; //returns a League\Url\UserInfo object
-$url->host;     //returns a League\Url\Host object
-$url->port;     //returns a League\Url\Port object
-$url->path;     //returns a League\Url\Path object
-$url->query;    //returns a League\Url\Query object
-$url->fragment; //returns a League\Url\Fragment object
+$url->scheme;   //return a League\Url\Scheme object
+$url->userInfo; //return a League\Url\UserInfo object
+$url->host;     //return a League\Url\Host object
+$url->port;     //return a League\Url\Port object
+$url->path;     //return a League\Url\Path object
+$url->query;    //return a League\Url\Query object
+$url->fragment; //return a League\Url\Fragment object
 ~~~
 
 Using this technique you can get even more informations regarding a URL.
@@ -88,10 +88,10 @@ Using this technique you can get even more informations regarding a URL.
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://foo:bar@www.example.com:81/how/are/you?foo=baz');
-$url->host->isIp();           //returns false the URL uses a registered hostname
-$url->fragment->isEmpty();    //returns true because to fragment component is empty
-$url->path->getBasename();    //returns 'you'
-$url->query->getValue('foo'); //returns 'baz'
+$url->host->isIp();           //return false the URL uses a registered hostname
+$url->fragment->isEmpty();    //return true because to fragment component is empty
+$url->path->getBasename();    //return 'you'
+$url->query->getValue('foo'); //return 'baz'
 ~~~
 
 To get more informations about component properties refer to the [components documentation](/4.0/components/overview/)
@@ -106,14 +106,14 @@ An URL can have a empty string representation even if some components or URL par
 use League\Url\Url;
 
 $url = Url:createFromUrl('//example.com:82');
-$url->getPort(); //returns 82
-$url->getHost(); //returns 'example.com'
-$url->isEmpty(); //returns false
+$url->getPort(); //return 82
+$url->getHost(); //return 'example.com'
+$url->isEmpty(); //return false
 
 $newUrl = $url->withHost('');
-$newUrl->getPort(); //returns 82
-$newUrl->getHost(); //returns ''
-$newUrl->isEmpty(); //returns true
+$newUrl->getPort(); //return 82
+$newUrl->getHost(); //return ''
+$newUrl->isEmpty(); //return true
 ~~~
 
 ### Is the URL absolute ?
@@ -124,10 +124,10 @@ An URL is considered absolute if it has a non empty scheme component and an auth
 use League\Url\Url;
 
 $url = Url:createFromUrl('//example.com/foo');
-$url->isAbsolute(); //returns false
+$url->isAbsolute(); //return false
 
 $url = Url:createFromUrl('ftp://example.com/foo');
-$url->isAbsolute(); //returns true
+$url->isAbsolute(); //return true
 ~~~
 
 ### Does the URL uses the standard port ?
@@ -141,12 +141,12 @@ If the standard port defined for a specific scheme is used it will be remove fro
 use League\Url\Url;
 
 $url = Url::createFromUrl('http://example.com:8042/over/there');
-$url->hasStandardPort(); //returns false
+$url->hasStandardPort(); //return false
 echo $url->getPort();    //displays 8042
 echo $url;               //displays 'http://example.com:8042/over/there'
 
 $alt_url = Url::createFromUrl('wss://example.com:443/over/there');
-$alt_url->hasStandardPort(); //returns true
+$alt_url->hasStandardPort(); //return true
 echo $alt_url->getPort();    //displays 443
 echo $alt_url;               //displays 'wss://example.com/over/there'
 ~~~

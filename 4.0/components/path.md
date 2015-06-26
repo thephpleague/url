@@ -74,11 +74,11 @@ use League\Url\Path;
 
 $relative_path = Path::createFromArray(['bar', '', 'baz']);
 echo $relative_path; //displays 'bar//baz'
-$relative_path->isAbsolute(); //returns false;
+$relative_path->isAbsolute(); //return false;
 
 $absolute_path = Path::createFromArray(['bar', '', 'baz'], Path::IS_ABSOLUTE);
 echo $absolute_path; //displays '/bar//baz'
-$absolute_path->isAbsolute(); //returns true;
+$absolute_path->isAbsolute(); //return true;
 ~~~
 
 ## Path representations
@@ -107,13 +107,13 @@ A path can be represented as an array of its internal segments. Through the use 
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->toArray(); //returns ['path', 'to', 'the', 'sky'];
+$path->toArray(); //return ['path', 'to', 'the', 'sky'];
 
 $absolute_path = new Path('/path/to/the/sky/');
-$absolute_path->toArray(); //returns ['path', 'to', 'the', 'sky', ''];
+$absolute_path->toArray(); //return ['path', 'to', 'the', 'sky', ''];
 
 $relative_path = new Path('path/to/the/sky/');
-$relative_path->toArray(); //returns ['path', 'to', 'the', 'sky', ''];
+$relative_path->toArray(); //return ['path', 'to', 'the', 'sky', ''];
 ~~~
 
 ## Accessing Path content
@@ -140,9 +140,9 @@ If you are interested in getting all the segments offsets you can do so using th
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->offsets();        //returns [0, 1, 2, 3];
-$path->offsets('sky');   //returns [3];
-$path->offsets('gweta'); //returns [];
+$path->offsets();        //return [0, 1, 2, 3];
+$path->offsets('sky');   //return [3];
+$path->offsets('gweta'); //return [];
 ~~~
 
 The method returns an array containing all the segments offsets. If you supply an argument, only the offsets whose segment value equals the argument are returned.
@@ -153,8 +153,8 @@ To know If an offset exists before using it you can use the `Path::hasOffset` me
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->hasOffset(2);  //returns true
-$path->hasOffset(23); //returns false
+$path->hasOffset(2);  //return true
+$path->hasOffset(23); //return false
 ~~~
 
 ### Segment content
@@ -165,9 +165,9 @@ If you are only interested in a given segment you can access it directly using t
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getSegment(0);         //returns 'path'
-$path->getSegment(23);        //returns null
-$path->getSegment(23, 'now'); //returns 'now'
+$path->getSegment(0);         //return 'path'
+$path->getSegment(23);        //return null
+$path->getSegment(23, 'now'); //return 'now'
 ~~~
 
 The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
@@ -180,10 +180,10 @@ To ease working with path you can get the trailing segment of a path by using th
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getBasename(); //returns 'sky'
+$path->getBasename(); //return 'sky'
 
 $alt_path = new Path('path/to/the/sky.html');
-$alt_path->getBasename(); //returns 'sky.html'
+$alt_path->getBasename(); //return 'sky.html'
 ~~~
 
 ### The basename extension
@@ -194,7 +194,7 @@ If you are only interested in getting the basename extension, you can directly c
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->getBasename(); //returns ''
+$path->getBasename(); //return ''
 
 $path = new Path('/path/to/file.csv');
 $path->getExtension(); //return 'csv';
@@ -208,9 +208,9 @@ Conversely, you can get the path dirname by using the `Path::getDirname` method,
 use League\Url\Path;
 
 $path = new Path('/path/to/the/sky.txt');
-$path->getExtension(); //returns 'txt'
-$path->getBasename();  //returns 'sky.txt'
-$path->getDirname();   //returns '/path/to/the'
+$path->getExtension(); //return 'txt'
+$path->getBasename();  //return 'sky.txt'
+$path->getDirname();   //return '/path/to/the'
 ~~~
 
 ## Path normalization
@@ -283,7 +283,7 @@ use League\Url\Path;
 
 $path    = new Path();
 $newPath = $path->append(new Path('path'))->append('to/the/sky');
-$newPath->__toString(); //returns path/to/the/sky
+$newPath->__toString(); //return path/to/the/sky
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url::appendPath</code> method</p>
@@ -297,7 +297,7 @@ use League\Url\Path;
 
 $path    = new Path();
 $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
-$newPath->__toString(); //returns path/to/the/sky
+$newPath->__toString(); //return path/to/the/sky
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Url\Url::prependPath</code> method</p>
@@ -314,7 +314,7 @@ use League\Url\Path;
 
 $path    = new Path('/foo/example/com');
 $newPath = $path->replace(0, new Path('bar/baz'));
-$Path->__toString(); //returns /bar/baz/example/com
+$Path->__toString(); //return /bar/baz/example/com
 ~~~
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
@@ -332,7 +332,7 @@ use League\Url\Path;
 
 $path = new Path('/path/to/the/sky');
 $newPath = $path->without([0, 1]);
-$newPath->__toString(); //returns '/the/sky'
+$newPath->__toString(); //return '/the/sky'
 ~~~
 
 Or a callable that will select the list of offsets to remove.

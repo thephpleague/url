@@ -34,7 +34,7 @@ You can also get a `UserInfo` object from an `League\Url\Url` class:
 use League\Url;
 
 $url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
-$userInfo = $url->userInfo; //returns a League\Url\UserInfo object
+$userInfo = $url->userInfo; //return a League\Url\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~
 
@@ -77,12 +77,12 @@ To acces the user login and password information you need to call the respective
 use League\Url;
 
 $info = new Url\UserInfo('foo', 'bar');
-$info->getUser(); //returns 'foo'
-$info->getPass(); //returns 'bar'
+$info->getUser(); //return 'foo'
+$info->getPass(); //return 'bar'
 
 $url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
-$url->userInfo->getUser(); //returns 'john'
-$url->userInfo->getPass(); //returns 'doe'
+$url->userInfo->getUser(); //return 'john'
+$url->userInfo->getPass(); //return 'doe'
 ~~~
 
 To get access to the component classes you can use the magic `__get` method:
@@ -91,12 +91,12 @@ To get access to the component classes you can use the magic `__get` method:
 use League\Url;
 
 $info = new Url\UserInfo('foo', 'bar');
-$info->user; //returns a League\Url\User class
-$info->user; //returns a League\Url\Pass class
+$info->user; //return a League\Url\User class
+$info->user; //return a League\Url\Pass class
 
 $url = Url\Url::createFromUrl('http://john:doe@example.com:81/');
-$url->userInfo->user->__toString(); //returns 'john'
-$url->userInfo->pass->__toString(); //returns 'doe'
+$url->userInfo->user->__toString(); //return 'john'
+$url->userInfo->pass->__toString(); //return 'doe'
 ~~~
 
 ### User information state
@@ -107,7 +107,7 @@ The `UserInfo` part is considered empty if its user property is empty.
 use League\Url\UserInfo;
 
 $info = new UserInfo('', 'bar');
-$info->isEmpty(); //returns true
+$info->isEmpty(); //return true
 $info->user->isEmpty(); //return true
 $info->pass->isEmpty(); //return false
 ~~~

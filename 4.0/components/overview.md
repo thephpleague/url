@@ -73,7 +73,7 @@ At any given time you may want to know if the URL part is considered empty or no
 use League\Url;
 
 $scheme = new Url\Scheme('http');
-$scheme->isEmpty(); //returns false;
+$scheme->isEmpty(); //return false;
 
 $port = new Url\Port();
 $port->isEmpty(); //return true;
@@ -129,8 +129,8 @@ $alt_host = new Url\Host('www.example.com');
 $fragment = new Url\Fragment('www.example.com');
 $url      = new Url\Url::createFromUrl('www.example.com');
 
-$host->sameValueAs($alt_host); //returns true;
-$host->sameValueAs($fragment); //returns false;
+$host->sameValueAs($alt_host); //return true;
+$host->sameValueAs($fragment); //return false;
 $host->sameValueAs($url);
 //a PHP Fatal Error is issue or a PHP7+ TypeError is thrown
 ~~~

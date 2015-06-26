@@ -61,10 +61,10 @@ A port can be represented as an integer through the use of the `Port::toInt` met
 use League\Url\Port;
 
 $port = new Port(81);
-$port->toInt(); //returns 81;
+$port->toInt(); //return 81;
 
 $empty_port = new Port();
-$empty_port->toInt(); //returns null
+$empty_port->toInt(); //return null
 ~~~
 
 To [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the port object you should refer to the component overview section.
