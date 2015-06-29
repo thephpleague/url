@@ -7,41 +7,37 @@ title: The Scheme Registration System
 
 Ouf of the box the library supports the following schemes:
 
-- ftp, ftps
+- ftp,
 - file,
-- gopher,
 - http, https
-- ldap, ldaps
-- nntp, snews
 - ssh,
 - ws, wss
-- telnet, wais
 
-But sometimes you may want to extend, restrict or change the supported schemes used by the library. To do so the library uses a scheme registration system to help you manage the allowed schemes. The system is controlled through the use of the `League\Url\Services\SchemeRegistry` class. Once instantiated, this immutable value object can help you:
+But sometimes you may want to extend, restrict or change the supported schemes used by the library. To do so the library uses a scheme registration system to help you manage the allowed schemes. The system is controlled through the use of the `League\Uri\Services\SchemeRegistry` class. Once instantiated, this immutable value object can help you:
 
 extend the registry scheme list.
 
 ~~~php
-use League\Url\Url;
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Url;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$newRegistry = $registry->merge(['yolo' => 22]);
-$components = parse_url('yolo://foo.example.com');
+$newRegistry = $registry->merge(['telnet' => 23]);
+$components = parse_url('telnet://foo.example.com');
 $url = Url::createFromComponents($components, $newRegistry);
 ~~~
 
 restrict the registry scheme list.
 
 ~~~php
-use League\Url\Url;
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Url;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-$url = Url::createFromUrl('https://foo.example.com', $newRegistry);
+$url = Url::createFromString('https://foo.example.com', $newRegistry);
 //will throw an InvalidArgumentException as only
 // the 'http' and the 'ws' scheme are now supported
 ~~~
@@ -49,21 +45,21 @@ $url = Url::createFromUrl('https://foo.example.com', $newRegistry);
 or create a totally new scheme registry
 
 ~~~php
-use League\Url\Url;
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Url;
+use League\Uri\Services\SchemeRegistry;
 
-$registry = new SchemeRegistry(['yolo' => 2020]);
+$registry = new SchemeRegistry(['telnet' => 23]);
 $components = parse_url('https://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 // will throw an InvalidArgumentException as only
-// the 'yolo' scheme is now supported
+// the 'telnet' scheme is now supported
 ~~~
 
-Once you have instantiated a registry object you can specify it as an optional argument to the `Url\Scheme` object constructor or one of the `League\Url\Url` named constructor.
+Once you have instantiated a registry object you can specify it as an optional argument to the `Url\Scheme` object constructor or one of the `League\Uri\Url` named constructor.
 
 ~~~php
-use League\Url\Scheme;
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Scheme;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($port) {
@@ -79,17 +75,17 @@ $scheme = new Scheme('http', $newRegistry);
 We first need to instantiate a new `SchemeRegistry` object using its constructor. This method accept only one argument which is a array of scheme/standard port pair. Each scheme and pair are syntaxically validated before addition. The schemes are normalized to their lowercase string representation.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry([
-	'yolo' => 8080,
+	'telnet' => 23,
 	'HtTp' => 80,
 	'file' => null
 ]);
 //you have registered the 3 schemes
 ~~~
 
-- The **yolo** scheme standard port is **8080**
+- The **telnet** scheme standard port is **23**
 - The **http** scheme standard port is **80**
 - The **file** scheme has no standard port and must be given the `null` value for the associated port
 
@@ -100,10 +96,10 @@ By defaut if no array is provided, the registry is instantiated using the defaul
 If you are interested in getting the full registry data you can use the `SchemeRegistry::toArray` method. The method will return an array of the currently registered scheme/standard port pairs.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry([
-	'yolo' => 8080,
+	'telnet' => 23,
 	'HtTp' => 80,
 	'file' => null
 ]);
@@ -111,7 +107,7 @@ $registry->toArray();
 //return [
 //	'file' => null,
 //	'http' => 80,
-//	'yolo' => 8080,
+//	'telnet' => 23,
 //];
 ~~~
 
@@ -124,10 +120,10 @@ $registry->toArray();
 The class provides several methods to works with its schemes. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of schemes and use the `foreach` construct to iterate overs them.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-count($registry); //return 4
+count($registry); //return an integer
 foreach ($registry as $scheme => $port) {
     //do something meaningful here
     //$port is a Url\Port object
@@ -139,34 +135,34 @@ foreach ($registry as $scheme => $port) {
 If you only want to know if a particular scheme is registered then you can simply use the `SchemeRegistry::hasOffset` method.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->hasOffset("yolo"); //return false
-$registry->hasOffset("wss"); //return true
+$registry->hasOffset("telnet"); //return false
+$registry->hasOffset("ftp");    //return true
 ~~~
 
-The `yolo` scheme is not registered by default while the `wss` secure websocket scheme is registered by defaut.
+The `telnet` scheme is not registered by default while the `ftp` scheme is registered by defaut.
 
 ### Listing available schemes
 
 To list all the registered schemes use the `SchemeRegistry::offsets` method. This method will always return an array containing the found scheme as string.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry([
-	'yolo' => 8080,
+	'telnet' => 23,
 	'HtTp' => 80,
 	'file' => null
 ]);
-$registry->offsets(); //return ['file', 'http', 'yolo'];
+$registry->offsets(); //return ['file', 'http', 'telnet'];
 ~~~
 
 the `SchemeRegistry::offsets` method can also list the schemes that share the same standard port.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $registry->offsets(80); //return ["http", "ws"]
@@ -180,11 +176,11 @@ If no scheme is found the method will return an empty array.
 To get the standard port for a given scheme you can use the `SchemeRegistry::getPort` method. This method will return a `Url\Port` object representing the found standard port or an `InvalidArgumentException` if the scheme is unknown or invalid.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $registry->getPort('http'); //return new Port(80)
-$registry->getPort("yolo"); //throws an InvalidArgumentException
+$registry->getPort("telnet"); //throws an InvalidArgumentException
 ~~~
 
 <p class="message-notice">To avoid the exception it is recommended to first issue a <code>SchemeRegistry::hasOffset</code> call prior to calling the <code>SchemeRegistry::getPort</code> method.</p>
@@ -202,32 +198,32 @@ If you want to add or update the registry you need to use the `SchemeRegistry::m
 An `array` or a `Traversable` object similar the array used to instantiate the class
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$newRegistry = $registry->merge(['yolo' => 8080, 'r' => '68']);
-count($registry); //return 15
-count($newRegistry); //return 17
-$newRegistry->hasOffset('yolo') //return true
+$newRegistry = $registry->merge(['telnet' => 23, 'gopher' => '70']);
+count($registry);    //return 7
+count($newRegistry); //return 9
+$newRegistry->hasOffset('telnet') //return true
 ~~~
 
 Another `SchemeRegistry` object
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $altregistry = new SchemeRegistry([
-	'yolo' => 8080,
+	'telnet' => 23,
 	'HtTp' => 80,
 	'file' => null
 ]);
 
 $newRegistry = $registry->merge($altregistry);
-count($registry);    //return 15
-count($altregistry); //return 3
-count($newRegistry); //return 16
-$newRegistry->hasOffset('yolo') //return true
+count($registry);                 //return 7
+count($altregistry);              //return 3
+count($newRegistry);              //return 8
+$newRegistry->hasOffset('telnet') //return true
 ~~~
 
 ### Remove schemes
@@ -237,25 +233,25 @@ To remove scheme from the registry and returns a new `SchemeRegistry` object wit
 This argument can be an array containing a list of parameter names to remove.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->without(['https', 'WsS']);
-count($registry);    //return 15
-count($newRegistry); //return 13
+count($registry);    //return 7
+count($newRegistry); //return 5
 $newRegistry->hasOffset('wss'); //return false
 ~~~
 
 Or a callable that will select the list of parameter names to remove.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->without(function ($port) {
 	return $port !== 80;
 });
-count($registry);    //return 15
+count($registry);    //return 7
 count($newRegistry); //return 2
 $newRegistry->offsets(80); //return ['http', 'ws'];
 ~~~
@@ -269,13 +265,13 @@ You can filter the registry according to its scheme or its port using the `Schem
 The first parameter must be a `callable`
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-count($registry);    //return 15
+count($registry);    //return 7
 count($newRegistry); //return 2
 $newRegistry->offsets(80); //return ['http', 'ws'];
 ~~~
@@ -288,7 +284,7 @@ By specifying the second argument flag you can change how filtering is done:
 By default, if no flag is specified the method will filter by value.
 
 ~~~php
-use League\Url\Services\SchemeRegistry;
+use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($value) {

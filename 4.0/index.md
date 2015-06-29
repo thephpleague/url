@@ -16,7 +16,7 @@ title: Url
 
 ## About
 
-The `League\Url` package provides simple and intuitive classes to create and manage Urls in PHP.
+The phpleague `Url` package provides simple and intuitive classes to create and manage Urls in PHP.
 
 [URL on Packagist](https://packagist.org/packages/league/url)
 
@@ -32,9 +32,10 @@ Highlights
 
 ## Questions?
 
-URL was created by Nyamagana Butera Ignace. Find him on Twitter at [@nyamsprod](https://twitter.com/nyamsprod).
+The package was created by Nyamagana Butera Ignace. Find him on Twitter at [@nyamsprod][].
 
 [PSR-2]: http://www.php-fig.org/psr/psr-2/
 [PSR-4]: http://www.php-fig.org/psr/psr-4/
 [PSR-7]: http://www.php-fig.org/psr/psr-7/
 [RFC3986]: http://tools.ietf.org/html/rfc3986
+[nyamsprod]: https://twitter.com/nyamsprod

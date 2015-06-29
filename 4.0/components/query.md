@@ -5,13 +5,13 @@ title: The Query Component
 
 # The Query component
 
-The library provides a `League\Url\Query` class to ease complex query manipulation.
+The library provides a `League\Uri\Query` class to ease complex query manipulation.
 
 ## Parsing and building the query string
 
 <p class="message-warning">To preserve the query string, the library does not rely on PHP's <code>parse_str</code> and <code>http_build_query</code> functions.</p>
 
-Instead, the `League\Url\Query` object uses internally and exposes two public static methods that can be used to parse a query string into an array of key value pairs. And conversely creates a valid query string from the resulting array.
+Instead, the `League\Uri\Query` object uses internally and exposes two public static methods that can be used to parse a query string into an array of key value pairs. And conversely creates a valid query string from the resulting array.
 
 ### Parsing the query string into an array
 
@@ -33,7 +33,7 @@ To avoid these transformations, the `Query::parse` static method returns an `arr
 - The query string encryption. It can be one of PHP constant `PHP_QUERY_RFC3986` or `PHP_QUERY_RFC1738` or `false` if you don't want any encryption. By default it is set to PHP constants `PHP_QUERY_RFC3986`
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query_string = 'toto.foo=bar&toto.foo=baz';
 $arr = Query::parse($query_string, '&', PHP_RFC3986);
@@ -58,7 +58,7 @@ $res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
 or using `Query::parse`
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query_string = 'foo[]=bar&foo[]=baz';
 $arr = Query::parse($query_string, '&', PHP_RFC3986);
@@ -75,7 +75,7 @@ The `Query::build` static method returns and preserve string representation of t
 - The query string encryption. It can be one of PHP constant `PHP_QUERY_RFC3986` or `PHP_QUERY_RFC1738` or `false` if you don't want any encryption. By default it is set to PHP constants `PHP_QUERY_RFC3986`
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query_string = 'foo[]=bar&foo[]=baz';
 $arr = Query::parse($query_string, '&', PHP_RFC3986);
@@ -92,10 +92,10 @@ No key indexes is added and the query string is safely recreated
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Query` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
+Just like any other component, a new `League\Uri\Query` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=yolo&z=');
 echo $query; //display 'foo=bar&p=yolo&z'
@@ -105,13 +105,13 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Url\Url object
+### Using a League\Uri\Url object
 
 ~~~php
-use League\Url\Url;
+use League\Uri\Url;
 
-$url  = Url::createFromUrl('http://url.thephpleague.com/path/to/here?foo=bar');
-$query = $url->query; // $query is a League\Url\Query object;
+$url  = Url::createFromString('http://url.thephpleague.com/path/to/here?foo=bar');
+$query = $url->query; // $query is a League\Uri\Query object;
 ~~~
 
 ### Using a named constructor
@@ -122,7 +122,7 @@ It is possible to create a `Query` object using an array or a `Traversable` obje
 - If a given parameter value is an empty string il will be rendered without any value **but** with a `=` sign appended to it;
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query =  Query::createFromArray(['foo' => 'bar', 'p' => 'yolo', 'z' => '']);
 echo $query; //display 'foo=bar&p=yolo&z='
@@ -138,7 +138,7 @@ echo $query; //display 'foo=bar&p&z='
 Basic query representations is done using the following methods:
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
 $query->__toString();      //return 'foo=bar&p=y%20olo&z'
@@ -150,7 +150,7 @@ $query->getUriComponent(); //return '?foo=bar&p=y%20olo&z'
 A query can be represented as an array of its internal parameters. Through the use of the `Query::toArray` method the class returns the object array representation. This method uses `Query::parse` to create the array.
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
 $query->toArray();
@@ -171,7 +171,7 @@ The array returned by `toArray` differs from the one returned by `parse_str` has
 The class provides several methods to works with its parameters. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of parameters and use the `foreach` construct to iterate overs them.
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
 count($query); //return 4
@@ -185,7 +185,7 @@ foreach ($query as $parameter => $value) {
 If you are interested in getting all the parametes name you can do so using the `Query::offsets` method like show below:
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
 $query->offsets();        //return ['foo', 'p', 'z'];
@@ -198,7 +198,7 @@ The methods returns all the parameters name, but if you supply an argument, only
 If you want to be sure that a parameter name exists before using it you can do so using the `Query::hasOffset` method which returns `true` if the submitted parameter name exists in the current object.
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
 $query->hasOffset('p');    //return true
@@ -210,7 +210,7 @@ $query->hasOffset('john'); //return false
 If you are only interested in a given parameter you can access it directly using the `Query::getValue` method as show below:
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
 $query->getValue('foo');          //return 'bar'
@@ -226,6 +226,34 @@ The method returns the value of a specific parameter name. If the offset does no
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
+### Sort parameters
+
+Sometimes you may wish to sort your query. To do so, you can use the `Query::sortOffsets` method. This method expects a single argument which can be:
+
+One of PHP's sorting constant used by the [sort function](http://php.net/sort). **In this case the query parameters are sorted from low to hight**
+
+~~~php
+use League\Uri\Query;
+
+$query    = new Query('foo=bar&baz=toto');
+$newQuery = $query->sortOffsets(SORT_STRING);
+$newQuery->__toString(); //return baz=toto&foo=bar
+~~~
+
+A user-defined comparison function which must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
+
+~~~php
+use League\Uri\Query;
+
+
+$query    = new Query('foo=bar&baz=toto');
+$newQuery = $query->sortOffsets('strcmp');
+$newQuery->__toString(); //return baz=toto&foo=bar
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Uri\Url::sortQueryOffsets</code> method</p>
+
+
 ### Add or Update parameters
 
 If you want to add or update the query parameters you need to use the `Query::merge` method. This method expects a single argument. This argument can be:
@@ -233,7 +261,7 @@ If you want to add or update the query parameters you need to use the `Query::me
 A string or a stringable object:
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = new Query('foo=bar&baz=toto');
 $newQuery = $query->merge('foo=jane&r=stone');
@@ -245,7 +273,7 @@ $newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 An `array` or a `Traversable` object similar to the result of the `Query::parse` method:
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $query->merge(['foo' => 'jane', 'r' => 'stone']);
@@ -257,7 +285,7 @@ $newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 Another `Query` object
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $query->merge(new Query('foo=jane&r=stone'));
@@ -269,7 +297,7 @@ $newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 <p class="message-notice">Values equal to <code>null</code> or the empty string are merge differently.</p>
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
 $newQuery = $alt->merge(['foo' => 'jane', 'baz' => '', 'r' => null]);
@@ -279,7 +307,7 @@ $newQuery->__toString(); //return foo=jane&baz=&r
 // the 'baz' parameter was updated to an empty string and its = sign remains
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::mergeQuery</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::mergeQuery</code> method</p>
 
 ### Remove parameters
 
@@ -288,7 +316,7 @@ To remove parameters from the current object and returns a new `Query` object wi
 This argument can be an array containing a list of parameter names to remove.
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
 $newQuery = $query->without(['foo', 'p']);
@@ -298,7 +326,7 @@ echo $newQuery; //displays 'z='
 Or a callable that will select the list of parameter names to remove.
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
 $newQuery = $query->without(function ($value) {
@@ -307,7 +335,7 @@ $newQuery = $query->without(function ($value) {
 echo $newQuery; //displays 'p=y+olo';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::withoutQueryValues</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutQueryValues</code> method</p>
 
 ### Filter the Query
 
@@ -318,7 +346,7 @@ You can filter the query according to its parameters name or value using the `Qu
 The first parameter must be a `callable`
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
 $newQuery = $query->filter(function ($value) {
@@ -335,7 +363,7 @@ By specifying the second argument flag you can change how filtering is done:
 By default, if no flag is specified the method will filter by value.
 
 ~~~php
-use League\Url\Query;
+use League\Uri\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
 $newQuery = $query->filter(function ($value) {
@@ -344,4 +372,4 @@ $newQuery = $query->filter(function ($value) {
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::filterQuery</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::filterQuery</code> method</p>

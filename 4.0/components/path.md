@@ -5,16 +5,16 @@ title: The Path component
 
 # The Path component
 
-The library provides a `League\Url\Path` class to ease complex path manipulation.
+The library provides a `League\Uri\Path` class to ease complex path manipulation.
 
 ## Path creation
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Url\Path` object can be instantiated using its default constructor.
+Just like any other component, a new `League\Uri\Path` object can be instantiated using its default constructor.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $absolute_path = new Path('/hello/world');
 echo $absolute_path; //display '/hello/world'
@@ -28,13 +28,13 @@ echo $end_slash; //display 'hello/world/'
 
 <p class="message-warning">If the submitted value is not a valid path an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Url\Url object
+### Using a League\Uri\Url object
 
 ~~~php
-use League\Url\Url;
+use League\Uri\Url;
 
-$url  = Url::createFromUrl('http://url.thephpleague.com/path/to/here');
-$path = $url->path; // $path is a League\Url\Path object;
+$url  = Url::createFromString('http://url.thephpleague.com/path/to/here');
+$path = $url->path; // $path is a League\Uri\Path object;
 ~~~
 
 ### Using a named constructor
@@ -49,7 +49,7 @@ The method expects at most 2 arguments:
     - `Path::IS_RELATIVE`: the created object will represent a rootless path;
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $relative_path =  Path::createFromArray(['shop', 'example', 'com']);
 echo $relative_path; //display 'shop/example/com'
@@ -70,7 +70,7 @@ echo $end_slash; //display '/shop/example/com/'
 A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative or rootless. At any given time you can test your path status using the `Path::isAbsolute` method.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $relative_path = Path::createFromArray(['bar', '', 'baz']);
 echo $relative_path; //displays 'bar//baz'
@@ -88,7 +88,7 @@ $absolute_path->isAbsolute(); //return true;
 Basic path representations is done using the following methods:
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to the/sky');
 $path->__toString();      //return '/path/to%20the/sky'
@@ -104,7 +104,7 @@ A path can be represented as an array of its internal segments. Through the use 
 <p class="message-warning">Once in array representation you can not distinguish a relative from a absolute path</p>
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $path->toArray(); //return ['path', 'to', 'the', 'sky'];
@@ -123,7 +123,7 @@ $relative_path->toArray(); //return ['path', 'to', 'the', 'sky', ''];
 The class provides several methods to works with its segments. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of segments and use the `foreach` construct to iterate overs them.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 count($path); //return 4
@@ -137,7 +137,7 @@ foreach ($path as $offset => $segment) {
 If you are interested in getting all the segments offsets you can do so using the `Path::offsets` method like shown below:
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $path->offsets();        //return [0, 1, 2, 3];
@@ -150,7 +150,7 @@ The method returns an array containing all the segments offsets. If you supply a
 To know If an offset exists before using it you can use the `Path::hasOffset` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $path->hasOffset(2);  //return true
@@ -162,7 +162,7 @@ $path->hasOffset(23); //return false
 If you are only interested in a given segment you can access it directly using the `Path::getSegment` method as show below:
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $path->getSegment(0);         //return 'path'
@@ -177,7 +177,7 @@ The method returns the value of a specific offset. If the offset does not exists
 To ease working with path you can get the trailing segment of a path by using the `Path::getBasename` method, this method takes no argument. If the segment ends with an extension, it will be included in the output.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $path->getBasename(); //return 'sky'
@@ -191,7 +191,7 @@ $alt_path->getBasename(); //return 'sky.html'
 If you are only interested in getting the basename extension, you can directly call the `Path::getExtension` method. This method, which takes no argument, returns the trailing segment extension as a string if present or an empty string. The leading `.` delimiter is removed from the method output.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $path->getBasename(); //return ''
@@ -205,7 +205,7 @@ $path->getExtension(); //return 'csv';
 Conversely, you can get the path dirname by using the `Path::getDirname` method, this method takes no argument and works like PHP's `dirname` function.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky.txt');
 $path->getExtension(); //return 'txt'
@@ -218,7 +218,7 @@ $path->getDirname();   //return '/path/to/the'
 The `Path` object can tell you whether the current path ends with a delimiter or not using the `Path::hasTrailingDelimiter` method. This method takes no argument and return a boolean.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky.txt');
 $path->hasTrailingDelimiter(); //return false
@@ -240,7 +240,7 @@ Out of the box, the `Path` object operates a number of non destructive normaliza
 To remove dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no argument and returns a new `Path` object which represents the current object normalized.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $raw_path       = new Path('path/to/./the/../the/sky%7bfoo%7d');
 $normalize_path = $raw_path->withoutDotSegments();
@@ -249,14 +249,14 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::withoutDotSegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutDotSegments</code> method</p>
 
 ### Removing empty segments
 
 Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $raw_path       = new Path("path////to/the/sky//");
 $normalize_path = $raw_path->withoutEmptySegments();
@@ -265,7 +265,7 @@ echo $normalize_path;     //displays 'path/to/the/sky/'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::withoutEmptySegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutEmptySegments</code> method</p>
 
 ## Modifying Path
 
@@ -278,7 +278,7 @@ You can easily change or remove the extension from the path basename using the `
 <p class="message-warning">This method will throw an <code>InvalidArgumentException</code> exception if the extension contains the path delimiter.</p>
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path    = new Path('/path/to/the/sky');
 $newPath = $path->withExtension('.csv');
@@ -286,35 +286,35 @@ echo $newPath->getExtension(); //displays csv;
 echo $path->getExtension();    //displays '';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::withExtension</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withExtension</code> method</p>
 
 ### Append segments
 
 To append segments to the current object you need to use the `Path::append` method. This method accept a single argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path    = new Path();
 $newPath = $path->append(new Path('path'))->append('to/the/sky');
 $newPath->__toString(); //return path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::appendPath</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::appendPath</code> method</p>
 
 ### Prepend segments
 
 To prepend segments to the current path you need to use the `Path::prepend` method. This method accept a single argument which represents the data to be prepended. This data can be a string, an object which implements the `__toString` method or another `Path` object:
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path    = new Path();
 $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
 $newPath->__toString(); //return path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::prependPath</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::prependPath</code> method</p>
 
 ### Replace segments
 
@@ -324,7 +324,7 @@ To replace a segment you must use the `Path::replace` method with the following 
 - `$data` which represents the data to be inject.  This data can be a string, an object which implements the `__toString` method or another `Path` object.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path    = new Path('/foo/example/com');
 $newPath = $path->replace(0, new Path('bar/baz'));
@@ -333,7 +333,7 @@ $Path->__toString(); //return /bar/baz/example/com
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::replaceSegment</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::replaceSegment</code> method</p>
 
 ### Remove segments
 
@@ -342,7 +342,7 @@ To remove segments from the current object and returns a new `Path` object witho
 This argument can be an array containing a list of parameter names to remove.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $newPath = $path->without([0, 1]);
@@ -352,7 +352,7 @@ $newPath->__toString(); //return '/the/sky'
 Or a callable that will select the list of offsets to remove.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
 $newPath = $path->without(function ($value) {
@@ -363,7 +363,7 @@ echo $newPath; //displays '/sky';
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::withoutSegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutSegments</code> method</p>
 
 ### Filter segments
 
@@ -372,7 +372,7 @@ You can filter the `Path` object using the `Path::filter` method.
 The first parameter must be a `callable`
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path    = new Path('/foo/bar/yolo/');
 $newPath = $path->filter(function ($value) {
@@ -389,7 +389,7 @@ By specifying the second argument flag you can change how filtering is done:
 By default, if no flag is specified the method will use the `Path::FILTER_USE_VALUE` flag.
 
 ~~~php
-use League\Url\Path;
+use League\Uri\Path;
 
 $path    = new Path('/foo/bar/yolo/');
 $newPath = $query->filter(function ($value) {
@@ -398,4 +398,4 @@ $newPath = $query->filter(function ($value) {
 echo $newPath; //displays '/foo/yolo'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Url\Url::filterPath</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::filterPath</code> method</p>

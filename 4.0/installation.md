@@ -13,7 +13,7 @@ title: Installation
 
 ## Install
 
-`League\Url` is available on [Packagist][] and must be installed using [Composer][]. This can be done by running the following command on a composer installed box:
+`Url` is available on [Packagist][] and must be installed using [Composer][]. This can be done by running the following command on a composer installed box:
 
 ~~~
 $ composer require league/url
