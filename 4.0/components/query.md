@@ -358,7 +358,7 @@ echo $newQuery; //displays 'foo=bar&p=y+olo'
 By specifying the second argument flag you can change how filtering is done:
 
 - use `Query::FILTER_USE_VALUE` to filter according to the query parameter value;
-- use `Query::FILTER_USE_KEY` to filter according to the query parameter name;
+- use `Query::FILTER_USE_OFFSET` to filter according to the query parameter name;
 
 By default, if no flag is specified the method will filter by value.
 
@@ -368,7 +368,7 @@ use League\Uri\Query;
 $query    = new Query('foo=bar&p=y+olo&z=');
 $newQuery = $query->filter(function ($value) {
 	return $value != 'foo';
-}, Query::FILTER_USE_KEY);
+}, Query::FILTER_USE_OFFSET);
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 

@@ -279,7 +279,7 @@ $newRegistry->offsets(80); //return ['http', 'ws'];
 By specifying the second argument flag you can change how filtering is done:
 
 - use `SchemeRegistry::FILTER_USE_VALUE` to filter according to the scheme;
-- use `SchemeRegistry::FILTER_USE_KEY` to filter according to the port;
+- use `SchemeRegistry::FILTER_USE_OFFSET` to filter according to the port;
 
 By default, if no flag is specified the method will filter by value.
 
@@ -289,7 +289,7 @@ use League\Uri\Services\SchemeRegistry;
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($value) {
 	return strpos($value, 'http') === 0;
-}, SchemeRegistry::FILTER_USE_KEY);
+}, SchemeRegistry::FILTER_USE_OFFSET);
 count($registry);    //return 15
 count($newRegistry); //return 2
 $newRegistry->offsets(80); //return ['http', 'https'];

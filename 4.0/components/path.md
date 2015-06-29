@@ -384,7 +384,7 @@ echo $newPath; //displays '/foo/bar/yolo'
 By specifying the second argument flag you can change how filtering is done:
 
 - use `Path::FILTER_USE_VALUE` to filter according to the segment value;
-- use `Path::FILTER_USE_KEY` to filter according to the segment offset;
+- use `Path::FILTER_USE_OFFSET` to filter according to the segment offset;
 
 By default, if no flag is specified the method will use the `Path::FILTER_USE_VALUE` flag.
 
@@ -394,7 +394,7 @@ use League\Uri\Path;
 $path    = new Path('/foo/bar/yolo/');
 $newPath = $query->filter(function ($value) {
 	return 1 != $value;
-}, Path::FILTER_USE_KEY);
+}, Path::FILTER_USE_OFFSET);
 echo $newPath; //displays '/foo/yolo'
 ~~~
 

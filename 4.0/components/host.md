@@ -420,7 +420,7 @@ echo $newHost; //displays 'www.be'
 By specifying the second argument flag you can change how filtering is done:
 
 - use `Host::FILTER_USE_VALUE` to filter according to the label value;
-- use `Host::FILTER_USE_KEY` to filter according to the label offset;
+- use `Host::FILTER_USE_OFFSET` to filter according to the label offset;
 
 By default, if no flag is specified the method will use the `Host::FILTER_USE_VALUE` flag.
 
@@ -430,7 +430,7 @@ use League\Uri\Host;
 $host    = new Host('www.11.be');
 $newHost = $host->filter(function ($value) {
 	return $value != 1;
-}, Host::FILTER_USE_KEY);
+}, Host::FILTER_USE_OFFSET);
 echo $newHost; //displays 'www.be'
 ~~~
 
