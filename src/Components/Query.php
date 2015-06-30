@@ -58,8 +58,8 @@ class Query extends AbstractArray implements QueryInterface, ArrayAccess
         }
 
         return str_replace(
-            array('%E7', '+'),
-            array('~', '%20'),
+            array('+'),
+            array('%20'),
             http_build_query($this->data, '', '&')
         );
     }

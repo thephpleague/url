@@ -159,4 +159,10 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertSame('2', $query['foo']);
         $this->assertSame('', $query['bar']);
     }
+
+    public function testMultibyte()
+    {
+        $query = new Query('?query=移設');
+        $this->assertSame('query=%E7%A7%BB%E8%A8%AD', (string) $query);
+    }
 }
