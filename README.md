@@ -1,8 +1,8 @@
 # Url
 
-[![Build Status](https://img.shields.io/travis/thephpleague/url/master.svg?style=flat-square)](https://travis-ci.org/thephpleague/url)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/thephpleague/url.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/url.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url)
+[![Build Status](https://img.shields.io/travis/thephpleague/url/3.x.svg?style=flat-square)](https://travis-ci.org/thephpleague/url)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/thephpleague/url/3.x.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url/?branch=3.x)
+[![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/url/3.x.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url/?branch=3.x)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Latest Version](https://img.shields.io/github/release/thephpleague/url.svg?style=flat-square)](https://github.com/thephpleague/url/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/league/url.svg?style=flat-square)](https://packagist.org/packages/league/url)
