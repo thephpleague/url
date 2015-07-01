@@ -7,6 +7,15 @@ title: Version 3 - Changelog
 
 All Notable changes to `League\Url` version 3 will be documented in this file
 
+## 3.3.4 - 2015-07-01
+
+### Fixed
+- Bug fix Query parsing [pull request #79](https://github.com/thephpleague/url/pull/79)
+
+## 3.3.3 - 2015-06-25
+
+### Fixed
+- Update `True\Punycode` requirement to 2.0.0 to allow PHP7 support
 
 ## 3.3.2
 
