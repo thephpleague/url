@@ -251,7 +251,7 @@ $newQuery = $query->ksort('strcmp');
 $newQuery->__toString(); //return baz=toto&foo=bar
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::sortQueryOffsets</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Url::ksortQuery</code> method</p>
 
 
 ### Add or Update parameters

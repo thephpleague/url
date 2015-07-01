@@ -163,7 +163,7 @@ use League\Uri\Url;
 use GuzzleHttp\Psr7\Uri;
 
 $leagueUrl = Url::createFromString('http://www.рф.ru:80/hello/world?foo=bar&baz=yellow');
-$guzzleUrl = new Uri('http://www.xn--p1ai.ru/hello/world?baz=yellow&foo=bar');
+$guzzleUrl = new Uri('http://www.рф.ru:80/hello/world?baz=yellow&foo=bar');
 
 $leagueUrl->sameValueAs($guzzleUrl); // return true
 ~~~

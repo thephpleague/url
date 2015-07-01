@@ -78,7 +78,7 @@ To ease these operations various modifying methods were added. Each method is pr
 
 ### Modifying URL query parameters
 
-### Sort query parameters
+#### Sort query parameters
 
 ~~~php
 $url = Url::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
