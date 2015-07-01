@@ -25,7 +25,14 @@ userinfo    host     port
 
 The userinfo part is composed of the `user` and the `pass` components.
 
-Apart from the authority part, each component and part of an URL is manageable through a dedicated class:
+~~~
+captain:future
+\_____/ \____/
+   |      |
+  user   pass
+~~~
+
+Apart from the authority part, each component and part of the URL is manageable through a dedicated class:
 
 - The `League\Uri\Scheme` class handles the URL scheme component;
 - The `League\Uri\UserInfo` class handles the URL userinfo part;
@@ -45,7 +52,11 @@ Those classes share common methods to view and update their values.
 
 Each component class can be instantiated independently from the main `League\Uri\Url` object.
 
-They all expect a valid string according to their component validation rules as explain in RFC3986 or an object with a `__toString()` method.
+They all expect:
+
+- a valid string according to their component validation rules as explain in RFC3986
+- an object with a `__toString()` method.
+- or the `null` value
 
 <p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
 
@@ -54,15 +65,15 @@ They all expect a valid string according to their component validation rules as 
 ~~~php
 use League\Uri;
 
-$scheme    = new Url\Scheme('http');
-$user      = new Url\User('john');
-$pass      = new Url\Pass('doe');
-$user_info = new Url\UserInfo($user, $pass);
-$host      = new Url\Host('127.0.0.1');
-$port      = new Url\Port(443);
-$path      = new Url\Path('/foo/bar/file.csv');
-$query     = new Url\Query('q=url&site=thephpleague');
-$fragment  = new Url\Fragment('paragraphid');
+$scheme   = new Uri\Scheme('http');
+$user     = new Uri\User('john');
+$pass     = new Uri\Pass('doe');
+$userInfo = new Uri\UserInfo($user, $pass);
+$host     = new Uri\Host('127.0.0.1');
+$port     = new Uri\Port(443);
+$path     = new Uri\Path('/foo/bar/file.csv');
+$query    = new Uri\Query('q=url&site=thephpleague');
+$fragment = new Uri\Fragment('paragraphid');
 ~~~
 
 ### URL part status
@@ -72,10 +83,10 @@ At any given time you may want to know if the URL part is considered empty or no
 ~~~php
 use League\Uri;
 
-$scheme = new Url\Scheme('http');
+$scheme = new Uri\Scheme('http');
 $scheme->isEmpty(); //return false;
 
-$port = new Url\Port();
+$port = new Uri\Port();
 $port->isEmpty(); //return true;
 ~~~
 
@@ -85,49 +96,49 @@ Each class provides several ways to represent the component value as string.
 
 ### String representation
 
-The `Component::__toString` method returns the string representation of the URL part. This is the form used when echoing the URL component from the `League\Uri\Url` getter methods. No component delimiter is returned.
+The `__toString` method returns the string representation of the object. This is the form used when echoing the URL component from the `League\Uri\Url` getter methods. No component delimiter is returned.
 
 ~~~php
 use League\Uri;
 
-$scheme = new Url\Scheme('http');
+$scheme = new Uri\Scheme('http');
 echo $scheme->__toString(); //displays 'http'
 
-$userinfo = new Url\UserInfo('john');
+$userinfo = new Uri\UserInfo('john');
 echo $userinfo->__toString(); //displays 'john'
 
-$path = new Url\Path('/toto le heros/file.xml');
+$path = new Uri\Path('/toto le heros/file.xml');
 echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
 ### URL-like representation
 
-The `Component::getUriComponent` Returns the string representation of the URL part with its optional delimiters. This is the form used by the `Url::__toString` method when building the URL string representation.
+The `getUriComponent` Returns the string representation of the URL part with its optional delimiters. This is the form used by the `League\Uri\Url::__toString` method when building the URL string representation.
 
 ~~~php
 use League\Uri;
 
-$scheme = new Url\Scheme('http');
+$scheme = new Uri\Scheme('http');
 echo $scheme->getUriComponent(); //displays 'http:'
 
-$userinfo = new Url\UserInfo('john');
+$userinfo = new Uri\UserInfo('john');
 echo $userinfo->getUriComponent(); //displays 'john@'
 
-$path = new Url\Path('/toto le heros/file.xml');
+$path = new Uri\Path('/toto le heros/file.xml');
 echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
 ## URL parts comparison
 
-To compare two components to know if they represent the same value you can use the `Component::sameValueAs` method which compares them according to their respective `Component::getUriComponent` methods.
+To compare two components to know if they represent the same value you can use the `sameValueAs` method which compares them according to their respective `getUriComponent` methods.
 
 ~~~php
 use League\Uri;
 
-$host     = new Url\Host('www.ExAmPLE.com');
-$alt_host = new Url\Host('www.example.com');
-$fragment = new Url\Fragment('www.example.com');
-$url      = new Url\Url::createFromString('www.example.com');
+$host     = new Uri\Host('www.ExAmPLE.com');
+$alt_host = new Uri\Host('www.example.com');
+$fragment = new Uri\Fragment('www.example.com');
+$url      = new Uri\Url::createFromString('www.example.com');
 
 $host->sameValueAs($alt_host); //return true;
 $host->sameValueAs($fragment); //return false;
@@ -139,14 +150,18 @@ $host->sameValueAs($url);
 
 ## Component modification
 
-Each URL component class can have its content modified using the `modify` method. This method expects a string or an object with the `__toString` method.
+Each URL component class can have its content modified using the `modify` method. This method expects:
+
+- a string;
+- an object with the `__toString` method;
+- or the `null`value;
 
 <p class="message-warning">The <code>UserInfo</code> class does not include a <code>modify</code> method.</p>
 
 ~~~php
 use League\Uri;
 
-$query     = new Url\Query('q=url&site=thephpleague');
+$query     = new Uri\Query('q=url&site=thephpleague');
 $new_query = $query->modify('q=yolo');
 echo $new_query; //displays 'q=yolo'
 echo $query;     //display 'q=url&site=thephpleague'

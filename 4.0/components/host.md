@@ -36,7 +36,7 @@ echo $ipv6_alt; //display '[::1]'
 
 ### Using a League\Uri\Url object
 
-You can also get a `Host` object from an `League\Uri\Url` class:
+You can also access a `Host` object from an `League\Uri\Url` class:
 
 ~~~php
 use League\Uri\Url;
@@ -53,12 +53,12 @@ The method expects at most 2 arguments:
 
 - The first required argument must be a collection of label (an `array` or a `Traversable` object)
 - The second optional argument, a `Host` constant, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not:
-    - `Host::IS_ABSOLUTE` creates an object with a FQDN;
-    - `Host::IS_RELATIVE` creates an object with a relative domain name;
+    - `Host::IS_ABSOLUTE` creates an a fully qualified domain name `Host` object;
+    - `Host::IS_RELATIVE` creates an a partially qualified domain name `Host` object;
 
 By default this optional argument equals to `Host::IS_RELATIVE`.
 
-<p class="message-warning">Since an IP is not a hostname, the class will throw an <code>InvalidArgumentException</code> if you try to create an FQDN hostname with a valid IP address.</p>
+<p class="message-warning">Since an IP is not a hostname, the class will throw an <code>InvalidArgumentException</code> if you try to create an fully qualified domain name with a valid IP address.</p>
 
 ~~~php
 use League\Uri\Host;
@@ -81,7 +81,7 @@ Host::createFromArray(['127.0', '0.1'], Host::IS_ABSOLUTE);
 Whenever you create a new host your submitted data is normalized using non desctructive operations:
 
 - the host is lowercased;
-- the bracket are added if you are instantiating a IPV6 Host;
+- the bracket are added if necessary if you are instantiating a IPv6 Host;
 
 ~~~php
 use League\Uri\Host;
@@ -107,13 +107,13 @@ To determine what type of host you are dealing with the `Host` class provides th
 ~~~php
 use League\Uri;
 
-$host = new Url\Host('::1');
+$host = new Uri\Host('::1');
 $host->isIp();   //return true
 
-$alt_host = new Url\Host('example.com');
+$alt_host = new Uri\Host('example.com');
 $host->isIp(); //return false;
 
-Url\Url::createFromServer($_SERVER)->host->isIp(); //return a boolean
+Uri\Url::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6
@@ -200,37 +200,37 @@ The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationa
 ~~~php
 use League\Uri;
 
-$idn_host = new Url\Host('스타벅스코리아.com'); //you set a IDN hostname
+$idn_host = new Uri\Host('스타벅스코리아.com'); //you set a IDN hostname
 echo $idn_host->__toString(); //display '스타벅스코리아.com'
 echo $idn_host->toAscii();    //display 'xn--oy2b35ckwhba574atvuzkc.com'
 echo $idn_host->toUnicode;    //display '스타벅스코리아.com'
 
-$host = new Url\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+$host = new Uri\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
 echo $host->__toString(); //display 'xn--mgbh0fb.xn--kgbechtv'
 echo $host->toAscii()     //display 'xn--mgbh0fb.xn--kgbechtv'
 echo $host->toUnicode();  //display 'مثال.إختبار'
 ~~~
 
-At any given time you the object can tell you if the submitted hostname is a IDN or not using the `Host::isIdn()` method.
+At any given time the object can tell you if the submitted hostname is a IDN or not using the `Host::isIdn()` method.
 
 ~~~php
 use League\Uri;
 
-$idn_host = new Url\Host('스타벅스코리아.com'); //you set a IDN hostname
+$idn_host = new Uri\Host('스타벅스코리아.com');       //you set a IDN hostname
 echo $idn_host->isIdn(); //return true
 
-$host = new Url\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
-echo $host->isIdn(); //return false
+$host = new Uri\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+echo $host->isIdn();     //return false
 
-$host = new Url\Host('192.168.2.56');  //you set a IP host
-echo $host->isIdn(); //return false
+$host = new Uri\Host('192.168.2.56');              //you set a IP host
+echo $host->isIdn();     //return false
 ~~~
 
 ### Array representation
 
-A host can be exploded into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
+A host can be splitted into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
 
-<p class="message-warning">Once in array representation you can not distinguish a partial from a fully qualified domain name.</p>
+<p class="message-warning">Once in array representation you can not distinguish a partially from a fully qualified domain name.</p>
 
 ~~~php
 use League\Uri\Host;
@@ -257,13 +257,13 @@ use League\Uri\Host;
 $host = new Host('secure.example.com');
 count($host); //return 3
 foreach ($host as $offset => $label) {
-    //do something meaningful here
+    //do something meaningfull here
 }
 ~~~
 
-### Label offsets
+### Label keys
 
-If you are interested in getting all the label offsets you can do so using the `Host::keys` method like shown below:
+If you are interested in getting all the label keys you can do so using the `Host::keys` method like shown below:
 
 ~~~php
 use League\Uri\Host;
@@ -274,9 +274,9 @@ $host->keys('uk');    //return [0, 3];
 $host->keys('gweta'); //return [];
 ~~~
 
-The methods returns all the label offsets, but if you supply an argument, only the offsets whose label value equals the argument are returned.
+The methods returns all the label keys, but if you supply an argument, only the keys whose label value equals the argument are returned.
 
-To know If an offset exists before using it you can use the `Host::hasKey` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
+To know If a key exists before using it you can use the `Host::hasKey` method which returns `true` or `false` depending on the presence or absence of the submitted key in the current object.
 
 ~~~php
 use League\Uri\Host;
@@ -303,7 +303,7 @@ The method returns the IDN value of a specific offset. If the offset does not ex
 
 ### Host public informations
 
-Using data from [the public suffix list](http://publicsuffix.org/) and the [PHP Domain Parser](https://github.com/jeremykendall/php-domain-parser) every `Host` object can:
+Using data from [the public suffix list](http://publicsuffix.org/) and the [PHP Domain Parser](https://github.com/jeremykendall/php-domain-parser) library every `Host` object can:
 
 - return the subdomain using the `Host::getSubdomain` method;
 - return the registerable domain using the `Host::getRegisterableDomain` method;
@@ -382,8 +382,8 @@ $newHost->__toString(); //return toto.example.com
 
 To replace a label you must use the `Host::replace` method with two arguments:
 
-- The label's offset to replace if it exists.
-- The data to replace the offset with. This data can be:
+- The label's key to replace if it exists.
+- The data to replace the key with. This data can be:
     - another `Host` object;
     - an object which implements the `__toString` method;
     - a string;

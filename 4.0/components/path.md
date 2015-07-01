@@ -44,7 +44,7 @@ A path is a collection of segment delimited by the path delimiter `/`. So it is 
 The method expects at most 2 arguments:
 
 - The first required argument must be a collection of segments (an `array` or a `Traversable` object)
-- The second optional argument, a `Url\Path` constant, tells whether this is a rootless path or not:
+- The second optional argument, a `Uri\Path` constant, tells whether this is a rootless path or not:
     - `Path::IS_ABSOLUTE`: the created object will represent an absolute path;
     - `Path::IS_RELATIVE`: the created object will represent a rootless path;
 

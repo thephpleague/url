@@ -68,7 +68,7 @@ $res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
 // $res equals foo[][0]=bar&oo[][1]=baz
 ~~~
 
-The `Query::build` static method returns and preserve string representation of the query string from the `Query::parse` array result. the method expects at most 3 arguments:
+The `Query::build` static method returns and preserves string representation of the query string from the `Query::parse` array result. the method expects at most 3 arguments:
 
 - A valid `array` of data to convert;
 - The query string separator, by default it is set to `&`;
@@ -92,7 +92,7 @@ No key indexes is added and the query string is safely recreated
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Uri\Query` object can be instantiated using [the default constructor](/4.0/components/overview/#component-instantation).
+A new `League\Uri\Query` object can be instantiated using its the default constructor.
 
 ~~~php
 use League\Uri\Query;
@@ -110,13 +110,13 @@ echo $query; //display 'foo=bar&p=yolo&z'
 ~~~php
 use League\Uri\Url;
 
-$url  = Url::createFromString('http://url.thephpleague.com/path/to/here?foo=bar');
+$url   = Url::createFromString('http://url.thephpleague.com/path/to/here?foo=bar');
 $query = $url->query; // $query is a League\Uri\Query object;
 ~~~
 
 ### Using a named constructor
 
-It is possible to create a `Query` object using an array or a `Traversable` object with the `Query::createFromArray` method. The submitted data must provide an array which preserved key/value pairs similar to the result of `Query::parse`.
+It is possible to create a `Query` object using an `array` or a `Traversable` object with the `Query::createFromArray` method. The submitted data must provide an array which preserved key/value pairs similar to the result of `Query::parse`.
 
 - If a given parameter value is `null` it will be rendered without any value in the resulting query string;
 - If a given parameter value is an empty string il will be rendered without any value **but** with a `=` sign appended to it;
@@ -162,7 +162,6 @@ $query->toArray();
 ~~~
 
 The array returned by `toArray` differs from the one returned by `parse_str` has it preserves the query string values.
-
 
 ## Accessing Query content
 
@@ -252,7 +251,6 @@ $newQuery->__toString(); //return baz=toto&foo=bar
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Uri\Url::ksortQuery</code> method</p>
-
 
 ### Add or Update parameters
 

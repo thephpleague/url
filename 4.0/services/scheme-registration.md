@@ -53,7 +53,7 @@ $url = Url::createFromComponents($components, $registry);
 // the 'telnet' scheme is now supported
 ~~~
 
-Once you have instantiated a registry object you can specify it as an optional argument to the `Url\Scheme` object constructor or one of the `League\Uri\Url` named constructor.
+Once you have instantiated a registry object you can specify it as an optional argument to the `Uri\Scheme` object constructor or one of the `League\Uri\Url` named constructor.
 
 ~~~php
 use League\Uri\Scheme;
@@ -124,7 +124,7 @@ $registry = new SchemeRegistry();
 count($registry); //return an integer
 foreach ($registry as $scheme => $port) {
     //do something meaningful here
-    //$port is a Url\Port object
+    //$port is a Uri\Port object
 }
 ~~~
 
@@ -171,7 +171,7 @@ If no scheme is found the method will return an empty array.
 
 ### Getting the standard port
 
-To get the standard port for a given scheme you can use the `SchemeRegistry::getPort` method. This method will return a `Url\Port` object representing the found standard port or an `InvalidArgumentException` if the scheme is unknown or invalid.
+To get the standard port for a given scheme you can use the `SchemeRegistry::getPort` method. This method will return a `Uri\Port` object representing the found standard port or an `InvalidArgumentException` if the scheme is unknown or invalid.
 
 ~~~php
 use League\Uri\Services\SchemeRegistry;

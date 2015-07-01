@@ -5,7 +5,7 @@ title: URLs as Value Objects
 
 # Terminology
 
-The League URL package models <abbr title="Uniform Resource Locator">URLs</abbr> and URLs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
+The `Url` package models <abbr title="Uniform Resource Locator">URLs</abbr> and URLs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
 
 ## Value Objects
 
@@ -27,6 +27,8 @@ $url1->sameValueAs($url2); //return false;
 To ease and ensure the integrity of the value, when a component is altered instead of modifying its current value, we return a new component with the changed value. This practice is called immutability.
 
 ~~~php
+use League\Uri\Url;
+
 $url1 = Url::createFromString("http://example.com:81/toto");
 $url2 = $url1->withPort(82);
 echo $url1; //still displays "http://example.com:81/toto"

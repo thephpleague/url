@@ -19,11 +19,14 @@ The constructor expects 2 optional arguments:
 ~~~php
 use League\Uri;
 
-$info = new Url\UserInfo('foo', 'bar');
+$info = new Uri\UserInfo('foo', 'bar');
 echo $info; //display 'foo:bar'
 
-$empty_info = new UserInfo();
+$empty_info = new Uri\UserInfo();
 echo $empty_info; //display ''
+
+$alt_info = new Uri\UserInfo(new Uri\User('foo'), new Uri\Pass('bar'));
+echo $alt_info; //display 'foo:bar'
 ~~~
 
 ### Using a League\Uri\Url object
@@ -33,7 +36,7 @@ You can also get a `UserInfo` object from an `League\Uri\Url` class:
 ~~~php
 use League\Uri;
 
-$url = Url\Url::createFromString('http://john:doe@example.com:81/');
+$url = Uri\Url::createFromString('http://john:doe@example.com:81/');
 $userInfo = $url->userInfo; //return a League\Uri\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~
@@ -65,7 +68,20 @@ $info = new UserInfo('foo', 'bar');
 $info->toArray();
 // returns [
 //     'user' => 'foo',
-//     'pass'   => 'bar',
+//     'pass' => 'bar',
+// ]
+~~~
+
+<p class="message-notice">If not user property is set, the <code>toArray</code> method will return an empty <code>null</code> filled array even if the `pass` property is not empty</p>
+
+~~~php
+use League\Uri\UserInfo;
+
+$info = new UserInfo(null, 'bar');
+$info->toArray();
+// returns [
+//     'user' => null,
+//     'pass' => null,
 // ]
 ~~~
 
@@ -76,25 +92,25 @@ To acces the user login and password information you need to call the respective
 ~~~php
 use League\Uri;
 
-$info = new Url\UserInfo('foo', 'bar');
+$info = new Uri\UserInfo('foo', 'bar');
 $info->getUser(); //return 'foo'
 $info->getPass(); //return 'bar'
 
-$url = Url\Url::createFromString('http://john:doe@example.com:81/');
+$url = Uri\Url::createFromString('http://john:doe@example.com:81/');
 $url->userInfo->getUser(); //return 'john'
 $url->userInfo->getPass(); //return 'doe'
 ~~~
 
-To get access to the component classes you can use the magic `__get` method:
+To get access to the component classes you can use PHP's magic `__get` method:
 
 ~~~php
 use League\Uri;
 
-$info = new Url\UserInfo('foo', 'bar');
+$info = new Uri\UserInfo('foo', 'bar');
 $info->user; //return a League\Uri\User class
-$info->user; //return a League\Uri\Pass class
+$info->pass; //return a League\Uri\Pass class
 
-$url = Url\Url::createFromString('http://john:doe@example.com:81/');
+$url = Uri\Url::createFromString('http://john:doe@example.com:81/');
 $url->userInfo->user->__toString(); //return 'john'
 $url->userInfo->pass->__toString(); //return 'doe'
 ~~~
@@ -114,13 +130,13 @@ $info->pass->isEmpty(); //return false
 
 ## Modifying the user information
 
+<p class="message-notice">Because the <code>UserInfo</code> class does not represent a URL component, it does not include a <code>modify</code> method</p>
+
 <p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> is thrown.</p>
 
-<p class="message-notice">Because the <code>UserInfo</code> class does not represent a URL component, it does not include a <code>modify</code> method</p>
-
-To modify the user login and password information you need to call the respective <code>UserInfo::withUser</code> and `UserInfo::withPass` methods like shown below.
+To modify the user login and password information you need to call the respective `UserInfo::withUser` and `UserInfo::withPass` methods like shown below.
 
 ~~~php
 use League\Uri\UserInfo;

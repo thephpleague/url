@@ -41,7 +41,7 @@ $url = Url::createFromComponents($components);
 
 ## From its default constructor
 
-If you already have all the URLs components as object that implements the package interfaces, you can directly instantiate a new `League\Uri\Url` object from them.
+If you already have all the URLs components as objects that implements the package interfaces, you can directly instantiate a new `League\Uri\Url` object from them.
 
 ~~~php
 use League\Uri\Url;
@@ -81,7 +81,7 @@ Instantiating a `League\Uri\Url` object with an unknown scheme throws an `Invali
 use League\Uri\Url;
 use League\Uri\Services\SchemeRegistry;
 
-$registry = new SchemeRegistry(['telnet' => 23]);
+$registry   = new SchemeRegistry(['telnet' => 23]);
 $components = parse_url('telnet://foo.example.com');
 $url = Url::createFromComponents($components, $registry);
 Url::createFromString('http://www.example.com', $registry);
@@ -93,4 +93,4 @@ In the example above, a new scheme registry is created which only supports the `
 - correctly instantiated a `telnet` schemed URL;
 - throw an exception with an URL using the `http` scheme;
 
-<p class="message-notice">For the default constructor, you don't need to specify any optional argument as the <code>SchemeRegistry</code> object is attached to the <a href="/4.0/components/scheme/">Scheme component</a>.</p>
+<p class="message-notice">The <code>SchemeRegistry</code> object is attached to the <a href="/4.0/components/scheme/">Scheme component</a> so you don't have to specify one for the default constructor.</p>

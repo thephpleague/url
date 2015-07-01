@@ -5,23 +5,7 @@ title: Getting URLs informations
 
 # Extracting data from URLs
 
-An URL is composed of several parts:
-
-~~~
-foo://example.com:8042/over/there?name=ferret#nose
-\_/   \______________/\_________/ \_________/ \__/
- |           |            |            |        |
-scheme   authority       path        query   fragment
-~~~
-
-The URL authority part in itself can be composed of up to 3 parts.
-
-~~~
-john:doe@example.com:8042
-\______/ \_________/ \__/
-    |         |        |
-userinfo    host     port
-~~~
+An URL is composed of several parts and components. the `Url` object was built to expose as much information as possible to ease URL manipulation.
 
 ## Accessing URL parts and components
 
@@ -67,7 +51,7 @@ echo $url->getFragment();  //displays 'title'
 
 ### Parts and components as objects
 
-To access a specific URL part or component as an object you can use the magic method `__get` as follow.
+To access a specific URL part or component as an object you can use PHP's magic method `__get` as follow.
 
 ~~~php
 use League\Uri\Url;
@@ -82,13 +66,14 @@ $url->query;    //return a League\Uri\Query object
 $url->fragment; //return a League\Uri\Fragment object
 ~~~
 
-Using this technique you can get even more informations regarding a URL.
+Using this technique you can get even more informations regarding your URL.
 
 ~~~php
 use League\Uri\Url;
 
 $url = Url::createFromString('http://foo:bar@www.example.com:81/how/are/you?foo=baz');
 $url->host->isIp();           //return false the URL uses a registered hostname
+$url->userInfo->getUser();    //return 'foo' the user login information
 $url->fragment->isEmpty();    //return true because to fragment component is empty
 $url->path->getBasename();    //return 'you'
 $url->query->getValue('foo'); //return 'baz'
@@ -132,7 +117,12 @@ $url->isAbsolute(); //return true
 
 ### Does the URL uses the standard port ?
 
-If the standard port defined for a specific scheme is used it will be remove from the URL string or array representations. The `Url::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
+If the standard port defined for a specific scheme is used it will be remove:
+
+- from the URL string;
+- from the array representations;
+
+The `Url::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
 
 - If **no scheme** is set, the method returns `false`.
 - If **no port** is set the method will return `true`.
@@ -155,8 +145,7 @@ echo $alt_url;               //displays 'wss://example.com/over/there'
 
 You can compare two PSR-7 `UriInterface` compliant URLs object to see if they represent the same resource using the `Url::sameValueAs` method. The method compares the two objects according to their respective `__toString` methods with the following normalizations applied before comparison:
 
-- each host is converted using the punycode algorithm;
-- each query string is sorted according to their offsets;
+- the query string is sorted according to their parameters keys;
 
 ~~~php
 use League\Uri\Url;
