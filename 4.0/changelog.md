@@ -16,7 +16,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - `Intl` extension is now required to use the library
 - Domain parsing capabilities to `Host` using `jeremykendall/php-domain-parser` package
 - `Path::hasTrailingDelimiter` method
-- `Query::sortOffsets` method
+- `Query::ksort` method
 
 ### Fixed
 

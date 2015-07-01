@@ -134,27 +134,27 @@ foreach ($path as $offset => $segment) {
 
 ### Segment offsets
 
-If you are interested in getting all the segments offsets you can do so using the `Path::offsets` method like shown below:
+If you are interested in getting all the segments offsets you can do so using the `Path::keys` method like shown below:
 
 ~~~php
 use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->offsets();        //return [0, 1, 2, 3];
-$path->offsets('sky');   //return [3];
-$path->offsets('gweta'); //return [];
+$path->keys();        //return [0, 1, 2, 3];
+$path->keys('sky');   //return [3];
+$path->keys('gweta'); //return [];
 ~~~
 
 The method returns an array containing all the segments offsets. If you supply an argument, only the offsets whose segment value equals the argument are returned.
 
-To know If an offset exists before using it you can use the `Path::hasOffset` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
+To know If an offset exists before using it you can use the `Path::hasKey` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
 
 ~~~php
 use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky');
-$path->hasOffset(2);  //return true
-$path->hasOffset(23); //return false
+$path->hasKey(2);  //return true
+$path->hasKey(23); //return false
 ~~~
 
 ### Segment content

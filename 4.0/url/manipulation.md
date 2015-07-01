@@ -82,11 +82,11 @@ To ease these operations various modifying methods were added. Each method is pr
 
 ~~~php
 $url = Url::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
-$newUrl = $url->sortQueryOffsets();
+$newUrl = $url->ksortQuery();
 echo $newUrl; //display 'http://www.example.com/the/sky.php?browser=lynx&yellow=tiger'
 ~~~
 
-`Url::mergeQuery` is a facade to simplify the use of [League\Uri\Query::sortOffsets](/4.0/components/query/#sort-parameters).
+`Url::ksortQuery` is a facade to simplify the use of [League\Uri\Query::ksort](/4.0/components/query/#sort-parameters).
 
 #### Add or Update query parameters
 
@@ -102,11 +102,11 @@ echo $newUrl; //display 'http://www.example.com/the/sky.php?foo=bar&taz#~typo'
 
 ~~~php
 $url = Url::createFromString('http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo');
-$newUrl = $url->withoutQueryOffsets(['foo']);
+$newUrl = $url->withoutQueryValues(['foo']);
 echo $newUrl; //display 'http://www.example.com/the/sky.php?p=y%20olo#~typo'
 ~~~
 
-`Url::withoutQueryOffsets` is a facade to simplify the use of [League\Uri\Query::without](/4.0/components/query/#remove-parameters).
+`Url::withoutQueryValues` is a facade to simplify the use of [League\Uri\Query::without](/4.0/components/query/#remove-parameters).
 
 #### Filter query
 

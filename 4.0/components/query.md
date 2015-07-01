@@ -182,27 +182,27 @@ foreach ($query as $parameter => $value) {
 
 ### Parameter name
 
-If you are interested in getting all the parametes name you can do so using the `Query::offsets` method like show below:
+If you are interested in getting all the parameters names you can do so using the `Query::keys` method like show below:
 
 ~~~php
 use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->offsets();        //return ['foo', 'p', 'z'];
-$query->offsets('bar');   //return ['foo'];
-$query->offsets('gweta'); //return [];
+$query->keys();        //return ['foo', 'p', 'z'];
+$query->keys('bar');   //return ['foo'];
+$query->keys('gweta'); //return [];
 ~~~
 
 The methods returns all the parameters name, but if you supply an argument, only the parameters name whose value equals the argument are returned.
 
-If you want to be sure that a parameter name exists before using it you can do so using the `Query::hasOffset` method which returns `true` if the submitted parameter name exists in the current object.
+If you want to be sure that a parameter name exists before using it you can do so using the `Query::hasKey` method which returns `true` if the submitted parameter name exists in the current object.
 
 ~~~php
 use League\Uri\Query;
 
 $query = new Query('foo=bar&p=y+olo&z=');
-$query->hasOffset('p');    //return true
-$query->hasOffset('john'); //return false
+$query->hasKey('p');    //return true
+$query->hasKey('john'); //return false
 ~~~
 
 ### Parameter value
@@ -228,26 +228,26 @@ The method returns the value of a specific parameter name. If the offset does no
 
 ### Sort parameters
 
-Sometimes you may wish to sort your query. To do so, you can use the `Query::sortOffsets` method. This method expects a single argument which can be:
+Sometimes you may wish to sort your query. To do so, you can use the `Query::ksort` method. This method expects a single argument which can be:
 
-One of PHP's sorting constant used by the [sort function](http://php.net/sort). **In this case the query parameters are sorted from low to hight**
+One of PHP's sorting constant used by the [sort function](http://php.net/sort). **In this case the query parameters are sorted from low to hight** like PHP's [ksort function](http://php.net/ksort)
 
 ~~~php
 use League\Uri\Query;
 
 $query    = new Query('foo=bar&baz=toto');
-$newQuery = $query->sortOffsets(SORT_STRING);
+$newQuery = $query->ksort(SORT_STRING);
 $newQuery->__toString(); //return baz=toto&foo=bar
 ~~~
 
-A user-defined comparison function which must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
+A user-defined comparison function which must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second, like PHP's [uksort function](http://php.net/uksort)
 
 ~~~php
 use League\Uri\Query;
 
 
 $query    = new Query('foo=bar&baz=toto');
-$newQuery = $query->sortOffsets('strcmp');
+$newQuery = $query->ksort('strcmp');
 $newQuery->__toString(); //return baz=toto&foo=bar
 ~~~
 

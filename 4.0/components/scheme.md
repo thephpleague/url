@@ -50,7 +50,7 @@ use League\Uri\Scheme;
 
 $scheme = new Scheme('file');
 $registry = $scheme->getSchemeRegistry();
-$registry->hasOffset('file'); //return true
+$registry->hasKey('file'); //return true
 ~~~
 
 Get more informations about the [SchemeRegistry class](/4.0/services/scheme-registration/)

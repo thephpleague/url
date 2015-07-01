@@ -132,21 +132,21 @@ foreach ($registry as $scheme => $port) {
 
 ### Detecting the scheme
 
-If you only want to know if a particular scheme is registered then you can simply use the `SchemeRegistry::hasOffset` method.
+If you only want to know if a particular scheme is registered then you can simply use the `SchemeRegistry::hasKey` method.
 
 ~~~php
 use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->hasOffset("telnet"); //return false
-$registry->hasOffset("ftp");    //return true
+$registry->hasKey("telnet"); //return false
+$registry->hasKey("ftp");    //return true
 ~~~
 
 The `telnet` scheme is not registered by default while the `ftp` scheme is registered by defaut.
 
 ### Listing available schemes
 
-To list all the registered schemes use the `SchemeRegistry::offsets` method. This method will always return an array containing the found scheme as string.
+To list all the registered schemes use the `SchemeRegistry::keys` method. This method will always return an array containing the found scheme as string.
 
 ~~~php
 use League\Uri\Services\SchemeRegistry;
@@ -156,17 +156,17 @@ $registry = new SchemeRegistry([
 	'HtTp' => 80,
 	'file' => null
 ]);
-$registry->offsets(); //return ['file', 'http', 'telnet'];
+$registry->keys(); //return ['file', 'http', 'telnet'];
 ~~~
 
-the `SchemeRegistry::offsets` method can also list the schemes that share the same standard port.
+the `SchemeRegistry::keys` method can also list the schemes that share the same standard port.
 
 ~~~php
 use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
-$registry->offsets(80); //return ["http", "ws"]
-$registry->offsets(352); //return []
+$registry->keys(80); //return ["http", "ws"]
+$registry->keys(352); //return []
 ~~~
 
 If no scheme is found the method will return an empty array.
@@ -183,7 +183,7 @@ $registry->getPort('http'); //return new Port(80)
 $registry->getPort("telnet"); //throws an InvalidArgumentException
 ~~~
 
-<p class="message-notice">To avoid the exception it is recommended to first issue a <code>SchemeRegistry::hasOffset</code> call prior to calling the <code>SchemeRegistry::getPort</code> method.</p>
+<p class="message-notice">To avoid the exception it is recommended to first issue a <code>SchemeRegistry::hasKey</code> call prior to calling the <code>SchemeRegistry::getPort</code> method.</p>
 
 ## Modifying the registry.
 
@@ -204,7 +204,7 @@ $registry = new SchemeRegistry();
 $newRegistry = $registry->merge(['telnet' => 23, 'gopher' => '70']);
 count($registry);    //return 7
 count($newRegistry); //return 9
-$newRegistry->hasOffset('telnet') //return true
+$newRegistry->hasKey('telnet') //return true
 ~~~
 
 Another `SchemeRegistry` object
@@ -223,7 +223,7 @@ $newRegistry = $registry->merge($altregistry);
 count($registry);                 //return 7
 count($altregistry);              //return 3
 count($newRegistry);              //return 8
-$newRegistry->hasOffset('telnet') //return true
+$newRegistry->hasKey('telnet') //return true
 ~~~
 
 ### Remove schemes
@@ -239,7 +239,7 @@ $registry = new SchemeRegistry();
 $newRegistry = $registry->without(['https', 'WsS']);
 count($registry);    //return 7
 count($newRegistry); //return 5
-$newRegistry->hasOffset('wss'); //return false
+$newRegistry->hasKey('wss'); //return false
 ~~~
 
 Or a callable that will select the list of parameter names to remove.
@@ -253,7 +253,7 @@ $newRegistry = $registry->without(function ($port) {
 });
 count($registry);    //return 7
 count($newRegistry); //return 2
-$newRegistry->offsets(80); //return ['http', 'ws'];
+$newRegistry->keys(80); //return ['http', 'ws'];
 ~~~
 
 ### Filter the registry
@@ -273,7 +273,7 @@ $newRegistry = $registry->filter(function ($port) {
 });
 count($registry);    //return 7
 count($newRegistry); //return 2
-$newRegistry->offsets(80); //return ['http', 'ws'];
+$newRegistry->keys(80); //return ['http', 'ws'];
 ~~~
 
 By specifying the second argument flag you can change how filtering is done:
@@ -292,5 +292,5 @@ $newRegistry = $registry->filter(function ($value) {
 }, SchemeRegistry::FILTER_USE_OFFSET);
 count($registry);    //return 15
 count($newRegistry); //return 2
-$newRegistry->offsets(80); //return ['http', 'https'];
+$newRegistry->keys(80); //return ['http', 'https'];
 ~~~

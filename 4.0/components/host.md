@@ -135,6 +135,18 @@ $ipv4->isIpv4(); //return true
 $ipv4->isIpv6(); //return false
 ~~~
 
+The object can also detect if the IPv6 has a zone identifier or not. This can be handy if you want to know if you need to remove it or not for security reason.
+
+~~~php
+use League\Uri\Host;
+
+$ipv6 = new Host('Fe80::4432:34d6:e6e6:b122%eth0-1');
+$ipv6->hasZoneIdentifier(); //return true
+
+$ipv4 = new Host('127.0.0.1');
+$ipv4->hasZoneIdentifier(); //return false
+~~~
+
 ### Relative or fully qualified domain name
 
 If you don't have a IP then you are dealing with a host name. A host name is a [domain name](http://tools.ietf.org/html/rfc1034) subset according to [RFC1123](http://tools.ietf.org/html/rfc1123#section-2.1). As such a host name can not, for example, contain an `_`.
@@ -183,21 +195,36 @@ $ipv6->getUriComponent(); //return '[::1]'
 
 The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism.
 
-- The `Host::__toString` method always returns the punycode encoded hostname.
-- To access the IDN domain name you must used the `Host::toUnicode` method.
+- To access the hostname ASCII representation you must use the `Host::toAscii` method.
+- To access the hostname IDN representation you must used the `Host::toUnicode` method.
 
 ~~~php
 use League\Uri;
 
-$host = new Url\Host('스타벅스코리아.com'); //you set the IDN
-echo $host->__toString(); //display 'xn--oy2b35ckwhba574atvuzkc.com'
-echo $host->toUnicode;    //display '스타벅스코리아.com'
+$idn_host = new Url\Host('스타벅스코리아.com'); //you set a IDN hostname
+echo $idn_host->__toString(); //display '스타벅스코리아.com'
+echo $idn_host->toAscii();    //display 'xn--oy2b35ckwhba574atvuzkc.com'
+echo $idn_host->toUnicode;    //display '스타벅스코리아.com'
 
-$idn_host = new Url\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
-echo $idn_host;              //display 'xn--mgbh0fb.xn--kgbechtv'
-echo $idn_host->toUnicode(); //display 'مثال.إختبار'
+$host = new Url\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+echo $host->__toString(); //display 'xn--mgbh0fb.xn--kgbechtv'
+echo $host->toAscii()     //display 'xn--mgbh0fb.xn--kgbechtv'
+echo $host->toUnicode();  //display 'مثال.إختبار'
+~~~
 
-echo Url\Url::createFromServer($_SERVER)->host->toUnicode(); //output the IDN version
+At any given time you the object can tell you if the submitted hostname is a IDN or not using the `Host::isIdn()` method.
+
+~~~php
+use League\Uri;
+
+$idn_host = new Url\Host('스타벅스코리아.com'); //you set a IDN hostname
+echo $idn_host->isIdn(); //return true
+
+$host = new Url\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+echo $host->isIdn(); //return false
+
+$host = new Url\Host('192.168.2.56');  //you set a IP host
+echo $host->isIdn(); //return false
 ~~~
 
 ### Array representation
@@ -237,27 +264,27 @@ foreach ($host as $offset => $label) {
 
 ### Label offsets
 
-If you are interested in getting all the label offsets you can do so using the `Host::offsets` method like shown below:
+If you are interested in getting all the label offsets you can do so using the `Host::keys` method like shown below:
 
 ~~~php
 use League\Uri\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->offsets();        //return [0, 1, 2, 3];
-$host->offsets('uk');    //return [0, 3];
-$host->offsets('gweta'); //return [];
+$host->keys();        //return [0, 1, 2, 3];
+$host->keys('uk');    //return [0, 3];
+$host->keys('gweta'); //return [];
 ~~~
 
 The methods returns all the label offsets, but if you supply an argument, only the offsets whose label value equals the argument are returned.
 
-To know If an offset exists before using it you can use the `Host::hasOffset` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
+To know If an offset exists before using it you can use the `Host::hasKey` method which returns `true` or `false` depending on the presence or absence of the submitted `$offset` in the current object.
 
 ~~~php
 use League\Uri\Host;
 
 $host = new Host('uk.example.co.uk');
-$host->hasOffset(2);  //return true
-$host->hasOffset(23); //return false
+$host->hasKey(2);  //return true
+$host->hasKey(23); //return false
 ~~~
 
 ### Label content
@@ -273,7 +300,7 @@ $host->getLabel(23);        //return null
 $host->getLabel(23, 'now'); //return 'now'
 ~~~
 
-The method returns the value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
+The method returns the IDN value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
 
 ### Host public informations
 
