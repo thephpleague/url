@@ -82,7 +82,6 @@ Whenever you create a new host your submitted data is normalized using non desct
 
 - the host is lowercased;
 - the bracket are added if you are instantiating a IPV6 Host;
-- the host is encoded using the punycode algorithm to take into account <abbr title="Internationalized Domain Name">IDN</abbr>;
 
 ~~~php
 use League\Uri\Host;
@@ -321,7 +320,17 @@ echo $host->getSubdomain();           //display 'www'
 $host->isPublicSuffixValid();         //return a boolean 'true' in this example
 ~~~
 
-<p class="message-notice">If no information is found, in the case of an IP type address, all the method will return <code>null</code> except for the <code>Host::isPublicSuffixValid</code> which returns <code>false</code></p>
+If the data is not found the methods listed above will all return `null` except for the `Host::isPublicSuffixValid` method which will return `false`.
+
+~~~php
+use League\Uri\Host;
+
+$host = new Host('192.158.26.30');
+echo $host->getPublicSuffix();        //return 'null'
+echo $host->getRegisterableDomain();  //return 'null'
+echo $host->getSubdomain();           //return 'null'
+$host->isPublicSuffixValid();         //return false
+~~~
 
 ## Modifying the host
 
@@ -333,7 +342,11 @@ $host->isPublicSuffixValid();         //return a boolean 'true' in this example
 
 <p class="message-warning">Trying to append to or with an IP host will throw an <code>InvalidArgumentException</code> exception</p>
 
-To append labels to the current host you need to use the `Host::append` method. This method accept a single `$data` argument which represents the data to be appended. This data can be a string, an object which implements the `__toString` method or another `Host` object:
+To append labels to the current host you need to use the `Host::append` method. This method accepts a single argument which represents the data to be appended. This data can be:
+
+- another `Host` object;
+- an object which implements the `__toString` method;
+- a string;
 
 ~~~php
 use League\Uri\Host;
@@ -349,7 +362,11 @@ $newHost->__toString(); //return toto.example.com
 
 <p class="message-warning">Trying to prepend to or with an IP Host will throw an <code>InvalidArgumentException</code></p>
 
-To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single `$data` argument which represents the data to be prepended. This data can be a string, an object which implements the `__toString` method or another `Host` object:
+To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single argument which represents the data to be prepended. This data can be:
+
+- another `Host` object;
+- an object which implements the `__toString` method;
+- a string;
 
 ~~~php
 use League\Uri\Host;
@@ -363,10 +380,13 @@ $newHost->__toString(); //return toto.example.com
 
 ### Replace label
 
-To replace a label you must use the `Host::replace` method with the following arguments:
+To replace a label you must use the `Host::replace` method with two arguments:
 
-- `$offset` which represents the label's offset to remove if it exists.
-- `$data` which represents the data to be inject. This data can be a string, an object which implements the `__toString` method or another `Host` object.
+- The label's offset to replace if it exists.
+- The data to replace the offset with. This data can be:
+    - another `Host` object;
+    - an object which implements the `__toString` method;
+    - a string;
 
 ~~~php
 use League\Uri\Host;
@@ -376,13 +396,13 @@ $newHost = $host->replace(0, 'bar.baz');
 $newHost->__toString(); //return bar.baz.example.com
 ~~~
 
-<p class="message-notice">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
+<p class="message-warning">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
 
 <p class="message-notice">This method is used by the <code>League\Uri\Url::replaceLabel</code> method</p>
 
 ### Remove labels
 
-To remove labels from the current object you can use the `Host::without` method. This methods expected a single argument and will returns a new `Host` object without the selected labels.
+To remove labels from the current object you can use the `Host::without` method. This method expects a single argument and will returns a new `Host` object without the selected labels.
 
 The argument can be an array containing a list of offsets to remove.
 
@@ -406,7 +426,7 @@ $newHost = $host->without(function ($value) {
 echo $newHost; //displays 'example.com';
 ~~~
 
-<p class="message-notice">if the specified offsets do not exist, no modification is performed and the current object is returned.</p>
+<p class="message-warning">if the specified offsets do not exist, no modification is performed and the current object is returned.</p>
 
 <p class="message-notice">This method is used by the <code>League\Uri\Url::withoutLabels</code> method</p>
 
@@ -416,7 +436,7 @@ According to [RFC6874](http://tools.ietf.org/html/rfc6874#section-4):
 
 > You **must** remove any ZoneID attached to an outgoing URI, as it has only local significance at the sending host.
 
-To fullfill this requirement, the `Host::withoutZoneIdentifier` method is provided. The method takes not parameter and return a new host instance without its zone identifier, if the host was an IPv6 with a zone identifier. Otherwise the current instance is returned unchanged.
+To fullfill this requirement, the `Host::withoutZoneIdentifier` method is provided. The method takes not parameter and return a new host instance without its zone identifier. If the host has not zone identifier, the current instance is returned unchanged.
 
 ~~~php
 use League\Uri\Host;
@@ -447,7 +467,7 @@ echo $newHost; //displays 'www.be'
 By specifying the second argument flag you can change how filtering is done:
 
 - use `Host::FILTER_USE_VALUE` to filter according to the label value;
-- use `Host::FILTER_USE_OFFSET` to filter according to the label offset;
+- use `Host::FILTER_USE_KEY` to filter according to the label offset;
 
 By default, if no flag is specified the method will use the `Host::FILTER_USE_VALUE` flag.
 
@@ -457,7 +477,7 @@ use League\Uri\Host;
 $host    = new Host('www.11.be');
 $newHost = $host->filter(function ($value) {
 	return $value != 1;
-}, Host::FILTER_USE_OFFSET);
+}, Host::FILTER_USE_KEY);
 echo $newHost; //displays 'www.be'
 ~~~
 

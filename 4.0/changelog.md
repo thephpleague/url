@@ -24,7 +24,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 
 - Changed namespace from `League\Url` to `League\Uri` to avoid dependency hell
 - Renamed methods for consistency with PHP naming conventions
-- Default supported schemes are: `ftp`, `http`, `https`, `ssh`, `ws`, `wss`
+- Default supported schemes are: `ftp`, `http`, `https`, `ws`, `wss`
 - userinfo string representation `:` delimiter was added unnecessarily
 
 ### Remove

@@ -8,9 +8,7 @@ title: The Scheme Registration System
 Ouf of the box the library supports the following schemes:
 
 - ftp,
-- file,
 - http, https
-- ssh,
 - ws, wss
 
 But sometimes you may want to extend, restrict or change the supported schemes used by the library. To do so the library uses a scheme registration system to help you manage the allowed schemes. The system is controlled through the use of the `League\Uri\Services\SchemeRegistry` class. Once instantiated, this immutable value object can help you:
@@ -279,7 +277,7 @@ $newRegistry->keys(80); //return ['http', 'ws'];
 By specifying the second argument flag you can change how filtering is done:
 
 - use `SchemeRegistry::FILTER_USE_VALUE` to filter according to the scheme;
-- use `SchemeRegistry::FILTER_USE_OFFSET` to filter according to the port;
+- use `SchemeRegistry::FILTER_USE_KEY` to filter according to the port;
 
 By default, if no flag is specified the method will filter by value.
 
@@ -289,7 +287,7 @@ use League\Uri\Services\SchemeRegistry;
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($value) {
 	return strpos($value, 'http') === 0;
-}, SchemeRegistry::FILTER_USE_OFFSET);
+}, SchemeRegistry::FILTER_USE_KEY);
 count($registry);    //return 15
 count($newRegistry); //return 2
 $newRegistry->keys(80); //return ['http', 'https'];

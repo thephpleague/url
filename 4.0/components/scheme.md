@@ -27,9 +27,7 @@ echo $empty_scheme; //display ''
 Ouf of the box the library supports the following schemes:
 
 - ftp,
-- file,
 - http, https
-- ssh,
 - ws, wss
 
 If you try to instantiate a scheme object with a different scheme and `InvalidArgumentException` exception will be thrown. To overcome this limitation, the scheme constructor can take an optional second argument which is a `SchemeRegistry` class. Depending the registry values you will be able to instantiate other schemes like shown below:
@@ -48,9 +46,9 @@ At any given time you can get access to the `SchemeRegistry` object using the `g
 ~~~php
 use League\Uri\Scheme;
 
-$scheme = new Scheme('file');
+$scheme = new Scheme('ftp');
 $registry = $scheme->getSchemeRegistry();
-$registry->hasKey('file'); //return true
+$registry->hasKey('ftp'); //return true
 ~~~
 
 Get more informations about the [SchemeRegistry class](/4.0/services/scheme-registration/)

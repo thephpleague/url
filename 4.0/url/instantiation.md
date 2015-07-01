@@ -72,9 +72,7 @@ $url = new Url(
 Ouf of the box the library supports the following schemes:
 
 - ftp,
-- file,
 - http, https
-- ssh,
 - ws, wss
 
 Instantiating a `League\Uri\Url` object with an unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provides a [Scheme registry object](/4.0/services/scheme-registration/) to enable total control over the supported schemes. The scheme registry object must be provided as the second parameter of any `League\Uri\Url` named constructors.
