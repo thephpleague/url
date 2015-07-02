@@ -194,17 +194,7 @@ echo $newUrl; //display 'http://www.example.com/path/to/the/sky/'
 
 `Url::withoutEmptySegments` is a proxy to simplify the use of [League\Uri\Path::withoutEmptySegments](/4.0/components/path/#removing-empty-segments) on a `Url` object.
 
-#### Update the path extension
-
-~~~php
-$url = Url::createFromString('http://www.example.com/path/to/the/sky.php');
-$newUrl = $url->withExtension('csv');
-echo $newUrl; //display 'http://www.example.com/path/to/the/sky.csv'
-~~~
-
-`Url::withExtension` is a proxy to simplify the use of [League\Uri\Path::withExtension](/4.0/components/path/#path-extension-manipulation) on a `Url` object.
-
-#### Add trailing slash
+#### Add a trailing slash
 
 ~~~php
 $url = Url::createFromString('http://www.example.com/path/to/the/sky.php');
@@ -214,7 +204,7 @@ echo $newUrl; //display 'http://www.example.com/path/to/the/sky.php/'
 
 `Url::withTrailingSlash` is a proxy to simplify the use of [League\Uri\Path::withTrailingSlash](/4.0/components/path/#path-trailing-slash-manipulation) on a `Url` object.
 
-#### Remove trailing slash
+#### Remove the trailing slash
 
 ~~~php
 $url = Url::createFromString('http://www.example.com/');
@@ -223,6 +213,16 @@ echo $newUrl; //display 'http://www.example.com'
 ~~~
 
 `Url::withoutTrailingSlash` is a proxy to simplify the use of [League\Uri\Path::withoutTrailingSlash](/4.0/components/path/#path-trailing-slash-manipulation) on a `Url` object.
+
+#### Update the path extension
+
+~~~php
+$url = Url::createFromString('http://www.example.com/path/to/the/sky.php');
+$newUrl = $url->withExtension('csv');
+echo $newUrl; //display 'http://www.example.com/path/to/the/sky.csv'
+~~~
+
+`Url::withExtension` is a proxy to simplify the use of [League\Uri\Path::withExtension](/4.0/components/path/#path-extension-manipulation) on a `Url` object.
 
 ### Modifying URL host labels
 
@@ -266,7 +266,7 @@ echo $newUrl; //display 'http://example.com/path/to/the/sky.php'
 
 `Url::withoutLabels` is a proxy to simplify the use of [League\Uri\Host::without](/4.0/components/host/#remove-labels) on a `Url` object.
 
-### Remove the host zone identifier
+#### Remove the host zone identifier
 
 ~~~php
 $url = Url::createFromString('http://[fe80::1%25eth0-1]/path/to/the/sky.php');
