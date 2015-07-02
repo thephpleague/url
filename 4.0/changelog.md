@@ -13,10 +13,11 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 
 - A system to manage registration of other schemes using the `SchemeRegistry` Interface.
 - Support for IPv6 zone identifier
-- re-introduced `Host::toAscii` and adding `Host::isIdn` method
+- Re-introduced `Host::toAscii` and adding `Host::isIdn` method
 - `Intl` extension is now required to use the library
 - Domain parsing capabilities to `Host` using `jeremykendall/php-domain-parser` package
-- `Path::hasTrailingDelimiter` method
+- API to add/remove the Path trailing slash.
+- API to add/remove the Path leading slash.
 - `Query::ksort` and `Url::ksortQuery` method
 - Missing `User` and `Pass` Interfaces
 
@@ -26,6 +27,8 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - Renamed methods for consistency with PHP naming conventions
 - Default supported schemes are: `ftp`, `http`, `https`, `ws`, `wss`
 - userinfo string representation `:` delimiter was added unnecessarily
+- Host::__toString return the hostname in Unicode or ASCII depending on the user submission
+- Host::toUnicode now returns a new Host instance
 
 ### Remove
 

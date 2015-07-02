@@ -299,6 +299,40 @@ $alt->sameValueAs($path); //return false;
 
 <p class="message-notice">This method is used by the <code>League\Uri\Url::withTrailingSlash</code> method</p>
 
+### Manipulating the leading slash
+
+Depending on your context you may want to add or remove the path leading slash. In order to do so the `Path` object uses two methods which accept no argument.
+
+`Path::withoutLeadingSlash` will remove the leading slash of your path only if it is present.
+
+~~~php
+use League\Uri\Path;
+
+$raw_path       = new Path("/path/to/the/sky/");
+$normalize_path = $raw_path->withoutLeadingSlash();
+echo $raw_path;           //displays '/path/to/the/sky/'
+echo $normalize_path;     //displays 'path/to/the/sky/'
+$raw_path->isAbsolute();       //return true
+$normalize_path->isAbsolute(); //return false
+$alt->sameValueAs($path);      //return false
+~~~
+
+Conversely, `Path::withLeadingSlash` will prepend a slash at the beginning of your path only if it is not yet present.
+
+~~~php
+use League\Uri\Path;
+
+$raw_path       = new Path("path/to/the/sky");
+$normalize_path = $raw_path->withLeadingSlash();
+echo $raw_path;           //displays 'path/to/the/sky'
+echo $normalize_path;     //displays '/path/to/the/sky/'
+$raw_path->isAbsolute();       //return false
+$normalize_path->isAbsolute(); //return true
+$alt->sameValueAs($path);      //return false
+~~~
+
+<p class="message-notice">A path with a leading slash is considered to be an absolute path.</p>
+
 ## Modifying Path
 
 ### Path extension manipulation
