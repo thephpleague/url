@@ -204,6 +204,26 @@ echo $newUrl; //display 'http://www.example.com/path/to/the/sky.csv'
 
 `Url::withExtension` is a proxy to simplify the use of [League\Uri\Path::withExtension](/4.0/components/path/#path-extension-manipulation) on a `Url` object.
 
+#### Add trailing slash
+
+~~~php
+$url = Url::createFromString('http://www.example.com/path/to/the/sky.php');
+$newUrl = $url->withTrailingSlash();
+echo $newUrl; //display 'http://www.example.com/path/to/the/sky.php/'
+~~~
+
+`Url::withTrailingSlash` is a proxy to simplify the use of [League\Uri\Path::withTrailingSlash](/4.0/components/path/#path-trailing-slash-manipulation) on a `Url` object.
+
+#### Remove trailing slash
+
+~~~php
+$url = Url::createFromString('http://www.example.com/');
+$newUrl = $url->withoutTrailingSlash();
+echo $newUrl; //display 'http://www.example.com'
+~~~
+
+`Url::withoutTrailingSlash` is a proxy to simplify the use of [League\Uri\Path::withoutTrailingSlash](/4.0/components/path/#path-trailing-slash-manipulation) on a `Url` object.
+
 ### Modifying URL host labels
 
 #### Append host labels
@@ -255,6 +275,26 @@ echo $newUrl; //display 'http://[fe80::1]/path/to/the/sky.php'
 ~~~
 
 `Url::withoutZoneIdentifier` is a proxy to simplify the use of [League\Uri\Host::withoutZoneIdentifier](/4.0/components/host/#remove-zone-identifier) on a `Url` object.
+
+#### Convert to IDN host
+
+~~~php
+$url    = Url::createFromString('http://xn--p1ai.ru/path/to/the/sky.php');
+$newUrl = $url->toUnicode();
+echo $newUrl; //display 'http://рф.ru/path/to/the/sky.php'
+~~~
+
+`Url::toUnicode` is a proxy to simplify the use of [League\Uri\Host::toUnicode](/4.0/components/host/#transcode-the-host) on a `Url` object.
+
+#### Convert to Ascii host
+
+~~~php
+$url    = Url::createFromString('http://рф.ru/path/to/the/sky.php');
+$newUrl = $url->toAscii();
+echo $newUrl; //display 'http://xn--p1ai.ru/path/to/the/sky.php'
+~~~
+
+`Url::toAscii` is a proxy to simplify the use of [League\Uri\Host::toAscii](/4.0/components/host/#transcode-the-host) on a `Url` object.
 
 #### Filter the host
 

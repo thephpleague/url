@@ -213,18 +213,18 @@ $path->getBasename();  //return 'sky.txt'
 $path->getDirname();   //return '/path/to/the'
 ~~~
 
-### Trailing delimiter
+### Trailing slash
 
-The `Path` object can tell you whether the current path ends with a delimiter or not using the `Path::hasTrailingDelimiter` method. This method takes no argument and return a boolean.
+The `Path` object can tell you whether the current path ends with a slash or not using the `Path::hasTrailingSlash` method. This method takes no argument and return a boolean.
 
 ~~~php
 use League\Uri\Path;
 
 $path = new Path('/path/to/the/sky.txt');
-$path->hasTrailingDelimiter(); //return false
+$path->hasTrailingSlash(); //return false
 
 $altPath = new Path('/path/');
-$altPath->hasTrailingDelimiter(); //return true
+$altPath->hasTrailingSlash(); //return true
 ~~~
 
 ## Path normalization
@@ -266,6 +266,38 @@ $alt->sameValueAs($path); //return false;
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Uri\Url::withoutEmptySegments</code> method</p>
+
+### Manipulating the trailing slash
+
+Depending on your context you may want to add or remove the path trailing slash. In order to do so the `Path` object uses two methods which accept no argument.
+
+`Path::withoutTrailingSlash` will remove the ending slash of your path only if a slash is present.
+
+~~~php
+use League\Uri\Path;
+
+$raw_path       = new Path("path/to/the/sky/");
+$normalize_path = $raw_path->withoutTrailingSlash();
+echo $raw_path;           //displays 'path/to/the/sky/'
+echo $normalize_path;     //displays 'path/to/the/sky'
+$alt->sameValueAs($path); //return false;
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutTrailingSlash</code> method</p>
+
+Conversely, `Path::withTrailingSlash` will append a slash at the end of your path only if no slash is already present.
+
+~~~php
+use League\Uri\Path;
+
+$raw_path       = new Path("/path/to/the/sky");
+$normalize_path = $raw_path->withTrailingSlash();
+echo $raw_path;           //displays '/path/to/the/sky'
+echo $normalize_path;     //displays '/path/to/the/sky/'
+$alt->sameValueAs($path); //return false;
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Uri\Url::withTrailingSlash</code> method</p>
 
 ## Modifying Path
 

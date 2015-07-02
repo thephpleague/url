@@ -194,23 +194,6 @@ $ipv6->getUriComponent(); //return '[::1]'
 
 The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name" target="_blank"><abbr title="Internationalized Domain Name">IDN</abbr></a> mechanism.
 
-- To access the hostname ASCII representation you must use the `Host::toAscii` method.
-- To access the hostname IDN representation you must used the `Host::toUnicode` method.
-
-~~~php
-use League\Uri;
-
-$idn_host = new Uri\Host('스타벅스코리아.com'); //you set a IDN hostname
-echo $idn_host->__toString(); //display '스타벅스코리아.com'
-echo $idn_host->toAscii();    //display 'xn--oy2b35ckwhba574atvuzkc.com'
-echo $idn_host->toUnicode;    //display '스타벅스코리아.com'
-
-$host = new Uri\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
-echo $host->__toString(); //display 'xn--mgbh0fb.xn--kgbechtv'
-echo $host->toAscii()     //display 'xn--mgbh0fb.xn--kgbechtv'
-echo $host->toUnicode();  //display 'مثال.إختبار'
-~~~
-
 At any given time the object can tell you if the submitted hostname is a IDN or not using the `Host::isIdn()` method.
 
 ~~~php
@@ -337,6 +320,27 @@ $host->isPublicSuffixValid();         //return false
 <p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
 <p class="message-warning">When a modification fails an <code>InvalidArgumentException</code> exception is thrown.</p>
+
+### Transcode the host
+
+You can transcode the Host so that its string representation match the IDN support you need.
+
+- To transcode the host into an ASCII representation use the `Host::toAscii` method.
+- To transcode the host into an IDN representation use the `Host::toUnicode` method.
+
+~~~php
+use League\Uri;
+
+$idn_host = new Uri\Host('스타벅스코리아.com'); //you set a IDN hostname
+echo $idn_host->__toString();            //display '스타벅스코리아.com'
+echo $idn_host->toAscii()->__toString(); //display 'xn--oy2b35ckwhba574atvuzkc.com'
+echo $idn_host->toUnicode->__toString(); //display '스타벅스코리아.com'
+
+$host = new Uri\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+echo $host->__toString();              //display 'xn--mgbh0fb.xn--kgbechtv'
+echo $host->toAscii()->__toString();   //display 'xn--mgbh0fb.xn--kgbechtv'
+echo $host->toUnicode()->__toString(); //display 'مثال.إختبار'
+~~~
 
 ### Append labels
 
