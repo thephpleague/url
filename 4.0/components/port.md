@@ -24,6 +24,12 @@ $empty_port = new Port();
 echo $empty_port; //display ''
 ~~~
 
+The port component constructor accepts:
+
+- a valid string according to their component validation rules as explain in RFC3986
+- an object with a `__toString()` method.
+- the `null` value.
+
 <p class="message-warning">If the submitted value is not a valid port number an <code>InvalidArgumentException</code> will be thrown.</p>
 
 ### Using a League\Uri\Url object

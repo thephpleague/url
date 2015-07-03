@@ -56,7 +56,6 @@ They all expect:
 
 - a valid string according to their component validation rules as explain in RFC3986
 - an object with a `__toString()` method.
-- or the `null` value
 
 <p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
 

@@ -77,7 +77,7 @@ $info->toArray();
 ~~~php
 use League\Uri\UserInfo;
 
-$info = new UserInfo(null, 'bar');
+$info = new UserInfo('', 'bar');
 $info->toArray();
 // returns [
 //     'user' => null,
