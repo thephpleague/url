@@ -344,8 +344,6 @@ echo $host->toUnicode()->__toString(); //display 'مثال.إختبار'
 
 ### Append labels
 
-<p class="message-warning">Trying to append to or with an IP host will throw an <code>InvalidArgumentException</code> exception</p>
-
 To append labels to the current host you need to use the `Host::append` method. This method accepts a single argument which represents the data to be appended. This data can be:
 
 - another `Host` object;
@@ -363,8 +361,6 @@ $newHost->__toString(); //return toto.example.com
 <p class="message-notice">This method is used by the <code>League\Uri\Uri::appendHost</code> method</p>
 
 ### Prepend labels
-
-<p class="message-warning">Trying to prepend to or with an IP Host will throw an <code>InvalidArgumentException</code></p>
 
 To prepend labels to the current host you need to use the `Host::prepend` method. This method accept a single argument which represents the data to be prepended. This data can be:
 
