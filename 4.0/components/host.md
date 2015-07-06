@@ -39,9 +39,9 @@ echo $ipv6_alt; //display '[::1]'
 You can also access a `Host` object from an `League\Uri\Url` class:
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url  = Url::createFromString('http://url.thephpleague.com/');
+$url  = Uri::createFromString('http://url.thephpleague.com/');
 $host = $url->host; // $host is a League\Uri\Host object;
 ~~~
 
@@ -113,7 +113,7 @@ $host->isIp();   //return true
 $alt_host = new Uri\Host('example.com');
 $host->isIp(); //return false;
 
-Uri\Url::createFromServer($_SERVER)->host->isIp(); //return a boolean
+Uri\Uri::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6
@@ -360,7 +360,7 @@ $newHost = $host->append('toto')->append(new Host('example.com'));
 $newHost->__toString(); //return toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::appendHost</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::appendHost</code> method</p>
 
 ### Prepend labels
 
@@ -380,7 +380,7 @@ $newHost = $host->prepend('example.com')->prepend(new Host('toto'));
 $newHost->__toString(); //return toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::prependHost</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::prependHost</code> method</p>
 
 ### Replace label
 
@@ -402,7 +402,7 @@ $newHost->__toString(); //return bar.baz.example.com
 
 <p class="message-warning">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::replaceLabel</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::replaceLabel</code> method</p>
 
 ### Remove labels
 
@@ -432,7 +432,7 @@ echo $newHost; //displays 'example.com';
 
 <p class="message-warning">if the specified offsets do not exist, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutLabels</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutLabels</code> method</p>
 
 ### Remove zone identifier
 
@@ -450,7 +450,7 @@ $newHost = $host->withoutZoneIdentifier();
 echo $newHost; //displays '[fe80::1]';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutZoneIdentifier</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutZoneIdentifier</code> method</p>
 
 ### Filter labels
 
@@ -485,4 +485,4 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays 'www.be'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::filterHost</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::filterHost</code> method</p>

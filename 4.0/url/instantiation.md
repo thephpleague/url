@@ -1,20 +1,20 @@
 ---
 layout: default
-title: URLs instantiation
+title: URIs instantiation
 ---
 
-# URL Instantiation
+# URI Instantiation
 
-Because URLs come in different forms we used named constructors to offer several ways to instantiate the library objects.
+Because URIs come in different forms we used named constructors to offer several ways to instantiate the library objects.
 
 ## From a string
 
-Using the `createFromString` static method you can instantiate a new URL object from a string or from any object that implements the `__toString` method. Internally, the string will be parse using PHP's `parse_url` function.
+Using the `createFromString` static method you can instantiate a new URI object from a string or from any object that implements the `__toString` method. Internally, the string will be parse using PHP's `parse_url` function.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url = Url::createFromString('ftp://host.example.com');
+$url = Uri::createFromString('ftp://host.example.com');
 ~~~
 
 ## From the server variables
@@ -22,10 +22,10 @@ $url = Url::createFromString('ftp://host.example.com');
 Using the `createFromServer` method you can instantiate a new `League\Uri\Url` object from PHP's server variables. Of note, you must specify the `array` containing the variables usually `$_SERVER`.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
 //don't forget to provide the $_SERVER array
-$url = Url::createFromServer($_SERVER);
+$url = Uri::createFromServer($_SERVER);
 ~~~
 
 ## From parse_url results
@@ -33,18 +33,18 @@ $url = Url::createFromServer($_SERVER);
 Using the `createFromComponents` method you can instantiate a new `League\Uri\Url` object from the result of PHP's function `parse_url`.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
 $components = parse_url('https://foo.example.com');
-$url = Url::createFromComponents($components);
+$url = Uri::createFromComponents($components);
 ~~~
 
 ## From its default constructor
 
-If you already have all the URLs components as objects that implements the package interfaces, you can directly instantiate a new `League\Uri\Url` object from them.
+If you already have all the URIs components as objects that implements the package interfaces, you can directly instantiate a new `League\Uri\Url` object from them.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
 $url = new Url(
 	$scheme,
@@ -78,19 +78,19 @@ Ouf of the box the library supports the following schemes:
 Instantiating a `League\Uri\Url` object with an unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provides a [Scheme registry object](/4.0/services/scheme-registration/) to enable total control over the supported schemes. The scheme registry object must be provided as the second parameter of any `League\Uri\Url` named constructors.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 use League\Uri\Services\SchemeRegistry;
 
 $registry   = new SchemeRegistry(['telnet' => 23]);
 $components = parse_url('telnet://foo.example.com');
-$url = Url::createFromComponents($components, $registry);
-Url::createFromString('http://www.example.com', $registry);
+$url = Uri::createFromComponents($components, $registry);
+Uri::createFromString('http://www.example.com', $registry);
 //will throw an InvalidArgumentException
 ~~~
 
-In the example above, a new scheme registry is created which only supports the `telnet` scheme. Thus the `League\Uri\Url::createFromComponents` will:
+In the example above, a new scheme registry is created which only supports the `telnet` scheme. Thus the `League\Uri\Uri::createFromComponents` will:
 
-- correctly instantiated a `telnet` schemed URL;
-- throw an exception with an URL using the `http` scheme;
+- correctly instantiated a `telnet` schemed URI;
+- throw an exception with an URI using the `http` scheme;
 
 <p class="message-notice">The <code>SchemeRegistry</code> object is attached to the <a href="/4.0/components/scheme/">Scheme component</a> so you don't have to specify one for the default constructor.</p>

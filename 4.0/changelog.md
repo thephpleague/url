@@ -18,12 +18,15 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - Domain parsing capabilities to `Host` using `jeremykendall/php-domain-parser` package
 - API to add/remove the Path trailing slash.
 - Except for the `Port` constructor no other constructor accept the `null` value as per PSR-7
-- `Query::ksort` and `Url::ksortQuery` method
+- `Query::ksort` and `Uri::ksortQuery` method
 - Missing `User` and `Pass` Interfaces
+- Uri::isOpaque to detect Opaque URI
+- Host::getIpLiteral to get the raw IP representation of a Ip Literal hostname
 
 ### Fixed
 
 - Changed namespace from `League\Url` to `League\Uri` to avoid dependency hell
+- Changed class name from `League\Url\Url` to `League\Uri\Uri` to better reflect the class intent
 - Renamed methods for consistency with PHP naming conventions
 - Default supported schemes are: `ftp`, `http`, `https`, `ws`, `wss`
 - userinfo string representation `:` delimiter was added unnecessarily
@@ -33,13 +36,12 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 ### Remove
 
 - `Scheme::isSupported`, `Scheme::getStandardPort`, `Port::getStandardSchemes` use the `SchemeRegistry` class to get this information.
-- support for `PHP 5.4
-
+- support for `PHP 5.4`
 ## 4.0.0-beta.3
 
 ### Added
 
-- `isEmpty` method to `League\Uri\Interfaces\Url` to tell whether a URL is empty or not
+- `isEmpty` method to `League\Uri\Interfaces\Url` to tell whether a URI is empty or not
 - `isSupported` static method to `League\Uri\Scheme` to tell whether a specified scheme is supported by the library
 - Add support for `gopher` scheme
 
@@ -64,9 +66,9 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 
 - `League\Uri\Interfaces\Url`
     -  now implements `Psr\Http\Message\UriInterface`
-    - `resolve` to create new URL from relative URL
-    - `isAbsolute` tells whether the URL is absolute or relative
-    - `hasStandardPort`  tells whether the URL uses the standard port for a given scheme
+    - `resolve` to create new URI from relative URI
+    - `isAbsolute` tells whether the URI is absolute or relative
+    - `hasStandardPort`  tells whether the URI uses the standard port for a given scheme
     - `sameValueAs` accepts any `Psr\Http\Message\UriInterface` implementing object
     - add proxy methods to ease partial component modifications
 
@@ -100,7 +102,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
         - `Interfaces\Scheme::getStandardPorts`
         - `Interfaces\Scheme::hasStandardPort`
 
-- `League\Uri\UserInfo` class added to better manipulate URL user info part
+- `League\Uri\UserInfo` class added to better manipulate URI user info part
 
 - The `Url` class as well as all components classes are now immutable value objects.
 - The `League\Uri\Output\Formatter` class is added to ease Url formatting
@@ -110,7 +112,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - Nothing
 
 ### Fixed
-- Handling of legacy hostname suffixed with a "." when using `Url::createFromServer`
+- Handling of legacy hostname suffixed with a "." when using `Uri::createFromServer`
 
 ### Remove
 - `League\Uri\Components\User` and `League\Uri\Components\Pass`

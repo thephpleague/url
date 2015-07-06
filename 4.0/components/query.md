@@ -108,9 +108,9 @@ echo $query; //display 'foo=bar&p=yolo&z'
 ### Using a League\Uri\Url object
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url   = Url::createFromString('http://url.thephpleague.com/path/to/here?foo=bar');
+$url   = Uri::createFromString('http://url.thephpleague.com/path/to/here?foo=bar');
 $query = $url->query; // $query is a League\Uri\Query object;
 ~~~
 
@@ -250,7 +250,7 @@ $newQuery = $query->ksort('strcmp');
 $newQuery->__toString(); //return baz=toto&foo=bar
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::ksortQuery</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::ksortQuery</code> method</p>
 
 ### Add or Update parameters
 
@@ -305,7 +305,7 @@ $newQuery->__toString(); //return foo=jane&baz=&r
 // the 'baz' parameter was updated to an empty string and its = sign remains
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::mergeQuery</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::mergeQuery</code> method</p>
 
 ### Remove parameters
 
@@ -333,7 +333,7 @@ $newQuery = $query->without(function ($value) {
 echo $newQuery; //displays 'p=y+olo';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutQueryValues</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutQueryValues</code> method</p>
 
 ### Filter the Query
 
@@ -370,4 +370,4 @@ $newQuery = $query->filter(function ($value) {
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::filterQuery</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::filterQuery</code> method</p>

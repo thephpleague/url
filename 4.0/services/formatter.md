@@ -1,11 +1,11 @@
 ---
 layout: default
-title: The URL Formatter
+title: The URI Formatter
 ---
 
 # The Formatter
 
-The Formatter service class helps you format your URL according to your output.
+The Formatter service class helps you format your URI according to your output.
 
 ## Formatter Properties
 
@@ -104,9 +104,9 @@ $altRegistry = $formatter->getSchemeRegistry();
 //$altRegistry and $newRegistry are the same
 ~~~
 
-## Using the Formatter with a complete URL
+## Using the Formatter with a complete URI
 
-Apart form URL component class, the `Formatter::format` method can modify the string representation of:
+Apart form URI component class, the `Formatter::format` method can modify the string representation of:
 
 - any `League\Uri\*` objects.
 - any string or object which exposes a `__toString` method like any class implementing the PSR-7 UriInterface` class.
@@ -114,7 +114,7 @@ Apart form URL component class, the `Formatter::format` method can modify the st
 ### Concrete example
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 use League\Uri\Services\Formatter;
 
 $formatter = new Formatter();
@@ -122,7 +122,7 @@ $formatter->setHostEncoding(Formatter::HOST_AS_UNICODE);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
-$url        = Url::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar');
+$url        = Uri::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar');
 $url_string = $formatter->format($url);
 echo $url_string; //displays https://рф.ru:81?foo=ba%20r&amp;baz=bar
 echo $url;        //displays https://xn--p1ai.ru:81?foo=ba%20r&baz=bar

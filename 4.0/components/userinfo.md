@@ -5,7 +5,7 @@ title: The User Information part
 
 # The User Information part
 
-The library provides a `League\Uri\UserInfo` class to ease interacting with the user information URL part.
+The library provides a `League\Uri\UserInfo` class to ease interacting with the user information URI part.
 
 ## Instantiation
 
@@ -36,7 +36,7 @@ You can also get a `UserInfo` object from an `League\Uri\Url` class:
 ~~~php
 use League\Uri;
 
-$url = Uri\Url::createFromString('http://john:doe@example.com:81/');
+$url = Uri\Uri::createFromString('http://john:doe@example.com:81/');
 $userInfo = $url->userInfo; //return a League\Uri\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~
@@ -96,7 +96,7 @@ $info = new Uri\UserInfo('foo', 'bar');
 $info->getUser(); //return 'foo'
 $info->getPass(); //return 'bar'
 
-$url = Uri\Url::createFromString('http://john:doe@example.com:81/');
+$url = Uri\Uri::createFromString('http://john:doe@example.com:81/');
 $url->userInfo->getUser(); //return 'john'
 $url->userInfo->getPass(); //return 'doe'
 ~~~
@@ -110,7 +110,7 @@ $info = new Uri\UserInfo('foo', 'bar');
 $info->user; //return a League\Uri\User class
 $info->pass; //return a League\Uri\Pass class
 
-$url = Uri\Url::createFromString('http://john:doe@example.com:81/');
+$url = Uri\Uri::createFromString('http://john:doe@example.com:81/');
 $url->userInfo->user->__toString(); //return 'john'
 $url->userInfo->pass->__toString(); //return 'doe'
 ~~~
@@ -130,7 +130,7 @@ $info->pass->isEmpty(); //return false
 
 ## Modifying the user information
 
-<p class="message-notice">Because the <code>UserInfo</code> class does not represent a URL component, it does not include a <code>modify</code> method</p>
+<p class="message-notice">Because the <code>UserInfo</code> class does not represent a URI component, it does not include a <code>modify</code> method</p>
 
 <p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 

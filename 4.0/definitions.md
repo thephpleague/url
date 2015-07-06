@@ -1,11 +1,11 @@
 ---
 layout: default
-title: URLs as Value Objects
+title: URIs as Value Objects
 ---
 
 # Terminology
 
-The `Url` package models <abbr title="Uniform Resource Locator">URLs</abbr> and URLs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
+The `Url` package models <abbr title="Uniform Resource Identifier">URIs</abbr> and URIs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
 
 ## Value Objects
 
@@ -14,11 +14,11 @@ The `Url` package models <abbr title="Uniform Resource Locator">URLs</abbr> and 
 This means that a URL is like a street address, if you omit or change even a single character in it, you won't be able to find and/or identify what your are looking for. This is exactly the definition of a value object.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url1 = Url::createFromString("http://example.com:81/toto");
-$url2 = Url::createFromString("http://example.com:82/toto");
-//represent 2 different URLs with different port component.
+$url1 = Uri::createFromString("http://example.com:81/toto");
+$url2 = Uri::createFromString("http://example.com:82/toto");
+//represent 2 different URIs with different port component.
 $url1->sameValueAs($url2); //return false;
 ~~~
 
@@ -27,12 +27,12 @@ $url1->sameValueAs($url2); //return false;
 To ease and ensure the integrity of the value, when a component is altered instead of modifying its current value, we return a new component with the changed value. This practice is called immutability.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url1 = Url::createFromString("http://example.com:81/toto");
+$url1 = Uri::createFromString("http://example.com:81/toto");
 $url2 = $url1->withPort(82);
 echo $url1; //still displays "http://example.com:81/toto"
 echo $url2; //displays "http://example.com:82/toto"
 ~~~
 
-With both of these concepts, the package enforces stronger and efficient manipulation of URLs and its different components.
+With both of these concepts, the package enforces stronger and efficient manipulation of URIs and its different components.

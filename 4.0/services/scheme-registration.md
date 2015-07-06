@@ -16,26 +16,26 @@ But sometimes you may want to extend, restrict or change the supported schemes u
 extend the registry scheme list.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->merge(['telnet' => 23]);
 $components = parse_url('telnet://foo.example.com');
-$url = Url::createFromComponents($components, $newRegistry);
+$url = Uri::createFromComponents($components, $newRegistry);
 ~~~
 
 restrict the registry scheme list.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry();
 $newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-$url = Url::createFromString('https://foo.example.com', $newRegistry);
+$url = Uri::createFromString('https://foo.example.com', $newRegistry);
 //will throw an InvalidArgumentException as only
 // the 'http' and the 'ws' scheme are now supported
 ~~~
@@ -43,12 +43,12 @@ $url = Url::createFromString('https://foo.example.com', $newRegistry);
 or create a totally new scheme registry
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 use League\Uri\Services\SchemeRegistry;
 
 $registry = new SchemeRegistry(['telnet' => 23]);
 $components = parse_url('https://foo.example.com');
-$url = Url::createFromComponents($components, $registry);
+$url = Uri::createFromComponents($components, $registry);
 // will throw an InvalidArgumentException as only
 // the 'telnet' scheme is now supported
 ~~~

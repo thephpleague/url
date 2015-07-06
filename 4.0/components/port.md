@@ -39,7 +39,7 @@ Another way to acces a `League\Uri\Port` object is to use an already instantiate
 ~~~php
 use League\Uri;
 
-$url  = Uri\Url::createFromString('http://url.thephpleague.com:82');
+$url  = Uri\Uri::createFromString('http://url.thephpleague.com:82');
 $port = $url->port; // $port is a League\Uri\Port object;
 ~~~
 

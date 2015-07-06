@@ -60,9 +60,9 @@ Get more informations about the [SchemeRegistry class](/4.0/services/scheme-regi
 Another way to get acces to a `League\Uri\Scheme` is to use an already instantiated `League\Uri\Url` object.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url  = Url::createFromString('http://url.thephpleague.com/');
+$url  = Uri::createFromString('http://url.thephpleague.com/');
 $scheme = $url->scheme; // $scheme is a League\Uri\Scheme object;
 ~~~
 

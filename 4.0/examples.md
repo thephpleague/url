@@ -5,12 +5,12 @@ title: Examples
 
 # Simple example
 
-Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate each format URL. This example illustrates how easy it is to generate theses different URLs from an original URL.
+Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate each format URI. This example illustrates how easy it is to generate theses different URIs from an original URI.
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url = Url::createFromString("http://www.example.com/report");
+$url = Uri::createFromString("http://www.example.com/report");
 $extension_list = ['csv', 'json', 'xml'];
 $links = [];
 foreach ($extension_list as $extension) {

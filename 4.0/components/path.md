@@ -31,9 +31,9 @@ echo $end_slash; //display 'hello/world/'
 ### Using a League\Uri\Url object
 
 ~~~php
-use League\Uri\Url;
+use League\Uri\Uri;
 
-$url  = Url::createFromString('http://url.thephpleague.com/path/to/here');
+$url  = Uri::createFromString('http://url.thephpleague.com/path/to/here');
 $path = $url->path; // $path is a League\Uri\Path object;
 ~~~
 
@@ -233,7 +233,7 @@ $altPath->hasTrailingSlash(); //return true
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 
-Out of the box, the `Path` object operates a number of non destructive normalizations. For instance, the path is correctly URL encoded against the RFC3986 rules.
+Out of the box, the `Path` object operates a number of non destructive normalizations. For instance, the path is correctly URI encoded against the RFC3986 rules.
 
 ### Removing dot segments
 
@@ -249,11 +249,11 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutDotSegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutDotSegments</code> method</p>
 
 ### Removing empty segments
 
-Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URL, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
+Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URI, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
 
 ~~~php
 use League\Uri\Path;
@@ -265,7 +265,7 @@ echo $normalize_path;     //displays 'path/to/the/sky/'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutEmptySegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutEmptySegments</code> method</p>
 
 ### Manipulating the trailing slash
 
@@ -283,7 +283,7 @@ echo $normalize_path;     //displays 'path/to/the/sky'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutTrailingSlash</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutTrailingSlash</code> method</p>
 
 Conversely, `Path::withTrailingSlash` will append a slash at the end of your path only if no slash is already present.
 
@@ -297,7 +297,7 @@ echo $normalize_path;     //displays '/path/to/the/sky/'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withTrailingSlash</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withTrailingSlash</code> method</p>
 
 ## Modifying Path
 
@@ -318,7 +318,7 @@ echo $newPath->getExtension(); //displays csv;
 echo $path->getExtension();    //displays '';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withExtension</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withExtension</code> method</p>
 
 ### Append segments
 
@@ -332,7 +332,7 @@ $newPath = $path->append(new Path('path'))->append('to/the/sky');
 $newPath->__toString(); //return path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::appendPath</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::appendPath</code> method</p>
 
 ### Prepend segments
 
@@ -346,7 +346,7 @@ $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
 $newPath->__toString(); //return path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::prependPath</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::prependPath</code> method</p>
 
 ### Replace segments
 
@@ -365,7 +365,7 @@ $Path->__toString(); //return /bar/baz/example/com
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::replaceSegment</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::replaceSegment</code> method</p>
 
 ### Remove segments
 
@@ -395,7 +395,7 @@ echo $newPath; //displays '/sky';
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::withoutSegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutSegments</code> method</p>
 
 ### Filter segments
 
@@ -430,4 +430,4 @@ $newPath = $query->filter(function ($value) {
 echo $newPath; //displays '/foo/yolo'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Url::filterPath</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::filterPath</code> method</p>
