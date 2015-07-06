@@ -83,25 +83,6 @@ To get more informations about component properties refer to the [components doc
 
 ## URI properties
 
-### Is the URI opaque ?
-
-An URI is considered to be opaque if it has:
-- a scheme
-- an empty authority part.
-- a rootless path which does not contains any (`/` or `?`)
-
-~~~php
-use League\Uri\Uri;
-
-$url = Uri::createFromString("http://example.com");
-echo $url->__toString();   //display "http://example.com"
-$url->isOpaque();          //return false
-
-$newUrl = $url->withHost()->withPath('example.com');
-echo $newUrl->__toString(); //display "http:example.com"
-$newUrl->isOpaque();        //return true
-~~~
-
 ### Is the URI empty ?
 
 An URI can have a empty string representation even if some components or URI parts are not.
