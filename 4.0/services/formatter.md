@@ -65,41 +65,41 @@ echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 
 ### Extending the Formatter capability by attaching a SchemeRegistry object
 
-Just like the [Scheme component](/4.0/components/scheme/) you can manage the object scheme support using the library [scheme registry system](/4.0/services/scheme-registration/).
+You can manage the object schemes support using the library [scheme registry system](/4.0/services/scheme-registration/) to help the formatter works with plain string representing URI. In order to dos so you can:
 
-Using the constructor you can optionally provide a `SchemeRegistry` object.
+Use the constructor you can optionally provide a `Scheme\Registry` object.
 
 ~~~php
+use League\Uri\Scheme\Registry;
 use League\Uri\Services\Formater;
-use League\Uri\Services\SchemeRegistry;
 
-$registry    = new SchemeRegistry();
+$registry    = new Registry();
 $newRegistry = $registry->merge(['telnet' => 23]);
 $formatter   = new Formatter($newRegistry);
 ~~~
 
-You can also use the `setSchemeRegistry` method:
+Or use the `setSchemeRegistry` method:
 
 ~~~php
+use League\Uri\Scheme\Registry;
 use League\Uri\Services\Formater;
-use League\Uri\Services\SchemeRegistry;
 
-$registry    = new SchemeRegistry();
+$registry    = new Registry();
 $newRegistry = $registry->merge(['telnet' => 23]);
 $formatter   = new Formatter();
-$formatter->setSchemeRegistry($newRegistry);
+$formatter->setScheme\Registry($newRegistry);
 ~~~
 
-You can access this registry at any given time using its getter method
+You can access the formatter scheme registry at any given time using its getter method
 
 ~~~php
+use League\Uri\Scheme\Registry;
 use League\Uri\Services\Formater;
-use League\Uri\Services\SchemeRegistry;
 
-$registry    = new SchemeRegistry();
+$registry    = new Registry();
 $newRegistry = $registry->merge(['telnet' => 23]);
 $formatter   = new Formatter();
-$formatter->setSchemeRegistry($newRegistry);
+$formatter->setScheme\Registry($newRegistry);
 $altRegistry = $formatter->getSchemeRegistry();
 //$altRegistry and $newRegistry are the same
 ~~~
@@ -114,16 +114,13 @@ Apart form URI component class, the `Formatter::format` method can modify the st
 ### Concrete example
 
 ~~~php
-use League\Uri\Uri;
 use League\Uri\Services\Formatter;
 
 $formatter = new Formatter();
-$formatter->setHostEncoding(Formatter::HOST_AS_UNICODE);
+$formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
-$url        = Uri::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar');
-$url_string = $formatter->format($url);
-echo $url_string; //displays https://рф.ru:81?foo=ba%20r&amp;baz=bar
-echo $url;        //displays https://xn--p1ai.ru:81?foo=ba%20r&baz=bar
+echo $formatter->format('https://рф.ru:81?foo=ba%20r&baz=bar');
+//displays https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
 ~~~

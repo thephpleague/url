@@ -26,35 +26,6 @@ echo $empty_scheme; //display ''
 
 <p class="message-warning">If the submitted value is not a valid scheme an <code>InvalidArgumentException</code> will be thrown.</p>
 
-Ouf of the box the library supports the following schemes:
-
-- ftp,
-- http, https
-- ws, wss
-
-If you try to instantiate a scheme object with a different scheme and `InvalidArgumentException` exception is thrown. To overcome this limitation, the scheme constructor can take an optional second argument which is a `SchemeRegistry` class. Depending on the registry values you will be able to instantiate other schemes like shown below:
-
-~~~php
-use League\Uri\Scheme;
-use League\Uri\Services\SchemeRegistry;
-
-$registry = new SchemeRegistry();
-$newRegistry = $registry->merge(['telnet' => 23]);
-$scheme = new Scheme('telnet', $newRegistry); //will now works
-~~~
-
-At any given time you can get access to the `SchemeRegistry` object using the `getSchemeRegistry` method.
-
-~~~php
-use League\Uri\Scheme;
-
-$scheme   = new Scheme('ftp');
-$registry = $scheme->getSchemeRegistry();
-$registry->hasKey('ftp'); //return true
-~~~
-
-Get more informations about the [SchemeRegistry class](/4.0/services/scheme-registration/)
-
 ### Using a League\Uri\Url object
 
 Another way to get acces to a `League\Uri\Scheme` is to use an already instantiated `League\Uri\Url` object.

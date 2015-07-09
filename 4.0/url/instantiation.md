@@ -41,7 +41,7 @@ $url = Uri::createFromComponents($components);
 
 ## From its default constructor
 
-If you already have all the URIs components as objects that implements the package interfaces, you can directly instantiate a new `League\Uri\Url` object from them.
+Of course if you already have all the required objects that implements the package interfaces, you can directly instantiate a new `League\Uri\Url` object from them as shown below:
 
 ~~~php
 use League\Uri\Uri;
@@ -53,7 +53,8 @@ $url = new Url(
 	$port,
 	$path,
 	$query,
-	$fragment
+	$fragment,
+    $schemeRegistry
 );
 
 //where $scheme is a League\Uri\Interfaces\Scheme implementing object
@@ -63,6 +64,7 @@ $url = new Url(
 //where $path is a League\Uri\Interfaces\Path implementing interface
 //where $query is a League\Uri\Interfaces\Query implementing interface
 //where $fragment is a League\Uri\Interfaces\Fragment implementing object
+//where $schemeRegistry is a League\Uri\Interfaces\SchemeRegistry implementing object
 ~~~
 
 <p class="message-warning">If a new instance can not be created a <code>InvalidArgumentException</code> exception is thrown.</p>
@@ -75,13 +77,13 @@ Ouf of the box the library supports the following schemes:
 - http, https
 - ws, wss
 
-Instantiating a `League\Uri\Url` object with an unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provides a [Scheme registry object](/4.0/services/scheme-registration/) to enable total control over the supported schemes. The scheme registry object must be provided as the second parameter of any `League\Uri\Url` named constructors.
+Instantiating a `League\Uri\Url` object with an unsupported/unknown scheme throws an `InvalidArgumentException` exception. To overcome this limitation, the package provides a [Scheme registry object](/4.0/services/scheme-registration/) to enable total control over the supported schemes. The scheme registry object must be provided as the second parameter of any `League\Uri\Url` named constructors.
 
 ~~~php
 use League\Uri\Uri;
-use League\Uri\Services\SchemeRegistry;
+use League\Uri\Scheme\Registry;
 
-$registry   = new SchemeRegistry(['telnet' => 23]);
+$registry   = new Registry(['telnet' => 23]);
 $components = parse_url('telnet://foo.example.com');
 $url = Uri::createFromComponents($components, $registry);
 Uri::createFromString('http://www.example.com', $registry);
@@ -92,5 +94,3 @@ In the example above, a new scheme registry is created which only supports the `
 
 - correctly instantiated a `telnet` schemed URI;
 - throw an exception with an URI using the `http` scheme;
-
-<p class="message-notice">The <code>SchemeRegistry</code> object is attached to the <a href="/4.0/components/scheme/">Scheme component</a> so you don't have to specify one for the default constructor.</p>

@@ -64,6 +64,7 @@ $url->port;     //return a League\Uri\Port object
 $url->path;     //return a League\Uri\Path object
 $url->query;    //return a League\Uri\Query object
 $url->fragment; //return a League\Uri\Fragment object
+$url->schemeRegistry; //return a League\Uri\Scheme\Registry object
 ~~~
 
 Using this technique you can get even more informations regarding your URI.
