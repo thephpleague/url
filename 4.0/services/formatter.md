@@ -65,7 +65,7 @@ echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 
 ### Extending the Formatter capability by attaching a SchemeRegistry object
 
-You can manage the object schemes support using the library [scheme registry system](/4.0/services/scheme-registration/) to help the formatter works with plain string representing URI. In order to dos so you can:
+You can manage the object schemes support using the library [scheme registry system](/4.0/uri/scheme-registration/) to help the formatter works with plain string representing URI. In order to dos so you can:
 
 Use the constructor you can optionally provide a `Scheme\Registry` object.
 

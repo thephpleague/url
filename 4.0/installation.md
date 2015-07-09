@@ -16,7 +16,7 @@ title: Installation
 `Url` is available on [Packagist][] and should be installed using [Composer][]. This can be done by running the following command on a composer installed box:
 
 ~~~
-$ composer require league/url
+$ composer require league/uri
 ~~~
 
 Most modern frameworks will include Composer out of the box, but ensure the following file is included:

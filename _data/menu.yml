@@ -5,20 +5,19 @@
         Installation: '/4.0/installation/'
         Simple example: '/4.0/examples/'
         Terminology: '/4.0/definitions/'
-    Url:
-        Instantiation: '/4.0/url/instantiation/'
-        Properties: '/4.0/url/properties/'
-        Manipulation: '/4.0/url/manipulation/'
-    Url Parts API:
+    Uri:
+        Instantiation: '/4.0/uri/instantiation/'
+        Properties: '/4.0/uri/properties/'
+        Manipulation: '/4.0/uri/manipulation/'
+        Scheme Registration: '/4.0/uri/scheme-registration/'
+    Uri Parts API:
         Overview: '/4.0/components/overview/'
-        Scheme: '/4.0/components/scheme/'
         User Information: '/4.0/components/userinfo/'
         Host: '/4.0/components/host/'
         Port: '/4.0/components/port/'
         Path: '/4.0/components/path/'
         Query: '/4.0/components/query/'
     Services:
-        Scheme Registration: '/4.0/services/scheme-registration/'
         Formatter: '/4.0/services/formatter/'
 '3.0':
     Getting Started:

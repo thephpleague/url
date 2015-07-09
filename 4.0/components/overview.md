@@ -54,7 +54,7 @@ Each component class can be instantiated independently from the main `League\Uri
 
 They all expect:
 
-- a valid string according to their component validation rules as explain in RFC3986
+- an **encoded** string according to the component validation rules as explain in RFC3986
 - an object with a `__toString()` method.
 
 <p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
@@ -126,6 +126,22 @@ echo $userinfo->getUriComponent(); //displays 'john@'
 $path = new Uri\Path('/toto le heros/file.xml');
 echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 ~~~
+
+### Component literal representation
+
+The string representation will always return an encoded string. If you want to use the literal representation of one component you need to use the `getLiteral` method attached to it.
+
+~~~php
+use League\Uri;
+
+$user = new Uri\User('foo%2Fbar');
+echo $user->getLiteral(); //displays 'foo/bar'
+echo $user->__toString(); //displays 'foo%2Fbar'
+~~~
+
+<p class="message-warning">The <code>getLiteral</code> method is not supported by the: <code>UserInfo</code> object.</p>
+
+<p class="message-notice">Only the following components support the <code>getLiteral</code> methods: <code>Scheme</code>, <code>User</code>, <code>Pass</code>, <code>Fragment</code>.</p>
 
 ## URI parts comparison
 

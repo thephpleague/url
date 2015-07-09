@@ -18,7 +18,7 @@ title: Url
 
 The phpleague `Url` package provides simple and intuitive classes to create and manage URIs in PHP.
 
-[URI on Packagist](https://packagist.org/packages/league/url)
+[URI on Packagist](https://packagist.org/packages/league/uri)
 
 Highlights
 ------
