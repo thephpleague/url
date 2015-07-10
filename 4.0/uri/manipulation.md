@@ -26,13 +26,13 @@ echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 
 ## URI resolution
 
-The URI class provides the mean for resolving an URI as a browser would for an anchor tag. When performing URI resolution the returned URI is normalized according to RFC3986 rules.
+The URI class provides the mean for resolving an URI as a browser would for an anchor tag. When performing URI resolution the returned URI is normalized according to RFC3986 rules. The uri to resolved must be another `Uri` object.
 
 ~~~php
 use League\Uri\Uri;
 
 $url = Uri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$newUrl = $url->resolve("./p#~toto");
+$newUrl = $url->resolve(Uri::createFromString("./p#~toto"));
 echo $newUrl; //displays "http://www.example.com/hello/p#~toto"
 ~~~
 

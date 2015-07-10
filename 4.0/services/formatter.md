@@ -63,53 +63,9 @@ echo $query; //displays foo=ba%20&baz=bar
 echo $formatter->format($query); //displays foo=ba%20r&amp;baz=bar
 ~~~
 
-### Extending the Formatter capability by attaching a SchemeRegistry object
-
-You can manage the object schemes support using the library [scheme registry system](/4.0/uri/scheme-registration/) to help the formatter works with plain string representing URI. In order to dos so you can:
-
-Use the constructor you can optionally provide a `Scheme\Registry` object.
-
-~~~php
-use League\Uri\Scheme\Registry;
-use League\Uri\Services\Formater;
-
-$registry    = new Registry();
-$newRegistry = $registry->merge(['telnet' => 23]);
-$formatter   = new Formatter($newRegistry);
-~~~
-
-Or use the `setSchemeRegistry` method:
-
-~~~php
-use League\Uri\Scheme\Registry;
-use League\Uri\Services\Formater;
-
-$registry    = new Registry();
-$newRegistry = $registry->merge(['telnet' => 23]);
-$formatter   = new Formatter();
-$formatter->setScheme\Registry($newRegistry);
-~~~
-
-You can access the formatter scheme registry at any given time using its getter method
-
-~~~php
-use League\Uri\Scheme\Registry;
-use League\Uri\Services\Formater;
-
-$registry    = new Registry();
-$newRegistry = $registry->merge(['telnet' => 23]);
-$formatter   = new Formatter();
-$formatter->setScheme\Registry($newRegistry);
-$altRegistry = $formatter->getSchemeRegistry();
-//$altRegistry and $newRegistry are the same
-~~~
-
 ## Using the Formatter with a complete URI
 
-Apart form URI component class, the `Formatter::format` method can modify the string representation of:
-
-- any `League\Uri\*` objects.
-- any string or object which exposes a `__toString` method like any class implementing the PSR-7 UriInterface` class.
+Apart form URI component classes, the `Formatter::format` method can modify the string representation of any Uri object class.
 
 ### Concrete example
 
@@ -121,6 +77,6 @@ $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
-echo $formatter->format('https://рф.ru:81?foo=ba%20r&baz=bar');
+echo $formatter->format(Uri::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar'));
 //displays https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
 ~~~

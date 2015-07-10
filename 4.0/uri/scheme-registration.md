@@ -59,6 +59,8 @@ Once you have instantiated a registry object you can specify it as one of the `L
 
 ## Creating the registry
 
+### Using the registry constructor
+
 We first need to instantiate a new `SchemeRegistry` object using its constructor. This method accept only one argument which is a array of scheme/standard port pair. Each scheme and pair are syntaxically validated before addition. The schemes are normalized to their lowercase string representation.
 
 ~~~php
@@ -77,6 +79,15 @@ $registry = new Scheme\Registry([
 - The **file** scheme has no standard port and must be given the `null` value for the associated port
 
 By defaut if no array is provided, the registry is instantiated using the default supported schemes.
+
+### Using a League\Uri\Url object
+
+~~~php
+use League\Uri\Uri;
+
+$url = Uri::createFromString('http://url.thephpleague.com/path/to/here');
+$schemeRegistry = $url->schemeRegistry; // $schemeRegistry is a League\Uri\Scheme\Registry object;
+~~~
 
 ## Exporting the registry.
 

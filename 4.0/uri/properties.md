@@ -57,13 +57,13 @@ To access a specific URI part or component as an object you can use PHP"s magic 
 use League\Uri\Uri;
 
 $url = Uri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz#title");
-$url->scheme;   //return a League\Uri\Scheme object
-$url->userInfo; //return a League\Uri\UserInfo object
-$url->host;     //return a League\Uri\Host object
-$url->port;     //return a League\Uri\Port object
-$url->path;     //return a League\Uri\Path object
-$url->query;    //return a League\Uri\Query object
-$url->fragment; //return a League\Uri\Fragment object
+$url->scheme;         //return a League\Uri\Scheme object
+$url->userInfo;       //return a League\Uri\UserInfo object
+$url->host;           //return a League\Uri\Host object
+$url->port;           //return a League\Uri\Port object
+$url->path;           //return a League\Uri\Path object
+$url->query;          //return a League\Uri\Query object
+$url->fragment;       //return a League\Uri\Fragment object
 $url->schemeRegistry; //return a League\Uri\Scheme\Registry object
 ~~~
 
@@ -100,20 +100,6 @@ $newUrl = $url->withHost("");
 $newUrl->getPort(); //return 82
 $newUrl->getHost(); //return ""
 $newUrl->isEmpty(); //return true
-~~~
-
-### Is the URI absolute ?
-
-An URI is considered absolute if it has a non empty scheme component and an authority part.
-
-~~~php
-use League\Uri\Uri;
-
-$url = Uri::createFromString("//example.com/foo");
-$url->isAbsolute(); //return false
-
-$url = Uri::createFromString("ftp://example.com/foo");
-$url->isAbsolute(); //return true
 ~~~
 
 ### Does the URI uses the standard port ?
