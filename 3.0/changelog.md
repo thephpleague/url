@@ -9,5 +9,5 @@ All Notable changes to `League\Url` version 3 will be documented in this file
 
 {% for release in site.github.releases %}
 ## {{ release.name }}
-{{ release.body | markdownify }}
+{{ release.body | replace:'```':'~~~' | markdownify }}
 {% endfor %}
