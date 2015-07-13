@@ -31,7 +31,7 @@ restrict the registry scheme list.
 use League\Uri\Uri;
 use League\Uri\Scheme\Registry;
 
-$registry = new Registry();
+$registry = new Registry(['http' => 80, 'https' => 443]);
 $newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
@@ -48,7 +48,7 @@ use League\Uri\Scheme\Registry;
 
 $registry = new Registry(['telnet' => 23]);
 $components = parse_url('https://foo.example.com');
-$url = Uri::createFromComponents($components, $registry);
+$url = Uri::createFromComponents($registry, $components);
 // will throw an InvalidArgumentException as only
 // the 'telnet' scheme is now supported
 ~~~
@@ -83,9 +83,9 @@ By defaut if no array is provided, the registry is instantiated using the defaul
 ### Using a League\Uri\Url object
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString('http://url.thephpleague.com/path/to/here');
+$url = Http::createFromString('http://url.thephpleague.com/path/to/here');
 $schemeRegistry = $url->schemeRegistry; // $schemeRegistry is a League\Uri\Scheme\Registry object;
 ~~~
 
@@ -120,7 +120,7 @@ The class provides several methods to works with its schemes. The class implemen
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['ws' => 80, 'wss' => 443]);
 count($registry); //return an integer
 foreach ($registry as $scheme => $port) {
     //do something meaningful here
@@ -135,7 +135,7 @@ If you only want to know if a particular scheme is registered then you can simpl
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['ftp' => 21, 'ssh' => 22]);
 $registry->hasKey("telnet"); //return false
 $registry->hasKey("ftp");    //return true
 ~~~
@@ -162,7 +162,7 @@ the `SchemeRegistry::keys` method can also list the schemes that share the same 
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $registry->keys(80); //return ["http", "ws"]
 $registry->keys(352); //return []
 ~~~
@@ -176,7 +176,7 @@ To get the standard port for a given scheme you can use the `SchemeRegistry::get
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $registry->getPort('http'); //return new Port(80)
 $registry->getPort("telnet"); //throws an InvalidArgumentException
 ~~~
@@ -198,10 +198,10 @@ An `array` or a `Traversable` object similar the array used to instantiate the c
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $newRegistry = $registry->merge(['telnet' => 23, 'gopher' => '70']);
-count($registry);    //return 7
-count($newRegistry); //return 9
+count($registry);    //return 3
+count($newRegistry); //return 5
 $newRegistry->hasKey('telnet') //return true
 ~~~
 
@@ -210,7 +210,7 @@ Another `SchemeRegistry` object
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $altregistry = new Scheme\Registry([
 	'telnet' => 23,
 	'HtTp' => 80,
@@ -218,10 +218,10 @@ $altregistry = new Scheme\Registry([
 ]);
 
 $newRegistry = $registry->merge($altregistry);
-count($registry);                 //return 7
+count($registry);                 //return 3
 count($altregistry);              //return 3
-count($newRegistry);              //return 8
-$newRegistry->hasKey('telnet') //return true
+count($newRegistry);              //return 5
+$newRegistry->hasKey('telnet');   //return true
 ~~~
 
 ### Remove schemes
@@ -233,10 +233,10 @@ This argument can be an array containing a list of parameter names to remove.
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'wss' => 443, 'ftp' => 21]);
 $newRegistry = $registry->without(['https', 'WsS']);
-count($registry);    //return 7
-count($newRegistry); //return 5
+count($registry);            //return 3
+count($newRegistry);         //return 2
 $newRegistry->hasKey('wss'); //return false
 ~~~
 
@@ -245,12 +245,12 @@ Or a callable that will select the list of parameter names to remove.
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $newRegistry = $registry->without(function ($port) {
 	return $port !== 80;
 });
-count($registry);    //return 7
-count($newRegistry); //return 2
+count($registry);       //return 3
+count($newRegistry);    //return 2
 $newRegistry->keys(80); //return ['http', 'ws'];
 ~~~
 
@@ -265,12 +265,12 @@ The first parameter must be a `callable`
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $newRegistry = $registry->filter(function ($port) {
 	return $port == 80;
 });
-count($registry);    //return 7
-count($newRegistry); //return 2
+count($registry);       //return 3
+count($newRegistry);    //return 2
 $newRegistry->keys(80); //return ['http', 'ws'];
 ~~~
 
@@ -284,11 +284,11 @@ By default, if no flag is specified the method will filter by value.
 ~~~php
 use League\Uri\Scheme\Registry;
 
-$registry = new Scheme\Registry();
+$registry = new Scheme\Registry(['http' => 80, 'ws' => 80, 'ftp' => 21]);
 $newRegistry = $registry->filter(function ($value) {
 	return strpos($value, 'http') === 0;
 }, SchemeRegistry::FILTER_USE_KEY);
-count($registry);    //return 15
-count($newRegistry); //return 2
-$newRegistry->keys(80); //return ['http', 'https'];
+count($registry);    //return 3
+count($newRegistry); //return 1
+$newRegistry->keys(80); //return ['http'];
 ~~~

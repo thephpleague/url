@@ -14,7 +14,7 @@ use League\Uri\Uri;
 use League\Uri\Schemes\Registry;
 
 $components = parse_url('https://foo.example.com');
-$url = Uri::createFromComponents(new Registry(), $components);
+$url = Uri::createFromComponents(new Registry(['https' => 443]), $components);
 ~~~
 
 ## From its default constructor
@@ -69,9 +69,9 @@ In the example above, a new scheme registry is created which only supports the `
 - correctly instantiated a `telnet` schemed URI;
 - throw an exception with an URI using the `http` scheme;
 
-## Web URI
+## Http, Https URI
 
-Usually you want to work with one of the following schemes: `http`, `https`, `ftp`, `ws`, `wss`. To ease working with these scheme the library introduces the `Http` class. And because URIs come in different forms we used named constructors to offer several ways to instantiate the object.
+Usually you want to work with one of the following schemes: `http`, `https`. To ease working with these schemes the library introduces the `Http` class. And because URIs come in different forms we used named constructors to offer several ways to instantiate the object.
 
 ### Instantiation
 
@@ -115,7 +115,7 @@ $url = Http::createFromString($source);
 //will produce a InvalidArgumentException
 
 $components = parse_url($source);
-$uri = Uri::createFromComponents(new Registry(), $components);
+$uri = Uri::createFromComponents(new Registry(['http' => 80]), $components);
 //No exception is thrown
 echo $uri->__toString(); //returns http:/example.com
 ~~~

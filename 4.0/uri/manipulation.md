@@ -32,7 +32,7 @@ The URI class provides the mean for resolving an URI as a browser would for an a
 use League\Uri\Schemes\Http;
 
 $url = Http::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$newUrl = $url->resolve(Uri::createFromString("./p#~toto"));
+$newUrl = $url->resolve(Http::createFromString("./p#~toto"));
 echo $newUrl; //displays "http://www.example.com/hello/p#~toto"
 ~~~
 

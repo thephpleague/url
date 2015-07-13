@@ -18,13 +18,13 @@ foreach ($extension_list as $extension) {
       ->appendPath("/purchases/summary")
       ->withExtension($extension)
       ->replaceLabel(0, 'download')
-      ->withScheme('ftp');
+      ->withScheme('https');
 }
 
 // $links is an array of League\Uri\Url objects
 
 echo $url;           // display "http://www.example.com/report"
-echo $links['csv'];  // display "ftp://download.example.com/report/purchases/summary.csv"
-echo $links['xml'];  // display "ftp://download.example.com/report/purchases/summary.xml"
-echo $links['json']; // display "ftp://download.example.com/report/purchases/summary.json"
+echo $links['csv'];  // display "https://download.example.com/report/purchases/summary.csv"
+echo $links['xml'];  // display "https://download.example.com/report/purchases/summary.xml"
+echo $links['json']; // display "https://download.example.com/report/purchases/summary.json"
 ~~~
