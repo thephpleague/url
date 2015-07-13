@@ -17,8 +17,8 @@ A host can be output as encoded in ascii or in unicode. By default the formatter
 - `Formatter::HOST_AS_ASCII`   to set the host encoding to ascii;
 
 ~~~php
+use League\Uri\Formatter;
 use League\Uri\Host;
-use League\Uri\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_UNICODE);
@@ -37,8 +37,8 @@ A `League\Uri\Query` object is by default encoded by following RFC 3986. If you 
 - `PHP_QUERY_RFC1738` to set the query encoding as per RFC 1738;
 
 ~~~php
+use League\Uri\Formatter;
 use League\Uri\Query
-use League\Uri\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQueryEncoding(PHP_QUERY_RFC1738);
@@ -52,8 +52,8 @@ echo $formatter->format($query); //displays foo=ba+r&baz=bar
 ### Modifying the query separator
 
 ~~~php
+use League\Uri\Formatter;
 use League\Uri\Query
-use League\Uri\Services\Formatter;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');
@@ -70,13 +70,14 @@ Apart form URI component classes, the `Formatter::format` method can modify the 
 ### Concrete example
 
 ~~~php
-use League\Uri\Services\Formatter;
+use League\Uri\Formatter;
+use League\Uri\Schemes\Http;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
-echo $formatter->format(Uri::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar'));
+echo $formatter->format(Uri\Schemes\Http::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar'));
 //displays https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
 ~~~

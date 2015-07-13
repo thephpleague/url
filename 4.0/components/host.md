@@ -34,14 +34,14 @@ echo $ipv6_alt; //display '[::1]'
 
 <p class="message-warning">If the submitted value is not a valid host an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Uri\Url object
+### Using a League\Uri\Uri object
 
-You can also access a `Host` object from an `League\Uri\Url` class:
+You can also access a `Host` object from an `League\Uri\Uri` class:
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url  = Uri::createFromString('http://url.thephpleague.com/');
+$url  = Http::createFromString('http://url.thephpleague.com/');
 $host = $url->host; // $host is a League\Uri\Host object;
 ~~~
 
@@ -113,7 +113,7 @@ $host->isIp();   //return true
 $alt_host = new Uri\Host('example.com');
 $host->isIp(); //return false;
 
-Uri\Uri::createFromServer($_SERVER)->host->isIp(); //return a boolean
+Uri\Schemes\Http::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6

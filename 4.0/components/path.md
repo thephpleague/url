@@ -31,9 +31,9 @@ echo $end_slash; //display 'hello/world/'
 ### Using a League\Uri\Url object
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url  = Uri::createFromString('http://url.thephpleague.com/path/to/here');
+$url  = Http::createFromString('http://url.thephpleague.com/path/to/here');
 $path = $url->path; // $path is a League\Uri\Path object;
 ~~~
 

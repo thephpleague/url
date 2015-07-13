@@ -8,9 +8,9 @@ title: Examples
 Let's say you have a document that can be downloaded in different format (CSV, XML, JSON) and you quickly want to generate each format URI. This example illustrates how easy it is to generate theses different URIs from an original URI.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("http://www.example.com/report");
+$url = Http::createFromString("http://www.example.com/report");
 $extension_list = ['csv', 'json', 'xml'];
 $links = [];
 foreach ($extension_list as $extension) {

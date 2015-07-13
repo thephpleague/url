@@ -105,12 +105,13 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Uri\Url object
+### Using a League\Uri\Uri object
 
 ~~~php
 use League\Uri\Uri;
+use League\Uri\Schemes\Registry;
 
-$url   = Uri::createFromString('http://url.thephpleague.com/path/to/here?foo=bar');
+$url   = Uri::createFromComponents(new Registry(), parse_url('http://url.thephpleague.com/path/to/here?foo=bar'));
 $query = $url->query; // $query is a League\Uri\Query object;
 ~~~
 

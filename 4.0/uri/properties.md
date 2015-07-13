@@ -14,9 +14,9 @@ An URI is composed of several parts and components. the `Uri` object was built t
 You can get the URI as an `array` similar to `parse_url` response if you call `Uri::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("http://www.example.com/how/are/you?foo=baz");
+$url = Http::createFromString("http://www.example.com/how/are/you?foo=baz");
 var_export($url->toArray());
 //return the following array
 // array (
@@ -36,9 +36,9 @@ var_export($url->toArray());
 You can access the URI individual parts and components as string or integer using their respective getter methods.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz#title");
+$url = Http::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz#title");
 echo $url->getScheme();    //displays "http"
 echo $url->getUserInfo();  //displays "foo:bar"
 echo $url->getHost();      //displays "www.example.com"
@@ -54,9 +54,9 @@ echo $url->getFragment();  //displays "title"
 To access a specific URI part or component as an object you can use PHP"s magic method `__get` as follow.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz#title");
+$url = Http::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz#title");
 $url->scheme;         //return a League\Uri\Scheme object
 $url->userInfo;       //return a League\Uri\UserInfo object
 $url->host;           //return a League\Uri\Host object
@@ -70,9 +70,9 @@ $url->schemeRegistry; //return a League\Uri\Scheme\Registry object
 Using this technique you can get even more informations regarding your URI.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz");
+$url = Http::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz");
 $url->host->isIp();           //return false the URI uses a registered hostname
 $url->userInfo->getUser();    //return "foo" the user login information
 $url->fragment->isEmpty();    //return true because to fragment component is empty
@@ -89,9 +89,9 @@ To get more informations about component properties refer to the [components doc
 An URI can have a empty string representation even if some components or URI parts are not.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("//example.com:82");
+$url = Http::createFromString("//example.com:82");
 $url->getPort(); //return 82
 $url->getHost(); //return "example.com"
 $url->isEmpty(); //return false
@@ -115,14 +115,14 @@ The `Uri::hasStandardPort` tells you whether you are using or not the standard p
 - If **no port** is set the method will return `true`.
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 
-$url = Uri::createFromString("http://example.com:8042/over/there");
+$url = Http::createFromString("http://example.com:8042/over/there");
 $url->hasStandardPort(); //return false
 echo $url->getPort();    //displays 8042
 echo $url;               //displays "http://example.com:8042/over/there"
 
-$alt_url = Uri::createFromString("wss://example.com:443/over/there");
+$alt_url = Http::createFromString("wss://example.com:443/over/there");
 $alt_url->hasStandardPort(); //return true
 echo $alt_url->getPort();    //displays 443
 echo $alt_url;               //displays "wss://example.com/over/there"
@@ -135,10 +135,10 @@ You can compare two PSR-7 `UriInterface` compliant URIs object to see if they re
 - the query string is sorted according to their parameters keys;
 
 ~~~php
-use League\Uri\Uri;
+use League\Uri\Schemes\Http;
 use GuzzleHttp\Psr7\Uri;
 
-$leagueUrl = Uri::createFromString("http://www.рф.ru:80/hello/world?foo=bar&baz=yellow");
+$leagueUrl = Http::createFromString("http://www.рф.ru:80/hello/world?foo=bar&baz=yellow");
 $guzzleUrl = new Uri("http://www.xn--p1ai.ru:80/hello/world?baz=yellow&foo=bar");
 
 $leagueUrl->sameValueAs($guzzleUrl); //return true
