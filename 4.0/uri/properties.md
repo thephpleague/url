@@ -136,14 +136,16 @@ echo $alt_url;               //displays "wss://example.com/over/there"
 
 You can compare two PSR-7 `UriInterface` compliant URIs object to see if they represent the same resource using the `Uri::sameValueAs` method. The method compares the two objects according to their respective `__toString` methods with the following normalizations applied before comparison:
 
+- the host is converted using the punycode algorithm;
+- the path is normalized according to RFC3986 rules;
 - the query string is sorted according to their parameters keys;
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 use GuzzleHttp\Psr7\Uri;
 
-$leagueUrl = HttpUri::createFromString("http://www.рф.ru:80/hello/world?foo=bar&baz=yellow");
-$guzzleUrl = new Uri("http://www.xn--p1ai.ru:80/hello/world?baz=yellow&foo=bar");
+$leagueUrl = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
+$guzzleUrl = new Uri("http://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
 
 $leagueUrl->sameValueAs($guzzleUrl); //return true
 ~~~
