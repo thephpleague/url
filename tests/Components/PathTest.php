@@ -121,6 +121,13 @@ class PathTest extends PHPUnit_Framework_TestCase
         $this->assertSame('../../../', $path->getRelativePath($other));
     }
 
+    public function testGetRelativePathDiffLonger()
+    {
+        $shorter = new Path('/toto/le');
+        $longer = new Path('/toto/le/heros/masson');
+        $this->assertSame('heros/masson', $longer->getRelativePath($shorter));
+    }
+
     public function testPrepend()
     {
         $path = new Path('/toto/toto/shoky/master');
