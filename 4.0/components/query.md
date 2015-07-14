@@ -111,7 +111,10 @@ echo $query; //display 'foo=bar&p=yolo&z'
 use League\Uri\Uri;
 use League\Uri\Schemes\Registry;
 
-$url   = Uri::createFromComponents(new Registry(), parse_url('http://url.thephpleague.com/path/to/here?foo=bar'));
+$url   = Uri::createFromComponents(
+    new Registry(['http' => 80]),
+    Uri::parse('http://url.thephpleague.com/path/to/here?foo=bar')
+);
 $query = $url->query; // $query is a League\Uri\Query object;
 ~~~
 

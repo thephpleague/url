@@ -20,9 +20,9 @@ These non destructives rules are:
 - the port number is removed from the URI string representation if the standard port is used;
 
 ~~~php
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
-$url = Http::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$url = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
 echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 ~~~
 
@@ -31,10 +31,10 @@ echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 The URI class provides the mean for resolving an URI as a browser would for an anchor tag. When performing URI resolution the returned URI is normalized according to RFC3986 rules. The uri to resolved must be another `Uri` object.
 
 ~~~php
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
-$url = Http::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$newUrl = $url->resolve(Http::createFromString("./p#~toto"));
+$url = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUrl = $url->resolve(HttpUri::createFromString("./p#~toto"));
 echo $newUrl; //displays "http://www.example.com/hello/p#~toto"
 ~~~
 
@@ -43,9 +43,9 @@ echo $newUrl; //displays "http://www.example.com/hello/p#~toto"
 To completely replace one of the URI part you can use the `Psr\Http\Message\UriInterface` interface modifying methods exposed by the object
 
 ~~~php
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
-$url = Http::createFromString("ftp://thephpleague.com/fr/")
+$url = HttpUri::createFromString("ftp://thephpleague.com/fr/")
     ->withScheme("http")
     ->withUserInfo("foo", "bar")
     ->withHost("www.example.com")
@@ -64,7 +64,9 @@ Since every update returns an instance of `League\Uri\Url`, you can chain each s
 Often what you really want is to partially update one of the URI component. Using the current public API it is possible but requires several intermediary steps. For instance here"s how you would update the query string from a given URI object:
 
 ~~~php
-$url         = Http::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
 $urlQuery    = $url->query;
 $updateQuery = $urlQuery->merge(["foo" => "bar", "taz" => ""]);
 $newUrl      = $url->withQuery($updateQuery->__toString());
@@ -82,7 +84,9 @@ To ease these operations various modifying methods were added. Each method is pr
 #### Sort query parameters
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
 $newUrl = $url->ksortQuery();
 echo $newUrl; //display "http://www.example.com/the/sky.php?browser=lynx&yellow=tiger"
 ~~~
@@ -92,7 +96,9 @@ echo $newUrl; //display "http://www.example.com/the/sky.php?browser=lynx&yellow=
 #### Add or Update query parameters
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
 $newUrl = $url->mergeQuery(["foo" => "bar", "taz" => ""]);
 echo $newUrl; //display "http://www.example.com/the/sky.php?foo=bar&taz#~typo"
 ~~~
@@ -102,7 +108,9 @@ echo $newUrl; //display "http://www.example.com/the/sky.php?foo=bar&taz#~typo"
 #### Remove query values
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo");
 $newUrl = $url->withoutQueryValues(["foo"]);
 echo $newUrl; //display "http://www.example.com/the/sky.php?p=y%20olo#~typo"
 ~~~
@@ -112,7 +120,9 @@ echo $newUrl; //display "http://www.example.com/the/sky.php?p=y%20olo#~typo"
 #### Filter query
 
 ~~~php
-$url = Http::createFromString("//example.com/to/sky.php?foo[]=toto&foo[]=bar&p=y+olo#~typo");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("//example.com/to/sky.php?foo[]=toto&foo[]=bar&p=y+olo#~typo");
 $newUrl = $url->filterQuery(function ($value) {
     return ! is_array($value);
 });
@@ -127,7 +137,9 @@ echo $newUrl; //display "//example.com/the/sky.php?p=y%20olo#~typo"
 #### Append path segments
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->appendPath("/foo/bar");
 echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/foo/bar"
 ~~~
@@ -137,7 +149,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/foo/bar"
 #### Prepend path segments
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->prependPath("/foo/bar");
 echo $newUrl; //display "http://www.example.com/foo/bar/path/to/the/sky.php"
 ~~~
@@ -147,7 +161,9 @@ echo $newUrl; //display "http://www.example.com/foo/bar/path/to/the/sky.php"
 #### Replace a path segment
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->replaceSegment(0, "/foo/bar");
 echo $newUrl; //display "http://www.example.com/foo/bar/to/the/sky.php"
 ~~~
@@ -157,7 +173,9 @@ echo $newUrl; //display "http://www.example.com/foo/bar/to/the/sky.php"
 #### Remove path segments
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->withoutSegments([0, 1]);
 echo $newUrl; //display "http://www.example.com/the/sky.php"
 ~~~
@@ -167,7 +185,9 @@ echo $newUrl; //display "http://www.example.com/the/sky.php"
 #### Filter the path
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->filterPath(function ($segment) {
     return strpos($segment, "t") === false;
 });
@@ -179,7 +199,9 @@ echo $newUrl; //display "http://www.example.com/sky.php"
 #### Remove dot segments
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/../to/the/./sky/");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/../to/the/./sky/");
 $newUrl = $url->normalize();
 echo $newUrl; //display "http://www.example.com/to/the/sky/"
 ~~~
@@ -189,7 +211,9 @@ echo $newUrl; //display "http://www.example.com/to/the/sky/"
 #### Remove internal empty segments
 
 ~~~php
-$url = Http::createFromString("http://www.example.com///path//to/the////sky//");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com///path//to/the////sky//");
 $newUrl = $url->withoutEmptySegments();
 echo $newUrl; //display "http://www.example.com/path/to/the/sky/"
 ~~~
@@ -199,7 +223,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky/"
 #### Add a trailing slash
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->withTrailingSlash();
 echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/"
 ~~~
@@ -209,7 +235,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/"
 #### Remove the trailing slash
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/");
 $newUrl = $url->withoutTrailingSlash();
 echo $newUrl; //display "http://www.example.com"
 ~~~
@@ -219,7 +247,9 @@ echo $newUrl; //display "http://www.example.com"
 #### Update the path extension
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->withExtension("csv");
 echo $newUrl; //display "http://www.example.com/path/to/the/sky.csv"
 ~~~
@@ -231,7 +261,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky.csv"
 #### Append host labels
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->appendHost("be");
 echo $newUrl; //display "http://www.example.com.be/path/to/the/sky.php"
 ~~~
@@ -241,7 +273,9 @@ echo $newUrl; //display "http://www.example.com.be/path/to/the/sky.php"
 #### Prepend host labels
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->prependHost("shop");
 echo $newUrl; //display "http://shop.www.example.com/path/to/the/sky.php"
 ~~~
@@ -251,7 +285,9 @@ echo $newUrl; //display "http://shop.www.example.com/path/to/the/sky.php"
 #### Replace a host label
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->replaceLabel(1, "thephpleague");
 echo $newUrl; //display "http://www.thephpleague.com/path/to/the/sky.php"
 ~~~
@@ -261,7 +297,9 @@ echo $newUrl; //display "http://www.thephpleague.com/path/to/the/sky.php"
 #### Remove host labels
 
 ~~~php
-$url = Http::createFromString("http://www.example.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
 $newUrl = $url->withoutLabels([0]);
 echo $newUrl; //display "http://example.com/path/to/the/sky.php"
 ~~~
@@ -271,7 +309,9 @@ echo $newUrl; //display "http://example.com/path/to/the/sky.php"
 #### Remove the host zone identifier
 
 ~~~php
-$url = Http::createFromString("http://[fe80::1%25eth0-1]/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://[fe80::1%25eth0-1]/path/to/the/sky.php");
 $newUrl = $url->withoutZoneIdentifier();
 echo $newUrl; //display "http://[fe80::1]/path/to/the/sky.php"
 ~~~
@@ -281,7 +321,9 @@ echo $newUrl; //display "http://[fe80::1]/path/to/the/sky.php"
 #### Convert to IDN host
 
 ~~~php
-$url    = Http::createFromString("http://xn--p1ai.ru/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url    = HttpUri::createFromString("http://xn--p1ai.ru/path/to/the/sky.php");
 $newUrl = $url->toUnicode();
 echo $newUrl; //display "http://рф.ru/path/to/the/sky.php"
 ~~~
@@ -291,7 +333,9 @@ echo $newUrl; //display "http://рф.ru/path/to/the/sky.php"
 #### Convert to Ascii host
 
 ~~~php
-$url    = Http::createFromString("http://рф.ru/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url    = HttpUri::createFromString("http://рф.ru/path/to/the/sky.php");
 $newUrl = $url->toAscii();
 echo $newUrl; //display "http://xn--p1ai.ru/path/to/the/sky.php"
 ~~~
@@ -301,7 +345,9 @@ echo $newUrl; //display "http://xn--p1ai.ru/path/to/the/sky.php"
 #### Filter the host
 
 ~~~php
-$url = Http::createFromString("http://www.eshop.com/path/to/the/sky.php");
+use League\Uri\Schemes\Http as HttpUri;
+
+$url = HttpUri::createFromString("http://www.eshop.com/path/to/the/sky.php");
 $newUrl = $url->filterHost(function ($label) {
     return strpos($label, "shop") === false;
 });

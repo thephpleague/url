@@ -37,9 +37,9 @@ The port component constructor accepts:
 Another way to acces a `League\Uri\Port` object is to use an already instantiated `League\Uri\Url` object.
 
 ~~~php
-use League\Uri;
+use League\Uri\Schemes\Http as HttpUri;
 
-$url  = Uri\Schemes\Http::createFromString('http://url.thephpleague.com:82');
+$url  = HttpUri::createFromString('http://url.thephpleague.com:82');
 $port = $url->port; // $port is a League\Uri\Port object;
 ~~~
 

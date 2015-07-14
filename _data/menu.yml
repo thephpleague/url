@@ -9,7 +9,6 @@
         Instantiation: '/4.0/uri/instantiation/'
         Properties: '/4.0/uri/properties/'
         Manipulation: '/4.0/uri/manipulation/'
-        Extension: '/4.0/uri/manipulation/'
         Scheme Registration: '/4.0/uri/scheme-registration/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'

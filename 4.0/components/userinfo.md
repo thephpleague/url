@@ -36,7 +36,10 @@ You can also get a `UserInfo` object from an `League\Uri\Url` class:
 ~~~php
 use League\Uri;
 
-$url = Uri\Uri::createFromComponents(new Uri\Schemes\Registry(), parse_url('http://john:doe@example.com:81/'));
+$url = Uri\Uri::createFromComponents(
+    new Uri\Schemes\Registry(['http' => 80]),
+    Uri::parse('http://john:doe@example.com:81/')
+);
 $userInfo = $url->userInfo; //return a League\Uri\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~

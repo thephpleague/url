@@ -5,7 +5,7 @@ title: The Scheme Registration System
 
 # Scheme registration system
 
-An URI is always associated to a scheme and optionnally to a port. To enable validating an URI a scheme registration system is used by the `League\Uri\Uri` object.
+An URI is always associated to a scheme and optionally to a port. To validate an URI against its scheme and port property a registration system is used by the `League\Uri\Uri` object.
 This system enables you to extend, restrict or change the supported schemes used by the object. The system is controlled through the use of the `League\Uri\Scheme\Registry` class. Once instantiated, this immutable value object can help you:
 
 extend the registry scheme list.
@@ -14,7 +14,7 @@ extend the registry scheme list.
 use League\Uri\Uri;
 use League\Uri\Scheme\Registry;
 
-$registry = new Registry();
+$registry = new Registry(['http' => 80]);
 $newRegistry = $registry->merge(['telnet' => 23]);
 $components = Uri::parse('telnet://foo.example.com');
 $url = Uri::createFromComponents($components, $newRegistry);
@@ -76,9 +76,9 @@ By defaut if no array is provided, the registry is instantiated using the defaul
 ### Using a League\Uri\Uri object
 
 ~~~php
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
-$url = Http::createFromString('http://url.thephpleague.com/path/to/here');
+$url = HttpUri::createFromString('http://url.thephpleague.com/path/to/here');
 $schemeRegistry = $url->schemeRegistry; // $schemeRegistry is a League\Uri\Scheme\Registry object;
 ~~~
 

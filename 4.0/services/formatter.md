@@ -71,13 +71,13 @@ Apart form URI component classes, the `Formatter::format` method can modify the 
 
 ~~~php
 use League\Uri\Formatter;
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_ASCII);
 $formatter->setQueryEncoding(PHP_QUERY_RFC3986);
 $formatter->setQuerySeparator('&amp;');
 
-echo $formatter->format(Uri\Schemes\Http::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar'));
+echo $formatter->format(HttpUri::createFromString('https://рф.ru:81?foo=ba%20r&baz=bar'));
 //displays https://xn--p1ai.ru:81?foo=ba%20r&amp;baz=bar
 ~~~

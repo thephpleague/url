@@ -39,9 +39,9 @@ echo $ipv6_alt; //display '[::1]'
 You can also access a `Host` object from an `League\Uri\Uri` class:
 
 ~~~php
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
-$url  = Http::createFromString('http://url.thephpleague.com/');
+$url  = HttpUri::createFromString('http://url.thephpleague.com/');
 $host = $url->host; // $host is a League\Uri\Host object;
 ~~~
 
