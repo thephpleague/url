@@ -5,13 +5,8 @@ title: The Scheme Registration System
 
 # Scheme registration system
 
-Ouf of the box the library supports the following schemes:
-
-- ftp,
-- http, https
-- ws, wss
-
-But sometimes you may want to extend, restrict or change the supported schemes used by the library. To do so the library uses a scheme registration system to help you manage the allowed schemes. The system is controlled through the use of the `League\Uri\Scheme\Registry` class. Once instantiated, this immutable value object can help you:
+An URI is always associated to a scheme and optionnally to a port. To enable validating an URI a scheme registration system is used by the `League\Uri\Uri` object.
+This system enables you to extend, restrict or change the supported schemes used by the object. The system is controlled through the use of the `League\Uri\Scheme\Registry` class. Once instantiated, this immutable value object can help you:
 
 extend the registry scheme list.
 
@@ -21,7 +16,7 @@ use League\Uri\Scheme\Registry;
 
 $registry = new Registry();
 $newRegistry = $registry->merge(['telnet' => 23]);
-$components = parse_url('telnet://foo.example.com');
+$components = Uri::parse('telnet://foo.example.com');
 $url = Uri::createFromComponents($components, $newRegistry);
 ~~~
 
@@ -47,15 +42,13 @@ use League\Uri\Uri;
 use League\Uri\Scheme\Registry;
 
 $registry = new Registry(['telnet' => 23]);
-$components = parse_url('https://foo.example.com');
+$components = Uri::parse('https://foo.example.com');
 $url = Uri::createFromComponents($registry, $components);
 // will throw an InvalidArgumentException as only
 // the 'telnet' scheme is now supported
 ~~~
 
-Once you have instantiated a registry object you can specify it as one of the `League\Uri\Uri` constructor or named constructor argument or as an argument from the `League\Uri\Services\Formatter`  property.
-
-<p class="message-notice">If no <code>SchemeRegistry</code> object is supplied, a default registry object is instantiated with the default supported schemes and their respective standard port.</p>
+Once you have instantiated a registry object you can specify it as one of the `League\Uri\Uri` constructor or named constructor argument.
 
 ## Creating the registry
 
@@ -80,7 +73,7 @@ $registry = new Scheme\Registry([
 
 By defaut if no array is provided, the registry is instantiated using the default supported schemes.
 
-### Using a League\Uri\Url object
+### Using a League\Uri\Uri object
 
 ~~~php
 use League\Uri\Schemes\Http;

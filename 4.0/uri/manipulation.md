@@ -7,6 +7,8 @@ title: Manipulating URI
 
 <p class="message-notice">If the modifications do not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
+<p class="message-notice">The methods described are available on both the <code>League\Uri\Schemes\Http</code> object and its parent the <code>League\Uri\Uri</code> object.</p>
+
 ## URI normalization
 
 Out of the box the package normalizes any given URI according to the non destructive rules of RFC3986.
