@@ -72,10 +72,14 @@ class Path extends AbstractSegment implements PathInterface
         }
         //deduce the number of similar segment according to the reference path
         $nb_common_segment = count($ref_path) - $index;
+        $nb_segments = array();
+        if ($nb_common_segment) {
+            $nb_segments = array_fill(0, $nb_common_segment, '..');
+        }
 
         //let's output the relative path using a new Path object
         $res = new Path(array_merge(
-            array_fill(0, $nb_common_segment, '..'),
+            $nb_segments,
             array_slice($this_path, $index),
             array($filename)
         ));
