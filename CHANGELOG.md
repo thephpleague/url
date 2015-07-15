@@ -2,6 +2,11 @@
 
 All Notable changes to `League\Url` will be documented in this file
 
+## 3.3.5 - 2015-07-15
+
+### Fixed
+- Bug fix path get relative [pull request #81](https://github.com/thephpleague/url/pull/81)
+
 ## 3.3.4 - 2015-07-01
 
 ### Fixed
