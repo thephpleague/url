@@ -132,8 +132,6 @@ echo $alt_url;               //displays "wss://example.com/over/there"
 
 ### Does URIs refers to the same resource/location
 
-<p class="message-notice">This method is only available on the <code>League\Uri\Schemes\Http</code> class.</p>
-
 You can compare two PSR-7 `UriInterface` compliant URIs object to see if they represent the same resource using the `Uri::sameValueAs` method. The method compares the two objects according to their respective `__toString` methods with the following normalizations applied before comparison:
 
 - the host is converted using the punycode algorithm;

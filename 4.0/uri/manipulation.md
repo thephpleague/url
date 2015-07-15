@@ -7,7 +7,7 @@ title: Manipulating URI
 
 <p class="message-notice">If the modifications do not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
-<p class="message-notice">The methods described are available on both the <code>League\Uri\Schemes\Http</code> object and its parent the <code>League\Uri\Uri</code> object.</p>
+<p class="message-notice">The methods and properties describes are available on both the <code>League\Uri\Schemes\Http</code> object and its parent the <code>League\Uri\Uri</code> object unless explicitly expressed.</p>
 
 ## URI normalization
 
@@ -28,6 +28,8 @@ echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 
 ## URI resolution
 
+### Resolving a relative URI
+
 The URI class provides the mean for resolving an URI as a browser would for an anchor tag. When performing URI resolution the returned URI is normalized according to RFC3986 rules. The uri to resolved must be another `Uri` object.
 
 ~~~php
@@ -36,6 +38,18 @@ use League\Uri\Schemes\Http as HttpUri;
 $url = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
 $newUrl = $url->resolve(HttpUri::createFromString("./p#~toto"));
 echo $newUrl; //displays "http://www.example.com/hello/p#~toto"
+~~~
+
+### Generating a relative URI
+
+The URI class provides the mean for relativizing an URI according the a referenced base URI.
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+
+$baseUri  = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
+$childUri = HttpUri::createFromString("http://www.example.com/short#~toto");
+echo $baseUri->relativize($childUri); //displays "../short#~toto"
 ~~~
 
 ## Complete URI components and parts modifications

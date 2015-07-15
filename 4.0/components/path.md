@@ -249,7 +249,7 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutDotSegments</code> method</p>
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::normalize</code> method</p>
 
 ### Removing empty segments
 
@@ -266,6 +266,20 @@ $alt->sameValueAs($path); //return false;
 ~~~
 
 <p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutEmptySegments</code> method</p>
+
+### Relativize a Path
+
+The reverse to removing dot segments is to add them to create a path relative to another one. The `Path::relativize` method will convert a submitted path according to the current Path object.
+
+~~~php
+use League\Uri\Path;
+
+$basePath  = new Path("/path/to/the/sky");
+$childPath = new Path("/blank.gif");
+echo $basePath->relativize($childPath); //displays '../blank.gif'
+~~~
+
+<p class="message-notice">This method is used by the <code>League\Uri\Uri::relativize</code> method</p>
 
 ### Manipulating the trailing slash
 

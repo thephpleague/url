@@ -1,22 +1,22 @@
 ---
 layout: default
-title: Url
+title: Uri
 ---
 
 # Introduction
 
 [![Author](http://img.shields.io/badge/author-@nyamsprod-blue.svg?style=flat-square)](https://twitter.com/nyamsprod)
-[![Source Code](http://img.shields.io/badge/source-league/url-blue.svg?style=flat-square)](https://github.com/thephpleague/url)
-[![Latest Stable Version](https://img.shields.io/github/release/thephpleague/url.svg?style=flat-square)](https://packagist.org/packages/league/url)
+[![Source Code](http://img.shields.io/badge/source-league/uri-blue.svg?style=flat-square)](https://github.com/thephpleague/uri)
+[![Latest Stable Version](https://img.shields.io/github/release/thephpleague/uri.svg?style=flat-square)](https://packagist.org/packages/league/uri)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)<br>
-[![Build Status](https://img.shields.io/travis/thephpleague/url/master.svg?style=flat-square)](https://travis-ci.org/thephpleague/url)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/thephpleague/csv.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url/?branch=master)
-[![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/url.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url)
-[![Total Downloads](https://img.shields.io/packagist/dt/league/url.svg?style=flat-square)](https://packagist.org/packages/league/url)
+[![Build Status](https://img.shields.io/travis/thephpleague/uri/master.svg?style=flat-square)](https://travis-ci.org/thephpleague/uri)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/thephpleague/csv.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/uri/?branch=master)
+[![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/uri.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/uri)
+[![Total Downloads](https://img.shields.io/packagist/dt/league/uri.svg?style=flat-square)](https://packagist.org/packages/league/uri)
 
 ## About
 
-The phpleague `Url` package provides simple and intuitive classes to create and manage URIs in PHP.
+The phpleague `Uri` package provides simple and intuitive classes to create and manage URIs in PHP.
 
 [URI on Packagist](https://packagist.org/packages/league/uri)
 
