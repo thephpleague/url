@@ -153,11 +153,11 @@ use League\Uri;
 $host     = new Uri\Host('www.ExAmPLE.com');
 $alt_host = new Uri\Host('www.example.com');
 $fragment = new Uri\Fragment('www.example.com');
-$url      = new Uri\Uri::createFromString('www.example.com');
+$uri      = new Uri\Uri::createFromString('www.example.com');
 
 $host->sameValueAs($alt_host); //return true;
 $host->sameValueAs($fragment); //return false;
-$host->sameValueAs($url);
+$host->sameValueAs($uri);
 //a PHP Fatal Error is issue or a PHP7+ TypeError is thrown
 ~~~
 

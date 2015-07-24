@@ -105,17 +105,15 @@ echo $query; //display 'foo=bar&p=yolo&z'
 
 <p class="message-warning">If the submitted value is not a valid query an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Uri\Uri object
+### Using a League Uri object
 
 ~~~php
-use League\Uri\Uri;
-use League\Uri\Schemes\Registry;
+use League\Uri\Ftp as FtpUri;
 
-$url   = Uri::createFromComponents(
-    new Registry(['http' => 80]),
-    Uri::parse('http://url.thephpleague.com/path/to/here?foo=bar')
+$uri = FtpUri::createFromComponents(
+    FtpUri::parse('http://url.thephpleague.com/path/to/here?')
 );
-$query = $url->query; // $query is a League\Uri\Query object;
+$query = $uri->query; //$query is a League\Uri\Query object;
 ~~~
 
 ### Using a named constructor

@@ -29,18 +29,15 @@ $alt_info = new Uri\UserInfo(new Uri\User('foo'), new Uri\Pass('bar'));
 echo $alt_info; //display 'foo:bar'
 ~~~
 
-### Using a League\Uri\Url object
+### Using a League Uri object
 
 You can also get a `UserInfo` object from an `League\Uri\Url` class:
 
 ~~~php
-use League\Uri;
+use League\Uri\Schemes\Ws as WsUri;
 
-$url = Uri\Uri::createFromComponents(
-    new Uri\Schemes\Registry(['http' => 80]),
-    Uri::parse('http://john:doe@example.com:81/')
-);
-$userInfo = $url->userInfo; //return a League\Uri\UserInfo object
+$uri = WsUri::createFromComponents(WsUri::parse('http://john:doe@example.com:81/'));
+$userInfo = $uri->userInfo; //return a League\Uri\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~
 
@@ -99,9 +96,9 @@ $info = new Uri\UserInfo('foo', 'bar');
 $info->getUser(); //return 'foo'
 $info->getPass(); //return 'bar'
 
-$url = Uri\Schemes\Http::createFromString('http://john:doe@example.com:81/');
-$url->userInfo->getUser(); //return 'john'
-$url->userInfo->getPass(); //return 'doe'
+$uri = Uri\Schemes\Http::createFromString('http://john:doe@example.com:81/');
+$uri->userInfo->getUser(); //return 'john'
+$uri->userInfo->getPass(); //return 'doe'
 ~~~
 
 To get access to the component classes you can use PHP's magic `__get` method:
@@ -113,9 +110,9 @@ $info = new Uri\UserInfo('foo', 'bar');
 $info->user; //return a League\Uri\User class
 $info->pass; //return a League\Uri\Pass class
 
-$url = Uri\Schemes\Http::createFromString('http://john:doe@example.com:81/');
-$url->userInfo->user->__toString(); //return 'john'
-$url->userInfo->pass->__toString(); //return 'doe'
+$uri = Uri\Schemes\Http::createFromString('http://john:doe@example.com:81/');
+$uri->userInfo->user->__toString(); //return 'john'
+$uri->userInfo->pass->__toString(); //return 'doe'
 ~~~
 
 ### User information state

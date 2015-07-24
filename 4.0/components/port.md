@@ -32,15 +32,15 @@ The port component constructor accepts:
 
 <p class="message-warning">If the submitted value is not a valid port number an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Uri\Url object
+### Using a League Uri object
 
 Another way to acces a `League\Uri\Port` object is to use an already instantiated `League\Uri\Url` object.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url  = HttpUri::createFromString('http://url.thephpleague.com:82');
-$port = $url->port; // $port is a League\Uri\Port object;
+$uri  = HttpUri::createFromString('http://url.thephpleague.com:82');
+$port = $uri->port; // $port is a League\Uri\Port object;
 ~~~
 
 ## Port representations

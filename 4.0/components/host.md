@@ -34,15 +34,15 @@ echo $ipv6_alt; //display '[::1]'
 
 <p class="message-warning">If the submitted value is not a valid host an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Uri\Uri object
+### Using a League Uri object
 
 You can also access a `Host` object from an `League\Uri\Uri` class:
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url  = HttpUri::createFromString('http://url.thephpleague.com/');
-$host = $url->host; // $host is a League\Uri\Host object;
+$uri  = HttpUri::createFromString('http://url.thephpleague.com/');
+$host = $uri->host; // $host is a League\Uri\Host object;
 ~~~
 
 ### Using a named constructor

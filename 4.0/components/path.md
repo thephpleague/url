@@ -28,13 +28,13 @@ echo $end_slash; //display 'hello/world/'
 
 <p class="message-warning">If the submitted value is not a valid path an <code>InvalidArgumentException</code> will be thrown.</p>
 
-### Using a League\Uri\Url object
+### Using a League Uri object
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url  = HttpUri::createFromString('http://url.thephpleague.com/path/to/here');
-$path = $url->path; // $path is a League\Uri\Path object;
+$uri  = HttpUri::createFromString('http://url.thephpleague.com/path/to/here');
+$path = $uri->path; // $path is a League\Uri\Path object;
 ~~~
 
 ### Using a named constructor

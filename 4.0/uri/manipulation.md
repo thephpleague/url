@@ -7,7 +7,7 @@ title: Manipulating URI
 
 <p class="message-notice">If the modifications do not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
-<p class="message-notice">The methods and properties describes are available on both the <code>League\Uri\Schemes\Http</code> object and its parent the <code>League\Uri\Uri</code> object unless explicitly expressed.</p>
+<p class="message-warning">The method may throw an <code>InvalidArgumentException</code> if the resulting URI is not valid for a scheme specific URI.</p>
 
 ## URI normalization
 
@@ -22,8 +22,8 @@ These non destructives rules are:
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-echo $url; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+echo $uri; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 ~~~
 
 ## URI resolution
@@ -35,9 +35,20 @@ The URI class provides the mean for resolving an URI as a browser would for an a
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$newUrl = $url->resolve(HttpUri::createFromString("./p#~toto"));
-echo $newUrl; //displays "http://www.example.com/hello/p#~toto"
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUri = $uri->resolve(HttpUri::createFromString("./p#~toto"));
+echo $newUri; //displays "http://www.example.com/hello/p#~toto"
+~~~
+
+<p class="message-notice">If you try to resolve two Uri object which do not share the same scheme. No normalization will occur and the submitted URI object will be return unchanged.</p>
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Schemes\Http as WsUri;
+
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUri = $uri->resolve(WsUri::createFromString("./p#~toto"));
+echo $newUri; //displays "./p#~toto"
 ~~~
 
 ### Generating a relative URI
@@ -52,6 +63,17 @@ $childUri = HttpUri::createFromString("http://www.example.com/short#~toto");
 echo $baseUri->relativize($childUri); //displays "../short#~toto"
 ~~~
 
+<p class="message-notice">If you try to relativize two Uri object which do not share the same scheme. No normalization will occur and the submitted URI object will be return unchanged.</p>
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Schemes\Http as WsUri;
+
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUri = $uri->relativize(WsUri::createFromString("./p#~toto"));
+echo $newUri; //displays "./p#~toto"
+~~~
+
 ## Complete URI components and parts modifications
 
 To completely replace one of the URI part you can use the `Psr\Http\Message\UriInterface` interface modifying methods exposed by the object
@@ -59,7 +81,7 @@ To completely replace one of the URI part you can use the `Psr\Http\Message\UriI
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("ftp://thephpleague.com/fr/")
+$uri = HttpUri::createFromString("ftp://thephpleague.com/fr/")
     ->withScheme("http")
     ->withUserInfo("foo", "bar")
     ->withHost("www.example.com")
@@ -68,7 +90,7 @@ $url = HttpUri::createFromString("ftp://thephpleague.com/fr/")
     ->withQuery("foo=baz")
     ->withFragment("title");
 
-echo $url; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
+echo $uri; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
 ~~~
 
 Since every update returns an instance of `League\Uri\Url`, you can chain each setter methods to simplify URI creation and/or modification.
@@ -80,11 +102,11 @@ Often what you really want is to partially update one of the URI component. Usin
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
-$urlQuery    = $url->query;
-$updateQuery = $urlQuery->merge(["foo" => "bar", "taz" => ""]);
-$newUrl      = $url->withQuery($updateQuery->__toString());
-echo $newUrl; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
+$uri         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
+$uriQuery    = $uri->query;
+$updateQuery = $uriQuery->merge(["foo" => "bar", "taz" => ""]);
+$newUri      = $uri->withQuery($updateQuery->__toString());
+echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
 ~~~
 
 To ease these operations various modifying methods were added. Each method is presented independently but keep in mind that:
@@ -100,9 +122,9 @@ To ease these operations various modifying methods were added. Each method is pr
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
-$newUrl = $url->ksortQuery();
-echo $newUrl; //display "http://www.example.com/the/sky.php?browser=lynx&yellow=tiger"
+$uri = HttpUri::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
+$newUri = $uri->ksortQuery();
+echo $newUri; //display "http://www.example.com/the/sky.php?browser=lynx&yellow=tiger"
 ~~~
 
 `Uri::ksortQuery` is a proxy to simplify the use of [League\Uri\Query::ksort](/4.0/components/query/#sort-parameters) on a `Url` object.
@@ -112,9 +134,9 @@ echo $newUrl; //display "http://www.example.com/the/sky.php?browser=lynx&yellow=
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
-$newUrl = $url->mergeQuery(["foo" => "bar", "taz" => ""]);
-echo $newUrl; //display "http://www.example.com/the/sky.php?foo=bar&taz#~typo"
+$uri = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
+$newUri = $uri->mergeQuery(["foo" => "bar", "taz" => ""]);
+echo $newUri; //display "http://www.example.com/the/sky.php?foo=bar&taz#~typo"
 ~~~
 
 `Uri::mergeQuery` is a proxy to simplify the use of [League\Uri\Query::merge](/4.0/components/query/#add-or-update-parameters) on a `Url` object.
@@ -124,9 +146,9 @@ echo $newUrl; //display "http://www.example.com/the/sky.php?foo=bar&taz#~typo"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo");
-$newUrl = $url->withoutQueryValues(["foo"]);
-echo $newUrl; //display "http://www.example.com/the/sky.php?p=y%20olo#~typo"
+$uri = HttpUri::createFromString("http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo");
+$newUri = $uri->withoutQueryValues(["foo"]);
+echo $newUri; //display "http://www.example.com/the/sky.php?p=y%20olo#~typo"
 ~~~
 
 `Uri::withoutQueryValues` is a proxy to simplify the use of [League\Uri\Query::without](/4.0/components/query/#remove-parameters) on a `Url` object.
@@ -136,11 +158,11 @@ echo $newUrl; //display "http://www.example.com/the/sky.php?p=y%20olo#~typo"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("//example.com/to/sky.php?foo[]=toto&foo[]=bar&p=y+olo#~typo");
-$newUrl = $url->filterQuery(function ($value) {
+$uri = HttpUri::createFromString("//example.com/to/sky.php?foo[]=toto&foo[]=bar&p=y+olo#~typo");
+$newUri = $uri->filterQuery(function ($value) {
     return ! is_array($value);
 });
-echo $newUrl; //display "//example.com/the/sky.php?p=y%20olo#~typo"
+echo $newUri; //display "//example.com/the/sky.php?p=y%20olo#~typo"
 //will update the query string by removing all array-like parameters
 ~~~
 
@@ -153,9 +175,9 @@ echo $newUrl; //display "//example.com/the/sky.php?p=y%20olo#~typo"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->appendPath("/foo/bar");
-echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/foo/bar"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->appendPath("/foo/bar");
+echo $newUri; //display "http://www.example.com/path/to/the/sky.php/foo/bar"
 ~~~
 
 `Uri::appendPath` is a proxy to simplify the use of [League\Uri\Path::append](/4.0/components/path/#append-segments) on a `Url` object.
@@ -165,9 +187,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/foo/bar"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->prependPath("/foo/bar");
-echo $newUrl; //display "http://www.example.com/foo/bar/path/to/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->prependPath("/foo/bar");
+echo $newUri; //display "http://www.example.com/foo/bar/path/to/the/sky.php"
 ~~~
 
 `Uri::prependPath` is a proxy to simplify the use of [League\Uri\Path::prepend](/4.0/components/path/#prepend-segments) on a `Url` object.
@@ -177,9 +199,9 @@ echo $newUrl; //display "http://www.example.com/foo/bar/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->replaceSegment(0, "/foo/bar");
-echo $newUrl; //display "http://www.example.com/foo/bar/to/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->replaceSegment(0, "/foo/bar");
+echo $newUri; //display "http://www.example.com/foo/bar/to/the/sky.php"
 ~~~
 
 `Uri::replaceSegment` is a proxy to simplify the use of [League\Uri\Path::replace](/4.0/components/path/#replace-segments) on a `Url` object.
@@ -189,9 +211,9 @@ echo $newUrl; //display "http://www.example.com/foo/bar/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->withoutSegments([0, 1]);
-echo $newUrl; //display "http://www.example.com/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->withoutSegments([0, 1]);
+echo $newUri; //display "http://www.example.com/the/sky.php"
 ~~~
 
 `Uri::withoutSegments` is a proxy to simplify the use of [League\Uri\Path::without](/4.0/components/path/#remove-segments) on a `Url` object.
@@ -201,11 +223,11 @@ echo $newUrl; //display "http://www.example.com/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->filterPath(function ($segment) {
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->filterPath(function ($segment) {
     return strpos($segment, "t") === false;
 });
-echo $newUrl; //display "http://www.example.com/sky.php"
+echo $newUri; //display "http://www.example.com/sky.php"
 ~~~
 
 `Uri::filterPath` is a proxy to simplify the use of [League\Uri\Path::filter](/4.0/components/path/#filter-segments) on a `Url` object.
@@ -215,9 +237,9 @@ echo $newUrl; //display "http://www.example.com/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/../to/the/./sky/");
-$newUrl = $url->normalize();
-echo $newUrl; //display "http://www.example.com/to/the/sky/"
+$uri = HttpUri::createFromString("http://www.example.com/path/../to/the/./sky/");
+$newUri = $uri->normalize();
+echo $newUri; //display "http://www.example.com/to/the/sky/"
 ~~~
 
 `Uri::normalize` is a proxy to simplify the use of [League\Uri\Path::normalize](/4.0/components/path/#removing-dot-segments) on a `Url` object.
@@ -227,9 +249,9 @@ echo $newUrl; //display "http://www.example.com/to/the/sky/"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com///path//to/the////sky//");
-$newUrl = $url->withoutEmptySegments();
-echo $newUrl; //display "http://www.example.com/path/to/the/sky/"
+$uri = HttpUri::createFromString("http://www.example.com///path//to/the////sky//");
+$newUri = $uri->withoutEmptySegments();
+echo $newUri; //display "http://www.example.com/path/to/the/sky/"
 ~~~
 
 `Uri::withoutEmptySegments` is a proxy to simplify the use of [League\Uri\Path::withoutEmptySegments](/4.0/components/path/#removing-empty-segments) on a `Url` object.
@@ -239,9 +261,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky/"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->withTrailingSlash();
-echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->withTrailingSlash();
+echo $newUri; //display "http://www.example.com/path/to/the/sky.php/"
 ~~~
 
 `Uri::withTrailingSlash` is a proxy to simplify the use of [League\Uri\Path::withTrailingSlash](/4.0/components/path/#path-trailing-slash-manipulation) on a `Url` object.
@@ -251,9 +273,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky.php/"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/");
-$newUrl = $url->withoutTrailingSlash();
-echo $newUrl; //display "http://www.example.com"
+$uri = HttpUri::createFromString("http://www.example.com/");
+$newUri = $uri->withoutTrailingSlash();
+echo $newUri; //display "http://www.example.com"
 ~~~
 
 `Uri::withoutTrailingSlash` is a proxy to simplify the use of [League\Uri\Path::withoutTrailingSlash](/4.0/components/path/#path-trailing-slash-manipulation) on a `Url` object.
@@ -263,9 +285,9 @@ echo $newUrl; //display "http://www.example.com"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->withExtension("csv");
-echo $newUrl; //display "http://www.example.com/path/to/the/sky.csv"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->withExtension("csv");
+echo $newUri; //display "http://www.example.com/path/to/the/sky.csv"
 ~~~
 
 `Uri::withExtension` is a proxy to simplify the use of [League\Uri\Path::withExtension](/4.0/components/path/#path-extension-manipulation) on a `Url` object.
@@ -277,9 +299,9 @@ echo $newUrl; //display "http://www.example.com/path/to/the/sky.csv"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->appendHost("be");
-echo $newUrl; //display "http://www.example.com.be/path/to/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->appendHost("be");
+echo $newUri; //display "http://www.example.com.be/path/to/the/sky.php"
 ~~~
 
 `Uri::appendHost` is a proxy to simplify the use of [League\Uri\Host::append](/4.0/components/host/#append-labels) on a `Url` object.
@@ -289,9 +311,9 @@ echo $newUrl; //display "http://www.example.com.be/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->prependHost("shop");
-echo $newUrl; //display "http://shop.www.example.com/path/to/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->prependHost("shop");
+echo $newUri; //display "http://shop.www.example.com/path/to/the/sky.php"
 ~~~
 
 `Uri::prependHost` is a proxy to simplify the use of [League\Uri\Host::prepend](/4.0/components/host/#prepend-labels) on a `Url` object.
@@ -301,9 +323,9 @@ echo $newUrl; //display "http://shop.www.example.com/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->replaceLabel(1, "thephpleague");
-echo $newUrl; //display "http://www.thephpleague.com/path/to/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->replaceLabel(1, "thephpleague");
+echo $newUri; //display "http://www.thephpleague.com/path/to/the/sky.php"
 ~~~
 
 `Uri::replaceLabel` is a proxy to simplify the use of [League\Uri\Host::replace](/4.0/components/host/#replace-label) on a `Url` object.
@@ -313,9 +335,9 @@ echo $newUrl; //display "http://www.thephpleague.com/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUrl = $url->withoutLabels([0]);
-echo $newUrl; //display "http://example.com/path/to/the/sky.php"
+$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
+$newUri = $uri->withoutLabels([0]);
+echo $newUri; //display "http://example.com/path/to/the/sky.php"
 ~~~
 
 `Uri::withoutLabels` is a proxy to simplify the use of [League\Uri\Host::without](/4.0/components/host/#remove-labels) on a `Url` object.
@@ -325,9 +347,9 @@ echo $newUrl; //display "http://example.com/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://[fe80::1%25eth0-1]/path/to/the/sky.php");
-$newUrl = $url->withoutZoneIdentifier();
-echo $newUrl; //display "http://[fe80::1]/path/to/the/sky.php"
+$uri = HttpUri::createFromString("http://[fe80::1%25eth0-1]/path/to/the/sky.php");
+$newUri = $uri->withoutZoneIdentifier();
+echo $newUri; //display "http://[fe80::1]/path/to/the/sky.php"
 ~~~
 
 `Uri::withoutZoneIdentifier` is a proxy to simplify the use of [League\Uri\Host::withoutZoneIdentifier](/4.0/components/host/#remove-zone-identifier) on a `Url` object.
@@ -337,9 +359,9 @@ echo $newUrl; //display "http://[fe80::1]/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url    = HttpUri::createFromString("http://xn--p1ai.ru/path/to/the/sky.php");
-$newUrl = $url->toUnicode();
-echo $newUrl; //display "http://рф.ru/path/to/the/sky.php"
+$uri    = HttpUri::createFromString("http://xn--p1ai.ru/path/to/the/sky.php");
+$newUri = $uri->toUnicode();
+echo $newUri; //display "http://рф.ru/path/to/the/sky.php"
 ~~~
 
 `Uri::toUnicode` is a proxy to simplify the use of [League\Uri\Host::toUnicode](/4.0/components/host/#transcode-the-host) on a `Url` object.
@@ -349,9 +371,9 @@ echo $newUrl; //display "http://рф.ru/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url    = HttpUri::createFromString("http://рф.ru/path/to/the/sky.php");
-$newUrl = $url->toAscii();
-echo $newUrl; //display "http://xn--p1ai.ru/path/to/the/sky.php"
+$uri    = HttpUri::createFromString("http://рф.ru/path/to/the/sky.php");
+$newUri = $uri->toAscii();
+echo $newUri; //display "http://xn--p1ai.ru/path/to/the/sky.php"
 ~~~
 
 `Uri::toAscii` is a proxy to simplify the use of [League\Uri\Host::toAscii](/4.0/components/host/#transcode-the-host) on a `Url` object.
@@ -361,11 +383,11 @@ echo $newUrl; //display "http://xn--p1ai.ru/path/to/the/sky.php"
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.eshop.com/path/to/the/sky.php");
-$newUrl = $url->filterHost(function ($label) {
+$uri = HttpUri::createFromString("http://www.eshop.com/path/to/the/sky.php");
+$newUri = $uri->filterHost(function ($label) {
     return strpos($label, "shop") === false;
 });
-echo $newUrl; //display "http://www.com/path/to/the/sky.php"
+echo $newUri; //display "http://www.com/path/to/the/sky.php"
 //will keep all labels which do not contain the word "shop"
 ~~~
 

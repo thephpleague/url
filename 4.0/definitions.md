@@ -5,7 +5,7 @@ title: URIs as Value Objects
 
 # Terminology
 
-The `Url` package models <abbr title="Uniform Resource Identifier">URIs</abbr> and URIs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
+The library models <abbr title="Uniform Resource Identifier">URIs</abbr> and URIs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
 
 ## Value Objects
 
@@ -16,10 +16,10 @@ This means that a URL is like a street address, if you omit or change even a sin
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url1 = HttpUri::createFromString("http://example.com:81/toto");
-$url2 = HttpUri::createFromString("http://example.com:82/toto");
+$uri1 = HttpUri::createFromString("http://example.com:81/toto");
+$uri2 = HttpUri::createFromString("http://example.com:82/toto");
 //represent 2 different URIs with different port component.
-$url1->sameValueAs($url2); //return false;
+$uri1->sameValueAs($uri2); //return false;
 ~~~
 
 ## Immutability
@@ -29,10 +29,10 @@ To ease and ensure the integrity of the value, when a component is altered inste
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url1 = HttpUri::createFromString("http://example.com:81/toto");
-$url2 = $url1->withPort(82);
-echo $url1; //still displays "http://example.com:81/toto"
-echo $url2; //displays "http://example.com:82/toto"
+$uri1 = HttpUri::createFromString("http://example.com:81/toto");
+$uri2 = $uri1->withPort(82);
+echo $uri1; //still displays "http://example.com:81/toto"
+echo $uri2; //displays "http://example.com:82/toto"
 ~~~
 
 With both of these concepts, the package enforces stronger and efficient manipulation of URIs and its different components.

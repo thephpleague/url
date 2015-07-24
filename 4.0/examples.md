@@ -10,11 +10,11 @@ Let's say you have a document that can be downloaded in different format (CSV, X
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-$url = HttpUri::createFromString("http://www.example.com/report");
+$uri = HttpUri::createFromString("http://www.example.com/report");
 $extension_list = ['csv', 'json', 'xml'];
 $links = [];
 foreach ($extension_list as $extension) {
-    $links[$extension] = $url
+    $links[$extension] = $uri
       ->appendPath("/purchases/summary")
       ->withExtension($extension)
       ->replaceLabel(0, 'download')
@@ -23,7 +23,7 @@ foreach ($extension_list as $extension) {
 
 // $links is an array of League\Uri\Url objects
 
-echo $url;           // display "http://www.example.com/report"
+echo $uri;           // display "http://www.example.com/report"
 echo $links['csv'];  // display "https://download.example.com/report/purchases/summary.csv"
 echo $links['xml'];  // display "https://download.example.com/report/purchases/summary.xml"
 echo $links['json']; // display "https://download.example.com/report/purchases/summary.json"
