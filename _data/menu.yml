@@ -10,9 +10,10 @@
         Properties: '/4.0/uri/properties/'
         Manipulation: '/4.0/uri/manipulation/'
     Scheme specific Uri:
-        FTP Uri: '/4.0/uri/ftp/'
-        Http(s) URI: '/4.0/uri/http/'
-        Websocket URI: '/4.0/uri/ws/'
+        Data URI: '/4.0/uri/data/'
+        FTP URI: '/4.0/uri/ftp/'
+        Http URIs: '/4.0/uri/http/'
+        Websocket URIs: '/4.0/uri/ws/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'
         User Information: '/4.0/components/userinfo/'

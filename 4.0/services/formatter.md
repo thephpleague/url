@@ -18,7 +18,7 @@ A host can be output as encoded in ascii or in unicode. By default the formatter
 
 ~~~php
 use League\Uri\Formatter;
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $formatter = new Formatter();
 $formatter->setHostEncoding(Formatter::HOST_AS_UNICODE);
@@ -31,14 +31,14 @@ echo $formatter->format($host); //displays 'рф.ru'
 
 ### Query encoding strategy
 
-A `League\Uri\Query` object is by default encoded by following RFC 3986. If you need to change this encoding to the old RFC 1738, you just need to update the query encoding as shown below using the following predefined constant:
+A `League\Uri\Components\Query` object is by default encoded by following RFC 3986. If you need to change this encoding to the old RFC 1738, you just need to update the query encoding as shown below using the following predefined constant:
 
 - `PHP_QUERY_RFC3986` to set the query encoding as per RFC 3986;
 - `PHP_QUERY_RFC1738` to set the query encoding as per RFC 1738;
 
 ~~~php
 use League\Uri\Formatter;
-use League\Uri\Query
+use League\Uri\Components\Query;
 
 $formatter = new Formatter();
 $formatter->setQueryEncoding(PHP_QUERY_RFC1738);
@@ -53,7 +53,7 @@ echo $formatter->format($query); //displays foo=ba+r&baz=bar
 
 ~~~php
 use League\Uri\Formatter;
-use League\Uri\Query
+use League\Uri\Components\Query;
 
 $formatter = new Formatter();
 $formatter->setQuerySeparator('&amp;');

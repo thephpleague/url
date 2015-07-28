@@ -5,14 +5,14 @@ title: The Port component
 
 # The Port component
 
-The library provides a `League\Uri\Port` class to ease port manipulation.
+The library provides a `League\Uri\Components\Port` class to ease port manipulation.
 
 ## Port creation
 
-A new `League\Uri\Port` object can be instantiated using its default constructor.
+A new `League\Uri\Components\Port` object can be instantiated using its default constructor.
 
 ~~~php
-use League\Uri\Port;
+use League\Uri\Components\Port;
 
 $port = new Port(443);
 echo $port; //display '443'
@@ -34,13 +34,13 @@ The port component constructor accepts:
 
 ### Using a League Uri object
 
-Another way to acces a `League\Uri\Port` object is to use an already instantiated `League\Uri\Url` object.
+Another way to acces a `League\Uri\Components\Port` object is to use an already instantiated `League\Uri\Url` object.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
 $uri  = HttpUri::createFromString('http://url.thephpleague.com:82');
-$port = $uri->port; // $port is a League\Uri\Port object;
+$port = $uri->port; // $port is a League\Uri\Components\Port object;
 ~~~
 
 ## Port representations
@@ -50,7 +50,7 @@ $port = $uri->port; // $port is a League\Uri\Port object;
 Basic port representations is done using the following methods:
 
 ~~~php
-use League\Uri\Port;
+use League\Uri\Components\Port;
 
 $port = new Port(21);
 $port->__toString();      //return '21'
@@ -64,7 +64,7 @@ A port can be represented as an integer through the use of the `Port::toInt` met
 <p class="message-info">If a no port number is defined, the <code>toInt</code> method returns <code>null</code>.</p>
 
 ~~~php
-use League\Uri\Port;
+use League\Uri\Components\Port;
 
 $port = new Port(81);
 $port->toInt(); //return 81;

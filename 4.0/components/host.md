@@ -5,16 +5,16 @@ title: The Host component
 
 # The Host component
 
-The library provides a `League\Uri\Host` class to ease complex host manipulation.
+The library provides a `League\Uri\Components\Host` class to ease complex host manipulation.
 
 ## Host creation
 
 ### Using the default constructor
 
-A new `League\Uri\Host` object can be instantiated using the default constructor.
+A new `League\Uri\Components\Host` object can be instantiated using the default constructor.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('shop.example.com');
 echo $host; //display 'shop.example.com'
@@ -42,7 +42,7 @@ You can also access a `Host` object from an `League\Uri\Uri` class:
 use League\Uri\Schemes\Http as HttpUri;
 
 $uri  = HttpUri::createFromString('http://url.thephpleague.com/');
-$host = $uri->host; // $host is a League\Uri\Host object;
+$host = $uri->host; // $host is a League\Uri\Components\Host object;
 ~~~
 
 ### Using a named constructor
@@ -61,7 +61,7 @@ By default this optional argument equals to `Host::IS_RELATIVE`.
 <p class="message-warning">Since an IP is not a hostname, the class will throw an <code>InvalidArgumentException</code> if you try to create an fully qualified domain name with a valid IP address.</p>
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = Host::createFromArray(['shop', 'example', 'com']);
 echo $host; //display 'shop.example.com'
@@ -84,7 +84,7 @@ Whenever you create a new host your submitted data is normalized using non desct
 - the bracket are added if necessary if you are instantiating a IPv6 Host;
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = Host::createFromArray(['shop', 'ExAmPle', 'com']);
 echo $host; //display 'shop.example.com'
@@ -105,15 +105,16 @@ There are two type of host:
 To determine what type of host you are dealing with the `Host` class provides the `isIp` method:
 
 ~~~php
-use League\Uri;
+use League\Uri\Components\Host;
+use League\Uri\Schemes\Http;
 
-$host = new Uri\Host('::1');
+$host = new Host('::1');
 $host->isIp();   //return true
 
-$alt_host = new Uri\Host('example.com');
+$alt_host = new Host('example.com');
 $host->isIp(); //return false;
 
-Uri\Schemes\Http::createFromServer($_SERVER)->host->isIp(); //return a boolean
+Http::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6
@@ -121,7 +122,7 @@ Uri\Schemes\Http::createFromServer($_SERVER)->host->isIp(); //return a boolean
 Knowing that you are dealing with an IP is good, knowing that its an IPv4 or an IPv6 is better.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $ipv6 = new Host('::1');
 $ipv6->isIp();   //return true
@@ -137,7 +138,7 @@ $ipv4->isIpv6(); //return false
 The object can also detect if the IPv6 has a zone identifier or not. This can be handy if you want to know if you need to remove it or not for security reason.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $ipv6 = new Host('Fe80::4432:34d6:e6e6:b122%eth0-1');
 $ipv6->hasZoneIdentifier(); //return true
@@ -153,7 +154,7 @@ If you don't have a IP then you are dealing with a host name. A host name is a [
 A host name is considered absolute or as being a fully qualified domain name (FQDN) if it ends with a `.`, otherwise it is known as being a relative or a partially qualified domain name (PQDN).
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('example.com');
 $host->isIp();       //return false
@@ -175,7 +176,7 @@ $ip->isAbsolute(); //return false
 Basic host representations is done using the following methods:
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('example.com');
 $host->__toString();      //return 'example.com'
@@ -197,15 +198,15 @@ The `Host` class supports the <a href="http://en.wikipedia.org/wiki/Internationa
 At any given time the object can tell you if the submitted hostname is a IDN or not using the `Host::isIdn()` method.
 
 ~~~php
-use League\Uri;
+use League\Uri\Components\Host;
 
-$idn_host = new Uri\Host('스타벅스코리아.com');       //you set a IDN hostname
+$idn_host = new Host('스타벅스코리아.com');       //you set a IDN hostname
 echo $idn_host->isIdn(); //return true
 
-$host = new Uri\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+$host = new Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
 echo $host->isIdn();     //return false
 
-$host = new Uri\Host('192.168.2.56');              //you set a IP host
+$host = new Host('192.168.2.56');              //you set a IP host
 echo $host->isIdn();     //return false
 ~~~
 
@@ -216,7 +217,7 @@ A host can be splitted into its different labels. The class provides an array re
 <p class="message-warning">Once in array representation you can not distinguish a partially from a fully qualified domain name.</p>
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('secure.example.com');
 $arr = $host->toArray(); //return  ['secure', 'example', 'com'];
@@ -235,7 +236,7 @@ $arr = $host->toArray(); //return ['::1'];
 The class provides several methods to works with its labels. The class implements PHP's `Countable` and `IteratorAggregate` interfaces. This means that you can count the number of labels and use the `foreach` construct to iterate over them.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('secure.example.com');
 count($host); //return 3
@@ -249,7 +250,7 @@ foreach ($host as $offset => $label) {
 If you are interested in getting all the label keys you can do so using the `Host::keys` method like shown below:
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('uk.example.co.uk');
 $host->keys();        //return [0, 1, 2, 3];
@@ -262,7 +263,7 @@ The methods returns all the label keys, but if you supply an argument, only the 
 To know If a key exists before using it you can use the `Host::hasKey` method which returns `true` or `false` depending on the presence or absence of the submitted key in the current object.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('uk.example.co.uk');
 $host->hasKey(2);  //return true
@@ -274,7 +275,7 @@ $host->hasKey(23); //return false
 If you are only interested in a given label you can access it directly using the `Host::getLabel` method as show below:
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('uk.example.co.uk');
 $host->getLabel(0);         //return 'uk'
@@ -294,7 +295,7 @@ Using data from [the public suffix list](http://publicsuffix.org/) and the [PHP 
 - tell you if the found public suffix is valid using the `Host::isPublicSuffixValid` method;
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('www.example.co.uk');
 echo $host->getPublicSuffix();        //display 'co.uk'
@@ -306,7 +307,7 @@ $host->isPublicSuffixValid();         //return a boolean 'true' in this example
 If the data is not found the methods listed above will all return `null` except for the `Host::isPublicSuffixValid` method which will return `false`.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host = new Host('192.158.26.30');
 echo $host->getPublicSuffix();        //return 'null'
@@ -329,14 +330,14 @@ You can transcode the Host so that its string representation match the IDN suppo
 - To transcode the host into an IDN representation use the `Host::toUnicode` method.
 
 ~~~php
-use League\Uri;
+use League\Uri\Components\Host;
 
-$idn_host = new Uri\Host('스타벅스코리아.com'); //you set a IDN hostname
+$idn_host = new Host('스타벅스코리아.com'); //you set a IDN hostname
 echo $idn_host->__toString();            //display '스타벅스코리아.com'
 echo $idn_host->toAscii()->__toString(); //display 'xn--oy2b35ckwhba574atvuzkc.com'
 echo $idn_host->toUnicode->__toString(); //display '스타벅스코리아.com'
 
-$host = new Uri\Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
+$host = new Host('xn--mgbh0fb.xn--kgbechtv');  //you set a ascii hostname
 echo $host->__toString();              //display 'xn--mgbh0fb.xn--kgbechtv'
 echo $host->toAscii()->__toString();   //display 'xn--mgbh0fb.xn--kgbechtv'
 echo $host->toUnicode()->__toString(); //display 'مثال.إختبار'
@@ -351,14 +352,14 @@ To append labels to the current host you need to use the `Host::append` method. 
 - a string;
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host();
 $newHost = $host->append('toto')->append(new Host('example.com'));
 $newHost->__toString(); //return toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::appendHost</code> method</p>
+<p class="message-notice">This method is used by the Hierarchical URI <code>appendHost</code> method</p>
 
 ### Prepend labels
 
@@ -369,14 +370,14 @@ To prepend labels to the current host you need to use the `Host::prepend` method
 - a string;
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host();
 $newHost = $host->prepend('example.com')->prepend(new Host('toto'));
 $newHost->__toString(); //return toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::prependHost</code> method</p>
+<p class="message-notice">This method is used by the Hierarchical URI <code>prependHost</code> method</p>
 
 ### Replace label
 
@@ -389,7 +390,7 @@ To replace a label you must use the `Host::replace` method with two arguments:
     - a string;
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host('foo.example.com');
 $newHost = $host->replace(0, 'bar.baz');
@@ -398,7 +399,7 @@ $newHost->__toString(); //return bar.baz.example.com
 
 <p class="message-warning">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::replaceLabel</code> method</p>
+<p class="message-notice">This method is used by the Hierarchical URI <code>replaceLabel</code> method</p>
 
 ### Remove labels
 
@@ -407,7 +408,7 @@ To remove labels from the current object you can use the `Host::without` method.
 The argument can be an array containing a list of offsets to remove.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host('toto.example.com');
 $newHost = $host->without([1]);
@@ -417,7 +418,7 @@ $newHost->__toString(); //return toto.com
 Or a callable that will select the list of offsets to remove.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host('toto.example.com');
 $newHost = $host->without(function ($value) {
@@ -428,7 +429,7 @@ echo $newHost; //displays 'example.com';
 
 <p class="message-warning">if the specified offsets do not exist, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutLabels</code> method</p>
+<p class="message-notice">This method is used by the Hierarchical URI <code>withoutLabels</code> method</p>
 
 ### Remove zone identifier
 
@@ -439,14 +440,14 @@ According to [RFC6874](http://tools.ietf.org/html/rfc6874#section-4):
 To fullfill this requirement, the `Host::withoutZoneIdentifier` method is provided. The method takes not parameter and return a new host instance without its zone identifier. If the host has not zone identifier, the current instance is returned unchanged.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host('[fe80::1%25eth0-1]');
 $newHost = $host->withoutZoneIdentifier();
 echo $newHost; //displays '[fe80::1]';
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::withoutZoneIdentifier</code> method</p>
+<p class="message-notice">This method is used by the Hierarchical URI <code>withoutZoneIdentifier</code> method</p>
 
 ### Filter labels
 
@@ -455,7 +456,7 @@ You can filter the `Host` object using the `Host::filter` method.
 The first parameter must be a `callable`
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host('www.11.be');
 $newHost = $host->filter(function ($value) {
@@ -472,7 +473,7 @@ By specifying the second argument flag you can change how filtering is done:
 By default, if no flag is specified the method will use the `Host::FILTER_USE_VALUE` flag.
 
 ~~~php
-use League\Uri\Host;
+use League\Uri\Components\Host;
 
 $host    = new Host('www.11.be');
 $newHost = $host->filter(function ($value) {
@@ -481,4 +482,4 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays 'www.be'
 ~~~
 
-<p class="message-notice">This method is used by the <code>League\Uri\Uri::filterHost</code> method</p>
+<p class="message-notice">This method is used by the Hierarchical URI <code>filterHost</code> method</p>

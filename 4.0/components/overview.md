@@ -34,19 +34,19 @@ captain:future
 
 Apart from the authority part, each component and part of the URI is manageable through a dedicated class:
 
-- The `League\Uri\Scheme` class handles the URI scheme component;
-- The `League\Uri\UserInfo` class handles the URI userinfo part;
-- The `League\Uri\User` class handles the URI user components;
-- The `League\Uri\Pass` class handles the URI pass components;
-- The `League\Uri\Host` class handles the URI host component;
-- The `League\Uri\Port` class handles the URI port component;
-- The `League\Uri\Path` class handles the URI path component;
-- The `League\Uri\Query` class handles the URI query component;
-- The `League\Uri\Fragment` class handles the URI fragment component;
+- The `League\Uri\Components\Scheme` class handles the URI scheme component;
+- The `League\Uri\Components\Components\UserInfo` class handles the URI userinfo part;
+- The `League\Uri\Components\User` class handles the URI user components;
+- The `League\Uri\Components\Pass` class handles the URI pass components;
+- The `League\Uri\Components\Host` class handles the URI host component;
+- The `League\Uri\Components\Port` class handles the URI port component;
+- The `League\Uri\Components\Path` class handles the URI path component;
+- The `League\Uri\Components\Query` class handles the URI query component;
+- The `League\Uri\Components\Fragment` class handles the URI fragment component;
 
 Those classes share common methods to view and update their values.
 
-<p class="message-notice">Just like the <code>League\Uri\Url</code> class, they are defined as immutable value objects.</p>
+<p class="message-notice">Just like the URI objects, they are defined as immutable value objects.</p>
 
 ## URI part instantiation
 
@@ -62,17 +62,17 @@ They all expect:
 <p class="message-warning">No component delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
 
 ~~~php
-use League\Uri;
+use League\Uri\Components;
 
-$scheme   = new Uri\Scheme('http');
-$user     = new Uri\User('john');
-$pass     = new Uri\Pass('doe');
-$userInfo = new Uri\UserInfo($user, $pass);
-$host     = new Uri\Host('127.0.0.1');
-$port     = new Uri\Port(443);
-$path     = new Uri\Path('/foo/bar/file.csv');
-$query    = new Uri\Query('q=url&site=thephpleague');
-$fragment = new Uri\Fragment('paragraphid');
+$scheme   = new Components\Scheme('http');
+$user     = new Components\User('john');
+$pass     = new Components\Pass('doe');
+$userInfo = new Components\UserInfo($user, $pass);
+$host     = new Components\Host('127.0.0.1');
+$port     = new Components\Port(443);
+$path     = new Components\Path('/foo/bar/file.csv');
+$query    = new Components\Query('q=url&site=thephpleague');
+$fragment = new Components\Fragment('paragraphid');
 ~~~
 
 ### URI part status
@@ -80,12 +80,12 @@ $fragment = new Uri\Fragment('paragraphid');
 At any given time you may want to know if the URI part is considered empty or not. To do so you can used the `UrlPart::isEmpty` method like shown below:
 
 ~~~php
-use League\Uri;
+use League\Uri\Components;
 
-$scheme = new Uri\Scheme('http');
+$scheme = new Components\Scheme('http');
 $scheme->isEmpty(); //return false;
 
-$port = new Uri\Port();
+$port = new Components\Port();
 $port->isEmpty(); //return true;
 ~~~
 
@@ -98,32 +98,32 @@ Each class provides several ways to represent the component value as string.
 The `__toString` method returns the string representation of the object. This is the form used when echoing the URI component from the `League\Uri\Url` getter methods. No component delimiter is returned.
 
 ~~~php
-use League\Uri;
+use League\Uri\Components;
 
-$scheme = new Uri\Scheme('http');
+$scheme = new Components\Scheme('http');
 echo $scheme->__toString(); //displays 'http'
 
-$userinfo = new Uri\UserInfo('john');
+$userinfo = new Components\UserInfo('john');
 echo $userinfo->__toString(); //displays 'john'
 
-$path = new Uri\Path('/toto le heros/file.xml');
+$path = new Components\Path('/toto le heros/file.xml');
 echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
 ### URI-like representation
 
-The `getUriComponent` Returns the string representation of the URI part with its optional delimiters. This is the form used by the `League\Uri\Uri::__toString` method when building the URI string representation.
+The `getUriComponent` Returns the string representation of the URI part with its optional delimiters. This is the form used by the URI object `__toString` method when building the URI string representation.
 
 ~~~php
-use League\Uri;
+use League\Uri\Components;
 
-$scheme = new Uri\Scheme('http');
+$scheme = new Components\Scheme('http');
 echo $scheme->getUriComponent(); //displays 'http:'
 
-$userinfo = new Uri\UserInfo('john');
+$userinfo = new Components\UserInfo('john');
 echo $userinfo->getUriComponent(); //displays 'john@'
 
-$path = new Uri\Path('/toto le heros/file.xml');
+$path = new Components\Path('/toto le heros/file.xml');
 echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
@@ -132,9 +132,9 @@ echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 The string representation will always return an encoded string. If you want to use the literal representation of one component you need to use the `getLiteral` method attached to it.
 
 ~~~php
-use League\Uri;
+use League\Uri\Components;
 
-$user = new Uri\User('foo%2Fbar');
+$user = new Components\User('foo%2Fbar');
 echo $user->getLiteral(); //displays 'foo/bar'
 echo $user->__toString(); //displays 'foo%2Fbar'
 ~~~
@@ -148,12 +148,13 @@ echo $user->__toString(); //displays 'foo%2Fbar'
 To compare two components to know if they represent the same value you can use the `sameValueAs` method which compares them according to their respective `getUriComponent` methods.
 
 ~~~php
-use League\Uri;
+use League\Uri\Schemes\Http;
+use League\Uri\Components;
 
-$host     = new Uri\Host('www.ExAmPLE.com');
-$alt_host = new Uri\Host('www.example.com');
-$fragment = new Uri\Fragment('www.example.com');
-$uri      = new Uri\Uri::createFromString('www.example.com');
+$host     = new Components\Host('www.ExAmPLE.com');
+$alt_host = new Components\Host('www.example.com');
+$fragment = new Components\Fragment('www.example.com');
+$uri      = Http::createFromString('www.example.com');
 
 $host->sameValueAs($alt_host); //return true;
 $host->sameValueAs($fragment); //return false;
@@ -174,9 +175,9 @@ Each URI component class can have its content modified using the `modify` method
 <p class="message-warning">The <code>UserInfo</code> class does not include a <code>modify</code> method.</p>
 
 ~~~php
-use League\Uri;
+use League\Uri\Components;
 
-$query     = new Uri\Query('q=url&site=thephpleague');
+$query     = new Components\Query('q=url&site=thephpleague');
 $new_query = $query->modify('q=yolo');
 echo $new_query; //displays 'q=yolo'
 echo $query;     //display 'q=url&site=thephpleague'
@@ -188,9 +189,8 @@ Since we are using immutable value objects, the source component is not modified
 
 For more complex parts/components care has be taken to provide more useful methods to interact with their values. Additional methods and properties were added to the following classes:
 
-* `League\Uri\Scheme` which handles [the scheme component](/4.0/components/scheme/);
-* `League\Uri\UserInfo` which handles [the URI user information part](/4.0/components/userinfo/);
-* `League\Uri\Host` which handles [the host component](/4.0/components/host/);
-* `League\Uri\Port` which handles [the port component](/4.0/components/port/);
-* `League\Uri\Path` which handles [the path component](/4.0/components/path/);
-* `League\Uri\Query` which handles [the query component](/4.0/components/query/);
+* `League\Uri\Components\UserInfo` which handles [the URI user information part](/4.0/components/userinfo/);
+* `League\Uri\Components\Host` which handles [the host component](/4.0/components/host/);
+* `League\Uri\Components\Port` which handles [the port component](/4.0/components/port/);
+* `League\Uri\Components\Path` which handles [the path component](/4.0/components/path/);
+* `League\Uri\Components\Query` which handles [the query component](/4.0/components/query/);
