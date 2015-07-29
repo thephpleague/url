@@ -7,12 +7,19 @@ title: Version 4 - Changelog
 
 All Notable changes to `League\Url` version 4 will be documented in this file
 
+#Changelog
+
+All Notable changes to `League\Url` will be documented in this file
+
 ## Next
 
 ### Added
 
-- A `Http` class to specifically manipulate `http`,`https`,`ws`,`wss`,`ftp` schemed URI
-- A system to manage registration of other schemes using the `SchemeRegistry` Interface.
+- A `Data` class to specifically manipulate `data` schemed URI
+- A `Http` class to specifically manipulate `http`,`https` schemed URI
+- A `Ftp` class to specifically manipulate `ftp` schemed URI
+- A `Ws` class to specifically manipulate `ws`, `wss` schemed URI
+- A `Media` component class to manipulate Data-uri path component
 - Support for IPv6 zone identifier
 - Re-introduced `Host::toAscii` and adding `Host::isIdn` method
 - `Intl` extension is now required to use the library
@@ -22,23 +29,22 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - Missing `User` and `Pass` Interfaces
 - `Host::getIpLiteral` to get the raw IP representation of a Ip Literal hostname
 - `getLiteral` method to `Pass`, `User` and `Fragment` objects to get the component non-encoded string representation
+- `Path::relativize` and `Uri::relativize` to generate relative path and uri respectively
 
 ### Fixed
 
 - Changed namespace from `League\Url` to `League\Uri` to avoid dependency hell
-- Changed class name from `League\Url\Url` to `League\Uri\Uri` to better reflect the class intent
+- Changed class name from `League\Url\Url` to `League\Uri\Schemes\AbstractUri` to better reflect the class intent
 - Renamed methods for consistency with PHP naming conventions
-- The `Uri` class requires a Scheme Registry object to be correctly instantiated
 - userinfo string representation `:` delimiter was added unnecessarily
 - Host::__toString return the hostname in Unicode or ASCII depending on the user submission
 - Host::toUnicode now returns a new Host instance
 - Host now support append/prepend/replacing to or with IPv4 Host type
 - Path now supports multiple leading slash
 - Except for the `Port` constructor no other constructor accept the `null` value as per PSR-7
-- `Uri::resolve` is now typehinted to the Uri interface
-- Formatter::format only accept Uri and UriPart implemented object
-- `Path::withoutDotSegment` and `Uri::withoutDotSegment` renamed to `Path::normalize` and `Uri::normalize` respectively
-- `Uri::sameValueAs` takes into account `Uri::normalize`
+- The `::resolve` method is now typehinted to the Uri interface
+- Formatter::format only accept `Uri` and `UriPart` implemented object
+- `Uri::sameValueAs` normalized host encoding, path without dot segments, and query parameters key sorting before comparison
 
 ### Remove
 
@@ -46,88 +52,82 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - `Scheme::isSupported`, `Scheme::getStandardPort`, `Port::getStandardSchemes` use the `SchemeRegistry` class to get this information.
 - support for `PHP 5.4`
 
-## 4.0.0-beta.3
+## 4.0.0-beta-3
 
 ### Added
 
-- `isEmpty` method to `League\Uri\Interfaces\Url` to tell whether a URI is empty or not
-- `isSupported` static method to `League\Uri\Scheme` to tell whether a specified scheme is supported by the library
+- `isEmpty` method to `League\Url\Interfaces\Url` to tell whether a URL is empty or not
+- `isSupported` static method to `League\Url\Scheme` to tell whether a specified scheme is supported by the library
+- Improve decoding invalid punycode host labels
 - Add support for `gopher` scheme
 
-### Fixed
+## Fixed
 
 - Invalid Punycode should still be allowed and not produce any error [issue #73](https://github.com/thephpleague/url/issues/73)
 
-### Remove
+## 4.0.0-beta-2
 
- - Remove support for `git` and `svn` schemes
-
-## 4.0.0-beta.2
-
-### Fixed
+## Fixed
 - remove useless optional argument from `Path::getUriComponent`
 
-## 4.0.0-beta.1
+## 4.0.0-beta-1
 
 ### Added
 
 - Package structure is changed to better reflect the importance of each component.
 
-- `League\Uri\Interfaces\Url`
+- `League\Url\Interfaces\Url`
     -  now implements `Psr\Http\Message\UriInterface`
-    - `resolve` to create new URI from relative URI
-    - `isAbsolute` tells whether the URI is absolute or relative
-    - `hasStandardPort`  tells whether the URI uses the standard port for a given scheme
-    - `sameValueAs` accepts any `Psr\Http\Message\UriInterface` implementing object
+    - `resolve` to create new URL from relative URL
     - add proxy methods to ease partial component modifications
 
-- `League\Uri\Interfaces\UrlPart`
+- `League\Url\Interfaces\UrlPart`
     -  UrlParts implementing object can be compared using the `sameValueAs`
 
-- `League\Uri\Interfaces\Component`
+- `League\Url\Interfaces\Component`
     - `modify` to create a new instance from a given component;
 
-- `League\Uri\Interfaces\CollectionComponent`:
+- `League\Url\Interfaces\CollectionComponent`:
     - The interface is simplified to remove ambiguity when manipulating Host and Path objects.
 
-- `League\Uri\Interfaces\Host`:
+- `League\Url\Interfaces\Host`:
     - implements IPv4 and IPv6 style host
     - `__toString` method now always return the ascii version of the hostname
 
-- `League\Uri\Interfaces\Path`:
+- `League\Url\Interfaces\Path`:
     - `withoutDotSegment` remove dot segment according to RFC3986 rules;
-    - `withoutEmptySegments` remove multiple adjacent delimiters;
+    - `withoutDuplicateDelimiters` remove multiple adjacent delimiters;
     - `getBasename` returns the trailing path;
-    - `getDirname` returns the parent directory path;
     - manage the trailing path extension using `getExtension` and `withExtension`;
 
-- `League\Uri\Interfaces\Query`:
+- `League\Url\Interfaces\Query`:
     - The interface is simplified to remove ambiguity and allow setting default values for missing keys;
     - The object no longer depends on php `parse_str`
 
-- `League\Uri\Interfaces\Scheme` and `League\Uri\Interfaces\Port`:
+- `League\Url\Interfaces\Scheme` and `League\Url\Interfaces\Port`:
     - support for listing and detecting standard port for a given scheme in both objects with
         - `Interfaces\Port::getStandardSchemes`
+        - `Interfaces\Port::useStandardScheme`
         - `Interfaces\Scheme::getStandardPorts`
         - `Interfaces\Scheme::hasStandardPort`
 
-- `League\Uri\UserInfo` class added to better manipulate URI user info part
+- `League\Url\UserInfo` class added to better manipulate URL user info part
 
 - The `Url` class as well as all components classes are now immutable value objects.
-- The `League\Uri\Output\Formatter` class is added to ease Url formatting
+- The `League\Url\Output\Formatter` class is added to ease Url formatting
 - The package is more RFC3986 compliant
 
 ### Deprecated
 - Nothing
 
 ### Fixed
-- Handling of legacy hostname suffixed with a "." when using `Uri::createFromServer`
+- Handling of legacy hostname suffixed with a "." when using `Url::createFromServer`
 
 ### Remove
-- `League\Uri\Components\User` and `League\Uri\Components\Pass`
+- `League\Url\Components\User` and `League\Url\Components\Pass`
 - Support for `PHP 5.3`
 - `UrlImmutable` class
 - Most of the public API is removed :
     - to comply to `RFC3986`;
     - to enable immutable value object;
-    - to implement `Psr\Http\Message\UriInterface`;
+    - to implement `PSR7` UriInterface;

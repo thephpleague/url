@@ -93,44 +93,6 @@ var_export($uri->toArray());
 // );
 ~~~
 
-### Does URIs refers to the same resource/location
-
-#### League URI objects
-
-You can compare two URI object to see if they represent the same resource using the `sameValueAs` method. The method compares the two objects according to their respective `__toString` methods with the following normalizations applied before comparison:
-
-- the host is converted using the punycode algorithm;
-- the path is normalized according to RFC3986 rules;
-- the query string is sorted according to their parameters keys;
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Ftp as FtpUri;
-
-$httpUri = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
-$ftpUri  = FtpUri::createFromString("ftp://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
-
-$httpUri->sameValueAs($ftpUri); //return false
-~~~
-
-#### PSR-7 UriInterface objects
-
-To allow more interoperability, you can also compare a PSR-7 `UriInterface` compliant URIs object with a League URI object. The same normalization are applied.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use GuzzleHttp\Psr7\Uri;
-
-$leagueUri = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
-$psr7Uri = new Uri("http://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
-
-$leagueUri->sameValueAs($psr7Uri); //return true
-~~~
-
-## Hierarchical URI properties
-
-<p class="message-notice">The methods and properties describes are available on all Hierarchical URI objects unless explicitly expressed.</p>
-
 ### Accessing URI parts and components
 
 #### Parts and components as strings
@@ -182,6 +144,44 @@ $uri->query->getValue("foo"); //return "baz"
 ~~~
 
 To get more informations about component properties refer to the [components documentation](/4.0/components/overview/)
+
+### Does URIs refers to the same resource/location
+
+#### League URI objects
+
+You can compare two URI object to see if they represent the same resource using the `sameValueAs` method. The method compares the two objects according to their respective `__toString` methods with the following normalizations applied before comparison:
+
+- the host is converted using the punycode algorithm;
+- the path is normalized according to RFC3986 rules;
+- the query string is sorted according to their parameters keys;
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Schemes\Ftp as FtpUri;
+
+$httpUri = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
+$ftpUri  = FtpUri::createFromString("ftp://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
+
+$httpUri->sameValueAs($ftpUri); //return false
+~~~
+
+#### PSR-7 UriInterface objects
+
+To allow more interoperability, you can also compare a PSR-7 `UriInterface` compliant URIs object with a League URI object. The same normalization are applied.
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use GuzzleHttp\Psr7\Uri;
+
+$leagueUri = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
+$psr7Uri = new Uri("http://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
+
+$leagueUri->sameValueAs($psr7Uri); //return true
+~~~
+
+## Hierarchical URI properties
+
+<p class="message-notice">The methods and properties describes are available on all Hierarchical URI objects unless explicitly expressed.</p>
 
 ### Does the URI uses the standard port ?
 

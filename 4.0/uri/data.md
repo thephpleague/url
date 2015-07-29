@@ -37,11 +37,23 @@ echo $uri; //returns 'data:image/png;charset=binary;base64,...'
 
 If the file is not readable or accessible an InvalidArgumentException exception will be thrown. The class uses PHP's `finfo` class to detect the required mediatype as defined in RFC2045.
 
+## Validation
+
+Even thout all URI properties are defined and accessible with the dataURI attempt to set the following component or URI part will result in the object throwing a `InvalidArgumentException` exception. As adding data to theses URI part will generate an invalid URI.
+
+~~~php
+use League\Uri\Schemes\Data as DataUri;
+
+$uri = DataUri::createFromPath('path/to/my/png/image.png');
+$uri->getHost(); //return '' an empty string
+$uri->withHost('example.com'); //thrown an InvalidArgumentException
+~~~
+
 ## Properties
 
 The data URI class exposes the following methods:
 
-- `getMimetype`: This method returns the Data URI current mimetype;
+- `getMimeType`: This method returns the Data URI current mimetype;
 - `getParameters`: This method returns the parameters associated with the mediatype;
 - `getData`: This methods returns the encoded data contained is the Data URI;
 
@@ -71,48 +83,13 @@ $altUri->isBinaryData(); //returns false
 
 ## Manipulation
 
-The data URI class is an immutable object everytime you manipulate the object a new object is returned with the modified value if needed. Since we are dealing with a data and not just a URI, the only property that can be modified is its parameters.
+The data URI class is an immutable object everytime you manipulate the object a new object is returned with the modified value if needed.
 
-The parameters are manipulated using the `Parameters` object which is similar to the [Query](/4.0/components/query/) object. It supports the same properties and methods. The only difference between both classes is the value of their respective default separators and delimiters properties:
+### Update the Data URI parameters
 
-- The `Parameters` class default separator is `;`;
-- The `Parameters` class default delimiter is `;`;
+Since we are dealing with a data and not just a URI, the only property that can be easily modified are its optional parameters.
 
-You can access the parameter object using PHP magic getter methods:
-
-~~~php
-use League\Uri\Schemes\Data as DataUri;
-
-$uri = DataUri::createFromPath('path/to/my/png/image.png');
-$parameters = $uri->parameters;
-
-count($parameters); //returns 2;
-echo $parameters; //return 'charset=binary;base64'
-~~~
-
-To modify the parameters you can:
-
-- add or update them with the `mergeParameters` method
-
-~~~php
-use League\Uri\Schemes\Data as DataUri;
-
-$uri = DataUri::createFromPath('path/to/my/png/image.png');
-$newUri = $uri->mergeParameters(['yolo' => 'bar']);
-$newUri->getParameters(); //returns 'charset=binary;base64;yolo=bar'
-~~~
-
-- remove somes parameters with the `withoutParameters` method by specifying the parameters keys
-
-~~~php
-use League\Uri\Schemes\Data as DataUri;
-
-$uri = DataUri::createFromPath('path/to/my/png/image.png');
-$newUri = $uri->mergeParameters(['charset']);
-$newUri->getParameters(); //returns 'base64'
-~~~
-
-or completly remove/set the parameters with the `withParameters` method:
+To set new parameters you should use the `withParameters` method:
 
 ~~~php
 use League\Uri\Schemes\Data as DataUri;
@@ -122,7 +99,21 @@ $newUri = $uri->withParameters('charset=utf-8');
 echo $newUri; //returns 'data:text/plain;charset=utf-8,Hello%20World%21'
 ~~~
 
-<p class="message-warning">Even though the binary flag is present in the Parameters object you can not alter its value with the above methods. Doing so will throw an <code>InvalidArgumentException</code> as this would modified the data nature.</p>
+Of note the data should be urlencoded if needed.
+
+### Transcode the data between its binary and ascii representation
+
+Another manipulation is to transcode the data from ASCII to is base64 encoded (or binary) version. If no conversion is possible the former object is returned otherwise a new valid data uri object is created.
+
+~~~php
+use League\Uri\Schemes\Data as DataUri;
+
+$uri = DataUri::createFromString('data:text/plain;charset=us-ascii,Hello%20World%21');
+$uri->isBinaryData(); // return false;
+$newUri = $uri->toBinary();
+$newUri->isBinaryData(); //return true;
+$newUri->toAscii()->sameValueAs($uri); //return true;
+~~~
 
 ## Saving the DataURI
 
@@ -142,4 +133,3 @@ $uri = DataUri::createFromPath('path/to/my/file.png');
 $file = $uri->save('path/where/to/save/my/image.png');
 //$file is a SplFileObject which point to the newly created file;
 ~~~
-

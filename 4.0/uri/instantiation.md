@@ -63,9 +63,9 @@ Let say you want to create a `telnet` class to handle telnet URI. You just need 
 ~~~php
 namespace Example;
 
-use League\Uri\Schemes\Generic\AbstractHierarchical;
+use League\Uri\Schemes\Generic\AbstractHierarchicalUri;
 
-class Telnet extends AbstractHierarchical
+class Telnet extends AbstractHierarchicalUri
 {
     /**
      * Supported Schemes with their associated port

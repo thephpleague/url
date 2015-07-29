@@ -49,31 +49,6 @@ $newUri = $uri->resolve(WsUri::createFromString("./p#~toto"));
 echo $newUri; //displays "./p#~toto"
 ~~~
 
-## Hierarchical URI specific methods
-
-### Generating a relative URI
-
-The URI class provides the mean for relativizing an URI according the a referenced base URI.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$baseUri  = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
-$childUri = HttpUri::createFromString("http://www.example.com/short#~toto");
-echo $baseUri->relativize($childUri); //displays "../short#~toto"
-~~~
-
-<p class="message-notice">If you try to relativize two Uri object which do not share the same scheme. No normalization will occur and the submitted URI object will be return unchanged.</p>
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Http as WsUri;
-
-$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$newUri = $uri->relativize(WsUri::createFromString("./p#~toto"));
-echo $newUri; //displays "./p#~toto"
-~~~
-
 ### Complete components and parts modifications
 
 To completely replace one of the URI part you can use the `Psr\Http\Message\UriInterface` interface modifying methods exposed by the object
@@ -167,6 +142,33 @@ echo $newUri; //display "//example.com/the/sky.php?p=y%20olo#~typo"
 ~~~
 
 `Uri::filterQuery` is a proxy to simplify the use of [League\Uri\Components\Query::filter](/4.0/components/query/#filter-the-query) on a `Url` object.
+
+## Hierarchical URI specific methods
+
+### Generating a relative URI
+
+The URI class provides the mean for relativizing an URI according the a referenced base URI.
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+
+$baseUri  = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
+$childUri = HttpUri::createFromString("http://www.example.com/short#~toto");
+echo $baseUri->relativize($childUri); //displays "../short#~toto"
+~~~
+
+<p class="message-notice">If you try to relativize two Uri object which do not share the same scheme. No normalization will occur and the submitted URI object will be return unchanged.</p>
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Schemes\Http as WsUri;
+
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUri = $uri->relativize(WsUri::createFromString("./p#~toto"));
+echo $newUri; //displays "./p#~toto"
+~~~
+
+### Partial components modifications
 
 ### Modifying URI path segments
 
