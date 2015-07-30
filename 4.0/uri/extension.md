@@ -355,7 +355,6 @@ Et voilà! And you can already do this:
 
 ~~~php
 use Example\Mailto;
-use League\Uri\Components\Query;
 
 $mailto = Mailto::createFromEmails(['foo@example.com', 'info@thephpleague.com']);
 $mailto->__toString(); //will return 'mailto:foo@xexample.com,info@thephpleague.com';
@@ -365,11 +364,7 @@ echo $mailto->path->getEmail(0); //returns 'foo@example.com'
 $newEmail = $mailto->appendEmail('greg@theguy.com');
 $newEmail->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com,greg@theguy.com';
 
-$query = Query::createFromArray([
-    'subject' => 'Hello World!',
-]);
-
-$mailWithSubject = $mailto->withQuery($query);
+$mailWithSubject = $mailto->mergeQuery(['subject' => 'Hello World!']);
 $mailWithSUbject->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com?subject=Hello%20World%21';
 ~~~
 
