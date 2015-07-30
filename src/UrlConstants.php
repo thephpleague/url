@@ -20,5 +20,8 @@ namespace League\Url;
  */
 class UrlConstants
 {
-    const SCHEME_REGEXP = '(http|ftp|ws)(s?)'; //supported protocol
+    /*
+     * Scheme regex according to https://tools.ietf.org/html/rfc3986#page-17
+     */
+    const SCHEME_REGEXP = '([a-z][a-z0-9+.-]*)';
 }

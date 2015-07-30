@@ -137,6 +137,26 @@ class AbstractUrlTest extends PHPUnit_Framework_TestCase
         ), $url->toArray());
     }
 
+    public function testCreateFromArray()
+    {
+        $components = array(
+            'scheme' => 'http',
+            'user' => null,
+            'pass' => null,
+            'host' => 'example.com',
+            'port' => 80,
+            'path' => 'foo/bar',
+            'query' => 'foo=bar',
+            'fragment' => 'content',
+        );
+
+        $expected = 'http://example.com:80/foo/bar?foo=bar#content';
+        $this->assertSame(
+            $expected,
+            (string)Url::createFromArray($components)
+        );
+    }
+
     /**
      * @expectedException RuntimeException
      */
