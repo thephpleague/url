@@ -14,6 +14,7 @@
         FTP URI: '/4.0/uri/ftp/'
         Http URIs: '/4.0/uri/http/'
         Websocket URIs: '/4.0/uri/ws/'
+        Extension Guide: '/4.0/uri/extension/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'
         User Information: '/4.0/components/userinfo/'
