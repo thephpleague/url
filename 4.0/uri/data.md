@@ -51,7 +51,7 @@ $uri->withHost('example.com'); //thrown an InvalidArgumentException
 
 ## Properties
 
-The data URI class exposes the following methods:
+In addition to all the methods and properties exposes by all URI objects, The data URI class exposes the following specific methods:
 
 - `getMimeType`: This method returns the Data URI current mimetype;
 - `getParameters`: This method returns the parameters associated with the mediatype;
@@ -99,7 +99,7 @@ $newUri = $uri->withParameters('charset=utf-8');
 echo $newUri; //returns 'data:text/plain;charset=utf-8,Hello%20World%21'
 ~~~
 
-Of note the data should be urlencoded if needed.
+<p class="message-notice">Of note the data should be urlencoded if needed.</p>
 
 ### Transcode the data between its binary and ascii representation
 
@@ -124,7 +124,7 @@ Since a data URI is a file per se it is possible to save it to a specified path 
 
 By default the open mode is set to `w`. If for any reason the file is not accessible a `RuntimeException` will be thrown.
 
-When successfully save, the method returns the `SplFileObject` object used to save the data-uri data.
+The method returns the `SplFileObject` object used to save the data-uri data for further analysis/manipulation if you want.
 
 ~~~php
 use League\Uri\Schemes\Data as DataUri;
