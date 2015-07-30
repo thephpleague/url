@@ -7,10 +7,6 @@ title: Version 4 - Changelog
 
 All Notable changes to `League\Url` version 4 will be documented in this file
 
-#Changelog
-
-All Notable changes to `League\Url` will be documented in this file
-
 ## Next
 
 ### Added
