@@ -151,12 +151,9 @@ use InvalidArgumentException;
 class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInterface
 {
     /**
-     * {@inheritdoc}
-     */
-    protected $data = [];
-
-    /**
      * The path separator as described in RFC6068
+     *
+     * Must be static to work with the named constructors methods
      */
     protected static $separator = ',';
 
@@ -164,6 +161,8 @@ class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInte
      * validate the path string
      * This method is called when a manipulation method is applied
      * to validate the resulting manipulation
+     *
+     * @param string $emails
      */
     protected function init($emails)
     {
@@ -183,6 +182,9 @@ class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInte
     /**
      * format the string before manipulation methods
      * not needed in case of a Opaque URI
+     *
+     * @param string $str
+     * @param int    $type
      */
     protected static function formatComponentString($str, $type)
     {
@@ -224,6 +226,9 @@ class Mailto extends AbstractUri implements MailtoInterface
 {
     /**
      * Create a new instance of URI
+     *
+     * This method override the Parent constructor method
+     * And make sure the path is typehinted agaisnt the MailtoPathInterface
      *
      * @param Interfaces\Components\Scheme   $scheme
      * @param Interfaces\Components\UserInfo $userInfo
@@ -267,6 +272,9 @@ class Mailto extends AbstractUri implements MailtoInterface
 
     /**
      * Create a new instance from a hash of parse_url parts
+     *
+     * This method override the Parent constructor method
+     * And make sure the path is constructed with a MailtoPath instance
      *
      * @param array $components
      *
@@ -334,6 +342,8 @@ class Mailto extends AbstractUri implements MailtoInterface
     {
         return $this->withProperty('path', $this->path->prepend($email));
     }
+
+    ...
 }
 ~~~
 
@@ -346,6 +356,8 @@ $mailto = Mailto::createFromEmails(['foo@example.com', 'info@thephpleague.com'])
 $mailto->__toString(); //will return 'mailto:foo@xexample.com,info@thephpleague.com';
 
 echo $mailto->path->getEmail(0); //returns 'foo@example.com'
+
+var_dump($mailto->path->toArray()); //returns an array of all mails
 
 $newEmail = $mailto->appendEmail('greg@theguy.com');
 $newEmail->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com,greg@theguy.com';
