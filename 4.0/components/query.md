@@ -111,7 +111,7 @@ echo $query; //display 'foo=bar&p=yolo&z'
 use League\Uri\Ftp as FtpUri;
 
 $uri = FtpUri::createFromComponents(
-    FtpUri::parse('http://url.thephpleague.com/path/to/here?')
+    parse_url('http://url.thephpleague.com/path/to/here?')
 );
 $query = $uri->query; //$query is a League\Uri\Components\Query object;
 ~~~

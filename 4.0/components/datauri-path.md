@@ -9,8 +9,6 @@ The library provides a `League\Uri\Components\DataPath` class to ease complex pa
 
 ## Instantiation
 
-## Path creation
-
 ### Using the default constructor
 
 Just like any other component, a new `League\Uri\Components\DataPath` object can be instantiated using its default constructor.

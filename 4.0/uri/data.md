@@ -19,7 +19,7 @@ use League\Uri\Schemes\Data as DataUri;
 $uri = DataUri::createFromString('data:text/plain;charset=us-ascii,Hello%20World%21');
 echo $uri; //returns 'data:text/plain;charset=us-ascii,Hello%20World%21'
 
-DataUri::createFromComponents(DataUri::parse('http://www.example.com'));
+DataUri::createFromComponents(parse_url('http://www.example.com'));
 //will throw an InvalidArgumentException
 ~~~
 

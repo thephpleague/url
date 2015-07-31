@@ -36,7 +36,7 @@ You can also get a `UserInfo` object from a Hierarchical URI object:
 ~~~php
 use League\Uri\Schemes\Ws as WsUri;
 
-$uri = WsUri::createFromComponents(WsUri::parse('http://john:doe@example.com:81/'));
+$uri = WsUri::createFromComponents(parse_url('http://john:doe@example.com:81/'));
 $userInfo = $uri->userInfo; //return a League\Uri\Components\UserInfo object
 echo $userInfo; // display 'john:doe'
 ~~~

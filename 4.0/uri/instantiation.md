@@ -33,16 +33,6 @@ $components = parse_url('wss://foo.example.com/path/to/index.php?param=value');
 $uri = WsUri::createFromComponents($components);
 ~~~
 
-Because PHP's `parse_url` functions contains some bugs the `Uri` object uses a bug fixed version. So the above code should be safely rewrote using the following code:
-
-~~~php
-use League\Uri\Schemes\Ws as WsUri;
-
-$components = WsUri::parse('wss://foo.example.com/path/to/index.php?param=value');
-
-$uri = HttpUri::createFromComponents($components);
-~~~
-
 ### Instantiation from its default constructor
 
 Even thought it is possible, it is not recommend to instantiate any URI object using the default constructor. Since every URI may be instantiated differently. It is easier to always use the documentated named constructors.
