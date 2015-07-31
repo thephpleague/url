@@ -20,7 +20,8 @@
         User Information: '/4.0/components/userinfo/'
         Host: '/4.0/components/host/'
         Port: '/4.0/components/port/'
-        Path: '/4.0/components/path/'
+        Hierarchical Path: '/4.0/components/hierarchical-path/'
+        Data Path: '/4.0/components/datauri-path/'
         Query: '/4.0/components/query/'
     Services:
         Formatter: '/4.0/services/formatter/'

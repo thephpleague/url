@@ -223,13 +223,6 @@ use League\Uri\Schemes\Generic\AbstractUri;
 class Mailto extends AbstractUri implements MailtoInterface
 {
     /**
-     * The specific path object
-     *
-     * @var Path
-     */
-    protected $path;
-
-    /**
      * Create a new instance of URI
      *
      * @param Interfaces\Components\Scheme   $scheme
@@ -307,19 +300,12 @@ class Mailto extends AbstractUri implements MailtoInterface
      */
     public static function createFromEmails($emails)
     {
-        if ($emails instanceof Traversable) {
-            $emails = iterator_to_array($emails, false);
-        }
-        if (! is_array($emails)) {
-            throw new InvalidArgumentException('emails must be an array or a Traversable object');
-        }
-
         return new static(
             new Components\Scheme('mailto'),
             new Components\UserInfo(),
             new Components\Host(),
             new Components\Port(),
-            MailtPath::createFromEmails($emails),
+            MailtPath::createFromArray($emails),
             new Components\Query(),
             new Components\Fragment()
         );

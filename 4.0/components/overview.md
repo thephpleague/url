@@ -8,10 +8,13 @@ title: URI Components and Parts
 An URI string is composed of 8 components and 5 parts:
 
 ~~~
-foo://example.com:8042/over/there?name=ferret#nose
-\_/   \______________/\_________/ \_________/ \__/
- |           |            |            |        |
-scheme   authority       path        query   fragment
+ foo://example.com:8042/over/there?name=ferret#nose
+ \_/   \______________/\_________/ \_________/ \__/
+  |           |            |            |        |
+scheme     authority       path        query   fragment
+  |   _____________________|__
+ / \ /                        \
+ urn:example:animal:ferret:nose
 ~~~
 
 The URI authority part in itself can be composed of up to 3 parts.
@@ -32,21 +35,13 @@ captain:future
   user   pass
 ~~~
 
-Apart from the authority part, each component and part of the URI is manageable through a dedicated class:
+Apart from the authority part, each component and part of the URI is manageable through a dedicated interface:
 
-- The `League\Uri\Components\Scheme` class handles the URI scheme component;
-- The `League\Uri\Components\Components\UserInfo` class handles the URI userinfo part;
-- The `League\Uri\Components\User` class handles the URI user components;
-- The `League\Uri\Components\Pass` class handles the URI pass components;
-- The `League\Uri\Components\Host` class handles the URI host component;
-- The `League\Uri\Components\Port` class handles the URI port component;
-- The `League\Uri\Components\Path` class handles the URI path component;
-- The `League\Uri\Components\Query` class handles the URI query component;
-- The `League\Uri\Components\Fragment` class handles the URI fragment component;
+- The `League\Uri\Interfaces\Components\UriPart` handles any URI part;
+- The `League\Uri\Interfaces\Components\Component` extends the UriPart interface to handle components;
+- The `League\Uri\Interfaces\Components\LiteralAccess` to enable access to the literal representation of the URI component;
 
-Those classes share common methods to view and update their values.
-
-<p class="message-notice">Just like the URI objects, they are defined as immutable value objects.</p>
+In the library, all concrete classes that represent a URI part or component implements one or several of those interfaces. Just like the URI objects, these classes are defined as immutable value objects.
 
 ## URI part instantiation
 
@@ -59,7 +54,7 @@ They all expect:
 
 <p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
 
-<p class="message-warning">No component delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
+<p class="message-warning">No component or uri part delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
 
 ~~~php
 use League\Uri\Components;
@@ -70,7 +65,8 @@ $pass     = new Components\Pass('doe');
 $userInfo = new Components\UserInfo($user, $pass);
 $host     = new Components\Host('127.0.0.1');
 $port     = new Components\Port(443);
-$path     = new Components\Path('/foo/bar/file.csv');
+$path     = new Components\HierarchicalPath('/foo/bar/file.csv');
+$dataPath = new Components\DataPath('data:,');
 $query    = new Components\Query('q=url&site=thephpleague');
 $fragment = new Components\Fragment('paragraphid');
 ~~~
@@ -139,9 +135,7 @@ echo $user->getLiteral(); //displays 'foo/bar'
 echo $user->__toString(); //displays 'foo%2Fbar'
 ~~~
 
-<p class="message-warning">The <code>getLiteral</code> method is not supported by the: <code>UserInfo</code> object.</p>
-
-<p class="message-notice">Only the following components support the <code>getLiteral</code> methods: <code>Scheme</code>, <code>User</code>, <code>Pass</code>, <code>Fragment</code>.</p>
+<p class="message-notice">Only the following components support the <code>getLiteral</code> methods: <code>Scheme</code>, <code>User</code>, <code>Pass</code>, <code>Host</code>, <code>Fragment</code>.</p>
 
 ## URI parts comparison
 
@@ -192,5 +186,5 @@ For more complex parts/components care has be taken to provide more useful metho
 * `League\Uri\Components\UserInfo` which handles [the URI user information part](/4.0/components/userinfo/);
 * `League\Uri\Components\Host` which handles [the host component](/4.0/components/host/);
 * `League\Uri\Components\Port` which handles [the port component](/4.0/components/port/);
-* `League\Uri\Components\Path` which handles [the path component](/4.0/components/path/);
+* `League\Uri\Components\HierarchicalPath` which handles [the path component](/4.0/components/path-hierarchical/);
 * `League\Uri\Components\Query` which handles [the query component](/4.0/components/query/);
