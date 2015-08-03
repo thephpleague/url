@@ -24,6 +24,7 @@
         Data Path: '/4.0/components/datauri-path/'
         Query: '/4.0/components/query/'
     Services:
+        Parser: '/4.0/services/parser/'
         Formatter: '/4.0/services/formatter/'
 '3.0':
     Getting Started:
