@@ -9,12 +9,14 @@
         Instantiation: '/4.0/uri/instantiation/'
         Properties: '/4.0/uri/properties/'
         Manipulation: '/4.0/uri/manipulation/'
-    Scheme specific Uri:
-        Data URI: '/4.0/uri/data/'
+        Extension Guide: '/4.0/uri/extension/'
+    Hierarchical Uri:
         FTP URI: '/4.0/uri/ftp/'
         Http URIs: '/4.0/uri/http/'
         Websocket URIs: '/4.0/uri/ws/'
-        Extension Guide: '/4.0/uri/extension/'
+        Manipulation: '/4.0/uri/hierarchical-manipulation/'
+    Generic Uri:
+        Data URI: '/4.0/uri/data/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'
         User Information: '/4.0/components/userinfo/'

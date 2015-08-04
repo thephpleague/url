@@ -3,7 +3,7 @@ layout: default
 title: URIs extension
 ---
 
-# Generic URI class creation
+# Generic URI
 
 Out of the box the library provides the following specialized classes:
 
@@ -218,8 +218,19 @@ Now let's do the same for the main `Mailto` class. This time we will built by ex
 ~~~php
 namespace Example;
 
-use League\Uri\Components;
-use League\Uri\Interfaces;
+use League\Uri\Components\Fragment;
+use League\Uri\Components\Host;
+use League\Uri\Components\Port;
+use League\Uri\Components\Query;
+use League\Uri\Components\Scheme;
+use League\Uri\Components\UserInfo;
+use League\Uri\Interfaces\Components\Fragment as FragmentInterface;
+use League\Uri\Interfaces\Components\Host as HostInterface;
+use League\Uri\Interfaces\Components\Port as PortInterface;
+use League\Uri\Interfaces\Components\Query as QueryInterface;
+use League\Uri\Interfaces\Components\Scheme as SchemeInterface;
+use League\Uri\Interfaces\Components\UserInfo as UserInfoInterface;
+use League\Uri\Interfaces\Schemes\Uri;
 use League\Uri\Schemes\Generic\AbstractUri;
 
 class Mailto extends AbstractUri implements MailtoInterface
@@ -230,22 +241,22 @@ class Mailto extends AbstractUri implements MailtoInterface
      * This method override the Parent constructor method
      * And make sure the path is typehinted agaisnt the MailtoPathInterface
      *
-     * @param Interfaces\Components\Scheme   $scheme
-     * @param Interfaces\Components\UserInfo $userInfo
-     * @param Interfaces\Components\Host     $host
-     * @param Interfaces\Components\Port     $port
-     * @param MailtoPathInterface            $path
-     * @param Interfaces\Components\Query    $query
-     * @param Interfaces\Components\Fragment $fragment
+     * @param SchemeInterface     $scheme
+     * @param UserInfoInterface   $userInfo
+     * @param HostInterface       $host
+     * @param PortInterface       $port
+     * @param MailtoPathInterface $path
+     * @param QueryInterface      $query
+     * @param FragmentInterface   $fragment
      */
     public function __construct(
-        Interfaces\Components\Scheme $scheme,
-        Interfaces\Components\UserInfo $userInfo,
-        Interfaces\Components\Host $host,
-        Interfaces\Components\Port $port,
+        SchemeInterface $scheme,
+        UserInfoInterface $userInfo,
+        HostInterface $host,
+        PortInterface $port,
         MailtoPathInterface $path,
-        Interfaces\Components\Query $query,
-        Interfaces\Components\Fragment $fragment
+        QueryInterface $query,
+        FragmentInterface $fragment
     ) {
         $this->scheme = $scheme;
         $this->userInfo = $userInfo;
@@ -286,13 +297,13 @@ class Mailto extends AbstractUri implements MailtoInterface
     {
         $components = static::formatComponents($components);
         return new static(
-            new Components\Scheme($components['scheme']),
-            new Components\UserInfo($components['user'], $components['pass']),
-            new Components\Host($components['host']),
-            new Components\Port($components['port']),
+            new Scheme($components['scheme']),
+            new UserInfo($components['user'], $components['pass']),
+            new Host($components['host']),
+            new Port($components['port']),
             new MailtPath($components['path']),
-            new Components\Query($components['query']),
-            new Components\Fragment($components['fragment'])
+            new Query($components['query']),
+            new Fragment($components['fragment'])
         );
     }
 
@@ -309,13 +320,13 @@ class Mailto extends AbstractUri implements MailtoInterface
     public static function createFromEmails($emails)
     {
         return new static(
-            new Components\Scheme('mailto'),
-            new Components\UserInfo(),
-            new Components\Host(),
-            new Components\Port(),
+            new Scheme('mailto'),
+            new UserInfo(),
+            new Host(),
+            new Port(),
             MailtPath::createFromArray($emails),
-            new Components\Query(),
-            new Components\Fragment()
+            new Query(),
+            new Fragment()
         );
     }
 

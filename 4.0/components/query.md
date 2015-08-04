@@ -7,87 +7,6 @@ title: The Query Component
 
 The library provides a `League\Uri\Components\Query` class to ease complex query manipulation.
 
-## Parsing and building the query string
-
-<p class="message-warning">To preserve the query string, the library does not rely on PHP's <code>parse_str</code> and <code>http_build_query</code> functions.</p>
-
-Instead, the `League\Uri\Components\Query` object uses internally and exposes two public static methods that can be used to parse a query string into an array of key value pairs. And conversely creates a valid query string from the resulting array.
-
-### Parsing the query string into an array
-
-- `parse_str` replaces any invalid characters from the query string pair key that can not be included in a PHP variable name by an underscore `_`.
-- `parse_str` merges query string values.
-
-These behaviors, specific to PHP, may be considered to be a data loss transformation in other languages.
-
-~~~php
-$query_string = 'toto.foo=bar&toto.foo=baz';
-parse_str($query_string, $arr);
-// $arr is an array containing ["toto_foo" => "baz"]
-~~~
-
-To avoid these transformations, the `Query::parse` static method returns an `array` representation of the query string which preserve key/value pairs. The method expects at most 3 arguments:
-
-- The query string;
-- The query string separator, by default it is set to `&`;
-- The query string encryption. It can be one of PHP constant `PHP_QUERY_RFC3986` or `PHP_QUERY_RFC1738` or `false` if you don't want any encryption. By default it is set to PHP constants `PHP_QUERY_RFC3986`
-
-~~~php
-use League\Uri\Components\Query;
-
-$query_string = 'toto.foo=bar&toto.foo=baz';
-$arr = Query::parse($query_string, '&', PHP_RFC3986);
-// $arr is an array containing ["toto.foo" => [["bar", "baz"]]
-~~~
-
-### Building the query string from an array
-
-`http_build_query` always adds array numeric prefix to the query string even when they are not needed
-
-using PHP's `parse_str`
-
-~~~php
-$query_string = 'foo[]=bar&foo[]=baz';
-parse_str($query_string, $arr);
-// $arr = ["foo" => ['bar', 'baz']];
-
-$res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
-// $res equals foo[0]=bar&foo[1]=baz
-~~~
-
-or using `Query::parse`
-
-~~~php
-use League\Uri\Components\Query;
-
-$query_string = 'foo[]=bar&foo[]=baz';
-$arr = Query::parse($query_string, '&', PHP_RFC3986);
-// $arr = ["foo[]" => ['bar', 'baz']];
-
-$res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
-// $res equals foo[][0]=bar&oo[][1]=baz
-~~~
-
-The `Query::build` static method returns and preserves string representation of the query string from the `Query::parse` array result. the method expects at most 3 arguments:
-
-- A valid `array` of data to convert;
-- The query string separator, by default it is set to `&`;
-- The query string encryption. It can be one of PHP constant `PHP_QUERY_RFC3986` or `PHP_QUERY_RFC1738` or `false` if you don't want any encryption. By default it is set to PHP constants `PHP_QUERY_RFC3986`
-
-~~~php
-use League\Uri\Components\Query;
-
-$query_string = 'foo[]=bar&foo[]=baz';
-$arr = Query::parse($query_string, '&', PHP_RFC3986);
-var_export($arr);
-// $arr include the following data ["foo[]" => ['bar', 'baz']];
-
-$res = Query::build($arr, '&', false);
-// $res equals 'foo[]=bar&foo[]=baz'
-~~~
-
-No key indexes is added and the query string is safely recreated
-
 ## Query creation
 
 ### Using the default constructor
@@ -108,17 +27,17 @@ echo $query; //display 'foo=bar&p=yolo&z'
 ### Using a League Uri object
 
 ~~~php
-use League\Uri\Ftp as FtpUri;
+use League\Uri\Ws as WsUri;
 
-$uri = FtpUri::createFromComponents(
-    parse_url('http://url.thephpleague.com/path/to/here?')
+$uri = WsUri::createFromComponents(
+    parse_url('wss://url.thephpleague.com/path/to/here?foo=bar')
 );
 $query = $uri->query; //$query is a League\Uri\Components\Query object;
 ~~~
 
 ### Using a named constructor
 
-It is possible to create a `Query` object using an `array` or a `Traversable` object with the `Query::createFromArray` method. The submitted data must provide an array which preserved key/value pairs similar to the result of `Query::parse`.
+It is possible to create a `Query` object using an `array` or a `Traversable` object with the `Query::createFromArray` method. The submitted data must provide an array which preserved key/value pairs similar to the result of [Parser::parseQuery](/4.0/services/parser/#parsing-the-query-string-into-an-array).
 
 - If a given parameter value is `null` it will be rendered without any value in the resulting query string;
 - If a given parameter value is an empty string il will be rendered without any value **but** with a `=` sign appended to it;
@@ -149,7 +68,7 @@ $query->getUriComponent(); //return '?foo=bar&p=y%20olo&z'
 
 ### Array representation
 
-A query can be represented as an array of its internal parameters. Through the use of the `Query::toArray` method the class returns the object array representation. This method uses `Query::parse` to create the array.
+A query can be represented as an array of its internal parameters. Through the use of the `Query::toArray` method the class returns the object array representation. This method uses `Parser::parseQuery` to create the array.
 
 ~~~php
 use League\Uri\Components\Query;
@@ -270,7 +189,7 @@ $newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 // the 'r' parameter was added
 ~~~
 
-An `array` or a `Traversable` object similar to the result of the `Query::parse` method:
+An `array` or a `Traversable` object similar to the result of the `Parser::parseQuery` method:
 
 ~~~php
 use League\Uri\Components\Query;
