@@ -40,7 +40,6 @@ The FTP typecode information can also be modified using the `withTypecode` metho
 ~~~php
 use League\Uri\Schemes\Ftp as FpUri;
 
-//don't forget to provide the $_SERVER array
 $uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png');
 $newUri = $uri->withTypecode('a');
 $newUri->__toString(); //returns 'ftp://thephpleague.com/path/to/image.png;type=a'
@@ -51,7 +50,6 @@ $newUri->__toString(); //returns 'ftp://thephpleague.com/path/to/image.png;type=
 ~~~php
 use League\Uri\Schemes\Ftp as FpUri;
 
-//don't forget to provide the $_SERVER array
 $uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png;type=a');
 $newUri = $uri->withTypecode('d');
 $newUri->__toString(); //returns 'ftp://thephpleague.com/path/to/image.png;type=d'
@@ -62,8 +60,31 @@ $newUri->__toString(); //returns 'ftp://thephpleague.com/path/to/image.png;type=
 ~~~php
 use League\Uri\Schemes\Ftp as FpUri;
 
-//don't forget to provide the $_SERVER array
 $uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png;type=d');
 $newUri = $uri->withTypecode('');
 $newUri->__toString(); //returns 'ftp://thephpleague.com/path/to/image.png'
+~~~
+
+<p class="message-warning">When modifying the typecode the class only validate the return string. Additional check should be done to ensure that the path is valid for a given typecode.</p>
+
+## Detecting the file extension
+
+Because of the presence of the typecode, The FTP class comes with a special `Ftp::getExtension` method which does take into account the file typecode if present.
+
+~~~php
+use League\Uri\Schemes\Ftp as FpUri;
+
+$uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png;type=d');
+$uri->getExtension(); //returns 'png'
+$uri->path->getExtension(); //returns 'png;type=d'
+~~~
+
+Conversely the class takes into account the typecode presence when updating the file extension.
+
+~~~php
+use League\Uri\Schemes\Ftp as FpUri;
+
+$uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png;type=d');
+$newUri = $uri->withExtension('gif');
+$newUri->__toString(); //returns 'ftp://thephpleague.com/path/to/image.gif;type=d'
 ~~~
