@@ -98,18 +98,6 @@ echo $newUri; //display "http://www.example.com/sky.php"
 
 `Uri::filterPath` is a proxy to simplify the use of [HierarchicalPath::filter](/4.0/components/hierarchical-path/#filter-segments) on a `Url` object.
 
-### Remove dot segments
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/path/../to/the/./sky/");
-$newUri = $uri->normalize();
-echo $newUri; //display "http://www.example.com/to/the/sky/"
-~~~
-
-`Uri::normalize` is a proxy to simplify the use of [HierarchicalPath::normalize](/4.0/components/hierarchical-path/#removing-dot-segments) on a `Url` object.
-
 ### Remove internal empty segments
 
 ~~~php
