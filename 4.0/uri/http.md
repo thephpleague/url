@@ -45,3 +45,27 @@ echo $uri->withScheme('')->withHost('')->__toString(); //displays "/uri/"
 ## Relation with PSR-7
 
 The `Http` class is compliant with the PSR-7 `UriInterface` interface. This means that you can use this class anytime you need a PSR-7 compliant URI object.
+
+## Resolving a relative URI
+
+The Http class provides the mean for resolving an URI as a browser would for an anchor tag. When performing URI resolution the returned URI is normalized according to RFC3986 rules. The uri to resolved must be another `Uri` object.
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUri = $uri->resolve(HttpUri::createFromString("./p#~toto"));
+echo $newUri; //displays "http://www.example.com/hello/p#~toto"
+~~~
+
+<p class="message-notice">If you try to resolve two Uri object which do not share the same scheme. No normalization will occur and the submitted URI object will be return unchanged.</p>
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Schemes\Http as WsUri;
+
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+$newUri = $uri->resolve(WsUri::createFromString("./p#~toto"));
+echo $newUri; //displays "./p#~toto"
+~~~
+

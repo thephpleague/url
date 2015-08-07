@@ -46,11 +46,9 @@ class Telnet extends AbstractHierarchicalUri
      */
     protected function isValid()
     {
-        if (!$this->fragment->isEmpty()) {
-            return false;
-        }
-
-        return $this->isValidHierarchicalUri();
+        return $this->fragment->isEmpty()
+            && $this->isValidGenericUri()
+            && $this->isValidHierarchicalUri();
     }
 }
 ~~~
@@ -77,7 +75,7 @@ The mailto scheme URI is specific because :
 - its path is made of urlencoded emails separated by a comma;
 - it accepts any email header as query string parameters;
 
-These general rules are taken from quickly reading [the mailto RFC6068](http://tools.ietf.org/html/rfc6068). 
+These general rules are taken from quickly reading [the mailto RFC6068](http://tools.ietf.org/html/rfc6068).
 
 Before coding anything we should:
 
@@ -150,6 +148,8 @@ use InvalidArgumentException;
 
 class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInterface
 {
+    use RemoveDotSegmentsTrait;
+
     /**
      * The path separator as described in RFC6068
      *
@@ -230,11 +230,13 @@ use League\Uri\Interfaces\Components\Port as PortInterface;
 use League\Uri\Interfaces\Components\Query as QueryInterface;
 use League\Uri\Interfaces\Components\Scheme as SchemeInterface;
 use League\Uri\Interfaces\Components\UserInfo as UserInfoInterface;
-use League\Uri\Interfaces\Schemes\Uri;
 use League\Uri\Schemes\Generic\AbstractUri;
+use League\Uri\Schemes\Generic\PathModifierTrait;
 
 class Mailto extends AbstractUri implements MailtoInterface
 {
+    use PathModifierTrait;
+
     /**
      * Create a new instance of URI
      *
@@ -278,7 +280,15 @@ class Mailto extends AbstractUri implements MailtoInterface
      */
     protected function isValid()
     {
-        return $this->__toString() === 'mailto:'.$this->path->getUriComponent().this->query->getUriComponent();
+        if ($this->scheme->getContent() !== 'mailto') {
+            throw new InvalidArgumentException(
+                'The submitted scheme is invalid for the class '.get_class($this)
+            );
+        }
+
+        $expected = 'mailto:'.$this->path->getUriComponent().this->query->getUriComponent();
+
+        return $this->isValidGenericUri() && $this->__toString() === $expected;
     }
 
     /**
@@ -301,7 +311,7 @@ class Mailto extends AbstractUri implements MailtoInterface
             new UserInfo($components['user'], $components['pass']),
             new Host($components['host']),
             new Port($components['port']),
-            new MailtPath($components['path']),
+            new MailtoPath($components['path']),
             new Query($components['query']),
             new Fragment($components['fragment'])
         );
@@ -324,7 +334,7 @@ class Mailto extends AbstractUri implements MailtoInterface
             new UserInfo(),
             new Host(),
             new Port(),
-            MailtPath::createFromArray($emails),
+            MailtoPath::createFromArray($emails),
             new Query(),
             new Fragment()
         );
