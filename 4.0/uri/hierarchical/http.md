@@ -42,6 +42,8 @@ $uri = HttpUri::createFromString('http://thephpleague.com/uri/');
 echo $uri->withScheme('')->withHost('')->__toString(); //displays "/uri/"
 ~~~
 
+<p class="message-notice">When an invalid URI object is created a <code>RuntimeException</code> exception is thrown</p>
+
 ## Relation with PSR-7
 
 The `Http` class is compliant with the PSR-7 `UriInterface` interface. This means that you can use this class anytime you need a PSR-7 compliant URI object.

@@ -9,7 +9,9 @@ To ease working with FTP URIs, the library comes bundle with a URI specific FTP 
 
 ## Validating a FTP URI
 
-A FTP URI can not contains a query and or a fragment component. Any attempt to modify the empty query or fragment components attached to an FTP Uri object will throw an `InvalidArgumentException` exception
+A FTP URI can not contains a query and or a fragment component.
+
+<p class="message-notice">Adding contents to the fragment or query components throws an <code>RuntimeException</code> exception</p>
 
 ~~~php
 use League\Uri\Schemes\Ftp as FpUri;

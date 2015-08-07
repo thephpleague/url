@@ -11,12 +11,14 @@
         Manipulation: '/4.0/uri/manipulation/'
         Extension Guide: '/4.0/uri/extension/'
     Hierarchical Uri:
-        FTP URI: '/4.0/uri/ftp/'
-        Http URIs: '/4.0/uri/http/'
-        Websocket URIs: '/4.0/uri/ws/'
-        Manipulation: '/4.0/uri/hierarchical-manipulation/'
+        FTP URI: '/4.0/uri/hierarchical/ftp/'
+        Http URIs: '/4.0/uri/hierarchical/http/'
+        Websocket URIs: '/4.0/uri/hierarchical/ws/'
+        Manipulation: '/4.0/uri/hierarchical/manipulation/'
+        Extension Guide: '/4.0/uri/hierarchical/extension/'
     Generic Uri:
-        Data URI: '/4.0/uri/data/'
+        Data URI: '/4.0/uri/generic/data-uri/'
+        Extension Guide: '/4.0/uri/generic/extension/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'
         User Information: '/4.0/components/userinfo/'
