@@ -26,12 +26,12 @@ To avoid these transformations, the `QueryParser::parse` method returns an `arra
 
 - The query string;
 - The query string separator, by default it is set to `&`;
-- The query string encryption. It can be:
+- The query string encoding. It can be:
     - `PHP_QUERY_RFC3986`
     - `PHP_QUERY_RFC1738`
-    - `false` if you don't want any encryption.
+    - `false` if you don't want any encoding.
 
-<p class="message-notice">By default or if the submitted encryption is invalid the encryption is set to PHP constants <code>PHP_QUERY_RFC3986</code></p>
+<p class="message-notice">By default or if the submitted encoding is invalid the encoding is set to PHP constant <code>PHP_QUERY_RFC3986</code></p>
 
 ~~~php
 use League\Uri\QueryParser;
@@ -71,16 +71,16 @@ $res = rawurldecode(http_build_query($arr, '', PHP_QUERY_RFC3986));
 // $res equals foo[][0]=bar&oo[][1]=baz
 ~~~
 
-The `QueryParser::build` method returns and preserves string representation of the query string from the `QueryParser::parse` array result. the method expects at most 3 arguments:
+The `QueryParser::build` method returns and preserves string representation of the query string from the `QueryParser::parse` array result. The method expects at most 3 arguments:
 
 - A valid `array` of data to convert;
 - The query string separator, by default it is set to `&`;
-- The query string encryption. It can be:
+- The query string encoding. It can be:
     - `PHP_QUERY_RFC3986`
     - `PHP_QUERY_RFC1738`
-    - `false` if you don't want any encryption.
+    - `false` if you don't want any encoding.
 
-<p class="message-notice">By default or if the submitted encryption is invalid the encryption is set to PHP constants <code>PHP_QUERY_RFC3986</code></p>
+<p class="message-notice">By default or if the submitted encoding is invalid the encoding is set to PHP constant <code>PHP_QUERY_RFC3986</code></p>
 
 ~~~php
 use League\Uri\QueryParser;
