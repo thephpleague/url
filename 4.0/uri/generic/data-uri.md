@@ -110,9 +110,9 @@ use League\Uri\Schemes\Data as DataUri;
 
 $uri = DataUri::createFromString('data:text/plain;charset=us-ascii,Hello%20World%21');
 $uri->isBinaryData(); // return false;
-$newUri = $uri->toBinary();
+$newUri = $uri->dataToBinary();
 $newUri->isBinaryData(); //return true;
-$newUri->toAscii()->sameValueAs($uri); //return true;
+$newUri->dataToAscii()->sameValueAs($uri); //return true;
 ~~~
 
 ## Saving the DataURI

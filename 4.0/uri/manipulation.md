@@ -49,13 +49,14 @@ Since every update returns an instance of `League\Uri\Schemes\Generic\AbstractHi
 
 ## Partial components modifications
 
-Often what you really want is to partially update one of the URI component. Using the current public API it is possible but requires several intermediary steps. For instance here"s how you would update the query string from a given URI object:
+Often what you really want is to partially update one of the URI component. Using the current public API it is possible but requires several intermediary steps. For instance here's how you would update the query string from a given URI object:
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Components\Query;
 
 $uri         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
-$uriQuery    = $uri->query;
+$uriQuery    = new Query($uri->getQuery());
 $updateQuery = $uriQuery->merge(["foo" => "bar", "taz" => ""]);
 $newUri      = $uri->withQuery($updateQuery->__toString());
 echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
@@ -202,7 +203,7 @@ echo $newUri; //display "http://[fe80::1]/path/to/the/sky.php"
 use League\Uri\Schemes\Http as HttpUri;
 
 $uri    = HttpUri::createFromString("http://xn--p1ai.ru/path/to/the/sky.php");
-$newUri = $uri->toUnicode();
+$newUri = $uri->hostToUnicode();
 echo $newUri; //display "http://рф.ru/path/to/the/sky.php"
 ~~~
 
@@ -214,7 +215,7 @@ echo $newUri; //display "http://рф.ru/path/to/the/sky.php"
 use League\Uri\Schemes\Http as HttpUri;
 
 $uri    = HttpUri::createFromString("http://рф.ru/path/to/the/sky.php");
-$newUri = $uri->toAscii();
+$newUri = $uri->hostToAscii();
 echo $newUri; //display "http://xn--p1ai.ru/path/to/the/sky.php"
 ~~~
 
