@@ -31,18 +31,17 @@ echo $uri; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
 To completely replace one of the URI part you can use the `Psr\Http\Message\UriInterface` interface modifying methods exposed by the object
 
 ~~~php
-use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Schemes\Ws as WsUri;
 
-$uri = HttpUri::createFromString("ftp://thephpleague.com/fr/")
-    ->withScheme("http")
+$uri = WsUri::createFromString("ws://thephpleague.com/fr/")
+    ->withScheme("wss")
     ->withUserInfo("foo", "bar")
     ->withHost("www.example.com")
     ->withPort(81)
     ->withPath("/how/are/you")
-    ->withQuery("foo=baz")
-    ->withFragment("title");
+    ->withQuery("foo=baz");
 
-echo $uri; //displays http://foo:bar@www.example.com:81/how/are/you?foo=baz#title
+echo $uri; //displays wss://foo:bar@www.example.com:81/how/are/you?foo=baz
 ~~~
 
 Since every update returns an instance of `League\Uri\Schemes\Generic\AbstractHierarchical`, you can chain each setter methods to simplify URI creation and/or modification.
@@ -57,7 +56,7 @@ use League\Uri\Components\Query;
 
 $uri         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
 $uriQuery    = new Query($uri->getQuery());
-$updateQuery = $uriQuery->merge(["foo" => "bar", "taz" => ""]);
+$updateQuery = $uriQuery->merge("foo=bar&taz=");
 $newUri      = $uri->withQuery($updateQuery->__toString());
 echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
 ~~~

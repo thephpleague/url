@@ -326,3 +326,5 @@ $mailWithSUbject->__toString(); //will return 'mailto:foo@example.com,info@theph
 ~~~
 
 There are still room for improvement and I'll leave that to you to strenghen the above code.
+
+To create hierarchical URI objects you should check the [Hierarchical URI extension guide](/4.0/uri/hierarchical/extension/)

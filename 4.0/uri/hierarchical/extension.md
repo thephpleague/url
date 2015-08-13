@@ -53,3 +53,5 @@ Telnet::createFromString('http://example.org'): //will throw an InvalidArgumentE
 ~~~
 
 Of course you are free to add more methods to fulfill your own requirements. But remember that all general URI [properties](/4.0/uri/properties/) and [methods](/4.0/uri/manipulation/) as well as [specific hierarchical methods](/4.0/uri/hierarchical/manipulation/) already usable with these simple steps.
+
+To create more generic URI objects you should check the [Generic URI extension guide](/4.0/uri/generic/extension/)
