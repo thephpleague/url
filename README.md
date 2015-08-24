@@ -14,6 +14,10 @@ This package is compliant with [PSR-2][], and [PSR-4][].
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 
+This repository is for Url 3.x., Uri 4.x, the new version, will be released and made available at https://github.com/thephpleague/uri. The documentation for version 4+ can be found at http://url.thephpleague.com/4.0/.
+
+League\Url 3 is only maintained for bug and security fixes. League\Url 3 will be EOL when League\Uri will be released.
+
 Requirements
 -------
 
@@ -25,7 +29,7 @@ Install
 Install `Url` using Composer.
 
 ```
-composer require league/url:~3.0
+composer require league/url
 ```
 
 This will edit (or create) your `composer.json` file and automatically choose the most recent version in the 3.x serie.
