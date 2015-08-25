@@ -178,7 +178,7 @@ echo $newUri; //display "http://www.thephpleague.com/path/to/the/sky.php"
 use League\Uri\Schemes\Http as HttpUri;
 
 $uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUri = $uri->withoutLabels([0]);
+$newUri = $uri->withoutLabels([2]);
 echo $newUri; //display "http://example.com/path/to/the/sky.php"
 ~~~
 

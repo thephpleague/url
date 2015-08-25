@@ -51,7 +51,8 @@ A host is a collection of labels delimited by the host delimiter `.`. So it is p
 
 The method expects at most 2 arguments:
 
-- The first required argument must be a collection of label (an `array` or a `Traversable` object)
+- The first required argument must be a collection of label (an `array` or a `Traversable` object). **The labels must be ordered hierarchically, this mean that the array should have the top-level domain in its first entry**. 
+
 - The second optional argument, a `Host` constant, tells whether this is an <abbr title="Fully Qualified Domain Name">FQDN</abbr> or not:
     - `Host::IS_ABSOLUTE` creates an a fully qualified domain name `Host` object;
     - `Host::IS_RELATIVE` creates an a partially qualified domain name `Host` object;
@@ -63,16 +64,16 @@ By default this optional argument equals to `Host::IS_RELATIVE`.
 ~~~php
 use League\Uri\Components\Host;
 
-$host = Host::createFromArray(['shop', 'example', 'com']);
+$host = Host::createFromArray(['com', 'example', 'shop']);
 echo $host; //display 'shop.example.com'
 
-$fqdn = Host::createFromArray(['shop', 'example', 'com'], Host::IS_ABSOLUTE);
+$fqdn = Host::createFromArray(['com', 'example', 'shop'], Host::IS_ABSOLUTE);
 echo $fqdn; //display 'shop.example.com.'
 
 $ip_host = Host::createFromArray(['127.0', '0.1']);
-echo $ip_host; //display '127.0.0.1'
+echo $ip_host; //display '0.1.127.0'
 
-Host::createFromArray(['127.0', '0.1'], Host::IS_ABSOLUTE);
+Host::createFromArray(['0.1', '127.0'], Host::IS_ABSOLUTE);
 //throws InvalidArgumentException
 ~~~
 
@@ -212,7 +213,7 @@ echo $host->isIdn();     //return false
 
 ### Array representation
 
-A host can be splitted into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method.
+A host can be splitted into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method. **This representation is a hierarchical representation of the Hostname.**
 
 <p class="message-warning">Once in array representation you can not distinguish a partially from a fully qualified domain name.</p>
 
@@ -220,10 +221,10 @@ A host can be splitted into its different labels. The class provides an array re
 use League\Uri\Components\Host;
 
 $host = new Host('secure.example.com');
-$arr = $host->toArray(); //return  ['secure', 'example', 'com'];
+$arr = $host->toArray(); //return  ['com', 'example', 'secure'];
 
 $fqdn = new Host('secure.example.com.');
-$arr = $fqdn->toArray(); //return ['secure', 'example', 'com'];
+$arr = $fqdn->toArray(); //return ['com', 'example', 'secure'];
 
 $host = new Host('::1');
 $arr = $host->toArray(); //return ['::1'];
@@ -241,7 +242,7 @@ use League\Uri\Components\Host;
 $host = new Host('secure.example.com');
 count($host); //return 3
 foreach ($host as $offset => $label) {
-    //do something meaningfull here
+    echo $labels; //will display "com", then "example" and last "secure"
 }
 ~~~
 
@@ -277,7 +278,7 @@ If you are only interested in a given label you can access it directly using the
 ~~~php
 use League\Uri\Components\Host;
 
-$host = new Host('uk.example.co.uk');
+$host = new Host('example.co.uk');
 $host->getLabel(0);         //return 'uk'
 $host->getLabel(23);        //return null
 $host->getLabel(23, 'now'); //return 'now'
@@ -393,7 +394,7 @@ To replace a label you must use the `Host::replace` method with two arguments:
 use League\Uri\Components\Host;
 
 $host    = new Host('foo.example.com');
-$newHost = $host->replace(0, 'bar.baz');
+$newHost = $host->replace(2, 'bar.baz');
 $newHost->__toString(); //return bar.baz.example.com
 ~~~
 
@@ -420,9 +421,9 @@ Or a callable that will select the list of offsets to remove.
 ~~~php
 use League\Uri\Components\Host;
 
-$host    = new Host('toto.example.com');
+$host    = new Host('uk.example.com.uk');
 $newHost = $host->without(function ($value) {
-	return $value == 0;
+	return $value == 'uk';
 });
 echo $newHost; //displays 'example.com';
 ~~~

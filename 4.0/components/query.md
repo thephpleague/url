@@ -189,18 +189,6 @@ $newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 // the 'r' parameter was added
 ~~~
 
-An `array` or a `Traversable` object similar to the result of the `Parser::parseQuery` method:
-
-~~~php
-use League\Uri\Components\Query;
-
-$query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$newQuery = $query->merge(['foo' => 'jane', 'r' => 'stone']);
-$newQuery->__toString(); //return foo=jane&baz=toto&r=stone
-// the 'foo' parameter was updated
-// the 'r' parameter was added
-~~~
-
 Another `Query` object
 
 ~~~php
