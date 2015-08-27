@@ -200,6 +200,16 @@ $path = new Path('/path/to/file.csv');
 $path->getExtension(); //return 'csv';
 ~~~
 
+The `getExtension` method takes into account path parameters:
+
+~~~php
+use League\Uri\Components\HierarchicalPath as Path;
+
+$path = new Path('/path/to/the/sky.txt;foo=bar,baz');
+$path->getBasename();  //return 'sky.txt;foo=bar,baz'
+$path->getExtension(); //return 'txt';
+~~~
+
 ### The dirname
 
 Conversely, you can get the path dirname by using the `HierarchicalPath::getDirname` method, this method takes no argument and works like PHP's `dirname` function.
