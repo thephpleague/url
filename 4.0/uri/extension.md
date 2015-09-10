@@ -1,9 +1,63 @@
 ---
 layout: default
-title: Generic URIs extension
+title: URIs extension
 ---
 
-# Creating a Generic URI Object
+# Creating other URI objects
+
+## Creating an URI object similar to HTTP URI
+
+Let say you want to create a `telnet` class to handle telnet URI. You just need to extends the <code>League\Uri\Schemes\Generic\AbstractHierarchicalUri</code> object and add telnet specific validation features to your class. Here's a quick example that you should further improve.
+
+~~~php
+namespace Example;
+
+use League\Uri\Schemes\Generic\AbstractHierarchicalUri;
+use League\Uri\Interfaces\Uri;
+
+class Telnet extends AbstractHierarchicalUri implements Uri
+{
+    /**
+     * Supported Schemes with their associated port
+     *
+     * This property override the Parent supportedSchemes empty array
+     *
+     * @var array
+     */
+    protected static $supportedSchemes = [
+        'telnet' => 23,
+    ];
+
+    /**
+     * Validate any changes made to the URI object
+     *
+     * This method override the Parent isValid method
+     * When it returns false an InvalidArgumentException is thrown
+     *
+     * @return bool
+     */
+    protected function isValid()
+    {
+        return null === $this->fragment->getContent()
+            && $this->isValidGenericUri()
+            && $this->isValidHierarchicalUri();
+    }
+}
+~~~
+
+And now you can easily make it works against any `telnet` scheme URI
+
+~~~php
+use Example\Telnet;
+
+$uri = Telnet::createFromString('TeLnEt://example.com:23/Hello%20There'):
+echo $uri; //return telnet://example.com/Hello%20There
+Telnet::createFromString('http://example.org'): //will throw an InvalidArgumentException
+~~~
+
+Of course you are free to add more methods to fulfill your own requirements. But remember that all general URI [properties](/4.0/uri/properties/) and [methods and modifiers](/4.0/uri/manipulation/) are already usable with these simple steps.
+
+## Creating a Generic URI Object
 
 By definition a generic URI like `mailto` or `isdn` requires more codes. For each of these schemes specific URI, the parsing and manipulating rules are differents. But nevertheless the library will help you speed up your process to create such classes. We will try to implement as quickly as possible the `mailto` scheme.
 
@@ -51,29 +105,6 @@ interface MailtoPathInterface extends Path, HierarchicalComponent
 
 <p class="message-notice">It is important that the <code>MailtoPathInterface</code> extends the package <code>Path</code> interface too to make the class work as expected</p>
 
-Now we want create a specific interface for the Mailto uri
-
-~~~php
-namespace Example;
-
-use League\Uri\Interfaces\Schemes\Uri;
-
-interface MailtoInterface extends Uri
-{
-    public function appendEmail($email);
-
-    public function prependEmail($email);
-
-    public function replaceEmail($email);
-
-    ...
-}
-~~~
-
-You can add other methods if you want.
-
-<p class="message-notice">Again here the key feature is to extends league interface to be able to quickly build a robust <code>Mailto</code> class.</p>
-
 ## Let's create the concrete classes
 
 First let's write the `MailtoPath` class. Again we will use the library abstract class to speed things up. the `AbstractHierarchicalComponent` abstract class will add all manipulating methods needed. As well as all collections related methods to the class. We simply need to add the parsing method. And the method to retrieve one email.
@@ -86,7 +117,7 @@ use InvalidArgumentException;
 
 class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInterface
 {
-    use RemoveDotSegmentsTrait;
+    use PathTrait;
 
     /**
      * The path separator as described in RFC6068
@@ -96,13 +127,11 @@ class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInte
     protected static $separator = ',';
 
     /**
-     * validate the path string
-     * This method is called when a manipulation method is applied
-     * to validate the resulting manipulation
+     * New instance
      *
      * @param string $emails
      */
-    protected function init($emails)
+    protected function __construct($emails = '')
     {
         $emails = array_map('rawurldecode', explode(static::$separator, $emails));
         $emails = array_map('trim', $emails);
@@ -169,12 +198,10 @@ use League\Uri\Interfaces\Components\Query as QueryInterface;
 use League\Uri\Interfaces\Components\Scheme as SchemeInterface;
 use League\Uri\Interfaces\Components\UserInfo as UserInfoInterface;
 use League\Uri\Schemes\Generic\AbstractUri;
-use League\Uri\Schemes\Generic\PathModifierTrait;
+use League\Uri\UriParser;
 
 class Mailto extends AbstractUri implements MailtoInterface
 {
-    use PathModifierTrait;
-
     /**
      * Create a new instance of URI
      *
@@ -218,15 +245,30 @@ class Mailto extends AbstractUri implements MailtoInterface
      */
     protected function isValid()
     {
-        if ($this->scheme->getContent() !== 'mailto') {
+        if ('mailto:' !== $this->scheme->getUriComponent()) {
             throw new InvalidArgumentException(
                 'The submitted scheme is invalid for the class '.get_class($this)
             );
         }
 
-        $expected = 'mailto:'.$this->path->getUriComponent().this->query->getUriComponent();
+        $expected = 'mailto:'
+            .$this->path->getUriComponent()
+            .$this->query->getUriComponent();
 
-        return $this->isValidGenericUri() && $this->__toString() === $expected;
+        return $this->isValidGenericUri()
+            && $this->__toString() === $expected;
+    }
+
+    /**
+     * Create a new instance from a string
+     *
+     * @param string $uri
+     *
+     * @return static
+     */
+    public static function createFromString($uri = '')
+    {
+        return static::createFromComponents((new UriParser())->parse($uri));
     }
 
     /**
@@ -243,7 +285,8 @@ class Mailto extends AbstractUri implements MailtoInterface
      */
     public static function createFromComponents(array $components)
     {
-        $components = static::formatComponents($components);
+        $components = (new UriParser())->normalizeUriHash($components);
+
         return new static(
             new Scheme($components['scheme']),
             new UserInfo($components['user'], $components['pass']),
@@ -277,32 +320,6 @@ class Mailto extends AbstractUri implements MailtoInterface
             new Fragment()
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceEmail($offset, $email)
-    {
-        return $this->withProperty('path', $this->path->replace($offset, $email));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function appendEmail($email)
-    {
-        return $this->withProperty('path', $this->path->append($email));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prependEmail($email)
-    {
-        return $this->withProperty('path', $this->path->prepend($email));
-    }
-
-    ...
 }
 ~~~
 

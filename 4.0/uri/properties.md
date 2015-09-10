@@ -5,95 +5,9 @@ title: Getting URIs informations
 
 # Extracting data from URIs
 
-There is essentially two types of URI:
+Even thought the package comes bundle with a serie of URI objects representing usual URI, all theses objects expose the same methods.
 
-- those that are considered opaques whose scheme specific part can only be parse using scheme specific methods and (ie: the `mailto` or the `data` schemes URI)
-- the others that exposes a more detailed hierarchical construction (ie: the `http` or the `ssh` schemes URI)
-
-Even thought these URI parsing mechanism may differ the package exposes some common properties
-
-## Basic URI properties
-
-### Accessing the URI scheme component
-
-Each URI must be associated to at least on scheme. With the `getScheme` method you acces the normalized value of the URI.
-
-~~~php
-use League\Uri\Schemes\Ftp as FtpUri;
-use League\Uri\Schemes\Data as DataUri;
-
-$uri = FtpUri::createFromString("Ftp://ftp.example.com/how/are/you?foo=baz");
-echo $uri->getScheme(); //return "ftp"
-
-$uri = DataUri::createFromString();
-echo $uri->getScheme(); //return "data"
-~~~
-
-If the URI does not contains any scheme and the scheme supports empty scheme, then an empty string will be return.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("//ftp.example.com/how/are/you?foo=baz");
-echo $uri->getScheme(); //return ""
-~~~
-
-### Accessing the URI scheme specific part
-
-Conversely, each URI has a scheme specific part that you can access using the `getSchemeSpecificPart` method. This methods returns a string that can be empty if no scheme specific part exists.
-
-~~~php
-use League\Uri\Schemes\Ftp as FtpUri;
-use League\Uri\Schemes\Data as DataUri;
-
-$uri = FtpUri::createFromString("Ftp://ftp.example.com/how/are/you?foo=baz");
-echo $uri->getSchemeSpecificPart(); //return "//ftp.example.com/how/are/you?foo=baz"
-
-$uri = DataUri::createFromString();
-echo $uri->getSchemeSpecificPart(); //return "text/plain;charset=us-ascii,"
-~~~
-
-### Is the URI empty ?
-
-An URI can have a empty string representation even if some components or URI parts are not. The emptyness of a URI is scheme dependent.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("//example.com:82");
-$uri->getPort(); //return 82
-$uri->getHost(); //return "example.com"
-$uri->isEmpty(); //return false
-
-$newUri = $uri->withHost("");
-$newUri->getPort(); //return 82
-$newUri->getHost(); //return ""
-$newUri->isEmpty(); //return true
-~~~
-
-### URI as an array
-
-You can get the URI as an `array` similar to `parse_url` response if you call `Uri::toArray` method. The only difference being that the returned array contains all 8 components. When the component is not set its value is `null`.
-
-~~~php
-use League\Uri\Schemes\Ftp as FtpUri;
-
-$uri = FtpUri::createFromString("http://www.example.com/how/are/you?foo=baz");
-var_export($uri->toArray());
-//return the following array
-// array (
-//  "scheme" => "http",
-//  "user" => NULL,
-//  "pass" => NULL,
-//  "host" => "www.example.com",
-//  "port" => NULL,
-//  "path" => "/how/are/you",
-//  "query" => "foo=baz",
-//  "fragment" => NULL,
-// );
-~~~
-
-### Accessing URI parts and components
+## Accessing URI parts and components as scalar type
 
 #### Parts and components as strings
 
@@ -113,9 +27,9 @@ echo $uri->getQuery();     //displays "foo=baz"
 echo $uri->getFragment();  //displays "title"
 ~~~
 
-#### Parts and components as objects
+#### Accessing URI parts and components as objects
 
-To access a specific URI part or component as an object you can use PHP"s magic method `__get` as follow.
+To access a specific URI part or component as an object you can use PHP's magic method `__get` as follow.
 
 ~~~php
 use League\Uri\Schemes\Ws as WsUri;
@@ -138,74 +52,11 @@ use League\Uri\Schemes\Http as HttpUri;
 $uri = HttpUri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz");
 $uri->host->isIp();           //return false the URI uses a registered hostname
 $uri->userInfo->getUser();    //return "foo" the user login information
-$uri->fragment->isEmpty();    //return true because to fragment component is empty
+$uri->fragment->getContent(); //return 'null' because to fragment component is undefined
 $uri->path->getBasename();    //return "you"
 $uri->query->getValue("foo"); //return "baz"
 ~~~
 
+<p class="message-notice">The actual methods attach to each components depends on the underlying component object used. For instance a <code>DataUri::path</code> object does not expose the same methods as a <code>Ws::path</code> object would.</p>
+
 To get more informations about component properties refer to the [components documentation](/4.0/components/overview/)
-
-### Does URIs refers to the same resource/location
-
-#### League URI objects
-
-You can compare two URI object to see if they represent the same resource using the `sameValueAs` method. The method compares the two objects according to their respective `__toString` methods with the following normalizations applied before comparison:
-
-- the host is converted using the punycode algorithm;
-- the path is normalized according to RFC3986 rules;
-- the query string is sorted according to their parameters keys;
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Ftp as FtpUri;
-
-$httpUri = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
-$ftpUri  = FtpUri::createFromString("ftp://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
-
-$httpUri->sameValueAs($ftpUri); //return false
-~~~
-
-#### PSR-7 UriInterface objects
-
-To allow more interoperability, you can also compare a PSR-7 `UriInterface` compliant URIs object with a League URI object. The same normalization are applied.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use GuzzleHttp\Psr7\Uri;
-
-$leagueUri = HttpUri::createFromString("http://www.рф.ru:/hello/world?foo=bar&baz=yellow");
-$psr7Uri = new Uri("http://www.xn--p1ai.Ru:80/hello/world?baz=yellow&foo=bar");
-
-$leagueUri->sameValueAs($psr7Uri); //return true
-~~~
-
-## Hierarchical URI properties
-
-<p class="message-notice">The methods and properties describes are available on all Hierarchical URI objects unless explicitly expressed.</p>
-
-### Does the URI uses the standard port ?
-
-If the standard port defined for a specific scheme is used it will be remove:
-
-- from the URI string;
-- from the array representations;
-
-The `Uri::hasStandardPort` tells you whether you are using or not the standard port for a given scheme.
-
-- If **no scheme** is set, the method returns `false`.
-- If **no port** is set the method will return `true`.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Ws as WsUri;
-
-$uri = HttpUri::createFromString("http://example.com:8042/over/there");
-$uri->hasStandardPort(); //return false
-echo $uri->getPort();    //displays 8042
-echo $uri;               //displays "http://example.com:8042/over/there"
-
-$alt_uri = WsUri::createFromString("wss://example.com:443/over/there");
-$alt_uri->hasStandardPort(); //return true
-echo $alt_uri->getPort();    //displays 443
-echo $alt_uri;               //displays "wss://example.com/over/there"
-~~~

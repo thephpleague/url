@@ -61,9 +61,9 @@ $path->__toString(); //returns 'text/plain;charset=us-ascii,Hello%20World%21'
 $path->getUriComponent(); //returns 'text/plain;charset=us-ascii,Hello%20World%21'
 ~~~
 
-## Accessing Path content
-
 ## Properties
+
+### Attributes
 
 The DataPath class exposes the following specific methods:
 
@@ -82,7 +82,7 @@ echo $uri->getParameters(); //returns 'charset=us-ascii'
 echo $uri->getData(); //returns 'Hello%20World%21'
 ~~~
 
-### Does the Data Path represents a binary data ?
+### Is it a binary data ?
 
 To tell whether the data URI represents some binary data you can call the `isBinaryData` method. This method which returns a boolean will return `true` if the data is in a binary state. The binary state is checked on instantiation. Invalid binary dataURI will throw an `InvalidArgumentException` exception on initiation.
 

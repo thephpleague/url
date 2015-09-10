@@ -8,23 +8,24 @@
     Uri:
         Instantiation: '/4.0/uri/instantiation/'
         Properties: '/4.0/uri/properties/'
+    Uri Schemes:
+        Http URIs: '/4.0/uri/schemes/http/'
+        Websocket URIs: '/4.0/uri/schemes/ws/'
+        FTP URI: '/4.0/uri/schemes/ftp/'
+        Data URI: '/4.0/uri/schemes/data-uri/'
+        Extension Guide: '/4.0/uri/extension/'
+    Uri Modifiers:
         Manipulation: '/4.0/uri/manipulation/'
-    Hierarchical Uri:
-        FTP URI: '/4.0/uri/hierarchical/ftp/'
-        Http URIs: '/4.0/uri/hierarchical/http/'
-        Websocket URIs: '/4.0/uri/hierarchical/ws/'
-        Manipulation: '/4.0/uri/hierarchical/manipulation/'
-        Extension Guide: '/4.0/uri/hierarchical/extension/'
-    Generic Uri:
-        Data URI: '/4.0/uri/generic/data-uri/'
-        Extension Guide: '/4.0/uri/generic/extension/'
+        Generic: '/4.0/uri/manipulation/generic/'
+        Host: '/4.0/uri/manipulation/host/'
+        Query: '/4.0/uri/manipulation/query/'
+        Path: '/4.0/uri/manipulation/path/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'
         User Information: '/4.0/components/userinfo/'
         Host: '/4.0/components/host/'
         Port: '/4.0/components/port/'
         Query: '/4.0/components/query/'
-    Uri Path Components:
         Path: '/4.0/components/path/'
         Hierarchical Path: '/4.0/components/hierarchical-path/'
         Data Path: '/4.0/components/datauri-path/'

@@ -9,26 +9,9 @@ title: Manipulating URI
 
 <p class="message-warning">The method may throw an <code>InvalidArgumentException</code> if the resulting URI is not valid for a scheme specific URI.</p>
 
-## URI normalization
+## Basic modifications
 
-Out of the box the package normalizes any given URI according to the non destructive rules of RFC3986.
-
-These non destructives rules are:
-
-- scheme and host components are lowercased;
-- query, path, fragment components are URI encoded;
-- the port number is removed from the URI string representation if the standard port is used;
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-echo $uri; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
-~~~
-
-## Complete components and parts modifications
-
-To completely replace one of the URI part you can use the `Psr\Http\Message\UriInterface` interface modifying methods exposed by the object
+To completely replace one of the URI part you can use the modifying methods exposed by all URI object
 
 ~~~php
 use League\Uri\Schemes\Ws as WsUri;
@@ -44,9 +27,9 @@ $uri = WsUri::createFromString("ws://thephpleague.com/fr/")
 echo $uri; //displays wss://foo:bar@www.example.com:81/how/are/you?foo=baz
 ~~~
 
-Since every update returns an instance of `League\Uri\Schemes\Generic\AbstractHierarchical`, you can chain each setter methods to simplify URI creation and/or modification.
+Since All URI object are immutable you can chain each modifying methods to simplify URI creation and/or modification.
 
-## Partial components modifications
+## URI modifiers
 
 Often what you really want is to partially update one of the URI component. Using the current public API it is possible but requires several intermediary steps. For instance here's how you would update the query string from a given URI object:
 
@@ -61,176 +44,46 @@ $newUri      = $uri->withQuery($updateQuery->__toString());
 echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
 ~~~
 
-To ease these operations various modifying methods were added. Each method is presented independently but keep in mind that:
+### URI modifiers principles
 
-- They all return a `League\Uri\Schemes\Generic\AbstractHierarchical` object. So you can chain them to simplify URI manipulation.
-- Their arguments are always proxied to a specific component modifying methods.
-- You can get more informations on how the method works by following the link to the method proxied.
+To ease these operations the package introduces the concept of URI modifiers
 
-### Modifying URI path
+A URI modifier must follow the following rules:
 
-#### Remove dot segments
+- It must be a callable. If the URI modifier is a class it must implement PHP's `__invoke` method.
+- The callable expects its single argument to be an URI object or a PSR-7 UriInterface object and must return a instance of the submitted object.
+- If the URI modifier is an obejct it must be a immutable. Updating its parameters must return a new instance with the modified parameters.
+- Apart from validating it's own parameters, URI modifiers are transparent when dealing with error and exceptions. They must not alter of silence them.
 
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
+### League URI pipeline
 
-$uri = HttpUri::createFromString("http://www.example.com/path/../to/the/./sky/");
-$newUri = $uri->withoutDotSegments();
-echo $newUri; //display "http://www.example.com/to/the/sky/"
-~~~
-
-`Uri::withoutDotSegments` is a proxy to simplify the use of [HierarchicalPath::withoutDotSegments](/4.0/components/hierarchical-path/#removing-dot-segments) on a `Uri` object.
-
-### Modifying URI query parameters
-
-#### Sort query parameters
+Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Pipeline` class. This class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one. The `League\Uri\Pipeline` can also be used as a URI modifier as well which can lead to advance modification from you URI in a sane an normalized way.
 
 ~~~php
+use League\Uri\Modifiers\RemoveDotSegments;
+use League\Uri\Modifiers\HostToAscii;
+use League\Uri\Modifiers\KsortQuery;
+use League\Uri\Pipeline;
 use League\Uri\Schemes\Http as HttpUri;
 
-$uri = HttpUri::createFromString("http://www.example.com/the/sky.php?yellow=tiger&browser=lynx");
-$newUri = $uri->ksortQuery();
-echo $newUri; //display "http://www.example.com/the/sky.php?browser=lynx&yellow=tiger"
+$origUri = HttpUri::createFromString("http://스타벅스코리아.com/to/the/sky/");
+$origUri2 = HttpUri::createFromString("http://xn--oy2b35ckwhba574atvuzkc.com/path/../to/the/./sky/");
+
+$modifier = (new Pipeline())
+	->pipe(new RemoveDotSegment())
+	->pipe(new HostToAscii())
+	->pipe(new KsortQuery());
+
+$origUri1Alt = $modifier->__invoke($origUri1);
+$origUri2Alt = $modifier->__invoke($origUri2);
+
+echo $origUri1Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
+echo $origUri2Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
 ~~~
 
-`Uri::ksortQuery` is a proxy to simplify the use of [Query::ksort](/4.0/components/query/#sort-parameters) on a `Uri` object.
+URI Modifiers can be grouped for simplicity in different categories that deals with
 
-#### Add or Update query parameters
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
-$newUri = $uri->mergeQuery(["foo" => "bar", "taz" => ""]);
-echo $newUri; //display "http://www.example.com/the/sky.php?foo=bar&taz#~typo"
-~~~
-
-`Uri::mergeQuery` is a proxy to simplify the use of [Query::merge](/4.0/components/query/#add-or-update-parameters) on a `Uri` object.
-
-#### Remove query values
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/to/sky.php?foo=toto&p=y+olo#~typo");
-$newUri = $uri->withoutQueryValues(["foo"]);
-echo $newUri; //display "http://www.example.com/the/sky.php?p=y%20olo#~typo"
-~~~
-
-`Uri::withoutQueryValues` is a proxy to simplify the use of [Query::without](/4.0/components/query/#remove-parameters) on a `Uri` object.
-
-#### Filter query
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("//example.com/to/sky.php?foo[]=toto&foo[]=bar&p=y+olo#~typo");
-$newUri = $uri->filterQuery(function ($value) {
-    return ! is_array($value);
-});
-echo $newUri; //display "//example.com/the/sky.php?p=y%20olo#~typo"
-//will update the query string by removing all array-like parameters
-~~~
-
-`Uri::filterQuery` is a proxy to simplify the use of [Query::filter](/4.0/components/query/#filter-the-query) on a `Uri` object.
-
-### Modifying URI host labels
-
-#### Append host labels
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUri = $uri->appendHost("be");
-echo $newUri; //display "http://www.example.com.be/path/to/the/sky.php"
-~~~
-
-`Uri::appendHost` is a proxy to simplify the use of [Host::append](/4.0/components/host/#append-labels) on a `Uri` object.
-
-#### Prepend host labels
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUri = $uri->prependHost("shop");
-echo $newUri; //display "http://shop.www.example.com/path/to/the/sky.php"
-~~~
-
-`Uri::prependHost` is a proxy to simplify the use of [Host::prepend](/4.0/components/host/#prepend-labels) on a `Uri` object.
-
-#### Replace a host label
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUri = $uri->replaceLabel(1, "thephpleague");
-echo $newUri; //display "http://www.thephpleague.com/path/to/the/sky.php"
-~~~
-
-`Uri::replaceLabel` is a proxy to simplify the use of [Host::replace](/4.0/components/host/#replace-label) on a `Uri` object.
-
-#### Remove host labels
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.example.com/path/to/the/sky.php");
-$newUri = $uri->withoutLabels([2]);
-echo $newUri; //display "http://example.com/path/to/the/sky.php"
-~~~
-
-`Uri::withoutLabels` is a proxy to simplify the use of [Host::without](/4.0/components/host/#remove-labels) on a `Uri` object.
-
-#### Remove the host zone identifier
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://[fe80::1%25eth0-1]/path/to/the/sky.php");
-$newUri = $uri->withoutZoneIdentifier();
-echo $newUri; //display "http://[fe80::1]/path/to/the/sky.php"
-~~~
-
-`Uri::withoutZoneIdentifier` is a proxy to simplify the use of [Host::withoutZoneIdentifier](/4.0/components/host/#remove-zone-identifier) on a `Uri` object.
-
-#### Convert to IDN host
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri    = HttpUri::createFromString("http://xn--p1ai.ru/path/to/the/sky.php");
-$newUri = $uri->hostToUnicode();
-echo $newUri; //display "http://рф.ru/path/to/the/sky.php"
-~~~
-
-`Uri::toUnicode` is a proxy to simplify the use of [Host::toUnicode](/4.0/components/host/#transcode-the-host) on a `Uri` object.
-
-#### Convert to Ascii host
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri    = HttpUri::createFromString("http://рф.ru/path/to/the/sky.php");
-$newUri = $uri->hostToAscii();
-echo $newUri; //display "http://xn--p1ai.ru/path/to/the/sky.php"
-~~~
-
-`Uri::toAscii` is a proxy to simplify the use of [Host::toAscii](/4.0/components/host/#transcode-the-host) on a `Uri` object.
-
-#### Filter the host
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-
-$uri = HttpUri::createFromString("http://www.eshop.com/path/to/the/sky.php");
-$newUri = $uri->filterHost(function ($label) {
-    return strpos($label, "shop") === false;
-});
-echo $newUri; //display "http://www.com/path/to/the/sky.php"
-//will keep all labels which do not contain the word "shop"
-~~~
-
-`Uri::filterHost` is a proxy to simplify the use of [Host::filter](/4.0/components/host/#filter-labels) on a `Uri` object.
+- [the URI host](/4.0/uri/manipulation/host/);
+- [the URI query](/4.0/uri/manipulation/query/);
+- [the URI path](/4.0/uri/manipulation/path/);
+- [multiple URI components](/4.0/uri/manipulation/generic/);;

@@ -13,8 +13,8 @@ The library provides a `League\Uri\Components\UserInfo` class to ease interactin
 
 The constructor expects 2 optional arguments:
 
-- the user login
-- the user password
+- the user login: a `League\Uri\Components\User` object, a string or the `null` value;
+- the user password: a `League\Uri\Components\Pass` object, a string or the `null` value;
 
 ~~~php
 use League\Uri\Components;
@@ -29,7 +29,7 @@ $alt_info = new Components\UserInfo(new Components\User('foo'), new Components\P
 echo $alt_info; //display 'foo:bar'
 ~~~
 
-### Using a League Uri object
+### Using a Uri object
 
 You can also get a `UserInfo` object from a Hierarchical URI object:
 
@@ -53,36 +53,9 @@ Basic representations is done using the following methods:
 use League\Uri\Components\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
+$info->getContent();      //return 'foo:bar'
 $info->__toString();      //return 'foo:bar'
 $info->getUriComponent(); //return 'foo:bar@'
-~~~
-
-### Array representation
-
-The user information can be represented as an array of its internal properties. Through the use of the `UserInfo::toArray` method the class returns the object array representation.
-
-~~~php
-use League\Uri\Components\UserInfo;
-
-$info = new UserInfo('foo', 'bar');
-$info->toArray();
-// returns [
-//     'user' => 'foo',
-//     'pass' => 'bar',
-// ]
-~~~
-
-<p class="message-notice">If not user property is set, the <code>toArray</code> method will return an empty <code>null</code> filled array even if the `pass` property is not empty</p>
-
-~~~php
-use League\Uri\Components\UserInfo;
-
-$info = new UserInfo('', 'bar');
-$info->toArray();
-// returns [
-//     'user' => null,
-//     'pass' => null,
-// ]
 ~~~
 
 ## Accessing User information content
@@ -109,25 +82,12 @@ use League\Uri\Components\UserInfo;
 use League\Uri\Schemes\Http;
 
 $info = new UserInfo('foo', 'bar');
-$info->user; //return a League\Uri\User class
-$info->pass; //return a League\Uri\Pass class
+$info->user; //return a League\Uri\Components\User class
+$info->pass; //return a League\Uri\Components\Pass class
 
 $uri = Http::createFromString('http://john:doe@example.com:81/');
 $uri->userInfo->user->__toString(); //return 'john'
 $uri->userInfo->pass->__toString(); //return 'doe'
-~~~
-
-### User information state
-
-The `UserInfo` part is considered empty if its user property is empty.
-
-~~~php
-use League\Uri\Components\UserInfo;
-
-$info = new UserInfo('', 'bar');
-$info->isEmpty(); //return true
-$info->user->isEmpty(); //return true
-$info->pass->isEmpty(); //return false
 ~~~
 
 ## Modifying the user information

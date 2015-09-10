@@ -25,6 +25,38 @@ echo $altPath; //display 'text/plain;charset=us-ascii,Hello%20World%21'
 
 <p class="message-warning">If the submitted value is not a valid path an <code>InvalidArgumentException</code> will be thrown.</p>
 
+## Path properties
+
+### Absolute or relative path
+
+A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative or rootless. At any given time you can test your path status using the `Path::isAbsolute` method.
+
+~~~php
+use League\Uri\Components\Path;
+
+$relative_path = new Path('bar/baz');
+echo $relative_path; //displays 'bar/baz'
+$relative_path->isAbsolute(); //return false;
+
+$absolute_path = new Path('/bar/baz');
+echo $absolute_path; //displays '/bar/baz'
+$absolute_path->isAbsolute(); //return true;
+~~~
+
+### Path with or without a trailing slash
+
+The `Path` object can tell you whether the current path ends with a slash or not using the `Path::hasTrailingSlash` method. This method takes no argument and return a boolean.
+
+~~~php
+use League\Uri\Components\Path;
+
+$path = new Path('/path/to/the/sky.txt');
+$path->hasTrailingSlash(); //return false
+
+$altPath = new Path('/path/');
+$altPath->hasTrailingSlash(); //return true
+~~~
+
 ## Path representations
 
 ### String representation
@@ -39,7 +71,7 @@ $path->__toString();      //return '/path/to%20the/sky'
 $path->getUriComponent(); //return '/path/to%20the/sky'
 ~~~
 
-## Path normalization
+## Path modifications
 
 <p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
@@ -61,7 +93,97 @@ echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
 $alt->sameValueAs($path); //return false;
 ~~~
 
-<p class="message-notice">This method is used by the URI Object <code>withoutDotSegments</code> method</p>
+<p class="message-notice">This method is used by the URI Modifier <code>RemoveDotSegments</code></p>
+
+### Removing empty segments
+
+Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URI, this normalization can not be applied by default. To remove adjacent delimiters you can call the `Path::withoutEmptySegments` method which convert you path as described below:
+
+~~~php
+use League\Uri\Components\Path;
+
+$raw_path       = new Path("path////to/the/sky//");
+$normalize_path = $raw_path->withoutEmptySegments();
+echo $raw_path;           //displays 'path////to/the/sky//'
+echo $normalize_path;     //displays 'path/to/the/sky/'
+$alt->sameValueAs($path); //return false;
+~~~
+
+<p class="message-notice">This method is used by the URI Modifier <code>RemoveEmptySegments</code></p>
+
+### Relativize a Path
+
+The reverse to removing dot segments is to add them to create a path relative to another one. The `Path::relativize` method will convert a submitted path according to the current Path object.
+
+~~~php
+use League\Uri\Components\Path;
+
+$basePath  = new Path("/path/to/the/sky");
+$childPath = new Path("/blank.gif");
+echo $basePath->relativize($childPath); //displays '../blank.gif'
+~~~
+
+<p class="message-notice">This method is used by the URI Modifier <code>Relativize</code></p>
+
+### Manipulating the trailing slash
+
+Depending on your context you may want to add or remove the path trailing slash. In order to do so the `Path` object uses two methods which accept no argument.
+
+`Path::withoutTrailingSlash` will remove the ending slash of your path only if a slash is present.
+
+~~~php
+use League\Uri\Components\Path;
+
+$raw_path       = new Path("path/to/the/sky/");
+$normalize_path = $raw_path->withoutTrailingSlash();
+echo $raw_path;           //displays 'path/to/the/sky/'
+echo $normalize_path;     //displays 'path/to/the/sky'
+~~~
+
+<p class="message-notice">This method is used by the URI Modifier <code>RemoveTrailingSlash</code></p>
+
+Conversely, `Path::withTrailingSlash` will append a slash at the end of your path only if no slash is already present.
+
+~~~php
+use League\Uri\Components\Path;
+
+$raw_path       = new Path("/path/to/the/sky");
+$normalize_path = $raw_path->withTrailingSlash();
+echo $raw_path;           //displays '/path/to/the/sky'
+echo $normalize_path;     //displays '/path/to/the/sky/'
+~~~
+
+<p class="message-notice">This method is used by the URI Modifier <code>AddTrailingSlash</code></p>
+
+### Manipulating the leading slash
+
+Conversely, to convert the path type the `Path` object uses two methods which accept no argument.
+
+`Path::withoutLeadingSlash` will convert an absolute path into a relative one by removing the path leading slash if present.
+
+~~~php
+use League\Uri\Components\Path;
+
+$raw_path       = new Path("path/to/the/sky/");
+$normalize_path = $raw_path->withoutTrailingSlash();
+echo $raw_path;           //displays 'path/to/the/sky/'
+echo $normalize_path;     //displays 'path/to/the/sky'
+~~~
+
+<p class="message-notice">This method is used by the URI Modifier <code>RemoveLeadingSlash</code></p>
+
+`Path::withLeadingSlash` will convert an relative path into a absolute one by prepending the path with a slash if none is present.
+
+~~~php
+use League\Uri\Components\Path;
+
+$raw_path       = new Path("/path/to/the/sky");
+$normalize_path = $raw_path->withTrailingSlash();
+echo $raw_path;           //displays '/path/to/the/sky'
+echo $normalize_path;     //displays '/path/to/the/sky/'
+~~~
+
+<p class="message-notice">This method is used by the URI Modifier <code>AddLeadingSlash</code></p>
 
 ## Specialized Path Object
 
@@ -69,4 +191,5 @@ What makes a URI difference apart from the scheme is how the path is parse and m
 
 - the [HierarchicalPath](/4.0/components/hierarchical-path/) object to work with HTTP, FTP, WS paths component
 - the [DataPath](/4.0/components/datauri-path/) object to work with the DataURI path
-- the [Extension Guide](/4.0/uri/extension/) also provides examples on how to extends the Path object to make it meets you specific URI parsing and manipulation methods.
+
+The [Extension Guide](/4.0/uri/extension/#mailto-interfaces) also provides examples on how to extends the Path object to make it meets you specific URI parsing and manipulation methods.

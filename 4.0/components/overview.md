@@ -39,18 +39,14 @@ Apart from the authority part, each component and part of the URI is manageable 
 
 - The `League\Uri\Interfaces\Components\UriPart` handles any URI part;
 - The `League\Uri\Interfaces\Components\Component` extends the UriPart interface to handle components;
-- The `League\Uri\Interfaces\Components\LiteralAccess` to enable access to the literal representation of the URI component;
 
 In the library, all concrete classes that represent a URI part or component implements one or several of those interfaces. Just like the URI objects, these classes are defined as immutable value objects.
 
-## URI part instantiation
+## URI component instantiation
 
-Each component class can be instantiated independently from the main `League\Uri\Url` object.
+The default constructor expected an **encoded** string according to the component validation rules as explained in RFC3986 or the `null` value to denote the component or URI part is not defined.
 
-They all expect:
-
-- an **encoded** string according to the component validation rules as explain in RFC3986
-- an object with a `__toString()` method.
+<p class="message-notice">The <code>UserInfo</code> class is an URI part not a URI component per se so these rules do not apply to it.</p>
 
 <p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
 
@@ -62,7 +58,6 @@ use League\Uri\Components;
 $scheme   = new Components\Scheme('http');
 $user     = new Components\User('john');
 $pass     = new Components\Pass('doe');
-$userInfo = new Components\UserInfo($user, $pass);
 $host     = new Components\Host('127.0.0.1');
 $port     = new Components\Port(443);
 $path     = new Components\HierarchicalPath('/foo/bar/file.csv');
@@ -73,16 +68,16 @@ $fragment = new Components\Fragment('paragraphid');
 
 ### URI part status
 
-At any given time you may want to know if the URI part is considered empty or not. To do so you can used the `UrlPart::isEmpty` method like shown below:
+The `UriPart::getContent` method returns `null` if the URI part is not defined else it will return the component value without its delimiter
 
 ~~~php
 use League\Uri\Components;
 
 $scheme = new Components\Scheme('http');
-$scheme->isEmpty(); //return false;
+$scheme->getContent(); //display 'http'
 
 $port = new Components\Port();
-$port->isEmpty(); //return true;
+$port->getContent(); //return null
 ~~~
 
 ## URI part representations
@@ -91,7 +86,7 @@ Each class provides several ways to represent the component value as string.
 
 ### String representation
 
-The `__toString` method returns the string representation of the object. This is the form used when echoing the URI component from the `League\Uri\Url` getter methods. No component delimiter is returned.
+The `__toString` method returns the string representation of the object. This is the form used when echoing the URI component from the URI object getter methods. No component delimiter is returned.
 
 ~~~php
 use League\Uri\Components;
@@ -105,6 +100,9 @@ echo $userinfo->__toString(); //displays 'john'
 $path = new Components\Path('/toto le heros/file.xml');
 echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 ~~~
+
+<p class="message-notice"><code>Uri::getPort</code> uses the results of the <code>getContent</code> method instead.</p>
+
 
 ### URI-like representation
 
@@ -122,20 +120,6 @@ echo $userinfo->getUriComponent(); //displays 'john@'
 $path = new Components\Path('/toto le heros/file.xml');
 echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 ~~~
-
-### Component literal representation
-
-The string representation will always return an encoded string. If you want to use the literal representation of one component you need to use the `getLiteral` method attached to it.
-
-~~~php
-use League\Uri\Components;
-
-$user = new Components\User('foo%2Fbar');
-echo $user->getLiteral(); //displays 'foo/bar'
-echo $user->__toString(); //displays 'foo%2Fbar'
-~~~
-
-<p class="message-notice">Only the following components support the <code>getLiteral</code> methods: <code>Scheme</code>, <code>User</code>, <code>Pass</code>, <code>Host</code>, <code>Fragment</code>.</p>
 
 ## URI parts comparison
 

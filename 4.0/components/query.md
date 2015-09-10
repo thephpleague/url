@@ -171,7 +171,7 @@ $newQuery = $query->ksort('strcmp');
 $newQuery->__toString(); //return baz=toto&foo=bar
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>ksortQuery</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>KsortQuery</code></p>
 
 ### Add or Update parameters
 
@@ -207,14 +207,13 @@ $newQuery->__toString(); //return foo=jane&baz=toto&r=stone
 use League\Uri\Components\Query;
 
 $query    = Query::createFromArray(['foo' => 'bar', 'baz' => 'toto']);
-$newQuery = $alt->merge(['foo' => 'jane', 'baz' => '', 'r' => null]);
-$newQuery->__toString(); //return foo=jane&baz=&r
-// the 'foo' parameter was updated
+$newQuery = $query->merge('baz=&r');
+$newQuery->__toString(); //return foo=bar&baz=&r
 // the 'r' parameter was added without any value
 // the 'baz' parameter was updated to an empty string and its = sign remains
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>mergeQuery</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>MergeQuery</code></p>
 
 ### Remove parameters
 
@@ -230,19 +229,7 @@ $newQuery = $query->without(['foo', 'p']);
 echo $newQuery; //displays 'z='
 ~~~
 
-Or a callable that will select the list of parameter names to remove.
-
-~~~php
-use League\Uri\Components\Query;
-
-$query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->without(function ($value) {
-	return strpos($value, 'p') === false;
-});
-echo $newQuery; //displays 'p=y+olo';
-~~~
-
-<p class="message-notice">This method is used by the Hierarchical URI <code>withoutQueryValues</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>RemoveQueryKeys</code></p>
 
 ### Filter the Query
 
@@ -279,4 +266,4 @@ $newQuery = $query->filter(function ($value) {
 echo $newQuery; //displays 'p=y%20olo&z='
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>filterQuery</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>FilterQuery</code></p>

@@ -36,7 +36,7 @@ echo $ipv6_alt; //display '[::1]'
 
 ### Using a League Uri object
 
-You can also access a `Host` object from an `League\Uri\Uri` class:
+You can also access a `Host` object from a Uri object:
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
@@ -70,8 +70,8 @@ echo $host; //display 'shop.example.com'
 $fqdn = Host::createFromArray(['com', 'example', 'shop'], Host::IS_ABSOLUTE);
 echo $fqdn; //display 'shop.example.com.'
 
-$ip_host = Host::createFromArray(['127.0', '0.1']);
-echo $ip_host; //display '0.1.127.0'
+$ip_host = Host::createFromArray(['0.1', '127.0']);
+echo $ip_host; //display '127.0.0.1'
 
 Host::createFromArray(['0.1', '127.0'], Host::IS_ABSOLUTE);
 //throws InvalidArgumentException
@@ -180,14 +180,17 @@ Basic host representations is done using the following methods:
 use League\Uri\Components\Host;
 
 $host = new Host('example.com');
+$host->getContent();      //return 'example.com'
 $host->__toString();      //return 'example.com'
 $host->getUriComponent(); //return 'example.com'
 
 $ipv4 = new Host('127.0.0.1');
+$ipv4->getContent();      //return '127.0.0.1'
 $ipv4->__toString();      //return '127.0.0.1'
 $ipv4->getUriComponent(); //return '127.0.0.1'
 
 $ipv6 = new Host('::1');
+$ipv6->getContent();      //return '[::1]'
 $ipv6->__toString();      //return '[::1]'
 $ipv6->getUriComponent(); //return '[::1]'
 ~~~
@@ -344,6 +347,8 @@ echo $host->toAscii()->__toString();   //display 'xn--mgbh0fb.xn--kgbechtv'
 echo $host->toUnicode()->__toString(); //display 'مثال.إختبار'
 ~~~
 
+<p class="message-notice">These methods are used by the URI modifiers <code>HotToAscii</code> and <code>HotToUnicode</code></p>
+
 ### Append labels
 
 To append labels to the current host you need to use the `Host::append` method. This method accepts a single argument which represents the data to be appended. This data can be:
@@ -360,7 +365,7 @@ $newHost = $host->append('toto')->append(new Host('example.com'));
 $newHost->__toString(); //return toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>appendHost</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>appendLabels</code></p>
 
 ### Prepend labels
 
@@ -378,7 +383,7 @@ $newHost = $host->prepend('example.com')->prepend(new Host('toto'));
 $newHost->__toString(); //return toto.example.com
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>prependHost</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>prependLabels</code></p>
 
 ### Replace label
 
@@ -400,13 +405,11 @@ $newHost->__toString(); //return bar.baz.example.com
 
 <p class="message-warning">if the specified offset does not exist, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>replaceLabel</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>replaceLabel</code></p>
 
 ### Remove labels
 
-To remove labels from the current object you can use the `Host::without` method. This method expects a single argument and will returns a new `Host` object without the selected labels.
-
-The argument can be an array containing a list of offsets to remove.
+To remove labels from the current object you can use the `Host::without` method. This method expects a single argument and will returns a new `Host` object without the selected labels. The argument is an array containing a list of offsets to remove.
 
 ~~~php
 use League\Uri\Components\Host;
@@ -416,21 +419,9 @@ $newHost = $host->without([1]);
 $newHost->__toString(); //return toto.com
 ~~~
 
-Or a callable that will select the list of offsets to remove.
-
-~~~php
-use League\Uri\Components\Host;
-
-$host    = new Host('uk.example.com.uk');
-$newHost = $host->without(function ($value) {
-	return $value == 'uk';
-});
-echo $newHost; //displays 'example.com';
-~~~
-
 <p class="message-warning">if the specified offsets do not exist, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>withoutLabels</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>RemoveSegments</code></p>
 
 ### Remove zone identifier
 
@@ -448,7 +439,7 @@ $newHost = $host->withoutZoneIdentifier();
 echo $newHost; //displays '[fe80::1]';
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>withoutZoneIdentifier</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>RemoveZoneIdentifier</code></p>
 
 ### Filter labels
 
@@ -483,4 +474,4 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays 'www.be'
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>filterHost</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>filterLabels</code></p>

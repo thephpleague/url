@@ -63,24 +63,6 @@ echo $end_slash; //display '/shop/example/com/'
 
 <p class="message-info">To force the end slash when using the <code>Path::createFromArray</code> method you need to add an empty string as the last member of the submitted array.</p>
 
-## Path type
-
-### Absolute or relative path
-
-A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative or rootless. At any given time you can test your path status using the `HierarchicalPath::isAbsolute` method.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$relative_path = Path::createFromArray(['bar', '', 'baz']);
-echo $relative_path; //displays 'bar//baz'
-$relative_path->isAbsolute(); //return false;
-
-$absolute_path = Path::createFromArray(['bar', '', 'baz'], Path::IS_ABSOLUTE);
-echo $absolute_path; //displays '/bar//baz'
-$absolute_path->isAbsolute(); //return true;
-~~~
-
 ## Path representations
 
 ### String representation
@@ -223,20 +205,6 @@ $path->getBasename();  //return 'sky.txt'
 $path->getDirname();   //return '/path/to/the'
 ~~~
 
-### Trailing slash
-
-The `HierarchicalPath` object can tell you whether the current path ends with a slash or not using the `HierarchicalPath::hasTrailingSlash` method. This method takes no argument and return a boolean.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$path = new Path('/path/to/the/sky.txt');
-$path->hasTrailingSlash(); //return false
-
-$altPath = new Path('/path/');
-$altPath->hasTrailingSlash(); //return true
-~~~
-
 ## Path normalization
 
 <p class="message-notice">If the modifications do not change the current object, it is returned as is, otherwise, a new modified object is returned.</p>
@@ -244,84 +212,6 @@ $altPath->hasTrailingSlash(); //return true
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 
 Out of the box, the `HierarchicalPath` object operates a number of non destructive normalizations. For instance, the path is correctly URI encoded against the RFC3986 rules.
-
-### Removing dot segments
-
-To remove dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `HierarchicalPath::withoutDotSegments` method as the result can be destructive. The method takes no argument and returns a new `HierarchicalPath` object which represents the current object normalized.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$raw_path       = new Path('path/to/./the/../the/sky%7bfoo%7d');
-$normalize_path = $raw_path->withoutDotSegments();
-echo $raw_path;           //displays 'path/to/./the/../the/sky%7bfoo%7d'
-echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
-$alt->sameValueAs($path); //return false;
-~~~
-
-<p class="message-notice">This method is used by the Hierarchical URI <code>normalize</code> method</p>
-
-### Removing empty segments
-
-Sometimes your path may contain multiple adjacent delimiters. Since removing them may result in a semantically different URI, this normalization can not be applied by default. To remove adjacent delimiters you can call the `HierarchicalPath::withoutEmptySegments` method which convert you path as described below:
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$raw_path       = new Path("path////to/the/sky//");
-$normalize_path = $raw_path->withoutEmptySegments();
-echo $raw_path;           //displays 'path////to/the/sky//'
-echo $normalize_path;     //displays 'path/to/the/sky/'
-$alt->sameValueAs($path); //return false;
-~~~
-
-<p class="message-notice">This method is used by the Hierarchical URI <code>withoutEmptySegments</code> method</p>
-
-### Relativize a Path
-
-The reverse to removing dot segments is to add them to create a path relative to another one. The `HierarchicalPath::relativize` method will convert a submitted path according to the current Path object.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$basePath  = new Path("/path/to/the/sky");
-$childPath = new Path("/blank.gif");
-echo $basePath->relativize($childPath); //displays '../blank.gif'
-~~~
-
-<p class="message-notice">This method is used by the Hierarchical URI <code>relativize</code> method</p>
-
-### Manipulating the trailing slash
-
-Depending on your context you may want to add or remove the path trailing slash. In order to do so the `HierarchicalPath` object uses two methods which accept no argument.
-
-`HierarchicalPath::withoutTrailingSlash` will remove the ending slash of your path only if a slash is present.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$raw_path       = new Path("path/to/the/sky/");
-$normalize_path = $raw_path->withoutTrailingSlash();
-echo $raw_path;           //displays 'path/to/the/sky/'
-echo $normalize_path;     //displays 'path/to/the/sky'
-$alt->sameValueAs($path); //return false;
-~~~
-
-<p class="message-notice">This method is used by the Hierarchical URI <code>withoutTrailingSlash</code> method</p>
-
-Conversely, `HierarchicalPath::withTrailingSlash` will append a slash at the end of your path only if no slash is already present.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$raw_path       = new Path("/path/to/the/sky");
-$normalize_path = $raw_path->withTrailingSlash();
-echo $raw_path;           //displays '/path/to/the/sky'
-echo $normalize_path;     //displays '/path/to/the/sky/'
-$alt->sameValueAs($path); //return false;
-~~~
-
-<p class="message-notice">This method is used by the Hierarchical URI <code>withTrailingSlash</code> method</p>
 
 ## Modifying Path
 
@@ -337,12 +227,12 @@ You can easily change or remove the extension from the path basename using the `
 use League\Uri\Components\HierarchicalPath as Path;
 
 $path    = new Path('/path/to/the/sky');
-$newPath = $path->withExtension('.csv');
+$newPath = $path->withExtension('csv');
 echo $newPath->getExtension(); //displays csv;
 echo $path->getExtension();    //displays '';
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>withExtension</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>Extension</code></p>
 
 ### Append segments
 
@@ -356,7 +246,7 @@ $newPath = $path->append(new Path('path'))->append('to/the/sky');
 $newPath->__toString(); //return path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>appendPath</code> method</p>
+<p class="message-notice">This method is used by the URI modifier <code>AppendSegments</code></p>
 
 ### Prepend segments
 
@@ -370,7 +260,7 @@ $newPath = $path->prepend(new Path('sky'))->prepend(new Path('path/to/the'));
 $newPath->__toString(); //return path/to/the/sky
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>prependPath</code> method</p>
+<p class="message-notice">This method is used by the URI modifier<code>PrependSegments</code></p>
 
 ### Replace segments
 
@@ -389,13 +279,11 @@ $Path->__toString(); //return /bar/baz/example/com
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>replaceSegment</code> method</p>
+<p class="message-notice">This method is used by the URI modifier<code>ReplaceSegment</code></p>
 
 ### Remove segments
 
-To remove segments from the current object and returns a new `HierarchicalPath` object without them you must use the `HierarchicalPath::without` method. This method expects a single argument.
-
-This argument can be an array containing a list of parameter names to remove.
+To remove segments from the current object and returns a new `HierarchicalPath` object without them you must use the `HierarchicalPath::without` method. This method expects a single argument. This argument is an array containing a list of parameter names to remove.
 
 ~~~php
 use League\Uri\Components\HierarchicalPath as Path;
@@ -405,21 +293,10 @@ $newPath = $path->without([0, 1]);
 $newPath->__toString(); //return '/the/sky'
 ~~~
 
-Or a callable that will select the list of offsets to remove.
-
-~~~php
-use League\Uri\Components\HierarchicalPath as Path;
-
-$path = new Path('/path/to/the/sky');
-$newPath = $path->without(function ($value) {
-	return $value < 3;
-});
-echo $newPath; //displays '/sky';
-~~~
 
 <p class="message-notice">if the specified offset does not exists, no modification is performed and the current object is returned.</p>
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>withoutSegments</code> method</p>
+<p class="message-notice">This method is used by the URI modifier<code>RemoveSegments</code></p>
 
 ### Filter segments
 
@@ -454,4 +331,4 @@ $newPath = $query->filter(function ($value) {
 echo $newPath; //displays '/foo/yolo'
 ~~~
 
-<p class="message-notice">This method is used by the Hierarchical URI <code>filterPath</code> method</p>
+<p class="message-notice">This method is used by the URI modifier<code>FilterSegments</code></p>

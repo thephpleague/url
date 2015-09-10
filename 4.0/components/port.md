@@ -26,9 +26,9 @@ echo $empty_port; //display ''
 
 The port component constructor accepts:
 
-- a valid string according to their component validation rules as explain in RFC3986
-- an object with a `__toString()` method.
-- the `null` value.
+- a valid string according to their component validation rules as explain in RFC3986;
+- a int;
+- the `null` value;
 
 <p class="message-warning">If the submitted value is not a valid port number an <code>InvalidArgumentException</code> will be thrown.</p>
 
@@ -53,24 +53,21 @@ Basic port representations is done using the following methods:
 use League\Uri\Components\Port;
 
 $port = new Port(21);
+$port->getContent();      //return 21
 $port->__toString();      //return '21'
 $port->getUriComponent(); //return ':21'
 ~~~
 
-### Integer representation
-
-A port can be represented as an integer through the use of the `Port::toInt` method the class.
-
-<p class="message-info">If a no port number is defined, the <code>toInt</code> method returns <code>null</code>.</p>
+<p class="message-notice">If a port number is defined, the <code>getContent</code> method returns a <code>int</code>.</p>
 
 ~~~php
 use League\Uri\Components\Port;
 
 $port = new Port(81);
-$port->toInt(); //return 81;
+$port->getContent(); //return 81;
 
 $empty_port = new Port();
-$empty_port->toInt(); //return null
+$empty_port->getContent(); //return null
 ~~~
 
 To [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the port object you should refer to the component overview section.

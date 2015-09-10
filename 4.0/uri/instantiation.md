@@ -47,3 +47,20 @@ Out of the box the library provides the following specialized classes:
 - `League\Uri\Schemes\Ws` which deals with [WS and WSS (websocket) scheme specific URI](/4.0/uri/ws/);
 
 <p class="message-info">But you can easily <a href="/4.0/uri/hierarchical/extension/">create your own class</a> to manage others scheme specific URI.</p>
+
+## URI normalization
+
+Out of the box the package normalizes any given URI according to the non destructive rules of RFC3986.
+
+These non destructives rules are:
+
+- scheme and host components are lowercased;
+- query, path, fragment components are URI encoded;
+- the port number is removed from the URI string representation if the standard port is used;
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+
+$uri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
+echo $uri; //displays http://www.example.com/hellow/./wor%20ld?who=f%203#title
+~~~
