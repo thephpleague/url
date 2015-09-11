@@ -3,7 +3,7 @@
         Introduction: '/4.0/'
         Changelog: '/4.0/changelog/'
         Installation: '/4.0/installation/'
-        Simple example: '/4.0/examples/'
+        Usage: '/4.0/examples/'
         Terminology: '/4.0/definitions/'
     Uri:
         Instantiation: '/4.0/uri/instantiation/'
