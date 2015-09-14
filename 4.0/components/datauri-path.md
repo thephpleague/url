@@ -5,7 +5,7 @@ title: The Data Uri Path component
 
 # Data URI Path
 
-The library provides a `League\Uri\Components\DataPath` class to ease complex path manipulation on a Data URI object.
+The library provides a `League\Uri\Components\DataPath` class to ease complex path manipulation on a Data URI object.  The class extends the default `Path` object with methods dedicated to manipulate Data URI paths.
 
 ## Instantiation
 

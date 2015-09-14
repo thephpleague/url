@@ -5,7 +5,7 @@ title: The Hierarchical Path component
 
 # The Hierarchical Path component
 
-The library provides a `League\Uri\Components\HierarchicalPath` class to ease complex path manipulation on a Hierarchical URI object like `http` scheme URI.
+The library provides a `League\Uri\Components\HierarchicalPath` class to ease complex path manipulation on a Hierarchical URI object like `http` scheme URI. The class extends the default `Path` object with methods dedicated to manipulate hierarchical paths.
 
 ## Path creation
 

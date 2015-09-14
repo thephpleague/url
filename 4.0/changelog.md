@@ -18,6 +18,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - A `Ftp` class to specifically manipulate `ftp` schemed URI
 - A `Ws` class to specifically manipulate `ws`, `wss` schemed URI
 - A `DataPath` component class to manipulate Data-uri path component
+- A `HierarchicalPath` to manipulate Hierarchical-like path component
 - Uri part object now expose a `getContent` method which returns null if the content is not specified
 - Support for IPv6 zone identifier
 - Re-introduced `Host::toAscii` and adding `Host::isIdn` method
@@ -27,16 +28,15 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - API to add/remove the `Path` leading and trailing slash.
 - `Query::ksort` method
 - Missing `User` and `Pass` Interfaces
-- `Host::getIpLiteral` to get the raw IP representation of a Ip Literal hostname
+- `Host::getLiteral` to get the raw IP representation of a Ip Literal hostname
 - `Path::relativize` to generate relative path
 
 ### Fixed
 
 - The `QueryParser` is now a standalone class to parse an query string according to RFC3986 rules.
 - Move namespace from `League\Url` to `League\Uri` to avoid dependency hell
-- Move class name from `League\Url\Url` to `League\Uri\Schemes\AbstractUri` to enable better URI extension
+- Move class name from `League\Url\Url` to `League\Uri\Schemes\Generic\AbstractUri` to enable better URI extension
 - Renamed methods for consistency with PHP naming conventions
-- Renamed `Path` component to `HierarchicalPath` for clarification
 - userinfo string representation `:` delimiter was added unnecessarily
 - Host::__toString return the hostname in Unicode or ASCII depending on the user submission
 - Host::toUnicode now returns a new Host instance
@@ -44,15 +44,15 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - `HierarchicalPath` now supports multiple leading slash
 - Formatter::format accept `Uri`, PSR-7 `UriInterface` and `UriPart` implemented objects
 - `Host` now iterate from the top-level label to the last subdomain (from right to left)
-- The `Query::merge` method only accept QueryInterface object or query string
+- The `Query::merge` method only accept `League\Uri\Interfaces\Query` objects or query string
 
 ### Remove
 
 - `Uri::isAbsolute`
-- `Scheme::isSupported`, `Scheme::getStandardPort`, `Port::getStandardSchemes` use the `SchemeRegistry` class to get this information.
-- support for `PHP 5.4`
-- All partial modifier methods attached to an URI object are removed and replaced by URI Modifiers classes
 - `Uri::sameValueAs`
+- `Scheme::isSupported`, `Scheme::getStandardPort`, `Port::getStandardSchemes`.
+- Support for `PHP 5.4`
+- All partial modifier methods attached to an URI object are removed and replaced by URI Modifiers classes
 
 ## 4.0.0-beta-3
 

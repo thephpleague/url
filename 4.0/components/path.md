@@ -187,9 +187,10 @@ echo $normalize_path;     //displays '/path/to/the/sky/'
 
 ## Specialized Path Object
 
-What makes a URI difference apart from the scheme is how the path is parse and manipulated. This simple path class although functional will not help you parse or manipulate correctly a Data URI path or a FTP Uri path. That's why the library comes bundles with two specialized Path objects:
+What makes an URI specific apart from the scheme is how the path is parse and manipulated. This simple path class although functional will not ease parsing a Data URI path or a FTP Uri path. That's why the library comes bundles with two specialized Path objects that extend the current object by adding more specific methods in accordance to the path usage:
 
 - the [HierarchicalPath](/4.0/components/hierarchical-path/) object to work with HTTP, FTP, WS paths component
 - the [DataPath](/4.0/components/datauri-path/) object to work with the DataURI path
+
 
 The [Extension Guide](/4.0/uri/extension/#mailto-interfaces) also provides examples on how to extends the Path object to make it meets you specific URI parsing and manipulation methods.
