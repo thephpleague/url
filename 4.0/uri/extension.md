@@ -339,6 +339,4 @@ $mailWithSubject = $mailto->mergeQuery(['subject' => 'Hello World!']);
 $mailWithSUbject->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com?subject=Hello%20World%21';
 ~~~
 
-There are still room for improvement by adding specific URI modifiers but I'll leave that to you to strenghen the above code.
-
-<p class="message-info">To create hierarchical URI objects you should check the <a href="/4.0/uri/hierarchical/extension/">Hierarchical URI extension guide</a></p>
+<p class="message-notice">There are still room for improvement by adding specific URI modifiers but I'll leave that to you to strenghen the above code.</p>
