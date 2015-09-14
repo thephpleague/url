@@ -9,7 +9,7 @@ To ease working with FTP URIs, the library comes bundle with a URI specific FTP 
 
 ## Validating a FTP URI
 
-A FTP URI can not contains a query and or a fragment component.
+A FTP URI must contain the `ftp` scheme. It can not contains a query and or a fragment component.
 
 <p class="message-notice">Adding contents to the fragment or query components throws an <code>RuntimeException</code> exception</p>
 
@@ -17,7 +17,11 @@ A FTP URI can not contains a query and or a fragment component.
 use League\Uri\Schemes\Ftp as FtpUri;
 
 $uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png;type=i');
-$uri->withQuery('p=1'); //throw an RuntimeException
+$uri->withQuery('p=1'); //throw an RuntimeException - a query component was given
+
+
+$altUri = FtpUri::createFromString('//thephpleague.com/path/to');
+//throw an InvalidArgumentException - no scheme was given
 ~~~
 
 Apart from the fragment, the Ftp URIs share the same [host validation limitation](/4.0/uri/schemes/http/#validation) as Http URIs.

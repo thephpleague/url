@@ -335,13 +335,10 @@ echo $mailto->path->getEmail(0); //returns 'foo@example.com'
 
 var_dump($mailto->path->toArray()); //returns an array of all mails
 
-$newEmail = $mailto->appendEmail('greg@theguy.com');
-$newEmail->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com,greg@theguy.com';
-
 $mailWithSubject = $mailto->mergeQuery(['subject' => 'Hello World!']);
 $mailWithSUbject->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com?subject=Hello%20World%21';
 ~~~
 
-There are still room for improvement and I'll leave that to you to strenghen the above code.
+There are still room for improvement by adding specific URI modifiers but I'll leave that to you to strenghen the above code.
 
 <p class="message-info">To create hierarchical URI objects you should check the <a href="/4.0/uri/hierarchical/extension/">Hierarchical URI extension guide</a></p>

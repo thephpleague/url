@@ -11,6 +11,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 
 ### Added
 
+- Modifiers classes to modify URI objects in an uniform way for interoperability
 - A `UriParser` class to parse an URI according to RFC3986 rules, the library no longer depend on PHP `parse_url` function
 - A `Data` class to specifically manipulate `data` schemed URI
 - A `Http` class to specifically manipulate `http`,`https` schemed URI
@@ -23,18 +24,17 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - `Intl` extension is now required to use the library
 - `FileInfo` extension is now required to use the library
 - Domain parsing capabilities to `Host` using `jeremykendall/php-domain-parser` package
-- API to add/remove the `HierarchicalPath` trailing slash.
-- `Query::ksort` and `Url::ksortQuery` method
+- API to add/remove the `Path` leading and trailing slash.
+- `Query::ksort` method
 - Missing `User` and `Pass` Interfaces
 - `Host::getIpLiteral` to get the raw IP representation of a Ip Literal hostname
-- `getLiteral` method to `Pass`, `User` and `Fragment` objects to get the component non-encoded string representation
-- `HierarchicalPath::relativize` and `Uri::relativize` to generate relative path and uri respectively
+- `Path::relativize` to generate relative path
 
 ### Fixed
 
 - The `QueryParser` is now a standalone class to parse an query string according to RFC3986 rules.
 - Move namespace from `League\Url` to `League\Uri` to avoid dependency hell
-- Move class name from `League\Url\Url` to `League\Uri\Schemes\AbstractUri` to enable easy extension
+- Move class name from `League\Url\Url` to `League\Uri\Schemes\AbstractUri` to enable better URI extension
 - Renamed methods for consistency with PHP naming conventions
 - Renamed `Path` component to `HierarchicalPath` for clarification
 - userinfo string representation `:` delimiter was added unnecessarily
@@ -42,22 +42,17 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 - Host::toUnicode now returns a new Host instance
 - Host now support append/prepend/replacing to or with IPv4 Host type
 - `HierarchicalPath` now supports multiple leading slash
-- Except for the `Port` constructor no other constructor accept the `null` value as per PSR-7
-- The `::resolve` method is now typehinted to the Uri interface
-- Formatter::format only accept `Uri` and `UriPart` implemented object
-- `Uri::sameValueAs` normalized host encoding, path without dot segments, and query parameters key sorting before comparison
-- To avoid confusion in API usage the following methods are renamed:
-    - `Uri::toAscii` -> `Uri::hostToAscii`
-    - `Uri::toUnicode` -> `Uri::hostToUnicode`
-    - `Data::toAscii` -> `Data::dataToAscii`
-    - `Data::toBinary` -> `Data::dataToBinary`
-- The `resolve` method is restricted to the `Http` class only
+- Formatter::format accept `Uri`, PSR-7 `UriInterface` and `UriPart` implemented objects
+- `Host` now iterate from the top-level label to the last subdomain (from right to left)
+- The `Query::merge` method only accept QueryInterface object or query string
 
 ### Remove
 
 - `Uri::isAbsolute`
-- `Scheme::isSupported`, `Scheme::getStandardPort`, `Port::getStandardSchemes`.
+- `Scheme::isSupported`, `Scheme::getStandardPort`, `Port::getStandardSchemes` use the `SchemeRegistry` class to get this information.
 - support for `PHP 5.4`
+- All partial modifier methods attached to an URI object are removed and replaced by URI Modifiers classes
+- `Uri::sameValueAs`
 
 ## 4.0.0-beta-3
 

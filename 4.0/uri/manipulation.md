@@ -52,18 +52,44 @@ A URI modifier must follow the following rules:
 
 - It must be a callable. If the URI modifier is a class it must implement PHP's `__invoke` method.
 - The callable expects its single argument to be an URI object or a PSR-7 UriInterface object and must return a instance of the submitted object.
-- If the URI modifier is an obejct it must be a immutable. Updating its parameters must return a new instance with the modified parameters.
+- If the URI modifier is an object it must be a immutable. Updating its parameters must return a new instance with the modified parameters.
 - Apart from validating it's own parameters, URI modifiers are transparent when dealing with error and exceptions. They must not alter of silence them.
 
-### League URI pipeline
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Components\Query;
 
-Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Pipeline` class. This class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one. The `League\Uri\Pipeline` can also be used as a URI modifier as well which can lead to advance modification from you URI in a sane an normalized way.
+$mergeQuery = function ($uri) {
+	if (!$uri instanceof League\Uri\Interfaces\Uri 
+		&& !$uri instanceof Psr\Http\MessageUriInterface) 
+	{
+		throw new InvalidArgumentException('The submitted uri object is invalid');
+	}
+
+	///do whatever you want to the URI
+	$query = $uri->getQuery();
+	$updateQuery = (string) (new Query($query))->mergeQuery("foo=bar&taz=");
+	$newUri = $uri->withQuery($updateQuery);
+
+	return $newUri;
+};
+
+$uri = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
+$newUri = $mergQuery($uri);
+echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
+~~~
+
+The anonymous function `$mergeQuery` is an rough example of a URI modifier. The library `League\Uri\Modifiers\MergeQuery` provides a better and more powerful implementation.
+
+### Applying multiple modifiers to a single URI
+
+Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Modifiers\Pipeline` class. This class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one.
 
 ~~~php
-use League\Uri\Modifiers\RemoveDotSegments;
 use League\Uri\Modifiers\HostToAscii;
 use League\Uri\Modifiers\KsortQuery;
-use League\Uri\Pipeline;
+use League\Uri\Modifiers\Pipeline;
+use League\Uri\Modifiers\RemoveDotSegments;
 use League\Uri\Schemes\Http as HttpUri;
 
 $origUri = HttpUri::createFromString("http://스타벅스코리아.com/to/the/sky/");
@@ -74,12 +100,14 @@ $modifier = (new Pipeline())
 	->pipe(new HostToAscii())
 	->pipe(new KsortQuery());
 
-$origUri1Alt = $modifier->__invoke($origUri1);
-$origUri2Alt = $modifier->__invoke($origUri2);
+$origUri1Alt = $modifier->process($origUri1);
+$origUri2Alt = $modifier->process($origUri2);
 
 echo $origUri1Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
 echo $origUri2Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
 ~~~
+
+<p class="message-notice">The <code>League\Uri\Modifiers\Pipeline</code> is a URI modifier as well which can lead to advance modifications from you URI in a sane an normalized way.</p>
 
 URI Modifiers can be grouped for simplicity in different categories that deals with
 
