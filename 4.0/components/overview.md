@@ -170,5 +170,7 @@ For more complex parts/components care has be taken to provide more useful metho
 * `League\Uri\Components\UserInfo` which handles [the URI user information part](/4.0/components/userinfo/);
 * `League\Uri\Components\Host` which handles [the host component](/4.0/components/host/);
 * `League\Uri\Components\Port` which handles [the port component](/4.0/components/port/);
-* `League\Uri\Components\HierarchicalPath` which handles [the path component](/4.0/components/path-hierarchical/);
+* `League\Uri\Components\Path` which handles [the generic path component](/4.0/components/path/);
+* `League\Uri\Components\HierarchicalPath` which handles [the path component](/4.0/components/hierarchical-path/);
+* `League\Uri\Components\DataPath` which handles [the data path component](/4.0/components/datauri-path/);
 * `League\Uri\Components\Query` which handles [the query component](/4.0/components/query/);

@@ -254,8 +254,13 @@ You can update the URI modifier using:
 - `withFlag` method to alter the filtering flag. depending on which parameter you want to use to filter the path you can use:
 	- the `Collection::FILTER_USE_KEY` to filter against the segment offset;
 	- the `Collection::FILTER_USE_VALUE` to filter against the segment value;
+	- the `Collection::FILTER_USE_BOTH` to filter against the segment value and offset;
 
 If no flag is used, by default the `Collection::FILTER_USE_VALUE` flag is used.
+If you are using PHP 5.6+ you can directly use PHP's `array_filter` constant:
+
+- `ARRAY_FILTER_USE_KEY` in place of `Collection::FILTER_USE_KEY`
+- `ARRAY_FILTER_USE_BOTH` in place of `Collection::FILTER_USE_BOTH`
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
