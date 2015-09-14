@@ -443,35 +443,52 @@ echo $newHost; //displays '[fe80::1]';
 
 ### Filter labels
 
-You can filter the `Host` object using the `Host::filter` method.
+You can filter the `Host` object using the `Host::filter` method. Filtering is done using the same arguments as PHP's `array_filter`.
 
-The first parameter must be a `callable`
+You can filter the path according to its labels values:
 
 ~~~php
 use League\Uri\Components\Host;
 
 $host    = new Host('www.11.be');
 $newHost = $host->filter(function ($value) {
-	return ! is_numeric($value);
-});
+	return !is_numeric($value);
+}, Host::FILTER_USE_VALUE);
 echo $newHost; //displays 'www.be'
+~~~
+
+You can filter the path according to its labels key.
+
+~~~php
+use League\Uri\Components\Host;
+
+$host    = new Host('www.11.be');
+$newHost = $host->filter(function ($value) {
+	return $value != 2;
+}, Host::FILTER_USE_KEY);
+echo $newHost; //displays '11.be'
+~~~
+
+You can filter the path according to its label value and key.
+
+~~~php
+use League\Uri\Components\Host;
+
+$host    = new Path('media.bbc.co.uk');
+$newHost = $query->filter(function ($value, $key) {
+    return 1 != $key && strpos($value, 'e') === false;
+}, Path::FILTER_USE_BOTH);
+echo $newHost; //displays 'bbc.uk'
 ~~~
 
 By specifying the second argument flag you can change how filtering is done:
 
-- use `Host::FILTER_USE_VALUE` to filter according to the label value;
-- use `Host::FILTER_USE_KEY` to filter according to the label offset;
+- use `Host::FILTER_USE_VALUE` to filter according to the segment value;
+- use `Host::FILTER_USE_KEY` to filter according to the segment offset;
+- use `Host::FILTER_USE_BOTH` to filter according to the segment value and offset;
 
-By default, if no flag is specified the method will use the `Host::FILTER_USE_VALUE` flag.
+By default, if no flag is specified the method will filter the query using the `Host::FILTER_USE_VALUE` flag.
 
-~~~php
-use League\Uri\Components\Host;
+<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's `array_filter` flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
 
-$host    = new Host('www.11.be');
-$newHost = $host->filter(function ($value) {
-	return $value != 1;
-}, Host::FILTER_USE_KEY);
-echo $newHost; //displays 'www.be'
-~~~
-
-<p class="message-notice">This method is used by the URI modifier <code>filterLabels</code></p>
+<p class="message-notice">This method is used by the URI modifier <code>FilterLabels</code></p>

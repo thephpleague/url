@@ -300,35 +300,52 @@ $newPath->__toString(); //return '/the/sky'
 
 ### Filter segments
 
-You can filter the `HierarchicalPath` object using the `HierarchicalPath::filter` method.
+You can filter the `HierarchicalPath` object using the `HierarchicalPath::filter` method. Filtering is done using the same arguments as PHP's `array_filter`.
 
-The first parameter must be a `callable`
+You can filter the path according to its segments values:
 
 ~~~php
 use League\Uri\Components\HierarchicalPath as Path;
 
 $path    = new Path('/foo/bar/yolo/');
 $newPath = $path->filter(function ($value) {
-	return ! empty($value);
-});
+    return ! empty($value);
+}, Path::FILTER_USE_VALUE);
 echo $newPath; //displays '/foo/bar/yolo'
 ~~~
 
-By specifying the second argument flag you can change how filtering is done:
-
-- use `HierarchicalPath::FILTER_USE_VALUE` to filter according to the segment value;
-- use `HierarchicalPath::FILTER_USE_KEY` to filter according to the segment offset;
-
-By default, if no flag is specified the method will use the `HierarchicalPath::FILTER_USE_VALUE` flag.
+You can filter the path according to its segments key.
 
 ~~~php
 use League\Uri\Components\HierarchicalPath as Path;
 
 $path    = new Path('/foo/bar/yolo/');
 $newPath = $query->filter(function ($value) {
-	return 1 != $value;
+    return 1 != $value;
 }, Path::FILTER_USE_KEY);
 echo $newPath; //displays '/foo/yolo'
 ~~~
 
-<p class="message-notice">This method is used by the URI modifier<code>FilterSegments</code></p>
+You can filter the path according to its segment value and key.
+
+~~~php
+use League\Uri\Components\HierarchicalPath as Path;
+
+$path    = new Path('/foo/bar/yolo/');
+$newPath = $query->filter(function ($value, $key) {
+    return 1 != $key && strpos($value, 'l') !== false;
+}, Path::FILTER_USE_KEY);
+echo $newPath; //displays '/yolo'
+~~~
+
+By specifying the second argument flag you can change how filtering is done:
+
+- use `HierarchicalPath::FILTER_USE_VALUE` to filter according to the segment value;
+- use `HierarchicalPath::FILTER_USE_KEY` to filter according to the segment offset;
+- use `HierarchicalPath::FILTER_USE_BOTH` to filter according to the segment value and offset;
+
+By default, if no flag is specified the method will filter the query using the `HierarchicalPath::FILTER_USE_VALUE` flag.
+
+<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's `array_filter` flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
+
+<p class="message-notice">This method is used by the URI modifier <code>FilterSegments</code></p>

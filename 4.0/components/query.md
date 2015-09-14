@@ -233,37 +233,53 @@ echo $newQuery; //displays 'z='
 
 ### Filter the Query
 
-Another way to select parameters from the query  object is to filter them.
+Another way to select parameters from the query object is to filter them. Filtering is done using the same arguments as PHP's `array_filter`.
 
-You can filter the query according to its parameters name or value using the `Query::filter` method.
-
-The first parameter must be a `callable`
+You can filter the query according to its parameters values:
 
 ~~~php
 use League\Uri\Components\Query;
 
 $query    = new Query('foo=bar&p=y+olo&z=');
 $newQuery = $query->filter(function ($value) {
-	return ! empty($value);
-});
+	return !empty($value);
+}, Query::FILTER_USE_VALUE);
 echo $newQuery; //displays 'foo=bar&p=y+olo'
+~~~
+
+You can filter the query according to its parameters name.
+
+~~~php
+use League\Uri\Components\Query;
+
+$query    = new Query('foo=bar&p=y+olo&z=');
+$newQuery = $query->filter(function ($key) {
+	return strpos($key, 'f');
+}, Query::FILTER_USE_KEY);
+echo $newQuery; //displays 'foo=bar'
+~~~
+
+You can filter the query according to its parameters name and value.
+
+~~~php
+use League\Uri\Components\Query;
+
+$query = new Query('toto=foo&bar=foo&john=jane');
+$newQuery = $query->filter(function ($value, $key) {
+    return (strpos($value, 'o') !== false && strpos($key, 'o') !== false);
+}, Query::FILTER_USE_BOTH);
+
+echo $newQuery; //displays 'toto=foo'
 ~~~
 
 By specifying the second argument flag you can change how filtering is done:
 
 - use `Query::FILTER_USE_VALUE` to filter according to the query parameter value;
 - use `Query::FILTER_USE_KEY` to filter according to the query parameter name;
+- use `Query::FILTER_USE_BOTH` to filter according to the query parameter name and value;
 
-By default, if no flag is specified the method will filter by value.
+By default, if no flag is specified the method will filter the query using the `Query::FILTER_USE_VALUE` flag.
 
-~~~php
-use League\Uri\Components\Query;
-
-$query    = new Query('foo=bar&p=y+olo&z=');
-$newQuery = $query->filter(function ($value) {
-	return $value != 'foo';
-}, Query::FILTER_USE_KEY);
-echo $newQuery; //displays 'p=y%20olo&z='
-~~~
+<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's `array_filter` flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
 
 <p class="message-notice">This method is used by the URI modifier <code>FilterQuery</code></p>
