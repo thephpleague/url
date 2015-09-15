@@ -73,3 +73,26 @@ $parser = new UriParser();
 $parser->parse($uri)['path']; //returns ''
 parse_url($uri, PHP_URL_PATH); //returns `null`
 ~~~
+
+<p class="message-notice">The <code>UriParser</code> class only parse and extract from the URI string its components. You still need to validate them against its scheme specific rules.</p>
+
+~~~php
+use League\Uri\UriParser;
+
+$uri = 'http:www.example.com';
+$parser = new UriParser();
+var_dump($parser->parse($uri));
+//returns the following array
+array(
+    'scheme' => 'http',
+    'user' => null,
+    'pass' => null,
+    'host' => null,
+    'port' => null,
+    'path' => 'www.example.com',
+    'query' => null,
+    'fragment' => null,
+);
+~~~
+
+This invalid HTTP URI will be succefully parsed by the class.
