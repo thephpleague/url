@@ -111,20 +111,6 @@ $alt->sameValueAs($path); //return false;
 
 <p class="message-notice">This method is used by the URI Modifier <code>RemoveEmptySegments</code></p>
 
-### Relativize a Path
-
-The reverse to removing dot segments is to add them to create a path relative to another one. The `Path::relativize` method will convert a submitted path according to the current Path object.
-
-~~~php
-use League\Uri\Components\Path;
-
-$basePath  = new Path("/path/to/the/sky");
-$childPath = new Path("/blank.gif");
-echo $basePath->relativize($childPath); //displays '../blank.gif'
-~~~
-
-<p class="message-notice">This method is used by the URI Modifier <code>Relativize</code></p>
-
 ### Manipulating the trailing slash
 
 Depending on your context you may want to add or remove the path trailing slash. In order to do so the `Path` object uses two methods which accept no argument.

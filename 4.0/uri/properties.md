@@ -7,7 +7,7 @@ title: Getting URIs informations
 
 Even thought the package comes bundle with a serie of URI objects representing usual URI, all theses objects expose the same methods.
 
-## Accessing URI parts as and components as strings
+## Accessing URI parts and components as strings
 
 You can access the URI individual parts and components as string or integer using their respective getter methods.
 

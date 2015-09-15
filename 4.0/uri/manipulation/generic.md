@@ -20,42 +20,36 @@ $newUri = $modifier->__invoke($relativeUri);
 echo $newUri; //displays "http://www.example.com/hello/p#~toto"
 ~~~
 
-## Generating a relative URI
+## Applying multiple modifiers to a single URI
 
-The `Relativize` URI Modifier provides the mean for relativizing an URI according to a referenced base URI.
+Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Modifiers\Pipeline` class. This class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one.
+
+The `League\Uri\Modifiers\Pipeline` uses two methods:
+
+- `Pipeline::pipe` to attach a URI modifier following the *First In First Out* rule.
+- `Pipeline::process` to apply sequencially each attached URI modifier to the submitted URI object. 
+
 
 ~~~php
+use League\Uri\Modifiers\HostToAscii;
+use League\Uri\Modifiers\KsortQuery;
+use League\Uri\Modifiers\Pipeline;
+use League\Uri\Modifiers\RemoveDotSegments;
 use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Modifiers\Relativize;
 
-$baseUri = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
-$relativeUri = HttpUri::createFromString("http://www.example.com/short#~toto");
-$modifier = new Relativize($baseUri);
-$newUri      = $modifier->__invoke($relativeUri);
-echo $newUri; //displays "../short#~toto"
+$origUri = HttpUri::createFromString("http://스타벅스코리아.com/to/the/sky/");
+$origUri2 = HttpUri::createFromString("http://xn--oy2b35ckwhba574atvuzkc.com/path/../to/the/./sky/");
+
+$modifier = (new Pipeline())
+	->pipe(new RemoveDotSegment())
+	->pipe(new HostToAscii())
+	->pipe(new KsortQuery());
+
+$origUri1Alt = $modifier->process($origUri1);
+$origUri2Alt = $modifier->process($origUri2);
+
+echo $origUri1Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
+echo $origUri2Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
 ~~~
 
-## Modifying the base URI
-
-For both modifiers, you can, at any given time, update the base URI using the <code>withUri</code> method which expected an URI object or a PSR-7 UriInterface implemented object.
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Http as WsUri;
-use League\Uri\Modifiers\Relativize;
-
-$baseUri = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
-$relativeUri = HttpUri::createFromString("http://www.example.com/short#~toto");
-$modifier = new Relativize($baseUri);
-$newUri      = $modifier->__invoke($relativeUri);
-echo $newUri; //displays "../short#~toto"
-$altUri = HttpUri::createFromString("http://www.example.com/");
-$altModifier = $modifier->newUri($altUri);
-$altUri = $altModifier->__invoke($relativeUri);
-echo $altUri; //displays 
-
-
-
-
-// $altModifier is different from $modifier 
-~~~
+<p class="message-notice">The <code>League\Uri\Modifiers\Pipeline</code> is a URI modifier as well which can lead to advance modifications from you URI in a sane an normalized way.</p>
