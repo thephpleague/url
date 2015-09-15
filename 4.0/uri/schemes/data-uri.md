@@ -23,26 +23,27 @@ If the file is not readable or accessible an InvalidArgumentException exception 
 
 ## Validation
 
-Even thout all URI properties are defined and accessible with the dataURI attempt to set the following component or URI part will result in the object throwing a `InvalidArgumentException` exception. As adding data to theses URI part will generate an invalid URI.
+Even though all URI properties are defined and accessible attempt to set any component other than the path will result in the object throwing a `RuntimeException` exception. As adding data to theses URI parts will generate an invalid URI.
 
 ~~~php
 use League\Uri\Schemes\Data as DataUri;
 
 $uri = DataUri::createFromPath('path/to/my/png/image.png');
 $uri->getHost(); //return '' an empty string
-$uri->withHost('example.com'); //thrown an InvalidArgumentException
+$uri->withHost('example.com'); //thrown an RuntimeException
 ~~~
 
 ## Properties
 
-The data URI class uses the [DataPath](/4.0/components/datauri-path/) class to represents its path. using PHP's magic `__get` method you can access the object path and get more information about the underlying file.
+The data URI class uses the [DataPath](/4.0/components/datauri-path/) class to represents its path. using PHP's magic `__get` method you can access the object path and get more informations about the underlying file.
 
 ~~~php
 use League\Uri\Schemes\Data as DataUri;
 
 $uri = DataUri::createFromString('data:text/plain;charset=us-ascii,Hello%20World%21');
-echo $uri->path->getMimetype(); //returns 'text/plain'
-echo $uri->path->getParameters(); //returns 'charset=us-ascii'
-echo $uri->path->getData(); //returns 'Hello%20World%21'
+echo $uri->path->getMediatype(); //display 'text/plain;charset=us-ascii'
+echo $uri->path->getMimetype(); //display 'text/plain'
+echo $uri->path->getParameters(); //display 'charset=us-ascii'
+echo $uri->path->getData(); //display 'Hello%20World%21'
 $uri->path->isBinaryData(); //returns false
 ~~~

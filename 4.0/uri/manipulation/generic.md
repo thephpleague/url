@@ -20,25 +20,13 @@ $newUri = $modifier->__invoke($relativeUri);
 echo $newUri; //displays "http://www.example.com/hello/p#~toto"
 ~~~
 
-<p class="message-notice">If you try to resolve two Uri objects which do not share the same class. No normalization will occur and the submitted URI object will be return unchanged.</p>
-
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Http as WsUri;
-
-$baseUri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$relativeUri = WsUri::createFromString("./p#~toto");
-$modifier    = new Resolve($baseUri);
-$newUri      = $modifier->__invoke($relativeUri);
-echo $newUri; //displays "./p#~toto"
-~~~
-
 ## Generating a relative URI
 
 The `Relativize` URI Modifier provides the mean for relativizing an URI according to a referenced base URI.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Modifiers\Relativize;
 
 $baseUri = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
 $relativeUri = HttpUri::createFromString("http://www.example.com/short#~toto");
@@ -47,30 +35,27 @@ $newUri      = $modifier->__invoke($relativeUri);
 echo $newUri; //displays "../short#~toto"
 ~~~
 
-<p class="message-notice">If you try to relativize two Uri object which do not share the same scheme. No normalization will occur and the submitted URI object will be return unchanged.</p>
+## Modifying the base URI
+
+For both modifiers, you can, at any given time, update the base URI using the <code>withUri</code> method which expected an URI object or a PSR-7 UriInterface implemented object.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 use League\Uri\Schemes\Http as WsUri;
+use League\Uri\Modifiers\Relativize;
 
-$baseUri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$relativeUri = WsUri::createFromString("./p#~toto");
+$baseUri = HttpUri::createFromString("http://www.example.com/this/is/a/long/uri/");
+$relativeUri = HttpUri::createFromString("http://www.example.com/short#~toto");
 $modifier = new Relativize($baseUri);
 $newUri      = $modifier->__invoke($relativeUri);
-echo $newUri; //displays "./p#~toto"
-~~~
+echo $newUri; //displays "../short#~toto"
+$altUri = HttpUri::createFromString("http://www.example.com/");
+$altModifier = $modifier->newUri($altUri);
+$altUri = $altModifier->__invoke($relativeUri);
+echo $altUri; //displays 
 
-<p class="message-notice">At any given time you can create a new modifier with a new base URI using the `withUri` method which expected an URI object or a PSR-7 UriInterface implemented object.</p>
 
 
-~~~php
-use League\Uri\Schemes\Http as HttpUri;
-use League\Uri\Schemes\Http as WsUri;
-
-$baseUri = HttpUri::createFromString("hTTp://www.ExAmPLE.com:80/hello/./wor ld?who=f+3#title");
-$relativeUri = WsUri::createFromString("./p#~toto");
-$modifier = new Relativize($baseUri);
-$altModifier = $modifier->withUri($relativeUri);
 
 // $altModifier is different from $modifier 
 ~~~

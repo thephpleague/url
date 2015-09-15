@@ -10,6 +10,7 @@ title: Examples
 Appart from being able to get all the URI component string using their respective getter method. the URI object also exposed all component as object throught PHP's magic `__get` method. You can use this ability to get even more informations about the URI objects. 
 
 ~~~php
+use League\Uri\Schemes\Http as HttpUri;
 
 $uri = HttpUri::createFromString("http://url.thephpleague.com/.././report/");
 echo $uri->getPath(); //display "/.././report/"

@@ -7,7 +7,7 @@ title: Http URIs
 
 ## Instantiation
 
-Usually you want to work with one of the following schemes: `http`, `https`. To ease working with these schemes the library introduces the `Http` class. In addition to the [defined named constructors](/4.0/uri/instantiation/#uri-instantiation), the `Http` class can be instantiated using the server variables.
+To work with Http URIs you can use the `League\Uri\Schemes\Http` class. This class handles secure and non secure Http URI. In addition to the [defined named constructors](/4.0/uri/instantiation/#uri-instantiation), the `Http` class can be instantiated using the server variables.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
@@ -20,15 +20,14 @@ $uri = HttpUri::createFromServer($_SERVER);
 
 ## Validation
 
-If a scheme is present a Http URI can not contains an empty authority if its scheme specific part is not empty. Thus, some Http URI modifications must be applied in specific order to preserve the URI validation.
+If a scheme is present and the scheme specific part of a Http URI is not empty the URI can not contain an empty authority. Thus, some Http URI modifications must be applied in a specific order to preserve the URI validation.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-//don't forget to provide the $_SERVER array
 $uri = HttpUri::createFromString('http://url.thephpleague.com/4.0/');
 echo $uri->withHost('')->withScheme('')->__toString();
-// will throw an InvalidArgumentException
+// will throw an RuntimeException
 // you can not remove the Host if a scheme is present
 ~~~
 
@@ -56,9 +55,9 @@ The Http URI class uses the [HierarchicalPath](/4.0/components/hierarchical-path
 use League\Uri\Schemes\Http as HttpUri;
 
 $uri = HttpUri::createFromString('http://url.thephpleague.com/4.0/uri/schemes/http.md');
-echo $uri->path->getBasename(); //returns 'http.md'
-echo $uri->path->getDirname(); //returns '/4.0/uri/schemes'
-echo $uri->path->toArray(); //returns an array representation of the path segments
-$uri->path->isAbsolute(); //returns true
+echo $uri->path->getBasename();  //display 'http.md'
+echo $uri->path->getDirname();   //display '/4.0/uri/schemes'
+echo $uri->path->getExtension(); //display 'md'
+$uri->path->toArray(); //returns an array representation of the path segments
 ...
 ~~~

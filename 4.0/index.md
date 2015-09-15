@@ -38,4 +38,4 @@ The package was created by Nyamagana Butera Ignace. Find him on Twitter at [@nya
 [PSR-4]: http://www.php-fig.org/psr/psr-4/
 [PSR-7]: http://www.php-fig.org/psr/psr-7/
 [RFC3986]: http://tools.ietf.org/html/rfc3986
-[nyamsprod]: https://twitter.com/nyamsprod
+[@nyamsprod]: https://twitter.com/nyamsprod

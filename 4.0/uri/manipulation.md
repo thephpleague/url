@@ -7,7 +7,7 @@ title: Manipulating URI
 
 <p class="message-notice">If the modifications do not alter the current object, it is returned as is, otherwise, a new modified object is returned.</p>
 
-<p class="message-warning">The method may throw an <code>InvalidArgumentException</code> if the resulting URI is not valid for a scheme specific URI.</p>
+<p class="message-warning">The method may throw a <code>RuntimeException</code> exception if the resulting URI is not valid for a scheme specific URI.</p>
 
 ## Basic modifications
 
@@ -34,8 +34,8 @@ Since All URI object are immutable you can chain each modifying methods to simpl
 Often what you really want is to partially update one of the URI component. Using the current public API it is possible but requires several intermediary steps. For instance here's how you would update the query string from a given URI object:
 
 ~~~php
-use League\Uri\Schemes\Http as HttpUri;
 use League\Uri\Components\Query;
+use League\Uri\Schemes\Http as HttpUri;
 
 $uri         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
 $uriQuery    = new Query($uri->getQuery());
@@ -51,13 +51,15 @@ To ease these operations the package introduces the concept of URI modifiers
 A URI modifier must follow the following rules:
 
 - It must be a callable. If the URI modifier is a class it must implement PHP's `__invoke` method.
-- The callable expects its single argument to be an URI object or a PSR-7 UriInterface object and must return a instance of the submitted object.
-- If the URI modifier is an object it must be a immutable. Updating its parameters must return a new instance with the modified parameters.
+- The callable expects its single argument to be an League URI object or a PSR-7 `UriInterface` object and **must return a instance of the submitted object**.
+- If the URI modifier is an object it must be immutable. Updating its parameters must return a new instance with the modified parameters.
 - Apart from validating it's own parameters, URI modifiers are transparent when dealing with error and exceptions. They must not alter of silence them.
 
+Let's recreate the above example using a URI modifier.
+
 ~~~php
-use League\Uri\Schemes\Http as HttpUri;
 use League\Uri\Components\Query;
+use League\Uri\Schemes\Http as HttpUri;
 
 $mergeQuery = function ($uri) {
 	if (!$uri instanceof League\Uri\Interfaces\Uri 
@@ -79,11 +81,17 @@ $newUri = $mergQuery($uri);
 echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
 ~~~
 
-The anonymous function `$mergeQuery` is an rough example of a URI modifier. The library `League\Uri\Modifiers\MergeQuery` provides a better and more powerful implementation.
+The anonymous function `$mergeQuery` is an rough example of a URI modifier. The library `League\Uri\Modifiers\MergeQuery` [provides a better and more suitable implementation](/4.0/uri/manipulation/query/#merging-query-string).
 
 ### Applying multiple modifiers to a single URI
 
 Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Modifiers\Pipeline` class. This class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one.
+
+The `League\Uri\Modifiers\Pipeline` uses two methods:
+
+- `Pipeline::pipe` to attach a URI modifier following the *First In First Out* rule.
+- `Pipeline::process` to apply sequencially each attached URI modifier to the submitted URI object. 
+
 
 ~~~php
 use League\Uri\Modifiers\HostToAscii;

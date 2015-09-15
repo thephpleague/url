@@ -7,9 +7,7 @@ title: Getting URIs informations
 
 Even thought the package comes bundle with a serie of URI objects representing usual URI, all theses objects expose the same methods.
 
-## Accessing URI parts and components as scalar type
-
-#### Parts and components as strings
+## Accessing URI parts as and components as strings
 
 You can access the URI individual parts and components as string or integer using their respective getter methods.
 
@@ -27,7 +25,7 @@ echo $uri->getQuery();     //displays "foo=baz"
 echo $uri->getFragment();  //displays "title"
 ~~~
 
-#### Accessing URI parts and components as objects
+## Accessing URI parts and components as objects
 
 To access a specific URI part or component as an object you can use PHP's magic method `__get` as follow.
 
@@ -35,13 +33,13 @@ To access a specific URI part or component as an object you can use PHP's magic 
 use League\Uri\Schemes\Ws as WsUri;
 
 $uri = WsUri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz");
-$uri->scheme;   //return a League\Uri\Scheme object
-$uri->userInfo; //return a League\Uri\UserInfo object
-$uri->host;     //return a League\Uri\Host object
-$uri->port;     //return a League\Uri\Port object
-$uri->path;     //return a League\Uri\Path object
-$uri->query;    //return a League\Uri\Query object
-$uri->fragment; //return a League\Uri\Fragment object
+$uri->scheme;   //return a League\Uri\Components\Scheme object
+$uri->userInfo; //return a League\Uri\Components\UserInfo object
+$uri->host;     //return a League\Uri\Components\Host object
+$uri->port;     //return a League\Uri\Components\Port object
+$uri->path;     //return a League\Uri\Components\HierarchicalPath object
+$uri->query;    //return a League\Uri\Components\Query object
+$uri->fragment; //return a League\Uri\Components\Fragment object
 ~~~
 
 Using this technique you can get even more informations regarding your URI.
@@ -57,6 +55,6 @@ $uri->path->getBasename();    //return "you"
 $uri->query->getValue("foo"); //return "baz"
 ~~~
 
-<p class="message-notice">The actual methods attach to each components depends on the underlying component object used. For instance a <code>DataUri::path</code> object does not expose the same methods as a <code>Ws::path</code> object would.</p>
+<p class="message-notice">The actual methods attach to each component depend on the underlying component object used. For instance a <code>DataUri::path</code> object does not expose the same methods as a <code>Ws::path</code> object would.</p>
 
 To get more informations about component properties refer to the [components documentation](/4.0/components/overview/)

@@ -7,7 +7,7 @@ title: URIs extension
 
 ## Creating an URI object similar to HTTP URI
 
-Let say you want to create a `telnet` class to handle telnet URI. You just need to extends the <code>League\Uri\Schemes\Generic\AbstractHierarchicalUri</code> object and add telnet specific validation features to your class. Here's a quick example that you should further improve.
+Let say you want to create a `telnet` class to handle telnet URI. You just need to extends the <code>League\Uri\Schemes\Generic\AbstractHierarchicalUri</code> object and add telnet specific validation features to your class. Here's a quick example that you can further improve.
 
 ~~~php
 namespace Example;
@@ -32,7 +32,7 @@ class Telnet extends AbstractHierarchicalUri implements Uri
      * Validate any changes made to the URI object
      *
      * This method override the Parent isValid method
-     * When it returns false an InvalidArgumentException is thrown
+     * When it returns false a RuntimeException is thrown
      *
      * @return bool
      */
@@ -59,7 +59,7 @@ Of course you are free to add more methods to fulfill your own requirements. But
 
 ## Creating a Generic URI Object
 
-By definition a generic URI like `mailto` or `isdn` requires more codes. For each of these schemes specific URI, the parsing and manipulating rules are differents. But nevertheless the library will help you speed up your process to create such classes. We will try to implement as quickly as possible the `mailto` scheme.
+Since each URI specific schemes follow its own validation rules they need their own class. The library can help you speed up your process to create such class. As an example we will implement the `mailto` scheme.
 
 The mailto scheme URI is specific because :
 
@@ -67,24 +67,24 @@ The mailto scheme URI is specific because :
 - its path is made of urlencoded emails separated by a comma;
 - it accepts any email header as query string parameters;
 
-These general rules are taken from quickly reading [the mailto RFC6068](http://tools.ietf.org/html/rfc6068).
+These general rules are taken from reading [the mailto RFC6068](http://tools.ietf.org/html/rfc6068).
 
 Here's how we will proceed. We will:
 
-- create the interfaces needed <em>- helpful but not required</em>;
-- implement them into concrete classes;
+- create the needed interfaces;
+- implement the concrete classes;
 
-<p class="message-info">Using interfaces will garantee interoperability between the class we are creating and all the other league uri components.</p>
+<p class="message-info">Using interfaces will garantee interoperability between the classes we are creating and all the other league uri components.</p>
 
-## Mailto interfaces
+### The MailtoPathInterface interface
 
-The mail specific area of the `mailto` scheme URI is the path. It only contains valid emails separated by a comma as per RFC specification. It means we need an interface to manipulate the path as a collection of emails. So we can remove/append/prepend/replace emails as we want. As a matter a fact there's already a interface for that in the library. To complete this interface we just need one method to retrieve one specific email from the path based on its index, all the other methods are already specify by the other interfaces.
+The main specific area of the `mailto` scheme URI is the path. It only contains valid emails separated by a comma as per RFC specification. It means we need an interface to manipulate the path as a collection of emails. So we can remove/append/prepend/replace/filter emails as we want. As a matter a fact there's already a interface for that in the library. To complete this interface we just need one method to retrieve one specific email from the path based on its index.
 
 ~~~php
 namespace Example;
 
-use League\Uri\Interfaces\Components\Path;
 use League\Uri\Interfaces\Components\HierarchicalComponent;
+use League\Uri\Interfaces\Components\Path;
 
 interface MailtoPathInterface extends Path, HierarchicalComponent
 {
@@ -103,11 +103,19 @@ interface MailtoPathInterface extends Path, HierarchicalComponent
 }
 ~~~
 
-<p class="message-notice">It is important that the <code>MailtoPathInterface</code> extends the package <code>Path</code> interface too to make the class work as expected</p>
+<p class="message-notice">The <code>MailtoPathInterface</code> extends the package <code>Path</code> interface to inherit basic operations done on any URI path component.</p>
 
-## Let's create the concrete classes
+### The MailtoPath and the Mailto classes
 
-First let's write the `MailtoPath` class. Again we will use the library abstract class to speed things up. the `AbstractHierarchicalComponent` abstract class will add all manipulating methods needed. As well as all collections related methods to the class. We simply need to add the parsing method. And the method to retrieve one email.
+Now that we have defined a new specialized path interface. Let's implement it in the `MailtoPath` class. The library abstract classes and traits will help a lot. 
+
+- the `AbstractHierarchicalComponent` abstract class will add all manipulating methods needed. As well as all collections related methods to the class. 
+- the `PathTrait` trait will add basic path operations independent 
+
+We simply need to add:
+
+- the path validating methods
+- the method to retrieve one email.
 
 ~~~php
 namespace Example;
@@ -131,31 +139,44 @@ class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInte
      *
      * @param string $emails
      */
-    protected function __construct($emails = '')
+    public function __construct($path = '')
     {
-        $emails = array_map('rawurldecode', explode(static::$separator, $emails));
+        if (!empty($path)) {
+            $this->data = $this->validate($path);
+        }
+    }
+
+    /**
+     * validate the submitted data
+     *
+     * @param string $path
+     *
+     * @return array
+     */
+    protected function validate($path)
+    {
+        $emails = array_map('rawurldecode', explode(static::$separator, $path));
         $emails = array_map('trim', $emails);
         $emails = array_filter($emails);
         if (empty($emails)) {
-            return;
+            return [];
         }
         $verif = filter_var($emails, FILTER_VALIDATE_EMAIL, FILTER_REQUIRE_ARRAY);
         if ($emails !== $verif) {
             throw new InvalidArgumentException('the submitted path is invalid');
         }
-        $this->data = $emails;
+        return $emails;
     }
 
     /**
      * format the string before manipulation methods
-     * not needed in case of a Opaque URI
      *
-     * @param string $str
-     * @param int    $type
+     * @param string[] $str
+     * @param int      $type
      */
-    protected static function formatComponentString($str, $type)
+    protected static function formatComponentString($data, $type)
     {
-        return $str;
+        return implode(static::$separator, static::validateIterator($data));
     }
 
     /**
@@ -180,7 +201,9 @@ class MailtoPath extends AbstractHierarchicalComponent implements MailtoPathInte
 }
 ~~~
 
-Now let's do the same for the main `Mailto` class. This time we will built by extending the <code>League\Uri\Schemes\Generic\AbstractUri</code> object by adding `mailto` specific validation rules to the class.
+Now that we have a `MailtoPath` class we can create the main `Mailto` class. 
+
+This time we will built the URI object by extending the <code>League\Uri\Schemes\Generic\AbstractUri</code> object by adding `mailto` specific validation rules to the class.
 
 ~~~php
 namespace Example;
@@ -279,8 +302,6 @@ class Mailto extends AbstractUri implements MailtoInterface
      *
      * @param array $components
      *
-     * @throws \InvalidArgumentException If the URI can not be parsed
-     *
      * @return static
      */
     public static function createFromComponents(array $components)
@@ -302,9 +323,7 @@ class Mailto extends AbstractUri implements MailtoInterface
      * A specific named constructor to speed up
      * creating a new instance from a collection of mails
      *
-     * @param  \Traversable|array $emails
-     *
-     * @throws \InvalidArgumentException If the URI can not be parsed
+     * @param \Traversable|string[] $emails
      *
      * @return static
      */
@@ -323,7 +342,7 @@ class Mailto extends AbstractUri implements MailtoInterface
 }
 ~~~
 
-Et voilà! And you can already do this:
+Et voilà! You can already do this:
 
 ~~~php
 use Example\Mailto;
