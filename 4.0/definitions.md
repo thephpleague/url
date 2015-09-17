@@ -19,7 +19,7 @@ use League\Uri\Schemes\Http as HttpUri;
 $uri1 = HttpUri::createFromString("http://example.com:81/toto");
 $uri2 = HttpUri::createFromString("http://example.com:82/toto");
 //represent 2 different URIs with different port component.
-$uri1->sameValueAs($uri2); //return false;
+$uri1->__toString() == $uri2->__toString(); //return false;
 ~~~
 
 ## Immutability
