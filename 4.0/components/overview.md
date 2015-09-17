@@ -61,7 +61,7 @@ $pass     = new Components\Pass('doe');
 $host     = new Components\Host('127.0.0.1');
 $port     = new Components\Port(443);
 $path     = new Components\HierarchicalPath('/foo/bar/file.csv');
-$dataPath = new Components\DataPath('data:,');
+$dataPath = new Components\DataPath('charset=us-ascii;content-type:text/plain,Hello%20World!');
 $query    = new Components\Query('q=url&site=thephpleague');
 $fragment = new Components\Fragment('paragraphid');
 ~~~
