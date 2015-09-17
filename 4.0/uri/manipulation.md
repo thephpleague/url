@@ -61,23 +61,24 @@ Let's recreate the above example using a URI modifier.
 use League\Uri\Components\Query;
 use League\Uri\Schemes\Http as HttpUri;
 
-$mergeQuery = function ($uri) {
-	if (!$uri instanceof League\Uri\Interfaces\Uri 
-		&& !$uri instanceof Psr\Http\MessageUriInterface) 
-	{
-		throw new InvalidArgumentException('The submitted uri object is invalid');
-	}
+$query = 'foo=bar&taz';
+$mergeQuery = function ($uri) use ($query) {
+    if (!$uri instanceof League\Uri\Interfaces\Uri 
+        && !$uri instanceof Psr\Http\Message\UriInterface) 
+    {
+        throw new InvalidArgumentException(sprintf(
+            'Expected data to be a valid URI object; received "%s"',
+            (is_object($uri) ? get_class($uri) : gettype($uri))
+        ));
+    }
+    $currentQuery = new Query($uri->getQuery());
+    $updatedQuery = $currentQuery->merge($query)->__toString();
 
-	///do whatever you want to the URI
-	$query = $uri->getQuery();
-	$updateQuery = (string) (new Query($query))->mergeQuery("foo=bar&taz=");
-	$newUri = $uri->withQuery($updateQuery);
-
-	return $newUri;
+    return $uri->withQuery($updatedQuery);
 };
 
 $uri = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
-$newUri = $mergQuery($uri);
+$newUri = $mergeQuery($uri);
 echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
 ~~~
 
@@ -85,7 +86,7 @@ The anonymous function `$mergeQuery` is an rough example of a URI modifier. The 
 
 URI Modifiers can be grouped for simplicity in different categories that deals with
 
-- [the URI host](/4.0/uri/manipulation/host/);
-- [the URI query](/4.0/uri/manipulation/query/);
-- [the URI path](/4.0/uri/manipulation/path/);
-- [multiple URI components](/4.0/uri/manipulation/generic/);;
+- [manipulating the URI host](/4.0/uri/manipulation/host/);
+- [manipulating the URI query](/4.0/uri/manipulation/query/);
+- [manipulating the URI path](/4.0/uri/manipulation/path/);
+- [manipulating multiple URI components](/4.0/uri/manipulation/generic/);;

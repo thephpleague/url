@@ -19,11 +19,11 @@ echo $uri; //returns 'data:image/png;charset=binary;base64,...'
 //where '...' represent the base64 representation of the file
 ~~~
 
-If the file is not readable or accessible an InvalidArgumentException exception will be thrown. The class uses PHP's `finfo` class to detect the required mediatype as defined in RFC2045.
+If the file is not readable or accessible an `InvalidArgumentException` exception will be thrown. The class uses PHP's `finfo` class to detect the required mediatype as defined in RFC2045.
 
 ## Validation
 
-Even though all URI properties are defined and accessible attempt to set any component other than the path will result in the object throwing a `RuntimeException` exception. As adding data to theses URI parts will generate an invalid URI.
+Even though all URI properties are defined and accessible attempt to set any component other than the path will result in the object throwing a `RuntimeException` exception. As adding data to theses URI parts will generate an invalid Data URI.
 
 ~~~php
 use League\Uri\Schemes\Data as DataUri;
@@ -46,4 +46,5 @@ echo $uri->path->getMimetype(); //display 'text/plain'
 echo $uri->path->getParameters(); //display 'charset=us-ascii'
 echo $uri->path->getData(); //display 'Hello%20World%21'
 $uri->path->isBinaryData(); //returns false
+$uri->path->save('/path/where/to/save/data', 'w'); //return a \SplFileObject reference
 ~~~

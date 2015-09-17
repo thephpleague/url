@@ -220,10 +220,11 @@ use League\Uri\Interfaces\Components\Port as PortInterface;
 use League\Uri\Interfaces\Components\Query as QueryInterface;
 use League\Uri\Interfaces\Components\Scheme as SchemeInterface;
 use League\Uri\Interfaces\Components\UserInfo as UserInfoInterface;
+use League\Uri\Interfaces\Uri;
 use League\Uri\Schemes\Generic\AbstractUri;
 use League\Uri\UriParser;
 
-class Mailto extends AbstractUri implements MailtoInterface
+class Mailto extends AbstractUri implements Uri
 {
     /**
      * Create a new instance of URI
@@ -346,16 +347,21 @@ Et voilà! You can already do this:
 
 ~~~php
 use Example\Mailto;
+use League\Uri\Modifiers\MergeQuery;
 
 $mailto = Mailto::createFromEmails(['foo@example.com', 'info@thephpleague.com']);
-$mailto->__toString(); //will return 'mailto:foo@xexample.com,info@thephpleague.com';
+$mailto->__toString(); 
+//returns 'mailto:foo@xexample.com,info@thephpleague.com';
 
 echo $mailto->path->getEmail(0); //returns 'foo@example.com'
 
-var_dump($mailto->path->toArray()); //returns an array of all mails
+var_dump($mailto->path->toArray());
+//returns ['foo@example.com', 'info@thephpleague.com']
 
-$mailWithSubject = $mailto->mergeQuery(['subject' => 'Hello World!']);
-$mailWithSUbject->__toString(); //will return 'mailto:foo@example.com,info@thephpleague.com?subject=Hello%20World%21';
+$subject = http_build_query(['subject' => 'Hello World!'], '', '&', PHP_QUERY_RFC3986);
+$newMailto = (new MergeQuery($subject))->__invoke($mailto);
+$newMailto->__toString();
+//returns 'mailto:foo@example.com,info@thephpleague.com?subject=Hello%20World%21';
 ~~~
 
 <p class="message-notice">There are still room for improvement by adding specific URI modifiers but I'll leave that to you to strenghen the above code.</p>

@@ -24,7 +24,7 @@ $altUri = FtpUri::createFromString('//thephpleague.com/path/to');
 //throw an InvalidArgumentException - no scheme was given
 ~~~
 
-Apart from the fragment, the Ftp URIs share the same [host validation limitation](/4.0/uri/schemes/http/#validation) as Http URIs.
+Apart from the fragment and the query components, the Ftp URIs share the same [host validation limitation](/4.0/uri/schemes/http/#validation) as Http URIs.
 
 ## Properties
 

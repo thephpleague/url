@@ -287,7 +287,7 @@ $host->getLabel(23);        //return null
 $host->getLabel(23, 'now'); //return 'now'
 ~~~
 
-The method returns the IDN value of a specific offset. If the offset does not exists it will return the value specified by the optional second argument or `null`.
+If the offset does not exists it will return the value specified by the optional second argument or `null`.
 
 ### Host public informations
 

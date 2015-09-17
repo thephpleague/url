@@ -36,7 +36,6 @@ Instead you are require to proceed as below
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
 
-//don't forget to provide the $_SERVER array
 $uri = HttpUri::createFromString('http://url.thephpleague.com/4.0/');
 echo $uri->withScheme('')->withHost('')->__toString(); //displays "/4.0/"
 ~~~
@@ -45,7 +44,7 @@ echo $uri->withScheme('')->withHost('')->__toString(); //displays "/4.0/"
 
 ## Relation with PSR-7
 
-The `Http` class is compliant with the PSR-7 `UriInterface` interface. This means that you can use this class anytime you need a PSR-7 compliant URI object.
+The `Http` class is compliant with PSR-7 `UriInterface` interface. This means that you can use this class anytime you need a PSR-7 compliant URI object.
 
 ## Properties
 

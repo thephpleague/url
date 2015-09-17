@@ -14,12 +14,12 @@
         FTP URI: '/4.0/uri/schemes/ftp/'
         Data URI: '/4.0/uri/schemes/data-uri/'
         Extension Guide: '/4.0/uri/extension/'
-    Uri Modifiers:
-        Manipulation: '/4.0/uri/manipulation/'
-        Generic: '/4.0/uri/manipulation/generic/'
-        Host: '/4.0/uri/manipulation/host/'
-        Query: '/4.0/uri/manipulation/query/'
-        Path: '/4.0/uri/manipulation/path/'
+    Uri manipulation:
+        Overview: '/4.0/uri/manipulation/'
+        Host Modifiers: '/4.0/uri/manipulation/host/'
+        Query Modifiers: '/4.0/uri/manipulation/query/'
+        Path Modifiers: '/4.0/uri/manipulation/path/'
+        Uri Modifiers: '/4.0/uri/manipulation/generic/'
     Uri Parts API:
         Overview: '/4.0/components/overview/'
         User Information: '/4.0/components/userinfo/'
