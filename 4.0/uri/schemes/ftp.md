@@ -28,4 +28,14 @@ Apart from the fragment and the query components, the Ftp URIs share the same [h
 
 ## Properties
 
-Ftp URIs share the same properties and class throught PHP `__get` methods as [Http URIs](/4.0/uri/schemes/http/#properties).
+The FTP URI class uses the specialized [HierarchicalPath](/4.0/components/hierarchical-path/) class to represents its path. using PHP's magic `__get` method you can access the object path and get more informations about the underlying path.
+
+~~~php
+use League\Uri\Schemes\Ftp as FtpUri;
+
+$uri = FtpUri::createFromString('ftp://thephpleague.com/path/to/image.png;type=i');
+echo $uri->path->getBasename();  //display 'image.png;type=i'
+echo $uri->path->getDirname();   //display '/path/to'
+echo $uri->path->getExtension(); //display 'png'
+$uri->path->toArray(); //returns an array representation of the path segments
+~~~

@@ -180,17 +180,14 @@ Basic host representations is done using the following methods:
 use League\Uri\Components\Host;
 
 $host = new Host('example.com');
-$host->getContent();      //return 'example.com'
 $host->__toString();      //return 'example.com'
 $host->getUriComponent(); //return 'example.com'
 
 $ipv4 = new Host('127.0.0.1');
-$ipv4->getContent();      //return '127.0.0.1'
 $ipv4->__toString();      //return '127.0.0.1'
 $ipv4->getUriComponent(); //return '127.0.0.1'
 
 $ipv6 = new Host('::1');
-$ipv6->getContent();      //return '[::1]'
 $ipv6->__toString();      //return '[::1]'
 $ipv6->getUriComponent(); //return '[::1]'
 ~~~

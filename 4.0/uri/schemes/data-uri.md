@@ -19,7 +19,7 @@ echo $uri; //returns 'data:image/png;charset=binary;base64,...'
 //where '...' represent the base64 representation of the file
 ~~~
 
-If the file is not readable or accessible an `InvalidArgumentException` exception will be thrown. The class uses PHP's `finfo` class to detect the required mediatype as defined in RFC2045.
+If the file is not readable or accessible an `RuntimeException` exception will be thrown. The class uses PHP's `finfo` class to detect the required mediatype as defined in RFC2045.
 
 ## Validation
 

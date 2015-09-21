@@ -48,7 +48,7 @@ The `Http` class is compliant with PSR-7 `UriInterface` interface. This means th
 
 ## Properties
 
-The Http URI class uses the [HierarchicalPath](/4.0/components/hierarchical-path/) class to represents its path. using PHP's magic `__get` method you can access the object path and get more informations about the underlying path.
+The Http URI class uses the specialized [HierarchicalPath](/4.0/components/hierarchical-path/) class to represents its path. using PHP's magic `__get` method you can access the object path and get more informations about the underlying path.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
@@ -58,5 +58,4 @@ echo $uri->path->getBasename();  //display 'http.md'
 echo $uri->path->getDirname();   //display '/4.0/uri/schemes'
 echo $uri->path->getExtension(); //display 'md'
 $uri->path->toArray(); //returns an array representation of the path segments
-...
 ~~~

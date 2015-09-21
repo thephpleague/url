@@ -37,11 +37,11 @@ Often what you really want is to partially update one of the URI component. Usin
 use League\Uri\Components\Query;
 use League\Uri\Schemes\Http as HttpUri;
 
-$uri         = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
-$uriQuery    = new Query($uri->getQuery());
+$uri = HttpUri::createFromString("http://www.example.com?foo=toto#~typo");
+$uriQuery = new Query($uri->getQuery());
 $updateQuery = $uriQuery->merge("foo=bar&taz=");
-$newUri      = $uri->withQuery($updateQuery->__toString());
-echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
+$newUri = $uri->withQuery($updateQuery->__toString());
+echo $newUri; // display http://www.example.com?foo=bar&taz#~typo
 ~~~
 
 ### URI modifiers principles
@@ -59,10 +59,8 @@ Let's recreate the above example using a URI modifier.
 
 ~~~php
 use League\Uri\Components\Query;
-use League\Uri\Schemes\Http as HttpUri;
 
-$query = 'foo=bar&taz';
-$mergeQuery = function ($uri) use ($query) {
+$$mergeQuery = function ($uri) {
     if (!$uri instanceof League\Uri\Interfaces\Uri 
         && !$uri instanceof Psr\Http\Message\UriInterface) 
     {
@@ -72,14 +70,20 @@ $mergeQuery = function ($uri) use ($query) {
         ));
     }
     $currentQuery = new Query($uri->getQuery());
-    $updatedQuery = $currentQuery->merge($query)->__toString();
+    $updatedQuery = $currentQuery->merge('foo=bar&taz')->__toString();
 
     return $uri->withQuery($updatedQuery);
 };
+~~~
 
-$uri = HttpUri::createFromString("http://www.example.com/the/sky.php?foo=toto#~typo");
+And now the code becomes:
+
+~~~php
+use League\Uri\Schemes\Http as HttpUri;
+
+$uri = HttpUri::createFromString("http://www.example.com?foo=toto#~typo");
 $newUri = $mergeQuery($uri);
-echo $newUri; // display http://www.example.com/the/sky.php?foo=bar&taz#~typo
+echo $newUri; // display http://www.example.com?foo=bar&taz#~typo
 ~~~
 
 The anonymous function `$mergeQuery` is an rough example of a URI modifier. The library `League\Uri\Modifiers\MergeQuery` [provides a better and more suitable implementation](/4.0/uri/manipulation/query/#merging-query-string).

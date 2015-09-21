@@ -53,7 +53,6 @@ Basic representations is done using the following methods:
 use League\Uri\Components\UserInfo;
 
 $info = new UserInfo('foo', 'bar');
-$info->getContent();      //return 'foo:bar'
 $info->__toString();      //return 'foo:bar'
 $info->getUriComponent(); //return 'foo:bar@'
 ~~~

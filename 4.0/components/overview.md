@@ -66,20 +66,6 @@ $query    = new Components\Query('q=url&site=thephpleague');
 $fragment = new Components\Fragment('paragraphid');
 ~~~
 
-### URI part status
-
-The `UriPart::getContent` method returns `null` if the URI part is not defined else it will return the component value without its delimiter
-
-~~~php
-use League\Uri\Components;
-
-$scheme = new Components\Scheme('http');
-$scheme->getContent(); //display 'http'
-
-$port = new Components\Port();
-$port->getContent(); //return null
-~~~
-
 ## URI part representations
 
 Each class provides several ways to represent the component value as string.
@@ -101,7 +87,7 @@ $path = new Components\Path('/toto le heros/file.xml');
 echo $path->__toString(); //displays '/toto%20le%20heros/file.xml'
 ~~~
 
-<p class="message-notice"><code>Uri::getPort</code> uses the results of the <code>getContent</code> method instead.</p>
+<p class="message-notice"><code>Uri::getPort</code> uses the results of the <code>Port::toInt</code> method instead.</p>
 
 
 ### URI-like representation

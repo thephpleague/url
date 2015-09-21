@@ -34,7 +34,7 @@ The port component constructor accepts:
 
 ### Using a League Uri object
 
-Another way to acces a `League\Uri\Components\Port` object is to use an already instantiated `League\Uri\Url` object.
+Another way to acces a `League\Uri\Components\Port` object is to use an already instantiated League Uri object.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
@@ -53,21 +53,21 @@ Basic port representations is done using the following methods:
 use League\Uri\Components\Port;
 
 $port = new Port(21);
-$port->getContent();      //return 21
+$port->toInt();           //return 21
 $port->__toString();      //return '21'
 $port->getUriComponent(); //return ':21'
 ~~~
 
-<p class="message-notice">If a port number is defined, the <code>getContent</code> method returns a <code>int</code>.</p>
+<p class="message-notice">If a port number is defined, the <code>toInt</code> method returns a <code>int</code>.</p>
 
 ~~~php
 use League\Uri\Components\Port;
 
 $port = new Port(81);
-$port->getContent(); //return 81;
+$port->toInt(); //return 81;
 
 $empty_port = new Port();
-$empty_port->getContent(); //return null
+$empty_port->toInt(); //return null
 ~~~
 
 To [compare](/4.0/components/overview/#components-comparison) or [manipulate](/4.0/components/overview/#components-modification) the port object you should refer to the component overview section.

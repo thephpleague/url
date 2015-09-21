@@ -38,7 +38,7 @@ class Telnet extends AbstractHierarchicalUri implements Uri
      */
     protected function isValid()
     {
-        return null === $this->fragment->getContent()
+        return empty($this->fragment->__toString())
             && $this->isValidGenericUri()
             && $this->isValidHierarchicalUri();
     }
@@ -228,9 +228,6 @@ class Mailto extends AbstractUri implements Uri
 {
     /**
      * Create a new instance of URI
-     *
-     * This method override the Parent constructor method
-     * And make sure the path is typehinted agaisnt the MailtoPathInterface
      *
      * @param SchemeInterface     $scheme
      * @param UserInfoInterface   $userInfo

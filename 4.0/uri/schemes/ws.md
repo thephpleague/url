@@ -29,4 +29,14 @@ Apart from the fragment, the websockets URIs share the same [host validation lim
 
 ## Properties
 
-Websockets URIs share the same properties and class throught PHP `__get` methods as [Http URIs](/4.0/uri/schemes/http/#properties).
+Websockets URIs objects uses the specialized [HierarchicalPath](/4.0/components/hierarchical-path/) class to represents its path. using PHP's magic `__get` method you can access the object path and get more informations about the underlying path.
+
+~~~php
+use League\Uri\Schemes\Ws as WsUri;
+
+$uri = WsUri::createFromString('wss://thephpleague.com/path/to?here');
+echo $uri->path->getBasename();  //display '/path'
+echo $uri->path->getDirname();   //display 'to'
+echo $uri->path->getExtension(); //display ''
+$uri->path->toArray(); //returns an array representation of the path segments
+~~~

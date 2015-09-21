@@ -50,7 +50,7 @@ use League\Uri\Schemes\Http as HttpUri;
 $uri = HttpUri::createFromString("http://foo:bar@www.example.com:81/how/are/you?foo=baz");
 $uri->host->isIp();           //return false the URI uses a registered hostname
 $uri->userInfo->getUser();    //return "foo" the user login information
-$uri->fragment->getContent(); //return 'null' because to fragment component is undefined
+$uri->fragment->__toString(); //return '' because the fragment component is undefined
 $uri->path->getBasename();    //return "you"
 $uri->query->getValue("foo"); //return "baz"
 ~~~
