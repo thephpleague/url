@@ -28,8 +28,9 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 
 ### Fixed
 
-- Handling of legacy hostname suffixed with a "." when using `Url::createFromServer`
 - Move namespace from `League\Url` to `League\Uri` to avoid dependency hell
+- Uri components classes are fixed to comply to `RFC3986`
+- Uri components classes are now all immutable value objects
 
 ### Deprecated 
 
@@ -38,9 +39,7 @@ All Notable changes to `League\Url` version 4 will be documented in this file
 ### Remove
 
 - Support for `PHP 5.4` and `PHP 5.3`
-- `League\Url\Url`, `League\Url\UrlImmutable`, `League\Url\UrlConstants` classes
-- Dependency on the `True/php-punycode` library
 - Dependency on PHP `parse_url`, `parse_str` and `http_build_query` functions
-- Most of the public API is removed :
-    - to comply to `RFC3986`;
-    - to enable immutable value object;
+- Dependency on the `True/php-punycode` library
+- `League\Url\Url`, `League\Url\UrlImmutable`, `League\Url\UrlConstants` classes
+- Most of the public API is removed
