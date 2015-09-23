@@ -1,5 +1,6 @@
 ---
 layout: default
+permalink: /
 title: Uri
 ---
 
@@ -16,7 +17,7 @@ title: Uri
 
 ## About
 
-The phpleague `Uri` package provides simple and intuitive classes to create and manage URIs in PHP.
+The package provides simple and intuitive classes to create and manage URIs in PHP.
 
 [URI on Packagist](https://packagist.org/packages/league/uri)
 

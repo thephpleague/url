@@ -5,7 +5,7 @@ title: Examples
 
 # Simple examples
 
-## Parsing an URI
+## Getting information from a URI
 
 Appart from being able to get all the URI component string using their respective getter method. the URI object also exposed all component as object throught PHP's magic `__get` method. You can use this ability to get even more informations about the URI objects. 
 

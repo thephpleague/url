@@ -35,7 +35,7 @@ You can also use the library without Composer by:
 
 Once extracted you will be able to load the library using any [PSR-4][] compatible autoloader.
 
-If you choose to install `League\Uri` manually, you are responsible for installing and autoloading the following dependencies:
+If you choose to install the package manually, you are responsible for installing and autoloading the following dependencies:
 
 - [PHP Domain Parser](https://github.com/jeremykendall/php-domain-parser)
 

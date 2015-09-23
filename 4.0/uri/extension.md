@@ -55,26 +55,26 @@ echo $uri; //return telnet://example.com/Hello%20There
 Telnet::createFromString('http://example.org'): //will throw an InvalidArgumentException
 ~~~
 
-Of course you are free to add more methods to fulfill your own requirements. But remember that all general URI [properties](/4.0/uri/properties/) and [methods and modifiers](/4.0/uri/manipulation/) are already usable with these simple steps.
+Of course you are free to add more methods to fulfill your own requirements. But remember that all general URI [properties](/4.0/uri/properties/) and [methods](/4.0/uri/manipulation/#basic-modifications) and [modifiers](/4.0/uri/manipulation/#uri-modifiers) are already usable with these simple steps.
 
 ## Creating a Generic URI Object
 
 Since each URI specific schemes follow its own validation rules they need their own class. The library can help you speed up your process to create such class. As an example we will implement the `mailto` scheme.
 
-The mailto scheme URI is specific because :
+`mailto` URIs are specific in the fact that :
 
-- it does not have any authority part and fragment components;
-- its path is made of urlencoded emails separated by a comma;
-- it accepts any email header as query string parameters;
+- they do not have any authority part and fragment components;
+- their paths are made of urlencoded emails separated by a comma;
+- they accept any email header as query string parameters;
 
-These general rules are taken from reading [the mailto RFC6068](http://tools.ietf.org/html/rfc6068).
+These general rules are taken from reading [mailto URI RFC](http://tools.ietf.org/html/rfc6068).
 
 Here's how we will proceed. We will:
 
 - create the needed interfaces;
 - implement the concrete classes;
 
-<p class="message-info">Using interfaces will garantee interoperability between the classes we are creating and all the other league uri components.</p>
+<p class="message-info">Using interfaces will garantee interoperability between the classes we are creating and the other package components.</p>
 
 ### The MailtoPathInterface interface
 
@@ -83,8 +83,8 @@ The main specific area of the `mailto` scheme URI is the path. It only contains 
 ~~~php
 namespace Example;
 
-use League\Uri\Interfaces\Components\HierarchicalComponent;
-use League\Uri\Interfaces\Components\Path;
+use League\Uri\Interfaces\HierarchicalComponent;
+use League\Uri\Interfaces\Path;
 
 interface MailtoPathInterface extends Path, HierarchicalComponent
 {
@@ -214,12 +214,12 @@ use League\Uri\Components\Port;
 use League\Uri\Components\Query;
 use League\Uri\Components\Scheme;
 use League\Uri\Components\UserInfo;
-use League\Uri\Interfaces\Components\Fragment as FragmentInterface;
-use League\Uri\Interfaces\Components\Host as HostInterface;
-use League\Uri\Interfaces\Components\Port as PortInterface;
-use League\Uri\Interfaces\Components\Query as QueryInterface;
-use League\Uri\Interfaces\Components\Scheme as SchemeInterface;
-use League\Uri\Interfaces\Components\UserInfo as UserInfoInterface;
+use League\Uri\Interfaces\Fragment as FragmentInterface;
+use League\Uri\Interfaces\Host as HostInterface;
+use League\Uri\Interfaces\Port as PortInterface;
+use League\Uri\Interfaces\Query as QueryInterface;
+use League\Uri\Interfaces\Scheme as SchemeInterface;
+use League\Uri\Interfaces\UserInfo as UserInfoInterface;
 use League\Uri\Interfaces\Uri;
 use League\Uri\Schemes\Generic\AbstractUri;
 use League\Uri\UriParser;

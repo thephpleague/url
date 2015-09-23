@@ -82,7 +82,7 @@ $query->toArray();
 // ]
 ~~~
 
-The array returned by `toArray` differs from the one returned by `parse_str` has it preserves the query string values.
+<p class="message-warning">The array returned by <code>toArray</code> differs from the one returned by <code>parse_str</code> has it <a href="/4.0/services/parser-query/">preserves the query string values</a>.</p>
 
 ## Accessing Query content
 
@@ -235,7 +235,7 @@ echo $newQuery; //displays 'z='
 
 Another way to select parameters from the query object is to filter them. Filtering is done using the same arguments as PHP's `array_filter`.
 
-You can filter the query according to its parameters values:
+You can filter the query according to the parameters value:
 
 ~~~php
 use League\Uri\Components\Query;
@@ -247,7 +247,7 @@ $newQuery = $query->filter(function ($value) {
 echo $newQuery; //displays 'foo=bar&p=y+olo'
 ~~~
 
-You can filter the query according to its parameters name.
+You can filter the query according to the parameters name:
 
 ~~~php
 use League\Uri\Components\Query;
@@ -259,7 +259,7 @@ $newQuery = $query->filter(function ($key) {
 echo $newQuery; //displays 'foo=bar'
 ~~~
 
-You can filter the query according to its parameters name and value.
+You can filter the query according to the parameters name and value.
 
 ~~~php
 use League\Uri\Components\Query;
@@ -280,6 +280,6 @@ By specifying the second argument flag you can change how filtering is done:
 
 By default, if no flag is specified the method will filter the query using the `Query::FILTER_USE_VALUE` flag.
 
-<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's `array_filter` flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
+<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's <code>array_filter</code> flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
 
 <p class="message-notice">This method is used by the URI modifier <code>FilterQuery</code></p>

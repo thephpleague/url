@@ -11,7 +11,7 @@ The library provides a basic `League\Uri\Components\Path` class to ease path man
 
 ### Using the default constructor
 
-Just like any other component, a new `League\Uri\Components\HierarchicalPath` object can be instantiated using its default constructor.
+Just like any other component, a new `League\Uri\Components\Path` object can be instantiated using its default constructor.
 
 ~~~php
 use League\Uri\Components\Path as Path;
@@ -29,7 +29,7 @@ echo $altPath; //display 'text/plain;charset=us-ascii,Hello%20World%21'
 
 ### Absolute or relative path
 
-A path is considered absolute only if it starts with the path delimiter `/`, otherwise it is considered as being relative or rootless. At any given time you can test your path status using the `Path::isAbsolute` method.
+A path is considered absolute only if it starts with the path separator `/`, otherwise it is considered as being relative or rootless. At any given time you can test your path status using the `Path::isAbsolute` method.
 
 ~~~php
 use League\Uri\Components\Path;
@@ -64,7 +64,7 @@ $altPath->hasTrailingSlash(); //return true
 Basic path representations is done using the following methods:
 
 ~~~php
-use League\Uri\Components\Path as Path;
+use League\Uri\Components\Path;
 
 $path = new Path('/path/to the/sky');
 $path->__toString();      //return '/path/to%20the/sky'
@@ -77,20 +77,20 @@ $path->getUriComponent(); //return '/path/to%20the/sky'
 
 <p class="message-warning">When a modification fails a <code>InvalidArgumentException</code> exception is thrown.</p>
 
-Out of the box, the `HierarchicalPath` object operates a number of non destructive normalizations. For instance, the path is correctly URI encoded against the RFC3986 rules.
+Out of the box, the `Path` object operates a number of non destructive normalizations. For instance, the path is correctly URI encoded against the RFC3986 rules.
 
 ### Removing dot segments
 
 To remove dot segment as per [RFC3986](https://tools.ietf.org/html/rfc3986#section-6) you need to explicitly call the `Path::withoutDotSegments` method as the result can be destructive. The method takes no argument and returns a new `Path` object which represents the current object without dot segments.
 
 ~~~php
-use League\Uri\Components\Path as Path;
+use League\Uri\Components\Path;
 
-$raw_path       = new Path('path/to/./the/../the/sky%7bfoo%7d');
-$normalize_path = $raw_path->withoutDotSegments();
-echo $raw_path;           //displays 'path/to/./the/../the/sky%7bfoo%7d'
-echo $normalize_path;     //displays 'path/to/the/sky%7Bfoo%7D'
-$alt->sameValueAs($path); //return false;
+$path = new Path('path/to/./the/../the/sky%7bfoo%7d');
+$newPath = $raw_path->withoutDotSegments();
+echo $path;                   //displays 'path/to/./the/../the/sky%7bfoo%7d'
+echo $newPath;                //displays 'path/to/the/sky%7Bfoo%7D'
+$newPath->sameValueAs($path); //returns false;
 ~~~
 
 <p class="message-notice">This method is used by the URI Modifier <code>RemoveDotSegments</code></p>
@@ -102,11 +102,11 @@ Sometimes your path may contain multiple adjacent delimiters. Since removing the
 ~~~php
 use League\Uri\Components\Path;
 
-$raw_path       = new Path("path////to/the/sky//");
-$normalize_path = $raw_path->withoutEmptySegments();
-echo $raw_path;           //displays 'path////to/the/sky//'
-echo $normalize_path;     //displays 'path/to/the/sky/'
-$alt->sameValueAs($path); //return false;
+$path    = new Path("path////to/the/sky//");
+$newPath = $path->withoutEmptySegments();
+echo $path;                   //displays 'path////to/the/sky//'
+echo $newPath;                //displays 'path/to/the/sky/'
+$newPath->sameValueAs($path); //returns false;
 ~~~
 
 <p class="message-notice">This method is used by the URI Modifier <code>RemoveEmptySegments</code></p>
@@ -120,10 +120,10 @@ Depending on your context you may want to add or remove the path trailing slash.
 ~~~php
 use League\Uri\Components\Path;
 
-$raw_path       = new Path("path/to/the/sky/");
-$normalize_path = $raw_path->withoutTrailingSlash();
-echo $raw_path;           //displays 'path/to/the/sky/'
-echo $normalize_path;     //displays 'path/to/the/sky'
+$path    = new Path("path/to/the/sky/");
+$newPath = $path->withoutTrailingSlash();
+echo $path;     //displays 'path/to/the/sky/'
+echo $newPath;  //displays 'path/to/the/sky'
 ~~~
 
 <p class="message-notice">This method is used by the URI Modifier <code>RemoveTrailingSlash</code></p>
@@ -133,10 +133,10 @@ Conversely, `Path::withTrailingSlash` will append a slash at the end of your pat
 ~~~php
 use League\Uri\Components\Path;
 
-$raw_path       = new Path("/path/to/the/sky");
-$normalize_path = $raw_path->withTrailingSlash();
-echo $raw_path;           //displays '/path/to/the/sky'
-echo $normalize_path;     //displays '/path/to/the/sky/'
+$path    = new Path("/path/to/the/sky");
+$newPath = $path->withTrailingSlash();
+echo $path;    //displays '/path/to/the/sky'
+echo $newPath; //displays '/path/to/the/sky/'
 ~~~
 
 <p class="message-notice">This method is used by the URI Modifier <code>AddTrailingSlash</code></p>
@@ -150,10 +150,10 @@ Conversely, to convert the path type the `Path` object uses two methods which ac
 ~~~php
 use League\Uri\Components\Path;
 
-$raw_path       = new Path("path/to/the/sky/");
-$normalize_path = $raw_path->withoutTrailingSlash();
-echo $raw_path;           //displays 'path/to/the/sky/'
-echo $normalize_path;     //displays 'path/to/the/sky'
+$path    = new Path("path/to/the/sky/");
+$newPath = $path->withoutTrailingSlash();
+echo $path;    //displays 'path/to/the/sky/'
+echo $newPath; //displays 'path/to/the/sky'
 ~~~
 
 <p class="message-notice">This method is used by the URI Modifier <code>RemoveLeadingSlash</code></p>
@@ -163,10 +163,10 @@ echo $normalize_path;     //displays 'path/to/the/sky'
 ~~~php
 use League\Uri\Components\Path;
 
-$raw_path       = new Path("/path/to/the/sky");
-$normalize_path = $raw_path->withTrailingSlash();
-echo $raw_path;           //displays '/path/to/the/sky'
-echo $normalize_path;     //displays '/path/to/the/sky/'
+$path    = new Path("/path/to/the/sky");
+$newPath = $path->withTrailingSlash();
+echo $raw_path; //displays '/path/to/the/sky'
+echo $newPath;  //displays '/path/to/the/sky/'
 ~~~
 
 <p class="message-notice">This method is used by the URI Modifier <code>AddLeadingSlash</code></p>
@@ -175,8 +175,7 @@ echo $normalize_path;     //displays '/path/to/the/sky/'
 
 What makes an URI specific apart from the scheme is how the path is parse and manipulated. This simple path class although functional will not ease parsing a Data URI path or a FTP Uri path. That's why the library comes bundles with two specialized Path objects that extend the current object by adding more specific methods in accordance to the path usage:
 
-- the [HierarchicalPath](/4.0/components/hierarchical-path/) object to work with HTTP, FTP, WS paths component
-- the [DataPath](/4.0/components/datauri-path/) object to work with the DataURI path
+- the [HierarchicalPath](/4.0/components/hierarchical-path/) object to work with Hierarchical paths component
+- the [DataPath](/4.0/components/datauri-path/) object to work with the Data URIs path
 
-
-The [Extension Guide](/4.0/uri/extension/#mailto-interfaces) also provides examples on how to extends the Path object to make it meets you specific URI parsing and manipulation methods.
+The [Extension Guide](/4.0/uri/extension/#mailto-interfaces) also provides an example on how to extend the `Path` object to make it meets you specific URI parsing and manipulation methods.

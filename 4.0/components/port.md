@@ -53,12 +53,13 @@ Basic port representations is done using the following methods:
 use League\Uri\Components\Port;
 
 $port = new Port(21);
-$port->toInt();           //return 21
 $port->__toString();      //return '21'
 $port->getUriComponent(); //return ':21'
 ~~~
 
-<p class="message-notice">If a port number is defined, the <code>toInt</code> method returns a <code>int</code>.</p>
+### Integer representation
+
+A port is a integer between `1` and `65535`. To get the Port as an integer you can use the `Port::toInt` method. This method will return an integer if the port was defined and the `null` value otherwise.
 
 ~~~php
 use League\Uri\Components\Port;

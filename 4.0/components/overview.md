@@ -46,11 +46,9 @@ In the library, all concrete classes that represent a URI part or component impl
 
 The default constructor expected an **encoded** string according to the component validation rules as explained in RFC3986 or the `null` value to denote the component or URI part is not defined.
 
-<p class="message-notice">The <code>UserInfo</code> class is an URI part not a URI component per se so these rules do not apply to it.</p>
+<p class="message-notice">No component or uri part delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
 
 <p class="message-warning">If the submitted value is invalid an <code>InvalidArgumentException</code> exception is thrown.</p>
-
-<p class="message-warning">No component or uri part delimiter should be submitted to the classes constructor as they will be interpreted as part of the component value.</p>
 
 ~~~php
 use League\Uri\Components;
@@ -112,13 +110,13 @@ echo $path->getUriComponent(); //displays '/toto%20le%20heros/file.xml'
 To compare two components to know if they represent the same value you can use the `sameValueAs` method which compares them according to their respective `getUriComponent` methods.
 
 ~~~php
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 use League\Uri\Components;
 
 $host     = new Components\Host('www.ExAmPLE.com');
 $alt_host = new Components\Host('www.example.com');
 $fragment = new Components\Fragment('www.example.com');
-$uri      = Http::createFromString('www.example.com');
+$uri      = HttpUri::createFromString('www.example.com');
 
 $host->sameValueAs($alt_host); //return true;
 $host->sameValueAs($fragment); //return false;
@@ -133,15 +131,14 @@ $host->sameValueAs($uri);
 Each URI component class can have its content modified using the `modify` method. This method expects:
 
 - a string;
-- an object with the `__toString` method;
-- or the `null`value;
+- or the `null` value;
 
 <p class="message-warning">The <code>UserInfo</code> class does not include a <code>modify</code> method.</p>
 
 ~~~php
 use League\Uri\Components;
 
-$query     = new Components\Query('q=url&site=thephpleague');
+$query = new Components\Query('q=url&site=thephpleague');
 $new_query = $query->modify('q=yolo');
 echo $new_query; //displays 'q=yolo'
 echo $query;     //display 'q=url&site=thephpleague'
@@ -157,6 +154,6 @@ For more complex parts/components care has be taken to provide more useful metho
 * `League\Uri\Components\Host` which handles [the host component](/4.0/components/host/);
 * `League\Uri\Components\Port` which handles [the port component](/4.0/components/port/);
 * `League\Uri\Components\Path` which handles [the generic path component](/4.0/components/path/);
-* `League\Uri\Components\HierarchicalPath` which handles [the path component](/4.0/components/hierarchical-path/);
+* `League\Uri\Components\HierarchicalPath` which handles [the hierarchical path component](/4.0/components/hierarchical-path/);
 * `League\Uri\Components\DataPath` which handles [the data path component](/4.0/components/datauri-path/);
 * `League\Uri\Components\Query` which handles [the query component](/4.0/components/query/);

@@ -22,7 +22,7 @@ echo $newUri; //displays "http://www.example.com/hello/p#~toto"
 
 ## Applying multiple modifiers to a single URI
 
-Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Modifiers\Pipeline` class. This class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one.
+Since all modifiers returns a URI object instance it is possible to chain them together. To ease this chaining the package comes bundle with the `League\Uri\Modifiers\Pipeline` class. The class uses the pipeline pattern to modify the URI by passing the results from one modifier to the next one. 
 
 The `League\Uri\Modifiers\Pipeline` uses two methods:
 
@@ -53,6 +53,8 @@ echo $origUri2Alt; //display http://xn--oy2b35ckwhba574atvuzkc.com/to/the/sky/
 ~~~
 
 <p class="message-notice">The <code>League\Uri\Modifiers\Pipeline</code> is a URI modifier as well which can lead to advance modifications from you URI in a sane an normalized way.</p>
+
+<p class="message-info">This class is heavily influenced by the <a href="http://pipeline.thephpleague.com">League\Pipeline</a> package.</p>
 
 ## Normalize a URI
 

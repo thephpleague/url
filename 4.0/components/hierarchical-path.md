@@ -346,6 +346,6 @@ By specifying the second argument flag you can change how filtering is done:
 
 By default, if no flag is specified the method will filter the query using the `HierarchicalPath::FILTER_USE_VALUE` flag.
 
-<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's `array_filter` flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
+<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's <code>array_filter</code> flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
 
 <p class="message-notice">This method is used by the URI modifier <code>FilterSegments</code></p>

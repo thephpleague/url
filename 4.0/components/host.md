@@ -47,7 +47,7 @@ $host = $uri->host; // $host is a League\Uri\Components\Host object;
 
 ### Using a named constructor
 
-A host is a collection of labels delimited by the host delimiter `.`. So it is possible to create a `Host` object using a collection of labels with the `Host::createFromArray` method.
+A host is a collection of labels delimited by the host separator `.`. So it is possible to create a `Host` object using a collection of labels with the `Host::createFromArray` method.
 
 The method expects at most 2 arguments:
 
@@ -87,7 +87,7 @@ Whenever you create a new host your submitted data is normalized using non desct
 ~~~php
 use League\Uri\Components\Host;
 
-$host = Host::createFromArray(['shop', 'ExAmPle', 'com']);
+$host = Host::createFromArray(['com', 'ExAmPle', 'shop']);
 echo $host; //display 'shop.example.com'
 
 $ipv6 = new Host('::1');
@@ -107,7 +107,7 @@ To determine what type of host you are dealing with the `Host` class provides th
 
 ~~~php
 use League\Uri\Components\Host;
-use League\Uri\Schemes\Http;
+use League\Uri\Schemes\Http as HttpUri;
 
 $host = new Host('::1');
 $host->isIp();   //return true
@@ -115,7 +115,7 @@ $host->isIp();   //return true
 $alt_host = new Host('example.com');
 $host->isIp(); //return false;
 
-Http::createFromServer($_SERVER)->host->isIp(); //return a boolean
+HttpUri::createFromServer($_SERVER)->host->isIp(); //return a boolean
 ~~~
 
 ### IPv4 or IPv6
@@ -152,7 +152,7 @@ $ipv4->hasZoneIdentifier(); //return false
 
 If you don't have a IP then you are dealing with a host name. A host name is a [domain name](http://tools.ietf.org/html/rfc1034) subset according to [RFC1123](http://tools.ietf.org/html/rfc1123#section-2.1). As such a host name can not, for example, contain an `_`.
 
-A host name is considered absolute or as being a fully qualified domain name (FQDN) if it ends with a `.`, otherwise it is known as being a relative or a partially qualified domain name (PQDN).
+A host name is considered absolute or as being a fully qualified domain name (FQDN) if its string representation ends with a `.`, otherwise it is known as being a relative or a partially qualified domain name (PQDN).
 
 ~~~php
 use League\Uri\Components\Host;
@@ -182,15 +182,20 @@ use League\Uri\Components\Host;
 $host = new Host('example.com');
 $host->__toString();      //return 'example.com'
 $host->getUriComponent(); //return 'example.com'
+$host->getLiteral();      //return 'example.com'
 
 $ipv4 = new Host('127.0.0.1');
 $ipv4->__toString();      //return '127.0.0.1'
 $ipv4->getUriComponent(); //return '127.0.0.1'
+$ipv4->getLiteral();      //return '127.0.0.1'
 
 $ipv6 = new Host('::1');
 $ipv6->__toString();      //return '[::1]'
 $ipv6->getUriComponent(); //return '[::1]'
+$ipv6->getLiteral();      //return '::1'
 ~~~
+
+<p class="message-notice">The <code>Host::getLiteral</code> method is useful to get the host raw IP representation without the IPv6 brackets for instance.</p>
 
 ### IDN support
 
@@ -213,9 +218,9 @@ echo $host->isIdn();     //return false
 
 ### Array representation
 
-A host can be splitted into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method. **This representation is a hierarchical representation of the Hostname.**
+A host can be splitted into its different labels. The class provides an array representation of a the host labels using the `Host::toArray` method. If the host is an IP, the array contains only one entry, the full IP.
 
-<p class="message-warning">Once in array representation you can not distinguish a partially from a fully qualified domain name.</p>
+<p class="message-notice">The class uses a hierarchical representation of the Hostname. This mean that the host top-level domain is the array first item.</p>
 
 ~~~php
 use League\Uri\Components\Host;
@@ -229,6 +234,8 @@ $arr = $fqdn->toArray(); //return ['com', 'example', 'secure'];
 $host = new Host('::1');
 $arr = $host->toArray(); //return ['::1'];
 ~~~
+
+<p class="message-warning">Once in array representation you can not distinguish a partially from a fully qualified domain name.</p>
 
 ## Accessing host contents
 
@@ -351,7 +358,6 @@ echo $host->toUnicode()->__toString(); //display 'مثال.إختبار'
 To append labels to the current host you need to use the `Host::append` method. This method accepts a single argument which represents the data to be appended. This data can be:
 
 - another `Host` object;
-- an object which implements the `__toString` method;
 - a string;
 
 ~~~php
@@ -442,7 +448,7 @@ echo $newHost; //displays '[fe80::1]';
 
 You can filter the `Host` object using the `Host::filter` method. Filtering is done using the same arguments as PHP's `array_filter`.
 
-You can filter the path according to its labels values:
+You can filter the host according to its labels values:
 
 ~~~php
 use League\Uri\Components\Host;
@@ -454,7 +460,7 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays 'www.be'
 ~~~
 
-You can filter the path according to its labels key.
+You can filter the host according to its labels key.
 
 ~~~php
 use League\Uri\Components\Host;
@@ -466,7 +472,7 @@ $newHost = $host->filter(function ($value) {
 echo $newHost; //displays '11.be'
 ~~~
 
-You can filter the path according to its label value and key.
+You can filter the host according to its label value and key.
 
 ~~~php
 use League\Uri\Components\Host;
@@ -480,12 +486,12 @@ echo $newHost; //displays 'bbc.uk'
 
 By specifying the second argument flag you can change how filtering is done:
 
-- use `Host::FILTER_USE_VALUE` to filter according to the segment value;
-- use `Host::FILTER_USE_KEY` to filter according to the segment offset;
-- use `Host::FILTER_USE_BOTH` to filter according to the segment value and offset;
+- use `Host::FILTER_USE_VALUE` to filter according to the label value;
+- use `Host::FILTER_USE_KEY` to filter according to the label offset;
+- use `Host::FILTER_USE_BOTH` to filter according to the label value and offset;
 
-By default, if no flag is specified the method will filter the query using the `Host::FILTER_USE_VALUE` flag.
+By default, if no flag is specified the method will filter the host using the `Host::FILTER_USE_VALUE` flag.
 
-<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's `array_filter` flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
+<p class="message-info">If you are in PHP 5.6+ you can substitute these constants with PHP's <code>array_filter</code> flags constants <code>ARRAY_FILTER_USE_KEY</code> and <code>ARRAY_FILTER_USE_BOTH</code></p>
 
 <p class="message-notice">This method is used by the URI modifier <code>FilterLabels</code></p>

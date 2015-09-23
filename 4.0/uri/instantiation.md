@@ -50,10 +50,10 @@ Even thought it is possible, it is not recommend to instantiate any URI object u
 
 Out of the box the library provides the following specialized classes:
 
-- `League\Uri\Schemes\Data` which deals with [Data URI](/4.0/uri/datauri/);
-- `League\Uri\Schemes\Ftp` which deals with the [FTP scheme specific URI](/4.0/uri/ftp/);
-- `League\Uri\Schemes\Http` which deals with [HTTP and HTTPS scheme specific URI](/4.0/uri/http/);
-- `League\Uri\Schemes\Ws` which deals with [WS and WSS (websocket) scheme specific URI](/4.0/uri/ws/);
+- `League\Uri\Schemes\Data` which deals with [Data URIs](/4.0/uri/datauri/);
+- `League\Uri\Schemes\Ftp` which deals with the [FTP URIs](/4.0/uri/ftp/);
+- `League\Uri\Schemes\Http` which deals with [HTTP and HTTPS URIs](/4.0/uri/http/);
+- `League\Uri\Schemes\Ws` which deals with [WS and WSS (websocket) URIs](/4.0/uri/ws/);
 
 <p class="message-info">But you can easily <a href="/4.0/uri/hierarchical/extension/">create your own class</a> to manage others scheme specific URI.</p>
 
@@ -64,7 +64,7 @@ Out of the box the package normalizes any given URI according to the non destruc
 These non destructives rules are:
 
 - scheme and host components are lowercased;
-- query, path, fragment components are URI encoded;
+- query, path, fragment components are URI encoded if needed;
 - the port number is removed from the URI string representation if the standard port is used;
 
 ~~~php
