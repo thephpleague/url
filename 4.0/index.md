@@ -16,8 +16,6 @@ title: Uri
 [![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/uri.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/uri)
 [![Total Downloads](https://img.shields.io/packagist/dt/league/uri.svg?style=flat-square)](https://packagist.org/packages/league/uri)
 
-## About
-
 The library provides simple and intuitive classes to [instantiate](/4.0/uri/instantiation/) and [manipulate](/4.0/uri/manipulation/) URIs and their components in PHP. Out of the box the library provides classes for each [URI components](/4.0/components/overview/) as well as for the following schemes:
 
 - [HTTP/HTTPS](/4.0/uri/schemes/http/);
@@ -25,7 +23,9 @@ The library provides simple and intuitive classes to [instantiate](/4.0/uri/inst
 - [FTP](/4.0/uri/schemes/ftp/);
 - [Data URIs](/4.0/uri/schemes/data-uri/);
 
-But you can easily [use the package to handle](/4.0/uri/extension/) others scheme specific URIs.
+But you can easily [use the package to handle](/4.0/uri/extension/) others scheme specific URIs. 
+
+The library ships with parsers for the [URI string](/4.0/services/uri-parser/) and its [query string](/4.0/services/query-parser/) that conforms to [RFC3986][] specification as well as a [URI formatter class](/4.0/services/formatter/) to ease outputting URI strings.
 
 Highlights
 ------
