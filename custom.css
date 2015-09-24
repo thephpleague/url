@@ -17,3 +17,13 @@ menu .versions {
         margin: 15px 0 0 30px;
     }
 }
+
+blockquote {
+    border-left: 4px solid #ccc;
+    font-style:italic;
+}
+
+blockquote {
+    box-sizing: border-box;
+    padding:0 10px;
+}

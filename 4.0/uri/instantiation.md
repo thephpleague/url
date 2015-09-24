@@ -55,7 +55,7 @@ Out of the box the library provides the following specialized classes:
 - `League\Uri\Schemes\Http` which deals with [HTTP and HTTPS URIs](/4.0/uri/http/);
 - `League\Uri\Schemes\Ws` which deals with [WS and WSS (websocket) URIs](/4.0/uri/ws/);
 
-<p class="message-info">But you can easily <a href="/4.0/uri/hierarchical/extension/">create your own class</a> to manage others scheme specific URI.</p>
+<p class="message-info">But you can easily <a href="/4.0/uri/extension/">create your own class</a> to manage others scheme specific URI.</p>
 
 ## URI normalization
 

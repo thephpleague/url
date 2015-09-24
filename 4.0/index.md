@@ -18,9 +18,14 @@ title: Uri
 
 ## About
 
-The package provides simple and intuitive classes to create and manage URIs in PHP.
+The library provides simple and intuitive classes to [instantiate](/4.0/uri/instantiation/) and [manipulate](/4.0/uri/manipulation/) URIs and their components in PHP. Out of the box the library provides classes for each [URI components](/4.0/components/overview/) as well as for the following schemes:
 
-[URI on Packagist](https://packagist.org/packages/league/uri)
+- [HTTP/HTTPS](/4.0/uri/schemes/http/);
+- [Websockets](/4.0/uri/schemes/ws/);
+- [FTP](/4.0/uri/schemes/ftp/);
+- [Data URIs](/4.0/uri/schemes/data-uri/);
+
+But you can easily [use the package to handle](/4.0/uri/extension/) others scheme specific URIs.
 
 Highlights
 ------

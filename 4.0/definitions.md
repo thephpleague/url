@@ -7,11 +7,25 @@ title: URIs as Value Objects
 
 The library models <abbr title="Uniform Resource Identifier">URIs</abbr> and URIs components as [immutable](http://en.wikipedia.org/wiki/Immutable_object) [value objects](http://en.wikipedia.org/wiki/Value_object).
 
+## URI, URL and URN
+
+Often you will encounter in the documentation and in the public spaces the following terms:
+
+- URL which stands for `Uniform Resource Locator`;
+- URI which stands for `Uniform Resource Identifier`;
+- URN which stands for `Uniform Resource Name`;  
+
+But according to [RFC3986](http://tools.ietf.org/html/rfc3986#section-1.1.3)
+
+> Future specifications and related documentation should use the general term "URI" rather than the more restrictive terms "URL" and "URN".
+
+This is the reason why you will mostly encounter the term URI throughout the documentation.
+
 ## Value Objects
 
 > The term "Uniform Resource Locator" (URL) refers to the subset of URIs that, in addition to identifying a resource, provide a means of locating the resource by describing its primary access mechanism. [RFC3986](http://tools.ietf.org/html/rfc3986#section-1.1.3)
 
-This means that a URL is like a street address, if you omit or change even a single character in it, you won't be able to find and/or identify what your are looking for. This is exactly the definition of a value object.
+This means that a URI is like a street address, if you omit or change even a single character in it, you won't be able to clearly identify what your are looking for. This is exactly the definition of a value object.
 
 ~~~php
 use League\Uri\Schemes\Http as HttpUri;
