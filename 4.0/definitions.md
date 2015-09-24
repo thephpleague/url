@@ -9,17 +9,17 @@ The library models <abbr title="Uniform Resource Identifier">URIs</abbr> and URI
 
 ## URI, URL and URN
 
-Often you will encounter in the documentation and in the public spaces the following terms:
+Often you will encounter in the public spaces the following terms:
 
-- URL which stands for `Uniform Resource Locator`;
-- URI which stands for `Uniform Resource Identifier`;
-- URN which stands for `Uniform Resource Name`;  
+- URI which stands for *Uniform Resource Identifier*;
+- URL which stands for *Uniform Resource Locator*;
+- URN which stands for *Uniform Resource Name*;  
 
 But according to [RFC3986](http://tools.ietf.org/html/rfc3986#section-1.1.3)
 
 > Future specifications and related documentation should use the general term "URI" rather than the more restrictive terms "URL" and "URN".
 
-This is the reason why you will mostly encounter the term URI throughout the documentation.
+This is the reason why you will mostly encounter the term URI throughout the documentation to highlight the fact that the package is not limited to HTTP(S) URI.
 
 ## Value Objects
 

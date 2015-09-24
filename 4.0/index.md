@@ -16,16 +16,20 @@ title: Uri
 [![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/uri.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/uri)
 [![Total Downloads](https://img.shields.io/packagist/dt/league/uri.svg?style=flat-square)](https://packagist.org/packages/league/uri)
 
-The library provides simple and intuitive classes to [instantiate](/4.0/uri/instantiation/) and [manipulate](/4.0/uri/manipulation/) URIs and their [components](/4.0/components/overview/) in PHP. Out of the box the library provides classes for the following schemes:
+The library provides simple and intuitive classes to [instantiate](/4.0/uri/instantiation/) and [manipulate](/4.0/uri/manipulation/) URIs and their [components](/4.0/components/overview/) in PHP. Out of the box the library handles the following schemes:
 
 - [HTTP/HTTPS](/4.0/uri/schemes/http/);
 - [Websockets](/4.0/uri/schemes/ws/);
 - [FTP](/4.0/uri/schemes/ftp/);
 - [Data URIs](/4.0/uri/schemes/data-uri/);
 
-And you can easily [use the package to handle](/4.0/uri/extension/) others scheme specific URIs. 
+and allow [to easily manage others scheme specific URIs](/4.0/uri/extension/). 
 
-The library ships with parsers for the [URI string](/4.0/services/parser-uri/) and the [URI query string](/4.0/services/parser-query/) that conforms to [RFC3986][] specifications as well as a [URI formatter](/4.0/services/formatter/) to ease outputting URI strings.
+The library ships also with:
+
+- a [RFC3986][] compliant parser for the [URI string](/4.0/services/parser-uri/);
+- a parser for the [URI query string](/4.0/services/parser-query/) that preserves its content;
+- a [URI formatter](/4.0/services/formatter/) to ease outputting URI strings;
 
 Highlights
 ------
