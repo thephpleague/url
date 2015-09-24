@@ -25,7 +25,7 @@ The library provides simple and intuitive classes to [instantiate](/4.0/uri/inst
 
 But you can easily [use the package to handle](/4.0/uri/extension/) others scheme specific URIs. 
 
-The library ships with parsers for the [URI string](/4.0/services/uri-parser/) and its [query string](/4.0/services/query-parser/) that conforms to [RFC3986][] specification as well as a [URI formatter class](/4.0/services/formatter/) to ease outputting URI strings.
+The library ships with parsers for the [URI string](/4.0/services/uri-parser/) and its [query string](/4.0/services/query-parser/) that conforms to [RFC3986][] specifications as well as a [URI formatter](/4.0/services/formatter/) to ease outputting URI strings.
 
 Highlights
 ------
