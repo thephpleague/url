@@ -1,5 +1,8 @@
 # Url
 
+**This repository is for Url 3.x., Uri 4.x, the new version, is available at https://github.com/thephpleague/uri. League\Url 3 will be EOL since 2015-09-23.**
+
+
 [![Build Status](https://img.shields.io/travis/thephpleague/url/3.x.svg?style=flat-square)](https://travis-ci.org/thephpleague/url)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/thephpleague/url/3.x.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url/?branch=3.x)
 [![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/url/3.x.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/url/?branch=3.x)
@@ -13,10 +16,6 @@ This package is compliant with [PSR-2][], and [PSR-4][].
 
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
-
-**This repository is for Url 3.x., Uri 4.x, the new version, will be released and made available at https://github.com/thephpleague/uri. The documentation for version 4+ can be found at http://url.thephpleague.com/4.0/.**
-
-**League\Url 3 is only maintained for bug and security fixes. League\Url 3 will be EOL when League\Uri will be released.**
 
 Requirements
 -------
