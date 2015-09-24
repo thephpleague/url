@@ -1,6 +1,8 @@
-# Url
+# Url version 3
 
-**This repository is for Url 3.x., Uri 4.x, the new version, is available at https://github.com/thephpleague/uri. League\Url 3 will be EOL since 2015-09-23.**
+# League\Url 3 is EOL since 2015-09-23.**
+
+**This repository is for the legacy Url version 3, [the new version](https://github.com/thephpleague/uri) is available at https://github.com/thephpleague/uri.**
 
 
 [![Build Status](https://img.shields.io/travis/thephpleague/url/3.x.svg?style=flat-square)](https://travis-ci.org/thephpleague/url)
