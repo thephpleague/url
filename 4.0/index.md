@@ -1,6 +1,7 @@
 ---
 layout: default
 permalink: /
+redirect_from: "/4.0/"
 title: Uri
 ---
 

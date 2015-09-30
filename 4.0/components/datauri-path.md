@@ -20,6 +20,8 @@ $path = new Path('text/plain;charset=us-ascii,Hello%20World%21');
 echo $path; //returns 'text/plain;charset=us-ascii,Hello%20World%21'
 ~~~
 
+<p class="message-notice">The <code>mediatype</code> is only validated according to its syntax. You should use an independent mediatype validator if necessary.</p>
+
 <p class="message-warning">If the submitted value is not a valid path an <code>InvalidArgumentException</code> will be thrown.</p>
 
 ### Using a Data Uri object
@@ -67,6 +69,7 @@ $path->getUriComponent(); //returns 'text/plain;charset=us-ascii,Hello%20World%2
 
 The DataPath class exposes the following specific methods:
 
+- `getMediaType`: This method returns the Data URI current mediatype;
 - `getMimeType`: This method returns the Data URI current mimetype;
 - `getParameters`: This method returns the parameters associated with the mediatype;
 - `getData`: This methods returns the encoded data contained is the Data URI;
@@ -77,7 +80,8 @@ Each of these methods return a string. This string can be empty if the data wher
 use League\Uri\Components\DataPath as Path;
 
 $uri = DataUri::createFromString('data:text/plain;charset=us-ascii,Hello%20World%21');
-echo $uri->getMimetype(); //returns 'text/plain'
+echo $uri->getMediaType(); //returns 'text/plain;charset=us-ascii'
+echo $uri->getMimeType(); //returns 'text/plain'
 echo $uri->getParameters(); //returns 'charset=us-ascii'
 echo $uri->getData(); //returns 'Hello%20World%21'
 ~~~

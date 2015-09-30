@@ -41,8 +41,8 @@ The data URI class uses the [DataPath](/4.0/components/datauri-path/) class to r
 use League\Uri\Schemes\Data as DataUri;
 
 $uri = DataUri::createFromString('data:text/plain;charset=us-ascii,Hello%20World%21');
-echo $uri->path->getMediatype(); //display 'text/plain;charset=us-ascii'
-echo $uri->path->getMimetype(); //display 'text/plain'
+echo $uri->path->getMediaType(); //display 'text/plain;charset=us-ascii'
+echo $uri->path->getMimeType(); //display 'text/plain'
 echo $uri->path->getParameters(); //display 'charset=us-ascii'
 echo $uri->path->getData(); //display 'Hello%20World%21'
 $uri->path->isBinaryData(); //returns false
