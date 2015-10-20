@@ -22,7 +22,7 @@ If a new instance can not be created exceptions are thrown.
 
 ### From a string
 
-Using the `createFromString` static method you can instantiate a new URI object from a string or from any object that implements the `__toString` method. Internally, the string will be parse using the library [internal URI parser](/4.0/services/parser/).
+Using the `createFromString` static method you can instantiate a new URI object from a string or from any object that implements the `__toString` method. Internally, the string will be parse using the library [internal URI parser](/4.0/services/parser-uri/).
 
 ~~~php
 use League\Uri\Schemes\Ftp as FtpUri;
@@ -32,7 +32,7 @@ $uri = FtpUri::createFromString('ftp://host.example.com/path/to/image.png;type=i
 
 ### From parse_url results
 
-You can also instantiate a new URI object using the `createFromComponents` named constructor by giving it the result of PHP's function `parse_url` or the library [internal URI parser](/4.0/services/parser/).
+You can also instantiate a new URI object using the `createFromComponents` named constructor by giving it the result of PHP's function `parse_url` or the library [internal URI parser](/4.0/services/parser-uri/).
 
 ~~~php
 use League\Uri\Schemes\Ws as WsUri;
