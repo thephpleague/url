@@ -5,7 +5,7 @@ title: The Path class
 
 # The Path class
 
-This class is a [segment values component class](/3.0/components/overview/#segment-components) and manage the URL path component. It also implements the `League\Url\Components\PathInterface`. 
+This class is a [segment values component class](/components/overview/#segment-components) and manage the URL path component. It also implements the `League\Url\Components\PathInterface`.
 
 The `League\Url\Components\PathInterface` interface adds the following method:
 
@@ -26,7 +26,7 @@ $path[] = 'troll';
 foreach ($path as $offset => $value) {
 	echo "$offset => $value".PHP_EOL;
 }
-//will echo 
+//will echo
 // 0 => bar
 // 1 => troll
 

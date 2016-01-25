@@ -4,44 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    {% assign version = page.url | remove_first: "/" | split: "/"" | first %}
-    {% if version == nil %}
-        {% assign version = site.data.project.default_version %}
-    {% endif %}
-
-    {% capture version_home %}/{{ version }}/{% endcapture %}
-
-    {% if page.url == '/'  or page.url == version_home %}
+    {% if page.url == '/' %}
         <title>{{ site.data.project.title }} - {{ site.data.project.tagline }}</title>
     {% else %}
         <title>{{ page.title }} - {{ site.data.project.title }}</title>
     {% endif %}
-
-    {% if site.github.url %}
-        <base href="{{ site.github.url }}/{{ version }}/">
-    {% else %}
-        <base href="/{{ version }}/">
-    {% endif %}
-
     {% if site.data.project.description %}
         <meta name="description" content="{{ site.data.project.description }}">
     {% endif %}
-
     {% if site.data.images.favicon %}
         <link rel="icon" type="image/x-icon" href="{{ site.data.images.favicon }}" />
     {% else %}
         <link rel="icon" type="image/x-icon" href="http://theme.thephpleague.com/img/favicon.ico" />
     {% endif %}
-
     {% if site.data.images.apple_touch %}
         <link rel="apple-touch-icon-precomposed" href="{{ site.data.images.apple_touch }}">
     {% else %}
         <link rel="apple-touch-icon-precomposed" href="http://theme.thephpleague.com/img/apple-touch-icon-precomposed.png">
     {% endif %}
-
     <link rel="stylesheet" href="http://theme.thephpleague.com/css/all.css">
-    <link rel="stylesheet" href="/custom.css">
 </head>
 <body>
 
@@ -56,7 +37,7 @@
 </section>
 
 <header>
-    <a class="logo" href="{% if version == site.data.project.default_version %}/{% else %}/{{ version }}/{% endif %}">
+    <a class="logo" href="/">
         {% if site.data.images.logo %}
             <span class="icon">
                 <img src="{{ site.data.images.logo }}" width="50" height="40" alt="{{ site.data.project.title }} - {{ site.data.project.tagline }}">
@@ -78,14 +59,7 @@
 
 <main>
     <menu>
-        <select class="versions">
-            {% for v in site.data.menu %}
-                <option data-url="{% if v[0] == site.data.project.default_version %}/{% else %}/{{ v[0] }}/{% endif %}" {% if version == v[0] %}selected="selected"{% endif %}>                    Version: {{ v[0] }}
-                </option>
-            {% endfor %}
-        </select>
-
-        {% for section in site.data.menu[version] %}
+        {% for section in site.data.menu %}
             <h2>{{ section[0] }}</h2>
             <ul>
                 {% for link in section[1] %}
@@ -97,9 +71,7 @@
         {% endfor %}
     </menu>
     <article>
-        {% if '4.0' != version %}
-    <p class="message-notice">Version {{ version }} is an unsupported version of the library. <strong>We strongly encourage you to upgrade your code using <a href="/">the most recent stable version</a></strong>.</p>
-        {% endif %}
+    <p class="message-notice"><code>League\Url</code> is not unsupported anymore. <strong>We strongly encourage you to upgrade your code and use instead <a href="http://uri.thephpleague.com">League\Uri</a></strong>.</p>
         {{ content }}
     </article>
 </main>
@@ -112,17 +84,15 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://theme.thephpleague.com/js/scripts.js"></script>
 <script src="http://theme.thephpleague.com/js/prism.js"></script>
-<script src="/custom.js"></script>
-
 {% if site.data.project.google_analytics_tracking_id %}
-    <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','{{  site.data.project.google_analytics_tracking_id }}');ga('send','pageview');
-    </script>
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','{{  site.data.project.google_analytics_tracking_id }}');ga('send','pageview');
+</script>
 {% endif %}
 
 </body>

@@ -1,48 +1,12 @@
-'4.0':
-    Getting Started:
-        Introduction: '/'
-        Changelog: '/4.0/changelog/'
-        Installation: '/4.0/installation/'
-        Usage: '/4.0/examples/'
-        Terminology: '/4.0/definitions/'
-    Uri:
-        Instantiation: '/4.0/uri/instantiation/'
-        Properties: '/4.0/uri/properties/'
-    Uri Schemes:
-        Http URIs: '/4.0/uri/schemes/http/'
-        Websocket URIs: '/4.0/uri/schemes/ws/'
-        FTP URI: '/4.0/uri/schemes/ftp/'
-        Data URI: '/4.0/uri/schemes/data-uri/'
-        Extension Guide: '/4.0/uri/extension/'
-    Uri manipulation:
-        Overview: '/4.0/uri/manipulation/'
-        Host Modifiers: '/4.0/uri/manipulation/host/'
-        Query Modifiers: '/4.0/uri/manipulation/query/'
-        Path Modifiers: '/4.0/uri/manipulation/path/'
-        Uri Modifiers: '/4.0/uri/manipulation/generic/'
-    Uri Parts API:
-        Overview: '/4.0/components/overview/'
-        User Information: '/4.0/components/userinfo/'
-        Host: '/4.0/components/host/'
-        Port: '/4.0/components/port/'
-        Query: '/4.0/components/query/'
-        Path: '/4.0/components/path/'
-        Hierarchical Path: '/4.0/components/hierarchical-path/'
-        Data Path: '/4.0/components/datauri-path/'
-    Services:
-        Uri Parser: '/4.0/services/parser-uri/'
-        Query Parser: '/4.0/services/parser-query/'
-        Formatter: '/4.0/services/formatter/'
-'3.0':
-    Getting Started:
-        Introduction: '/3.0/'
-        Changelog: '/3.0/changelog/'
-        Examples: '/3.0/examples/'
-        Installation: '/3.0/installation/'
-    The API:
-        Overview: '/3.0/overview/'
-    The Components:
-        Overview: '/3.0/components/overview/'
-        Query: '/3.0/components/query/'
-        Path: '/3.0/components/path/'
-        Host: '/3.0/components/host/'
+Getting Started:
+    Introduction: '/'
+    Changelog: '/changelog/'
+    Examples: '/examples/'
+    Installation: '/installation/'
+The API:
+    Overview: '/overview/'
+The Components:
+    Overview: '/components/overview/'
+    Query: '/components/query/'
+    Path: '/components/path/'
+    Host: '/components/host/'

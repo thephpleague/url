@@ -5,7 +5,7 @@ title: The Query Object
 
 # The Query class
 
-This class is a [multiple values component class](/3.0/components/overview/#complex-components) and manages the URL query component. It implementing the `League\Url\Components\QueryInterface`.
+This class is a [multiple values component class](/components/overview/#complex-components) and manages the URL query component. It implementing the `League\Url\Components\QueryInterface`.
 
 This interface adds the following method:
 

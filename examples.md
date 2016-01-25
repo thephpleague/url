@@ -19,7 +19,7 @@ $url = Url::createFromUrl(
 
 //let's update the Query String
 $query = $url->getQuery();
-$query->modify(array('query' => "lulu l'allumeuse", "foo" => "bar")); 
+$query->modify(array('query' => "lulu l'allumeuse", "foo" => "bar"));
 $query['sarah'] = "o connors"; //adding a new parameter
 
 $url->setScheme('ftp'); //change the URLs scheme
@@ -27,7 +27,7 @@ $url->setFragment(null); //remove the fragment
 $url->setPort(21);
 $url->getPath()->remove('path/index.php'); //remove part of the path
 $url->getPath()->prepend('mongo db'); //prepend the path
-echo $url, PHP_EOL; 
+echo $url, PHP_EOL;
 // output ftp://user:pass@www.example.com:21/mongo%20db?query=lulu%20l%27allumeuse&foo=bar&sarah=o%20connors
 ~~~
 
@@ -51,7 +51,7 @@ foreach (range(1, 5) as $index) {
     $paginations[] = $url->setQuery($query);
 }
 
-//$paginations now contains 5 new League\Url\UrlImmutable objects 
+//$paginations now contains 5 new League\Url\UrlImmutable objects
 //but $url has not changed
 foreach ($paginations as $uri) {
     $res = $uri instanceof 'League\Url\UrlImmutable'; // $res is true
