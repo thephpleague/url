@@ -23,6 +23,8 @@ This method is an alias of `__toString()` and return the hostname internationali
 Returns the Punycode encoded hostname;
 
 ~~~php
+<?php
+
 use League\Url\Components\Host;
 
 $host = new Host;

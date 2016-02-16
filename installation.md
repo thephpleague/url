@@ -35,6 +35,8 @@ require 'vendor/autoload.php';
 You can also use URL without using Composer by registing an autoloader function:
 
 ~~~php
+<?php
+
 spl_autoload_register(function ($class) {
     $prefix = 'League\\Url\\';
     $base_dir = __DIR__ . '/src/';

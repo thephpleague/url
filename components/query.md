@@ -18,6 +18,8 @@ Updates the component data;
 Example using the `League\Url\Components\Query` object:
 
 ~~~php
+<?php
+
 use League\Url\Components\Query;
 
 $query = new Query('foo=bar');

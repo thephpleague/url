@@ -11,6 +11,7 @@ A simple example to show you how to manipulate a URL and its component:
 
 ~~~php
 <?php
+
 use League\Url\Url;
 
 $url = Url::createFromUrl(
@@ -37,6 +38,7 @@ A simple example to show you how to implement pagination while retaining the ori
 
 ~~~php
 <?php
+
 use League\Url\UrlImmutable;
 
 //create a URL from the current page

@@ -59,6 +59,8 @@ These classes are:
 Example using the `League\Url\Components\Scheme` class:
 
 ~~~php
+<?php
+
 use League\Url\Components\Scheme;
 
 $scheme = new Scheme;

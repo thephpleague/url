@@ -75,6 +75,8 @@ Returns `true` if two `League\Url\UrlInterface` object represents the same URL.
 Returns the URL component as an array like PHP native `parse_url` but all components are always returned even when missing from the full URL.
 
 ~~~php
+<?php
+
 use League\Url\Url;
 use League\Url\UrlImmutable;
 
@@ -168,6 +170,8 @@ For the host, path and query components, `$data` can also be an `array` or a `Tr
 Let's modify a `League\Url\Url` object:
 
 ~~~php
+<?php
+
 $url = Url::createFromUrl('https://www.example.com');
 $url
 	->setUser('john')
@@ -193,6 +197,8 @@ To stay immutable, the <code>League\Url\UrlImmutable</code> object:
 The same operation using a <code>League\Url\UrlImmutable</code> object:
 
 ~~~php
+<?php
+
 $url = UrlImmutable::createFromUrl('http://www.example.com');
 $new_url = $url
 	->setUser('john')

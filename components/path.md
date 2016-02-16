@@ -18,6 +18,8 @@ Returns a string representation of the relative path from the current object rel
 Example using the `League\Url\Components\Path` object:
 
 ~~~php
+<?php
+
 use League\Url\Components\Path;
 
 $path = new Path;
