@@ -343,6 +343,9 @@ abstract class AbstractUrl implements UrlInterface
 
         if (isset($server['SERVER_ADDR'])) {
             return $server['SERVER_ADDR'];
+        } else {
+            // we need this to be able to run it in phpunit functional tests
+            return env('APP_URL', 'http://localhost');
         }
 
         throw new RuntimeException('Host could not be detected');
