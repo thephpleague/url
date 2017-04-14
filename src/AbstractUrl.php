@@ -203,7 +203,7 @@ abstract class AbstractUrl implements UrlInterface
 
         //if no valid scheme is found we add one
         if (is_null($url)) {
-            throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $original_url));
+            throw new RuntimeException(sprintf('The given URL: `%s` could not be parsed', $original_url));
         }
 
         $components = array_merge(array(
@@ -216,8 +216,40 @@ abstract class AbstractUrl implements UrlInterface
             'query' => null,
             'fragment' => null,
         ), self::parseUrl($url));
+
+        try {
+            return static::createFromArray($components);
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf('The given URL: `%s` could not be parsed', $original_url));
+        }
+    }
+
+    /**
+     * Return a instance of Url from a string
+     *
+     * @param string[] $components array of components in http://php.net/manual/function.parse-url.php format
+     *
+     * @return static
+     *
+     * @throws RuntimeException If provided components cannot be assembled into valid URL
+     */
+    public static function createFromArray(array $components)
+    {
+        $components = array_merge(
+            array(
+                'scheme' => null,
+                'user' => null,
+                'pass' => null,
+                'host' => null,
+                'port' => null,
+                'path' => null,
+                'query' => null,
+                'fragment' => null,
+            ),
+            $components
+        );
         $components = self::formatAuthComponent($components);
-        $components = self::formatPathComponent($components, $original_url);
+        $components = self::formatPathComponent($components);
 
         return new static(
             new Components\Scheme($components['scheme']),
@@ -236,7 +268,7 @@ abstract class AbstractUrl implements UrlInterface
      *
      * @param  string $url The URL to parse
      *
-     * @throws  InvalidArgumentException if the URL can not be parsed
+     * @throws  RuntimeException if the URL can not be parsed
      *
      * @return array
      */
@@ -259,7 +291,7 @@ abstract class AbstractUrl implements UrlInterface
             unset($components['scheme']);
             return $components;
         }
-        throw new RuntimeException(sprintf("The given URL: `%s` could not be parse", $url));
+        throw new RuntimeException(sprintf("The given URL: `%s` could not be parsed", $url));
     }
 
     protected static function sanitizeUrl($url)
@@ -434,11 +466,10 @@ abstract class AbstractUrl implements UrlInterface
      * Reformat the component according to the path content
      *
      * @param array  $components the result from parse_url
-     * @param string $url        the original URL to be parse
      *
      * @return array
      */
-    protected static function formatPathComponent(array $components, $url)
+    protected static function formatPathComponent(array $components)
     {
         if (is_null($components['scheme'])
             && is_null($components['host'])
@@ -446,7 +477,7 @@ abstract class AbstractUrl implements UrlInterface
         ) {
             if (0 === strpos($components['path'], '///')) {
                 //even with the added scheme the URL is still broken
-                throw new RuntimeException(sprintf('The given URL: `%s` could not be parse', $url));
+                throw new RuntimeException('Provided components cannot be assembled into valid URL');
             }
 
             if (0 === strpos($components['path'], '//')) {

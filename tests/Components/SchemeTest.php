@@ -10,9 +10,6 @@ use PHPUnit_Framework_TestCase;
  */
 class SchemeTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testAccess()
     {
         $scheme = new Scheme();
@@ -22,6 +19,7 @@ class SchemeTest extends PHPUnit_Framework_TestCase
         $scheme->set('ftp');
         $this->assertSame('ftp://', $scheme->getUriComponent());
         $scheme->set('svn');
+        $this->assertSame('svn://', $scheme->getUriComponent());
     }
 
     public function testSameValueAs()
@@ -31,5 +29,25 @@ class SchemeTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($scheme->sameValueAs($scheme1));
         $scheme1->set(null);
         $this->assertTrue($scheme->sameValueAs($scheme1));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @dataProvider invalidSchemeDataProvider
+     * @param $schemeString
+     */
+    public function testInvalidScheme($schemeString)
+    {
+        $scheme = new Scheme();
+        $scheme->set($schemeString);
+    }
+    
+    public function invalidSchemeDataProvider()
+    {
+        return array(
+            array(''),
+            array('.com'),
+            array('123')
+        );
     }
 }

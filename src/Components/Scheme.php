@@ -38,7 +38,7 @@ class Scheme extends AbstractComponent
         ));
 
         if (! $data) {
-            throw new RuntimeException('This class only deals with http URL');
+            throw new RuntimeException('Invalid scheme');
         }
 
         return strtolower($data);
