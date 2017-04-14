@@ -27,7 +27,8 @@ You need **PHP >= 5.3.0** and the `mbstring` extension to use the library, but t
 Install
 -------
 
-Install `Url` using Composer.
+League\Url 3 is **End of Life** since 2015-09-23, [the new version](https://github.com/thephpleague/uri) is available at https://github.com/thephpleague/uri. If you insist on installing this old package, use:
+
 
 ```
 composer require league/url
